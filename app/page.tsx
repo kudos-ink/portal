@@ -24,13 +24,6 @@ export default function Home() {
 			<div className="flex gap-3">
 				<Link
 					isExternal
-					href={siteConfig.links.docs}
-					className={buttonStyles({ color: "primary", radius: "full", variant: "shadow" })}
-				>
-					Documentation
-				</Link>
-				<Link
-					isExternal
 					className={buttonStyles({ variant: "bordered", radius: "full" })}
 					href={siteConfig.links.github}
 				>
