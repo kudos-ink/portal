@@ -2,6 +2,7 @@
   "name": "next-app-template",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -19,6 +20,7 @@
     "@nextui-org/switch": "2.0.25",
     "@nextui-org/system": "2.0.15",
     "@nextui-org/theme": "2.1.17",
+    "@notionhq/client": "^2.2.14",
     "@react-aria/ssr": "^3.9.1",
     "@react-aria/visually-hidden": "^3.8.8",
     "@types/node": "20.10.5",
@@ -26,6 +28,7 @@
     "@types/react-dom": "18.2.18",
     "autoprefixer": "10.4.16",
     "clsx": "^2.0.0",
+    "dotenv": "^16.3.1",
     "eslint": "8.56.0",
     "eslint-config-next": "14.0.4",
     "framer-motion": "^10.16.16",
