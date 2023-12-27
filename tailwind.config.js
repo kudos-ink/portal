@@ -9,7 +9,12 @@ module.exports = {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        "open-sans": ["Open Sans"],
+        "fira-code": ["Fira Code"],
+      },
+    },
   },
   darkMode: "class",
   plugins: [
