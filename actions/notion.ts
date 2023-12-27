@@ -198,6 +198,8 @@ async function getIssuesOpenedWithin1Month({
   });
 }
 
+// For our purposes we will probably use this with Project Name from a predefined list.
+// This query can return issues from different repos since one project could have a few tracked repos.
 async function getIssuesByProject(
   projectName: string,
   {
@@ -223,10 +225,31 @@ async function getIssuesByProject(
   });
 }
 
+async function getIssuesByRepo(
+  repoLink: string,
+  {
+    page_size = 100,
+    filter_properties = defaultFilterProperties,
+    sorts = defaultSort,
+  }
+): Promise<QueryDatabaseResponse> {
+  return await queryDatabase({
+    filter: {
+      property: "Github Repo",
+      relation: {
+        contains: repoLink,
+      },
+    },
+    page_size,
+    filter_properties,
+    sorts,
+  });
+}
+
 async function main() {
   //   const r = await getGoodFirstIssues({ page_size: 1 });
   // const r = await getUnassignedIssues({ page_size: 1 });
-  const r = await getIssuesOpenedWithin1Month({ page_size: 1 });
+  const r = await getIssuesByProject("Polkadot", { page_size: 1 });
   // const r = await queryDatabase({ page_size: 105 });
   //   console.log(r.results.length);
   console.log(JSON.stringify(r.results, null, 2));
