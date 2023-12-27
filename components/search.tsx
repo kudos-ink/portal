@@ -1,30 +1,44 @@
-import { Input } from "@nextui-org/input";
+"use client";
 import React from "react";
-import { SearchIcon } from "./icons";
-import { Kbd } from "@nextui-org/kbd";
+import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 
-function Search() {
-  return (
-    <Input
-      aria-label="Search"
-      classNames={{
-        inputWrapper: "bg-default-100",
-        input: "text-sm",
-      }}
-      className="font-open-sans"
-      endContent={
-        <Kbd className="hidden lg:inline-block" keys={["command"]}>
-          S
-        </Kbd>
-      }
-      labelPlacement="outside"
-      placeholder="Search..."
-      startContent={
-        <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
-      }
-      type="search"
-    />
-  );
+
+interface SearchItem {
+    label: string,
+    emoji: string,
+    value: string
 }
 
-export default Search;
+interface SearchProps {
+    placeholder: string,
+    emoji?: string,
+    items: SearchItem[]
+}
+
+export default function Search({ placeholder, emoji, items }: SearchProps) {
+    return (
+        <Autocomplete
+            placeholder={placeholder}
+            variant="bordered"
+            defaultItems={items}
+            startContent={
+                <span className="text-xl font-noto-color-emoji">
+                    {emoji}
+                </span>
+            }
+            className="max-w-md"
+            allowsCustomValue={true}
+        >
+            {(item) => <AutocompleteItem key={item.value} textValue={item.label}>
+                <span className="text-l font-noto-color-emoji">
+                    {item.emoji}
+                </span>
+                &nbsp;
+                <span className="text-l">
+                    {item.label}
+                </span>
+
+            </AutocompleteItem>}
+        </Autocomplete>
+    );
+}
