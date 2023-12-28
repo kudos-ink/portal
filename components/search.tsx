@@ -1,44 +1,39 @@
 "use client";
-import React from "react";
+import React, { FC } from "react";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
-
-
-interface SearchItem {
-    label: string,
-    emoji: string,
-    value: string
-}
+import Emoji from "../components/utils/emoji";
+import { Item } from "../components/utils/types/item";
 
 interface SearchProps {
-    placeholder: string,
-    emoji?: string,
-    items: SearchItem[]
+  placeholder: string;
+  emoji: string;
+  items: Item[];
 }
 
-export default function Search({ placeholder, emoji, items }: SearchProps) {
-    return (
-        <Autocomplete
-            placeholder={placeholder}
-            variant="bordered"
-            defaultItems={items}
-            startContent={
-                <span className="text-xl font-noto-color-emoji">
-                    {emoji}
-                </span>
-            }
-            className="max-w-md"
-            allowsCustomValue={true}
-        >
-            {(item) => <AutocompleteItem key={item.value} textValue={item.label}>
-                <span className="text-l font-noto-color-emoji">
-                    {item.emoji}
-                </span>
-                &nbsp;
-                <span className="text-l">
-                    {item.label}
-                </span>
+const Search: FC<SearchProps> = ({
+  placeholder,
+  emoji,
+  items,
+}: SearchProps) => {
+  return (
+    <Autocomplete
+      placeholder={placeholder}
+      variant="bordered"
+      defaultItems={items}
+      startContent={<Emoji emoji={emoji} className="text-xl"></Emoji>}
+      className="max-w-md"
+      size="lg"
+      allowsCustomValue={true}
+    >
+      {(item: Item) => (
+        <AutocompleteItem key={item.value} textValue={item.label}>
+          <Emoji emoji={item.emoji} className="text-xl"></Emoji>
+          &nbsp;
+          <span className="text-l">{item.label}</span>
+        </AutocompleteItem>
+      )}
+    </Autocomplete>
+  );
+};
 
-            </AutocompleteItem>}
-        </Autocomplete>
-    );
-}
+export default Search;
