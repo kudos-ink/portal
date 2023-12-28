@@ -1,4 +1,4 @@
-import { ValidNotionResponse } from "@/types";
+import { ValidNotionResponse, ProjectLogoImages } from "@/types";
 
 export function subtractMonths(date: Date, numberOfMonths: number): Date {
   const result = new Date(date.getTime());
@@ -20,4 +20,14 @@ export function isValidNotionResponse(
   object: any
 ): object is ValidNotionResponse {
   return object && object.object === "page" && "properties" in object;
+}
+
+export function getImagePath(
+  githubUrl: string,
+  projectLogos: ProjectLogoImages
+): string {
+  return (
+    "images/" + projectLogos[githubUrl] ||
+    "https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
+  );
 }

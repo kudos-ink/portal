@@ -1,15 +1,19 @@
 import Row from "@/components/row";
-import { getGoodFirstIssues } from "@/actions/notion";
+import { getGoodFirstIssues, baseQueryDatabase } from "@/actions/notion";
 import {
   QueryDatabaseResponse,
   PageObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 import { ValidNotionResponse, Properties } from "@/types";
-import { daysSince, isValidNotionResponse } from "@/utils/helpers";
+import {
+  daysSince,
+  isValidNotionResponse,
+  getImagePath,
+} from "@/utils/helpers";
+import projectLogosJson from "@/public/images/imageMap.json";
 
 export default async function Page() {
-  const data = await getGoodFirstIssues({ page_size: 4 });
-
+  const data = await getGoodFirstIssues({ page_size: 10 });
   return (
     <div>
       {data.results.map((row, index) => {
@@ -30,6 +34,10 @@ export default async function Page() {
               }
               labels={row.properties["Issue Labels"].multi_select.map(
                 (label) => label.name
+              )}
+              image={getImagePath(
+                row.properties["Issue Link"].url.split("/issues")[0],
+                projectLogosJson
               )}
             />
           );

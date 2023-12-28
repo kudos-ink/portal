@@ -12,6 +12,7 @@ export default function Row({
   labels,
   openedDate,
   issueLink,
+  image,
 }: {
   projectName: string;
   repo: string;
@@ -19,6 +20,7 @@ export default function Row({
   labels: string[];
   openedDate: string;
   issueLink: string;
+  image: string;
 }) {
   return (
     <Card className="my-5">
@@ -27,7 +29,7 @@ export default function Row({
           alt="nextui logo"
           height={40}
           radius="sm"
-          src="https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
+          src={image}
           width={40}
         />
         <div className="flex flex-col">
