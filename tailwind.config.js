@@ -13,7 +13,7 @@ module.exports = {
       fontFamily: {
         "open-sans": ["Open Sans"],
         "fira-code": ["Fira Code"],
-        "noto-color-emoji": ["Noto Color Emoji"],
+        emoji: ["Noto Color Emoji"],
       },
     },
   },
