@@ -5,7 +5,7 @@ import {
   QueryDatabaseParameters,
 } from "@notionhq/client/build/src/api-endpoints";
 import "dotenv/config";
-import { subtractMonths } from "../utils/helpers.js"; // added .js extension for ts-node to work - remove when done
+import { subtractMonths } from "../utils/helpers"; // added .js extension for ts-node to work - remove when done
 
 const notion = new Client({
   auth: process.env.NOTION_API_KEY,
@@ -221,7 +221,7 @@ async function queryDatabase(
   return await baseQueryDatabase(query);
 }
 
-async function getGoodFirstIssues({
+export async function getGoodFirstIssues({
   page_size = 100,
   filter_properties = defaultFilterProperties,
   sorts = defaultSort,
@@ -412,18 +412,18 @@ async function createRepoMap() {
   return out;
 }
 
-async function main() {
-  //   const r = await getGoodFirstIssues({ page_size: 1 });
-  // const r = await getUnassignedIssues({ page_size: 1 });
-  //   const r = await getIssuesByProject("Polkadot", { page_size: 1 });
-  //   const r = await getIssuesByRepo("af89c412b69f4437a6a0cdf80070a4a9", {
-  //     page_size: 1,
-  //   });
-  const r = await createRepoMap();
-  // const r = await queryDatabase({ page_size: 105 });
-  //   console.log(r.results.length);
-  console.log(JSON.stringify(r, null, 2));
-  //   console.log(JSON.stringify(r, null, 2));
-}
+// async function main() {
+//   //   const r = await getGoodFirstIssues({ page_size: 1 });
+//   // const r = await getUnassignedIssues({ page_size: 1 });
+//   //   const r = await getIssuesByProject("Polkadot", { page_size: 1 });
+//   //   const r = await getIssuesByRepo("af89c412b69f4437a6a0cdf80070a4a9", {
+//   //     page_size: 1,
+//   //   });
+//   const r = await createRepoMap();
+//   // const r = await queryDatabase({ page_size: 105 });
+//   //   console.log(r.results.length);
+//   console.log(JSON.stringify(r, null, 2));
+//   //   console.log(JSON.stringify(r, null, 2));
+// }
 
-main();
+// main();
