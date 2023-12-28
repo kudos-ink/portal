@@ -38,14 +38,14 @@ module.exports = {
             },
           },
           colors: {
-            background: "#020817", // the page background color
+            background: { DEFAULT: "#020817", 100: "#020817", 200: "#0F1729" }, // the page background color
             foreground: { DEFAULT: "#F8FAFC", 500: "#F8FAFC" }, // the page text color
             content1: "#041E43",
             // brand colors
             default: {
               DEFAULT: "#1D3153",
               100: "#1D3153",
-              200: "#DBDBDD",
+              200: "#BABABC",
               400: "#FFFFFF",
             },
             primary: {
