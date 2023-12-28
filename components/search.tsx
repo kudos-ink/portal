@@ -1,6 +1,6 @@
 "use client";
 import React, { FC } from "react";
-import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem } from "@nextui-org/autocomplete";
 import Emoji from "../components/utils/emoji";
 import { Item } from "../components/utils/types/item";
 
@@ -18,7 +18,8 @@ const Search: FC<SearchProps> = ({
   return (
     <Autocomplete
       placeholder={placeholder}
-      variant="bordered"
+      variant="faded"
+      color="default"
       defaultItems={items}
       startContent={<Emoji emoji={emoji} className="text-xl"></Emoji>}
       className="max-w-md"

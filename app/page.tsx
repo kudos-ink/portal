@@ -1,8 +1,7 @@
+import Filter from "@/components/filter";
 import { title, subtitle } from "@/components/primitives";
-import Search from "../components/search";
-import { search, languages } from "../data/items";
-import Bounties from "../components/bounties";
-import Filter from "../components/filter";
+import Search from "@/components/search";
+import { search, languages } from "@/data/items";
 
 export default function Home() {
   return (
@@ -21,14 +20,14 @@ export default function Home() {
         <div className="flex justify-around items-stretch gap-4">
           <Filter placeholder="Languages" emoji={"💪"} items={languages} />
           <Filter placeholder="Interests" emoji={"🪄"} items={languages} />
-          <div>
+          {/* <div>
             <Bounties
               currency="USD"
               defaultValue={100}
               maxValue={10000}
               emoji="💰"
             />
-          </div>
+          </div> */}
         </div>
         <div className="flex justify-end">
           <div>

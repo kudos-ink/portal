@@ -1,13 +1,13 @@
 "use client";
 import React, { FC } from "react";
+import { Button } from "@nextui-org/button";
 import {
-  Slider,
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  Button,
-} from "@nextui-org/react";
+} from "@nextui-org/dropdown";
+import { Slider } from "@nextui-org/slider";
 import { ChevronOpenIcon } from "./utils/icons/chevronOpenIcon";
 import Emoji from "./utils/emoji";
 
@@ -29,6 +29,8 @@ const Bounties: FC<BountiesProps> = ({
     <Dropdown>
       <DropdownTrigger>
         <Button
+          color="default"
+          variant="faded"
           startContent={<Emoji emoji={emoji} className="text-sm"></Emoji>}
           endContent={<ChevronOpenIcon />}
         >
