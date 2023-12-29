@@ -63,3 +63,4 @@ jobs:
         run: pnpm run build
         env:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          REPO_LIST_DB_ID: ${{ secrets.REPO_LIST_DB_ID }}
