@@ -5,19 +5,16 @@ import {
   PageObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 import { ValidNotionResponse, Properties } from "@/types";
-import {
-  daysSince,
-  isValidNotionResponse,
-  getImagePath,
-} from "@/utils/helpers";
+import { daysSince, isValidNotionPage, getImagePath } from "@/utils/helpers";
 import projectLogosJson from "@/public/images/imageMap.json";
+import { LoadMore } from "@/components/loadMore";
 
 export default async function Page() {
   const data = await getGoodFirstIssues({ page_size: 10 });
   return (
     <div>
       {data.results.map((row, index) => {
-        if (isValidNotionResponse(row)) {
+        if (isValidNotionPage(row)) {
           return (
             <Row
               key={index}
@@ -33,16 +30,19 @@ export default async function Page() {
                 "d"
               }
               labels={row.properties["Issue Labels"].multi_select.map(
-                (label) => label.name
+                (label) => label.name,
               )}
               image={getImagePath(
                 row.properties["Issue Link"].url.split("/issues")[0],
-                projectLogosJson
+                projectLogosJson,
               )}
             />
           );
         }
       })}
+      {data.has_more && data.next_cursor && (
+        <LoadMore cursor={data.next_cursor} />
+      )}
     </div>
   );
 }
