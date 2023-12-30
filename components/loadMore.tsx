@@ -5,45 +5,50 @@ import { Spinner } from "@nextui-org/spinner";
 import { useEffect, useState } from "react";
 import { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
 import projectLogosJson from "@/public/images/imageMap.json";
-
-// import { useInView } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import Row from "./row";
 import { getGoodFirstIssues } from "@/actions/notion";
-import { findDOMNode } from "react-dom";
-import { f } from "@nextui-org/slider/dist/use-slider-64459b54";
+import { LoadMoreState } from "@/types";
 
 export function LoadMore({ cursor }: { cursor: string }) {
   const { ref, inView } = useInView();
-  const [data, setData] = useState<QueryDatabaseResponse[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [nextCursor, setNextCursor] = useState<string | undefined>(cursor);
+  const [awaitingResponse, setAwaitingResponse] = useState(false);
+  const [queryData, setQueryData] = useState<LoadMoreState>({
+    data: [],
+    nextCursor: cursor,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
-      if (inView && nextCursor && !isLoading) {
-        setIsLoading(true);
+      if (inView && !awaitingResponse) {
+        setAwaitingResponse(true);
         try {
           const res = await getGoodFirstIssues({
             page_size: 10,
-            start_cursor: nextCursor,
+            start_cursor: queryData.nextCursor,
           });
-          setData((prevData) => [...prevData, res]);
-          setNextCursor(res.next_cursor || undefined);
+          setQueryData((prevData) => ({
+            data: prevData.data.concat(res),
+            nextCursor: res.next_cursor || undefined,
+          }));
         } catch (error) {
           console.log("There was an error fetching the data", error);
-        } finally {
-          setIsLoading(false);
         }
       }
     };
-
     fetchData();
-  }, [inView, data, isLoading]);
+  }, [inView, queryData, awaitingResponse]);
+
+  useEffect(() => {
+    if (!inView && awaitingResponse) {
+      setAwaitingResponse(false);
+    }
+  }, [inView, awaitingResponse]);
+
   return (
     <>
-      {data &&
-        data.map((query) => {
+      {queryData.data &&
+        queryData.data.map((query) => {
           return query.results.map((row, index) => {
             if (isValidNotionPage(row)) {
               return (
@@ -73,7 +78,7 @@ export function LoadMore({ cursor }: { cursor: string }) {
             }
           });
         })}
-      {nextCursor && (
+      {queryData.nextCursor && (
         <section className="flex justify-center">
           <div ref={ref}>
             <Spinner />

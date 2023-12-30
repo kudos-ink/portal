@@ -327,3 +327,8 @@ export type RepoLanguageSelectArray = {
 };
 
 export type ProjectLogoImages = Record<string, string>;
+
+export type LoadMoreState = {
+  data: QueryDatabaseResponse[];
+  nextCursor: string | undefined;
+};
