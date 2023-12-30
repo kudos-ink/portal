@@ -47,6 +47,9 @@ dependencies:
   '@nextui-org/snippet':
     specifier: 2.0.30
     version: 2.0.30(@nextui-org/system@2.0.15)(@nextui-org/theme@2.1.17)(framer-motion@10.16.16)(react-dom@18.2.0)(react@18.2.0)(tailwind-variants@0.1.19)
+  '@nextui-org/spinner':
+    specifier: ^2.0.24
+    version: 2.0.24(@nextui-org/theme@2.1.17)(react-dom@18.2.0)(react@18.2.0)(tailwind-variants@0.1.19)
   '@nextui-org/switch':
     specifier: 2.0.25
     version: 2.0.25(@nextui-org/system@2.0.15)(@nextui-org/theme@2.1.17)(react-dom@18.2.0)(react@18.2.0)
@@ -113,6 +116,9 @@ dependencies:
   react-dom:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
+  react-intersection-observer:
+    specifier: ^9.5.3
+    version: 9.5.3(react@18.2.0)
   tailwind-variants:
     specifier: ^0.1.19
     version: 0.1.19(tailwindcss@3.4.0)
@@ -4147,6 +4153,14 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-intersection-observer@9.5.3(react@18.2.0):
+    resolution: {integrity: sha512-NJzagSdUPS5rPhaLsHXYeJbsvdpbJwL6yCHtMk91hc0ufQ2BnXis+0QQ9NBh6n9n+Q3OyjR6OQLShYbaNBkThQ==}
+    peerDependencies:
+      react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-is@16.13.1:
