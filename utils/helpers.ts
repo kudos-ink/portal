@@ -25,7 +25,7 @@ export function getImagePath(
   projectLogos: ProjectLogoImages,
 ): string {
   return (
-    "images/" + projectLogos[githubUrl] ||
+    "/images/" + projectLogos[githubUrl] ||
     "https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
   );
 }
