@@ -1,39 +1,24 @@
-# Next.js & NextUI Template
+# Kudos Portal
 
-This is a template for creating applications using Next.js 13 (app directory) and NextUI (v2).
+Find collaborations, collect kudos within the Substrate, Polkadot & Kusama ecosystem.
 
-## Technologies Used
+## Project Architecture
 
-- [Next.js 13](https://nextjs.org/docs/getting-started)
-- [NextUI v2](https://nextui.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Tailwind Variants](https://tailwind-variants.org)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Framer Motion](https://www.framer.com/motion/)
-- [next-themes](https://github.com/pacocoursey/next-themes)
+Folder structure
 
-## How to Use
-
-### Use the template with create-next-app
-
-To create a new project based on this template using `create-next-app`, run the following command:
-
-```bash
-npx create-next-app -e https://github.com/nextui-org/next-app-template
 ```
-
-### Install dependencies
-
-```bash
-npm install
+portal/
+├── assets/             # images, fonts files, ...
+├── app/                # routing purpose only, specific components/layouts
+├── context/            # React context API providers/reducers
+├── components/         # base components
+├── data/               # data assets (JSON files) & constants
+    └── constants.ts    # app constants
+├── hooks/              # custom hooks
+├── lib/                # lib/API overtop & connectors (e.g. fetch, notions)
+├── public/             # static files/assets
+├── services/           # app API interfaces
+├── styles/             # global css, theming variables
+├── types/              # common types
+└── utils/              # utility js functions (e.g. formatters)
 ```
-
-### Run the development server
-
-```bash
-npm run dev
-```
-
-## License
-
-Licensed under the [MIT license](https://github.com/nextui-org/next-app-template/blob/main/LICENSE).
