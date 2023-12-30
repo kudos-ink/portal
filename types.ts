@@ -179,14 +179,12 @@ export type ValidSort = Array<
 
 export type KudosQueryParameters = Omit<
   QueryDatabaseParameters,
-  "filter_properties"
-> &
-  Omit<QueryDatabaseParameters, "sorts"> & {
-    filter_properties?: Array<ValidFilterProperty>;
-  } & {
-    sorts?: ValidSort;
-  };
-
+  "database_id" | "filter_properties" | "sorts"
+> & {
+  database_id?: string;
+  filter_properties?: Array<ValidFilterProperty>;
+  sorts?: ValidSort;
+};
 export type ValidNotionResponse = {
   object: string;
   id: string;
@@ -329,3 +327,8 @@ export type RepoLanguageSelectArray = {
 };
 
 export type ProjectLogoImages = Record<string, string>;
+
+export type LoadMoreState = {
+  data: QueryDatabaseResponse[];
+  nextCursor: string | undefined;
+};

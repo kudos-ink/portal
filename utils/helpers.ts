@@ -16,15 +16,13 @@ export function daysSince(date: Date) {
   return differenceInDays;
 }
 
-export function isValidNotionResponse(
-  object: any
-): object is ValidNotionResponse {
+export function isValidNotionPage(object: any): object is ValidNotionResponse {
   return object && object.object === "page" && "properties" in object;
 }
 
 export function getImagePath(
   githubUrl: string,
-  projectLogos: ProjectLogoImages
+  projectLogos: ProjectLogoImages,
 ): string {
   return (
     "images/" + projectLogos[githubUrl] ||
