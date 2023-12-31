@@ -11,8 +11,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        "open-sans": ["Open Sans"],
-        "fira-code": ["Fira Code"],
+        sans: ["var(--font-sans)"],
+        mono: ["var(--font-mono)"],
         emoji: ["Noto Color Emoji"],
       },
     },
