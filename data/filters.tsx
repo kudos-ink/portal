@@ -1,4 +1,4 @@
-export const search = [
+export const SEARCH_OPTIONS = [
   { value: "senior", emoji: "👵", label: "Senior" },
   { value: "engineer", emoji: "🤓", label: "Engineer" },
   { value: "dev", emoji: "🤓", label: "Developer" },
@@ -51,7 +51,7 @@ export const search = [
   { value: "php", emoji: "🐘", label: "PHP" },
 ];
 
-export const languages = [
+export const LANGUAGES_OPTIONS = [
   { value: "Assembly", label: "Assembly", emoji: "🔧" }, // Assembly
   //   { value: "Astro", label: "Astro", emoji: "" },
   //   { value: "Batchfile", label: "Batchfile", emoji: "" },
