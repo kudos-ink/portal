@@ -1,4 +1,4 @@
-import { ValidNotionResponse, ProjectLogoImages } from "@/types";
+import { ValidNotionResponse, ProjectLogoImages } from "@/lib/notion/types";
 
 export function subtractMonths(date: Date, numberOfMonths: number): Date {
   const result = new Date(date.getTime());

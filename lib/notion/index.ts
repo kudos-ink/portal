@@ -5,15 +5,14 @@ import {
   QueryDatabaseParameters,
 } from "@notionhq/client/build/src/api-endpoints";
 import "dotenv/config";
-import { subtractMonths } from "../utils/helpers";
+import { subtractMonths } from "../../utils/helpers";
 import {
-  KudosQueryParameters,
-  databaseId,
-  defaultFilterProperties,
-  defaultSort,
-  ValidRepositoryLink,
-  repoLinkToPageIdMap,
-} from "@/types";
+  DATABASE_ID,
+  DEFAULT_FILTER_PROPERTIES,
+  DEFAULT_SORT,
+  REPO_LINK_TO_PAGE_ID_MAP,
+} from "./constants";
+import { KudosQueryParameters, ValidRepositoryLink } from "./types";
 
 const notion = new Client({
   auth: process.env.NOTION_API_KEY,
@@ -36,9 +35,9 @@ export async function queryDatabase(
   queryOverrides: Partial<KudosQueryParameters> = {},
 ): Promise<QueryDatabaseResponse> {
   const defaultQuery: KudosQueryParameters = {
-    database_id: databaseId,
-    filter_properties: defaultFilterProperties,
-    sorts: defaultSort,
+    database_id: DATABASE_ID,
+    filter_properties: DEFAULT_FILTER_PROPERTIES,
+    sorts: DEFAULT_SORT,
     page_size: 100,
     start_cursor: undefined,
     filter: undefined,
@@ -51,10 +50,10 @@ export async function queryDatabase(
 }
 
 export async function getGoodFirstIssues({
-  database_id = databaseId,
+  database_id = DATABASE_ID,
   page_size = 100,
-  filter_properties = defaultFilterProperties,
-  sorts = defaultSort,
+  filter_properties = DEFAULT_FILTER_PROPERTIES,
+  sorts = DEFAULT_SORT,
   start_cursor,
 }: KudosQueryParameters = {}): Promise<QueryDatabaseResponse> {
   return await queryDatabase({
@@ -89,10 +88,10 @@ export async function getGoodFirstIssues({
 }
 
 export async function getBugIssues({
-  database_id = databaseId,
+  database_id = DATABASE_ID,
   page_size = 100,
-  filter_properties = defaultFilterProperties,
-  sorts = defaultSort,
+  filter_properties = DEFAULT_FILTER_PROPERTIES,
+  sorts = DEFAULT_SORT,
   start_cursor,
 }: KudosQueryParameters = {}): Promise<QueryDatabaseResponse> {
   return await queryDatabase({
@@ -110,10 +109,10 @@ export async function getBugIssues({
   });
 }
 export async function getUnassignedIssues({
-  database_id = databaseId,
+  database_id = DATABASE_ID,
   page_size = 100,
-  filter_properties = defaultFilterProperties,
-  sorts = defaultSort,
+  filter_properties = DEFAULT_FILTER_PROPERTIES,
+  sorts = DEFAULT_SORT,
   start_cursor,
 }: KudosQueryParameters = {}): Promise<QueryDatabaseResponse> {
   return await queryDatabase({
@@ -132,10 +131,10 @@ export async function getUnassignedIssues({
 }
 
 export async function getIssuesOpenedWithin3Months({
-  database_id = databaseId,
+  database_id = DATABASE_ID,
   page_size = 100,
-  filter_properties = defaultFilterProperties,
-  sorts = defaultSort,
+  filter_properties = DEFAULT_FILTER_PROPERTIES,
+  sorts = DEFAULT_SORT,
   start_cursor,
 }: KudosQueryParameters = {}): Promise<QueryDatabaseResponse> {
   return await queryDatabase({
@@ -154,10 +153,10 @@ export async function getIssuesOpenedWithin3Months({
 }
 
 export async function getIssuesOpenedWithin1Month({
-  database_id = databaseId,
+  database_id = DATABASE_ID,
   page_size = 100,
-  filter_properties = defaultFilterProperties,
-  sorts = defaultSort,
+  filter_properties = DEFAULT_FILTER_PROPERTIES,
+  sorts = DEFAULT_SORT,
   start_cursor,
 }: KudosQueryParameters = {}): Promise<QueryDatabaseResponse> {
   return await queryDatabase({
@@ -180,10 +179,10 @@ export async function getIssuesOpenedWithin1Month({
 export async function getIssuesByProject(
   projectName: string,
   {
-    database_id = databaseId,
+    database_id = DATABASE_ID,
     page_size = 100,
-    filter_properties = defaultFilterProperties,
-    sorts = defaultSort,
+    filter_properties = DEFAULT_FILTER_PROPERTIES,
+    sorts = DEFAULT_SORT,
     start_cursor,
   }: KudosQueryParameters = {},
 ): Promise<QueryDatabaseResponse> {
@@ -209,10 +208,10 @@ export async function getIssuesByProject(
 export async function getIssuesByRepo(
   repoLink: ValidRepositoryLink,
   {
-    database_id = databaseId,
+    database_id = DATABASE_ID,
     page_size = 100,
-    filter_properties = defaultFilterProperties,
-    sorts = defaultSort,
+    filter_properties = DEFAULT_FILTER_PROPERTIES,
+    sorts = DEFAULT_SORT,
     start_cursor,
   }: KudosQueryParameters = {},
 ): Promise<QueryDatabaseResponse> {
@@ -220,7 +219,7 @@ export async function getIssuesByRepo(
     filter: {
       property: "Github Repo",
       relation: {
-        contains: repoLinkToPageIdMap[repoLink],
+        contains: REPO_LINK_TO_PAGE_ID_MAP[repoLink],
       },
     },
     page_size,

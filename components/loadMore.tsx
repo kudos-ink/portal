@@ -7,8 +7,8 @@ import { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints"
 import projectLogosJson from "@/public/images/imageMap.json";
 import { useInView } from "react-intersection-observer";
 import Row from "./row";
-import { getGoodFirstIssues } from "@/actions/notion";
-import { LoadMoreState } from "@/types";
+import { getGoodFirstIssues } from "@/lib/notion";
+import { LoadMoreState } from "@/lib/notion/types";
 
 export function LoadMore({ cursor }: { cursor: string }) {
   const { ref, inView } = useInView();

@@ -1,10 +1,10 @@
 import Row from "@/components/row";
-import { getGoodFirstIssues, baseQueryDatabase } from "@/actions/notion";
+import { getGoodFirstIssues, baseQueryDatabase } from "@/lib/notion";
 import {
   QueryDatabaseResponse,
   PageObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
-import { ValidNotionResponse, Properties } from "@/types";
+import { ValidNotionResponse, Properties } from "@/lib/notion/types";
 import { daysSince, isValidNotionPage, getImagePath } from "@/utils/helpers";
 import projectLogosJson from "@/public/images/imageMap.json";
 import { LoadMore } from "@/components/loadMore";
