@@ -2,7 +2,7 @@
 import React, { FC } from "react";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/autocomplete";
 import { FilterItem } from "@/types/filters";
-import Emoji from "../components/utils/emoji";
+import Emoji from "./emoji";
 
 interface SearchProps {
   placeholder: string;

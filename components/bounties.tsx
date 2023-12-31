@@ -8,8 +8,8 @@ import {
   DropdownItem,
 } from "@nextui-org/dropdown";
 import { Slider } from "@nextui-org/slider";
-import { ChevronOpenIcon } from "./utils/icons/chevronOpenIcon";
-import Emoji from "./utils/emoji";
+import { ChevronOpenIcon } from "@/assets/icons/chevronOpenIcon";
+import Emoji from "./emoji";
 
 interface BountiesProps {
   currency: string;

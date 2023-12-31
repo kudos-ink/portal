@@ -2,7 +2,7 @@
 import React, { FC } from "react";
 import { Select, SelectItem } from "@nextui-org/select";
 import { FilterItem } from "@/types/filters";
-import Emoji from "./utils/emoji";
+import Emoji from "./emoji";
 
 interface FilterProps {
   placeholder: string;
