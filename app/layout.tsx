@@ -1,18 +1,18 @@
 import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
-import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { Providers } from "./providers";
 import { Navbar } from "@/components/navbar";
 import { Link } from "@nextui-org/link";
+import { SITE_CONFIG } from "@/data/config";
 import clsx from "clsx";
 
 export const metadata: Metadata = {
   title: {
-    default: siteConfig.name,
-    template: `%s - ${siteConfig.name}`,
+    default: SITE_CONFIG.name,
+    template: `%s - ${SITE_CONFIG.name}`,
   },
-  description: siteConfig.description,
+  description: SITE_CONFIG.description,
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon-16x16.png",
