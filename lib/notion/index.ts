@@ -5,7 +5,7 @@ import {
   QueryDatabaseParameters,
 } from "@notionhq/client/build/src/api-endpoints";
 import "dotenv/config";
-import { subtractMonths } from "../../utils/helpers";
+import { subtractMonths } from "../../utils/date";
 import {
   DATABASE_ID,
   DEFAULT_FILTER_PROPERTIES,

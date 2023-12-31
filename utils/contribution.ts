@@ -1,6 +1,6 @@
 import projectLogosJson from "@/public/images/imageMap.json";
 import { Contribution } from "@/types/contribution";
-import { getImagePath } from "./helpers";
+import { getImagePath } from "./github";
 
 export function transformNotionDataToContributions(
   notionData: any,

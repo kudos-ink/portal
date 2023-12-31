@@ -1,7 +1,7 @@
 import { Chip } from "@nextui-org/chip";
 import { Link } from "@nextui-org/link";
 import MyImage from "@/components/ui/image";
-import { daysSince } from "@/utils/helpers";
+import { daysSince } from "@/utils/date";
 import { useState, useRef, useEffect } from "react";
 
 interface IProjectProps {

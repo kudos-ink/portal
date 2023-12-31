@@ -1,6 +1,5 @@
 "use client";
 
-import { isValidNotionPage, daysSince, getImagePath } from "@/utils/helpers";
 import { Spinner } from "@nextui-org/spinner";
 import { useEffect, useState } from "react";
 import { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
@@ -9,6 +8,9 @@ import { useInView } from "react-intersection-observer";
 import Row from "./row";
 import { getGoodFirstIssues } from "@/lib/notion";
 import { LoadMoreState } from "@/lib/notion/types";
+import { isValidNotionPage } from "@/lib/notion/utils";
+import { daysSince } from "@/utils/date";
+import { getImagePath } from "@/utils/github";
 
 export function LoadMore({ cursor }: { cursor: string }) {
   const { ref, inView } = useInView();
