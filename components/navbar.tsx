@@ -11,10 +11,7 @@ import { Link } from "@nextui-org/link";
 import { Input } from "@nextui-org/input";
 import { SITE_CONFIG } from "@/data/config";
 import NextLink from "next/link";
-
-import { GithubIcon, HeartFilledIcon, SearchIcon } from "@/components/icons";
-
-import { Logo } from "@/components/icons";
+import { GithubIcon, HeartFilledIcon, Logo, SearchIcon } from "@/assets/icons";
 
 export const Navbar = () => {
   const searchInput = (
