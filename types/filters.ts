@@ -1,7 +1,5 @@
-interface Item {
+export type FilterItem = {
   label: string;
   emoji: string;
   value: string;
-}
-
-export type { Item };
+};

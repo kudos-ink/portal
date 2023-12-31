@@ -1,13 +1,13 @@
 "use client";
 import React, { FC } from "react";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/autocomplete";
+import { FilterItem } from "@/types/filters";
 import Emoji from "../components/utils/emoji";
-import { Item } from "../components/utils/types/item";
 
 interface SearchProps {
   placeholder: string;
   emoji: string;
-  items: Item[];
+  items: FilterItem[];
 }
 
 const Search: FC<SearchProps> = ({
@@ -26,7 +26,7 @@ const Search: FC<SearchProps> = ({
       size="lg"
       allowsCustomValue={true}
     >
-      {(item: Item) => (
+      {(item: FilterItem) => (
         <AutocompleteItem key={item.value} textValue={item.label}>
           <Emoji emoji={item.emoji} className="text-xl"></Emoji>
           &nbsp;
