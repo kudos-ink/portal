@@ -1,13 +1,15 @@
 import Row from "@/components/row";
-import { getGoodFirstIssues, baseQueryDatabase } from "@/actions/notion";
+import { getGoodFirstIssues, baseQueryDatabase } from "@/lib/notion";
 import {
   QueryDatabaseResponse,
   PageObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
-import { ValidNotionResponse, Properties } from "@/types";
-import { daysSince, isValidNotionPage, getImagePath } from "@/utils/helpers";
+import { ValidNotionResponse, Properties } from "@/lib/notion/types";
 import projectLogosJson from "@/public/images/imageMap.json";
 import { LoadMore } from "@/components/loadMore";
+import { isValidNotionPage } from "@/lib/notion/utils";
+import { getImagePath } from "@/utils/github";
+import { daysSince } from "@/utils/date";
 
 export default async function Page() {
   const data = await getGoodFirstIssues({ page_size: 10 });

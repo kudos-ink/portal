@@ -1,13 +1,13 @@
 "use client";
 import React, { FC } from "react";
 import { Select, SelectItem } from "@nextui-org/select";
-import { Item } from "@/components/utils/types/item";
-import Emoji from "./utils/emoji";
+import { FilterItem } from "@/types/filters";
+import Emoji from "./emoji";
 
 interface FilterProps {
   placeholder: string;
   emoji: string;
-  items: Item[];
+  items: FilterItem[];
 }
 export const Filter: FC<FilterProps> = ({ placeholder, items, emoji }) => {
   return (

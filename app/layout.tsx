@@ -1,18 +1,30 @@
 import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
-import { siteConfig } from "@/config/site";
-import { fontSans } from "@/config/fonts";
+import { Fira_Code, Inter } from "next/font/google";
 import { Providers } from "./providers";
 import { Navbar } from "@/components/navbar";
 import { Link } from "@nextui-org/link";
+import { SITE_CONFIG } from "@/data/config";
 import clsx from "clsx";
+
+export const fontSans = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-sans",
+});
+
+export const fontMono = Fira_Code({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-mono",
+});
 
 export const metadata: Metadata = {
   title: {
-    default: siteConfig.name,
-    template: `%s - ${siteConfig.name}`,
+    default: SITE_CONFIG.name,
+    template: `%s - ${SITE_CONFIG.name}`,
   },
-  description: siteConfig.description,
+  description: SITE_CONFIG.description,
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon-16x16.png",
@@ -33,14 +45,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      className={clsx(fontMono.variable, fontSans.variable)}
+      suppressHydrationWarning
+    >
       <head />
-      <body
-        className={clsx(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable,
-        )}
-      >
+      <body className="min-h-screen bg-background font-sans antialiased">
         <Providers themeProps={{ attribute: "class", defaultTheme: "kudos" }}>
           <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-default from-0% to-background to-80% relative flex flex-col h-screen">
             <Navbar />

@@ -1,4 +1,4 @@
-import { getGoodFirstIssues } from "@/actions/notion";
+import { getGoodFirstIssues } from "@/lib/notion";
 import ContributionsTable from "@/components/contributions-table/table";
 import { transformNotionDataToContributions } from "@/utils/contribution";
 
