@@ -1,15 +1,18 @@
 import projectLogosJson from "@/public/images/imageMap.json";
 import { Contribution } from "@/types/contribution";
 import { getImagePath } from "./github";
+import { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
 
 export function transformNotionDataToContributions(
-  notionData: any,
+  notionData: QueryDatabaseResponse,
 ): Contribution[] {
-  return notionData.results.map(({ properties }: any) => {
+  return notionData.results.reduce((acc: Contribution[], currentItem: any) => {
+    const properties = currentItem.properties;
+
     const [avatarKey, id] = properties["Issue Link"].url.split("/issues/");
     const contribution: Contribution = {
       id,
-      avatar: getImagePath(avatarKey, projectLogosJson),
+      avatar: getImagePath(avatarKey, projectLogosJson), // Assuming getImagePath is a defined function
       labels: properties["Issue Labels"].multi_select.map(
         (label: any) => label.name,
       ),
@@ -23,6 +26,8 @@ export function transformNotionDataToContributions(
       timestamp: properties["Opened Date"].date.start,
       url: properties["Issue Link"].url,
     };
-    return contribution;
-  });
+
+    acc.push(contribution);
+    return acc;
+  }, []);
 }
