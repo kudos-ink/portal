@@ -29,6 +29,7 @@
     "@nextui-org/system": "2.0.15",
     "@nextui-org/table": "^2.0.28",
     "@nextui-org/theme": "2.1.17",
+    "@nextui-org/use-infinite-scroll": "^2.1.2",
     "@notionhq/client": "^2.2.14",
     "@react-aria/ssr": "^3.9.1",
     "@react-aria/visually-hidden": "^3.8.8",

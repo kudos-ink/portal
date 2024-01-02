@@ -9,13 +9,25 @@ import {
   TableCell,
 } from "@nextui-org/table";
 import { Spinner } from "@nextui-org/spinner";
-import { Contribution } from "@/types/contribution";
+import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
+import { Contribution, PaginatedContributions } from "@/types/contribution";
 import { Actions, Content, Labels, OpenedDate, Project } from "./row";
+import { useContributions } from "@/hooks/useContributions";
 
 interface ITableProps {
-  items: Contribution[];
+  items: PaginatedContributions;
 }
 export const Table = ({ items }: ITableProps) => {
+  const { data: results, fetchNextPage, hasNextPage } = useContributions(items);
+  const [loaderRef, scrollerRef] = useInfiniteScroll({
+    hasMore: hasNextPage,
+    onLoadMore: fetchNextPage,
+  });
+
+  const contributions = React.useMemo(() => {
+    return results?.pages.flatMap((page) => page.data) || [];
+  }, [results]);
+
   const renderCell = React.useCallback(
     (item: Contribution, columnKey: React.Key) => {
       const cellValue = item[columnKey as keyof Contribution];
@@ -52,10 +64,13 @@ export const Table = ({ items }: ITableProps) => {
       <NuiTable
         hideHeader
         aria-label="Example table with infinite pagination"
+        baseRef={scrollerRef}
         bottomContent={
-          <div className="flex w-full justify-center">
-            <Spinner color="white" />
-          </div>
+          hasNextPage ? (
+            <div className="flex w-full justify-center">
+              <Spinner ref={loaderRef} color="white" />
+            </div>
+          ) : null
         }
         classNames={{
           base: "max-h-[520px]",
@@ -74,7 +89,10 @@ export const Table = ({ items }: ITableProps) => {
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody items={items} loadingContent={<Spinner color="white" />}>
+        <TableBody
+          items={contributions}
+          loadingContent={<Spinner color="white" />}
+        >
           {(item) => (
             <TableRow key={item.id}>
               {(columnKey) => (
