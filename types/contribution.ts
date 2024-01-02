@@ -1,3 +1,5 @@
+import { PaginatedCustomDataResponse } from ".";
+
 export type Contribution = {
   id: number;
   avatar: string;
@@ -9,3 +11,5 @@ export type Contribution = {
   timestamp: string;
   url: string;
 };
+
+export type PaginatedContributions = PaginatedCustomDataResponse<Contribution>;

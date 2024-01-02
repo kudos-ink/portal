@@ -9,13 +9,31 @@ import {
   TableCell,
 } from "@nextui-org/table";
 import { Spinner } from "@nextui-org/spinner";
-import { Contribution } from "@/types/contribution";
+import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
+import { Contribution, PaginatedContributions } from "@/types/contribution";
 import { Actions, Content, Labels, OpenedDate, Project } from "./row";
+import { useContributions } from "@/hooks/useContributions";
+import { KudosQueryParameters } from "@/lib/notion/types";
 
 interface ITableProps {
-  items: Contribution[];
+  items: PaginatedContributions;
+  queries?: Partial<KudosQueryParameters>;
 }
-export const Table = ({ items }: ITableProps) => {
+export const Table = ({ items, queries = {} }: ITableProps) => {
+  const {
+    data: results,
+    fetchNextPage,
+    hasNextPage,
+  } = useContributions(items, queries);
+  const [loaderRef, scrollerRef] = useInfiniteScroll({
+    hasMore: hasNextPage,
+    onLoadMore: fetchNextPage,
+  });
+
+  const contributions = React.useMemo(() => {
+    return results?.pages.flatMap((page) => page.data) || [];
+  }, [results]);
+
   const renderCell = React.useCallback(
     (item: Contribution, columnKey: React.Key) => {
       const cellValue = item[columnKey as keyof Contribution];
@@ -52,15 +70,17 @@ export const Table = ({ items }: ITableProps) => {
       <NuiTable
         hideHeader
         aria-label="Example table with infinite pagination"
+        baseRef={scrollerRef}
         bottomContent={
-          <div className="flex w-full justify-center">
-            <Spinner color="white" />
-          </div>
+          hasNextPage ? (
+            <div className="flex w-full justify-center">
+              <Spinner ref={loaderRef} color="white" />
+            </div>
+          ) : null
         }
         classNames={{
-          base: "max-h-[520px]",
-          table: "min-h-[400px]",
-          wrapper: "p-0 rounded-none border-small border-t-0",
+          table: "w-full max-w-7xl border-separate border-spacing-0",
+          wrapper: "overflow-visible p-0 rounded-none border-small border-t-0",
           tr: "bg-gradient-to-r from-background to-background-200 to-80% border-y-small",
         }}
       >
@@ -74,7 +94,10 @@ export const Table = ({ items }: ITableProps) => {
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody items={items} loadingContent={<Spinner color="white" />}>
+        <TableBody
+          items={contributions}
+          loadingContent={<Spinner color="white" />}
+        >
           {(item) => (
             <TableRow key={item.id}>
               {(columnKey) => (
