@@ -13,12 +13,18 @@ import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
 import { Contribution, PaginatedContributions } from "@/types/contribution";
 import { Actions, Content, Labels, OpenedDate, Project } from "./row";
 import { useContributions } from "@/hooks/useContributions";
+import { KudosQueryParameters } from "@/lib/notion/types";
 
 interface ITableProps {
   items: PaginatedContributions;
+  queries?: Partial<KudosQueryParameters>;
 }
-export const Table = ({ items }: ITableProps) => {
-  const { data: results, fetchNextPage, hasNextPage } = useContributions(items);
+export const Table = ({ items, queries = {} }: ITableProps) => {
+  const {
+    data: results,
+    fetchNextPage,
+    hasNextPage,
+  } = useContributions(items, queries);
   const [loaderRef, scrollerRef] = useInfiniteScroll({
     hasMore: hasNextPage,
     onLoadMore: fetchNextPage,
