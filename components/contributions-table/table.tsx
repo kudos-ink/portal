@@ -79,9 +79,8 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
           ) : null
         }
         classNames={{
-          base: "max-h-[520px]",
-          table: "min-h-[400px]",
-          wrapper: "p-0 rounded-none border-small border-t-0",
+          table: "w-full max-w-7xl border-separate border-spacing-0",
+          wrapper: "overflow-visible p-0 rounded-none border-small border-t-0",
           tr: "bg-gradient-to-r from-background to-background-200 to-80% border-y-small",
         }}
       >
