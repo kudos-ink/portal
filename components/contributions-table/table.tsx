@@ -80,7 +80,8 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
         }
         classNames={{
           table: "w-full max-w-7xl border-spacing-0",
-          wrapper: "overflow-visible p-0 rounded-none border-small border-t-0",
+          wrapper:
+            "bg-background overflow-visible p-0 rounded-none border-small border-y-0",
           tr: "relative bg-gradient-to-r from-background to-background-200 to-80% border-y-small border-y-overlay before:content-[''] before:absolute before:bg-hover-overlay before:opacity-0 before:w-full before:h-full before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100",
         }}
       >
