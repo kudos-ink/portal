@@ -5,6 +5,7 @@ import Search from "@/components/search";
 import { SEARCH_OPTIONS, LANGUAGES_OPTIONS } from "@/data/filters";
 import { queryDatabase } from "@/lib/notion";
 import { transformNotionDataToContributions } from "@/utils/contribution";
+import RemoveFilters from "@/components/removeFilters";
 
 export default async function Home({
   searchParams,
@@ -12,7 +13,8 @@ export default async function Home({
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const params = searchParams as { [key: string]: string };
-  const filter =
+  const languagesFilterIsSelected = params && params.languages;
+  let filter =
     params && params.languages
       ? {
           property: "Repo Language",
@@ -55,20 +57,17 @@ export default async function Home({
             placeholder="Languages"
             emoji={"💪"}
             items={LANGUAGES_OPTIONS}
+            selectedValue={params.languages}
           />
           <Filter
             placeholder="Interests"
             emoji={"🪄"}
             items={LANGUAGES_OPTIONS}
+            selectedValue={""}
           />
-          {/* <div>
-            <Bounties
-              currency="USD"
-              defaultValue={100}
-              maxValue={10000}
-              emoji="💰"
-            />
-          </div> */}
+          {languagesFilterIsSelected && (
+            <RemoveFilters value={params.languages} param="Languages" />
+          )}
         </div>
         <div className="flex justify-end">
           <div>
@@ -76,7 +75,13 @@ export default async function Home({
           </div>
         </div>
         <div>
-          <ContributionsTable items={items} />
+          <ContributionsTable
+            items={items}
+            queries={{
+              page_size: 10,
+              filter,
+            }}
+          />
         </div>
       </div>
     </div>
