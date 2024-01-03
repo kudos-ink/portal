@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { Select, SelectItem } from "@nextui-org/select";
@@ -11,8 +11,25 @@ interface IFilterProps {
   placeholder: string;
   emoji: string;
   items: FilterItem[];
+  selectedValue: string;
 }
-export const Filter = ({ placeholder, items, emoji }: IFilterProps) => {
+export const Filter = ({
+  placeholder,
+  items,
+  emoji,
+  selectedValue,
+}: IFilterProps) => {
+  const [value, setValue] = React.useState(selectedValue);
+
+  useEffect(() => {
+    setValue(selectedValue);
+  }, [selectedValue]);
+
+  const handleSelectionChange = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setValue(e.target.value);
+  };
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -21,8 +38,11 @@ export const Filter = ({ placeholder, items, emoji }: IFilterProps) => {
     <Select
       color="default"
       variant="faded"
-      placeholder={placeholder}
-      startContent={<Emoji emoji={emoji} className="text-sm" />}
+      labelPlacement={"inside"}
+      label={placeholder}
+      onChange={handleSelectionChange}
+      selectedKeys={[value]}
+      startContent={value ? <Emoji emoji={emoji} className="text-sm" /> : <></>}
       size={"sm"}
     >
       {items.map((item) => {
