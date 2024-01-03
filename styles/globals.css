@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --light-overlay: hsl(var(--nextui-foreground) / 0.1);
+}

@@ -64,7 +64,7 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
 
   return (
     <>
-      <div className="py-4 px-3 bg-default-100 border-small border-b-0 rounded-t-md">
+      <div className="py-4 px-3 bg-default-100 border-small rounded-t-md">
         <span className="text-lg font-bold">Good First Contributions</span>
       </div>
       <NuiTable
@@ -79,9 +79,9 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
           ) : null
         }
         classNames={{
-          table: "w-full max-w-7xl border-separate border-spacing-0",
+          table: "w-full max-w-7xl border-spacing-0",
           wrapper: "overflow-visible p-0 rounded-none border-small border-t-0",
-          tr: "bg-gradient-to-r from-background to-background-200 to-80% border-y-small",
+          tr: "relative bg-gradient-to-r from-background to-background-200 to-80% border-y-small border-y-overlay before:content-[''] before:absolute before:bg-hover-overlay before:opacity-0 before:w-full before:h-full before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100",
         }}
       >
         <TableHeader columns={COLUMNS}>

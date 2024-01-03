@@ -4,6 +4,8 @@ import MyImage from "@/components/ui/image";
 import { daysSince } from "@/utils/date";
 import { useState, useRef, useEffect } from "react";
 
+const MAX_LABEL_WIDTH = 192;
+
 interface IProjectProps {
   avatarSrc: string;
   name: string;
@@ -13,9 +15,9 @@ export const Project = ({ avatarSrc, name, repository }: IProjectProps) => {
   return (
     <div className="flex gap-4">
       <Project.Avatar alt={`${name} logo`} src={avatarSrc} />
-      <div className="flex flex-col">
-        <p className="text-md">{name}</p>
-        <p className="text-small text-default-500">{repository}</p>
+      <div className="flex flex-col w-36">
+        <h2 className="font-semibold truncate">{name}</h2>
+        <p className="text-small text-default-500 truncate">{repository}</p>
       </div>
     </div>
   );
@@ -28,8 +30,15 @@ interface IAvatarProps {
 
 const Avatar = ({ alt, src }: IAvatarProps) => {
   return (
-    <div className="bg-foreground rounded-md">
-      <MyImage src={src} alt={alt} radius="sm" height={40} width={40} />
+    <div className="bg-foreground rounded-md min-w-[45px] shrink-0">
+      <MyImage
+        className="border"
+        src={src}
+        alt={alt}
+        radius="sm"
+        height={45}
+        width={45}
+      />
     </div>
   );
 };
@@ -42,9 +51,9 @@ interface IContentProps {
 }
 export const Content = ({ title, language }: IContentProps) => {
   return (
-    <div className="space-y-2">
-      <p className="max-w-64 truncate">{title}</p>
-      <Chip className="mx-1" variant="bordered">
+    <div>
+      <h3 className="font-semibold max-w-96 truncate">{title}</h3>
+      <Chip className="mt-[1px]" variant="bordered" size="sm">
         {language}
       </Chip>
     </div>
@@ -55,7 +64,7 @@ interface ILabelsProps {
   labels: string[];
 }
 export const Labels = ({ labels }: ILabelsProps) => {
-  const [visibleLabelCount, setVisibleLabelCount] = useState(labels.length);
+  const [visibleLabelCount, setVisibleLabelCount] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
   const indicatorRef = useRef<HTMLDivElement>(null);
 
@@ -65,7 +74,6 @@ export const Labels = ({ labels }: ILabelsProps) => {
       const indicator = indicatorRef.current;
 
       if (container) {
-        const maxWidth = 300; // Maximum width of the container
         let totalWidth = 0;
         let labelCount = 0;
 
@@ -73,7 +81,7 @@ export const Labels = ({ labels }: ILabelsProps) => {
           if (index < labels.length) {
             // Ignore the indicator itself
             const childWidth = (child as HTMLElement).offsetWidth;
-            if (totalWidth + childWidth <= maxWidth) {
+            if (totalWidth + childWidth <= MAX_LABEL_WIDTH) {
               labelCount++;
               totalWidth += childWidth;
             }
@@ -83,7 +91,7 @@ export const Labels = ({ labels }: ILabelsProps) => {
         if (indicator && labelCount < labels.length) {
           // Check if there's space for the indicator
           totalWidth += indicator.offsetWidth;
-          if (totalWidth > maxWidth && labelCount > 0) {
+          if (totalWidth > MAX_LABEL_WIDTH && labelCount > 0) {
             labelCount--; // Decrease label count to fit the indicator
           }
         }
@@ -101,7 +109,10 @@ export const Labels = ({ labels }: ILabelsProps) => {
   }, [labels]);
 
   return (
-    <div ref={containerRef} className="flex overflow-hidden">
+    <div
+      ref={containerRef}
+      className={`flex max-w-[${MAX_LABEL_WIDTH}px] overflow-hidden`}
+    >
       {labels.slice(0, visibleLabelCount).map((label, index) => (
         <Chip className="mx-1" key={index}>
           {label}
