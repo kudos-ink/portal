@@ -1,9 +1,42 @@
+import ContributionsTable from "@/components/contributions-table/table";
 import Filter from "@/components/filter";
 import { title, subtitle } from "@/components/primitives";
 import Search from "@/components/search";
 import { SEARCH_OPTIONS, LANGUAGES_OPTIONS } from "@/data/filters";
+import { queryDatabase } from "@/lib/notion";
+import { transformNotionDataToContributions } from "@/utils/contribution";
 
-export default function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
+  const params = searchParams as { [key: string]: string };
+  const filter =
+    params && params.languages
+      ? {
+          property: "Repo Language",
+          rollup: {
+            any: {
+              multi_select: {
+                contains: params.languages,
+              },
+            },
+          },
+        }
+      : undefined;
+
+  const data = await queryDatabase({
+    page_size: 10,
+    filter,
+  });
+  const contributions = transformNotionDataToContributions(data);
+  const items = {
+    data: contributions,
+    hasMore: data.has_more,
+    nextCursor: data.next_cursor ?? undefined,
+  };
+
   return (
     <div>
       <section className="flex flex-col items-center py-8 md:py-10">
@@ -41,6 +74,9 @@ export default function Home() {
           <div>
             <h2 className={subtitle({ class: "mt-4" })}>Sort</h2>
           </div>
+        </div>
+        <div>
+          <ContributionsTable items={items} />
         </div>
       </div>
     </div>

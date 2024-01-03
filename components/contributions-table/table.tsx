@@ -48,7 +48,7 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
             />
           );
         case "content":
-          return <Content title={item.title} language={item.language} />;
+          return <Content title={item.title} languages={item.languages} />;
         case "labels":
           return <Labels labels={item.labels} />;
         case "date":

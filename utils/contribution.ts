@@ -16,9 +16,9 @@ export function transformNotionDataToContributions(
       labels: properties["Issue Labels"].multi_select.map(
         (label: any) => label.name,
       ),
-      language: properties["Repo Language"].rollup.array[0].multi_select.map(
+      languages: properties["Repo Language"].rollup.array[0].multi_select.map(
         (language: any) => language.name,
-      )[0],
+      ),
       project:
         properties["Project Name"].rollup.array[0].rich_text[0].plain_text,
       repository: avatarKey.split("/").pop(),

@@ -38,15 +38,19 @@ Project.Avatar = Avatar;
 
 interface IContentProps {
   title: string;
-  language: string; //TODO: make it an enum type with available languages from filters
+  languages: string[]; //TODO: make it an enum type with available languages from filters
 }
-export const Content = ({ title, language }: IContentProps) => {
+export const Content = ({ title, languages }: IContentProps) => {
   return (
     <div className="space-y-2">
       <p className="max-w-64 truncate">{title}</p>
-      <Chip className="mx-1" variant="bordered">
-        {language}
-      </Chip>
+      <div className="flex gap-1">
+        {languages.map((language, idx) => (
+          <Chip key={idx} className="mx-1" variant="bordered">
+            {language}
+          </Chip>
+        ))}
+      </div>
     </div>
   );
 };
