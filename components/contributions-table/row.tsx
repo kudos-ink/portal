@@ -1,7 +1,7 @@
 import { Chip } from "@nextui-org/chip";
 import { Link } from "@nextui-org/link";
 import MyImage from "@/components/ui/image";
-import { daysSince } from "@/utils/date";
+import { formatDate } from "@/utils/date";
 import { useState, useRef, useEffect } from "react";
 
 const MAX_LABEL_WIDTH = 192;
@@ -131,9 +131,7 @@ interface IOpenedDateProps {
   timestamp: string;
 }
 export const OpenedDate = ({ timestamp }: IOpenedDateProps) => {
-  return (
-    <div className="">{daysSince(new Date(timestamp)).toString() + "d"}</div>
-  );
+  return <div className="">{formatDate(new Date(timestamp))}</div>;
 };
 
 interface IActionsProps {
