@@ -4,5 +4,7 @@ export const SITE_CONFIG = {
     "A portal for the Substrate, Polkadot and Kusama ecosystem contributors. Find collaborations, collect kudos.",
   links: {
     github: "https://github.com/kudos-ink",
+    bugReport:
+      "https://github.com/kudos-ink/portal/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml&title=",
   },
 };
