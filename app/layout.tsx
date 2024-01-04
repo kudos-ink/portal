@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     siteName: SITE_CONFIG.name,
     images: [
       {
-        url: "/api/og",
+        url: "/og",
         width: 1200,
         height: 630,
       },
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     creator: "@kudos_ink",
     images: [
       {
-        url: "/api/og",
+        url: "/og",
         width: 1200,
         height: 630,
       },
