@@ -11,7 +11,7 @@ import {
 import { Spinner } from "@nextui-org/spinner";
 import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
 import { Contribution, PaginatedContributions } from "@/types/contribution";
-import { Actions, Content, Labels, OpenedDate, Project } from "./row";
+import { ExternalLink, Content, Labels, Time, Project } from "./row";
 import { useContributions } from "@/hooks/useContributions";
 import { KudosQueryParameters } from "@/lib/notion/types";
 
@@ -52,9 +52,9 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
         case "labels":
           return <Labels labels={item.labels} />;
         case "date":
-          return <OpenedDate timestamp={item.timestamp} />;
+          return <Time timestamp={item.timestamp} />;
         case "actions":
-          return <Actions href={item.url} />;
+          return <ExternalLink href={item.url} />;
         default:
           return cellValue;
       }

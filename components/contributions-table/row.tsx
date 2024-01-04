@@ -127,16 +127,16 @@ export const Labels = ({ labels }: ILabelsProps) => {
   );
 };
 
-interface IOpenedDateProps {
+interface ITimeProps {
   timestamp: string;
 }
-export const OpenedDate = ({ timestamp }: IOpenedDateProps) => {
+export const Time = ({ timestamp }: ITimeProps) => {
   return <div className="">{formatDate(new Date(timestamp))}</div>;
 };
 
-interface IActionsProps {
+interface IExternalLinkProps {
   href: string;
 }
-export const Actions = ({ href }: IActionsProps) => {
+export const ExternalLink = ({ href }: IExternalLinkProps) => {
   return <Link isBlock showAnchorIcon href={href} color="foreground" />;
 };
