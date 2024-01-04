@@ -11,7 +11,12 @@ import { Link } from "@nextui-org/link";
 import { Input } from "@nextui-org/input";
 import { SITE_CONFIG } from "@/data/config";
 import NextLink from "next/link";
-import { GithubIcon, HeartFilledIcon, Logo, SearchIcon } from "@/assets/icons";
+import BugIcon, {
+  GithubIcon,
+  HeartFilledIcon,
+  Logo,
+  SearchIcon,
+} from "@/assets/icons";
 
 export const Navbar = () => {
   const searchInput = (
@@ -41,7 +46,7 @@ export const Navbar = () => {
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
             <Logo />
-            <p className="font-bold text-inherit">ACME</p>
+            <p className="font-bold text-inherit">Kudos</p>
           </NextLink>
         </NavbarBrand>
       </NavbarContent>
@@ -54,8 +59,15 @@ export const Navbar = () => {
           <Link isExternal href={SITE_CONFIG.links.github} aria-label="Github">
             <GithubIcon className="text-default-500" />
           </Link>
+          <Link
+            isExternal
+            href={SITE_CONFIG.links.github}
+            aria-label="Bug report"
+          >
+            <BugIcon className="text-danger" />
+          </Link>
         </NavbarItem>
-        <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
+        {/* <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem> */}
         <NavbarItem className="hidden md:flex">
           <Button
             isExternal
