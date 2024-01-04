@@ -43,13 +43,6 @@ export const metadata: Metadata = {
     title: SITE_CONFIG.name,
     description: SITE_CONFIG.description,
     siteName: SITE_CONFIG.name,
-    images: [
-      {
-        url: "/og",
-        width: 1200,
-        height: 630,
-      },
-    ],
   },
   twitter: {
     title: SITE_CONFIG.name,
@@ -57,13 +50,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@kudos_ink",
     creator: "@kudos_ink",
-    images: [
-      {
-        url: "/og",
-        width: 1200,
-        height: 630,
-      },
-    ],
   },
 };
 
