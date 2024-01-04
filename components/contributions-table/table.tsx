@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { useMediaQuery } from "react-responsive";
 import {
   Table as NuiTable,
   TableHeader,
@@ -14,6 +15,7 @@ import { Contribution, PaginatedContributions } from "@/types/contribution";
 import { ExternalLink, Content, Labels, Time, Project } from "./row";
 import { useContributions } from "@/hooks/useContributions";
 import { KudosQueryParameters } from "@/lib/notion/types";
+import { isNotNull } from "@/utils/type-guard";
 
 interface ITableProps {
   items: PaginatedContributions;
@@ -34,6 +36,16 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
     return results?.pages.flatMap((page) => page.data) || [];
   }, [results]);
 
+  const isMobile = useMediaQuery({ maxWidth: 639 }); // tailwind lg default: 640px
+  const isLaptop = useMediaQuery({ minWidth: 1024 }); // tailwind lg default: 1024px
+  const COLUMNS = [
+    { name: "PROJECT", uid: "project" },
+    { name: "CONTENT", uid: "content" },
+    isLaptop ? { name: "LABELS", uid: "labels" } : null,
+    { name: "DATE", uid: "date" },
+    isMobile ? null : { name: "ACTIONS", uid: "actions" },
+  ].filter(isNotNull);
+
   const renderCell = React.useCallback(
     (item: Contribution, columnKey: React.Key) => {
       const cellValue = item[columnKey as keyof Contribution];
@@ -48,11 +60,25 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
             />
           );
         case "content":
-          return <Content title={item.title} language={item.language} />;
+          return (
+            <Content
+              title={item.title}
+              project={item.project}
+              repository={item.repository}
+              language={item.language}
+            />
+          );
         case "labels":
           return <Labels labels={item.labels} />;
         case "date":
-          return <Time timestamp={item.timestamp} />;
+          return (
+            <div className="flex flex-col items-center gap-2">
+              <div className="block sm:hidden">
+                <ExternalLink href={item.url} />
+              </div>
+              <Time timestamp={item.timestamp} />
+            </div>
+          );
         case "actions":
           return <ExternalLink href={item.url} />;
         default:
@@ -83,6 +109,7 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
           wrapper:
             "bg-background overflow-visible p-0 rounded-none border-small border-y-0",
           tr: "relative bg-gradient-to-r from-background to-background-200 to-80% border-y-small border-y-overlay before:content-[''] before:absolute before:bg-hover-overlay before:opacity-0 before:w-full before:h-full before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100",
+          td: "px-2 sm:px-inherit",
         }}
       >
         <TableHeader columns={COLUMNS}>
@@ -113,11 +140,3 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
 };
 
 export default Table;
-
-const COLUMNS = [
-  { name: "PROJECT", uid: "project" },
-  { name: "CONTENT", uid: "content" },
-  { name: "LABELS", uid: "labels" },
-  { name: "DATE", uid: "date" },
-  { name: "ACTIONS", uid: "actions" },
-];

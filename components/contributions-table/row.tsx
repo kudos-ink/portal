@@ -13,9 +13,9 @@ interface IProjectProps {
 }
 export const Project = ({ avatarSrc, name, repository }: IProjectProps) => {
   return (
-    <div className="flex gap-4">
+    <div className="flex md:gap-4">
       <Project.Avatar alt={`${name} logo`} src={avatarSrc} />
-      <div className="flex flex-col w-36">
+      <div className="hidden md:flex flex-col w-36">
         <h2 className="font-semibold truncate">{name}</h2>
         <p className="text-small text-default-500 truncate">{repository}</p>
       </div>
@@ -47,12 +47,22 @@ Project.Avatar = Avatar;
 
 interface IContentProps {
   title: string;
+  project: string;
+  repository: string;
   language: string; //TODO: make it an enum type with available languages from filters
 }
-export const Content = ({ title, language }: IContentProps) => {
+export const Content = ({
+  title,
+  project,
+  repository,
+  language,
+}: IContentProps) => {
   return (
-    <div>
-      <h3 className="font-semibold max-w-96 truncate">{title}</h3>
+    <div className="flex flex-col space-y-unit-1 md:space-y-0">
+      <h3 className="font-semibold max-w-64 sm:truncate sm:max-w-80 lg:max-w-64 xl:max-w-96">
+        {title}
+      </h3>
+      <span className="text-small text-default-500 truncate md:hidden">{`${project} / ${repository}`}</span>
       <Chip className="mt-[1px]" variant="bordered" size="sm">
         {language}
       </Chip>
