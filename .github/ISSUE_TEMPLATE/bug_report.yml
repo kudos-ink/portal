@@ -1,6 +1,6 @@
 name: 'Bug report'
 title: "[BUG] - YOUR_ISSUE_TITLE_HERE_REPLACE_ME"
-description: Create a report to help us improve
+description: Create a report to help us improve the Kudos platform
 labels: [bug]
 body:
   - type: markdown
@@ -9,9 +9,9 @@ body:
         Thank you for reporting an issue :pray:.
 
         Before submitting a new bug/issue, please check the links below to see if there is an existing issue, solution or ongoing discussion:
-         - Kudos [Issue's tab](https://github.com/kudos-ink/portal/pulls?q=is%3Apr+is%3Aopen+sort%3Aupdated-desc)
-         - Kudoss [closed issues tab](https://github.com/kudos-ink/portal/issues?q=is%3Aissue+sort%3Aupdated-desc+is%3Aclosed)
-         - Kudos [Discussions tab](https://github.com/kudos-ink/portal/discussions)
+         - [Open issues tab](https://github.com/kudos-ink/portal/pulls?q=is%3Apr+is%3Aopen+sort%3Aupdated-desc)
+         - [Closed issues tab](https://github.com/kudos-ink/portal/issues?q=is%3Aissue+sort%3Aupdated-desc+is%3Aclosed)
+         - [Discussions tab](https://github.com/kudos-ink/portal/discussions)
 
   - type: textarea
     id: description

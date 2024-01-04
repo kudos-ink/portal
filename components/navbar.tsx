@@ -56,15 +56,17 @@ export const Navbar = () => {
         justify="end"
       >
         <NavbarItem className="hidden sm:flex gap-2">
-          <Link isExternal href={SITE_CONFIG.links.github} aria-label="Github">
-            <GithubIcon className="text-default-500" />
-          </Link>
           <Link
             isExternal
-            href={SITE_CONFIG.links.github}
+            href={SITE_CONFIG.links.bugReport}
             aria-label="Bug report"
           >
-            <BugIcon className="text-danger" />
+            <BugIcon className="text-default-500" />
+          </Link>
+        </NavbarItem>
+        <NavbarItem className="hidden sm:flex gap-2">
+          <Link isExternal href={SITE_CONFIG.links.github} aria-label="Github">
+            <GithubIcon className="text-default-500" />
           </Link>
         </NavbarItem>
         {/* <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem> */}
