@@ -2,8 +2,9 @@ import ContributionsTable from "@/components/contributions-table/table";
 import Filter from "@/components/filter";
 import { title, subtitle } from "@/components/primitives";
 import Search from "@/components/search";
-import { SEARCH_OPTIONS, LANGUAGES_OPTIONS } from "@/data/filters";
-import { queryDatabase } from "@/lib/notion";
+import { SEARCH_OPTIONS, LANGUAGES_OPTIONS, INTERESTS_OPTIONS, } from "@/data/filters";
+import { REPOSITORIES_BY_INTERESTS } from "@/data/interests";
+import { queryDatabase, getIssuesByProject } from "@/lib/notion";
 import { transformNotionDataToContributions } from "@/utils/contribution";
 import RemoveFilters from "@/components/removeFilters";
 
@@ -12,20 +13,22 @@ export default async function Home({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
+
   const params = searchParams as { [key: string]: string };
   const languagesFilterIsSelected = params && params.languages;
+  const interestsFilterIsSelected = params && params.interests;
   let filter =
     params && params.languages
       ? {
-          property: "Repo Language",
-          rollup: {
-            any: {
-              multi_select: {
-                contains: params.languages,
-              },
+        property: "Repo Language",
+        rollup: {
+          any: {
+            multi_select: {
+              contains: params.languages,
             },
           },
-        }
+        },
+      }
       : undefined;
 
   const data = await queryDatabase({
@@ -62,11 +65,14 @@ export default async function Home({
           <Filter
             placeholder="Interests"
             emoji={"🪄"}
-            items={LANGUAGES_OPTIONS}
-            selectedValue={""}
+            items={INTERESTS_OPTIONS}
+            selectedValue={params.interests}
           />
           {languagesFilterIsSelected && (
             <RemoveFilters value={params.languages} param="Languages" />
+          )}
+          {interestsFilterIsSelected && (
+            <RemoveFilters value={params.interests} param="Interests" />
           )}
         </div>
         <div className="flex justify-end">

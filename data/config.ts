@@ -6,3 +6,7 @@ export const SITE_CONFIG = {
     github: "https://github.com/kudos-ink",
   },
 };
+
+export const DATA = {
+  interests: "/data/interesets.json"
+}

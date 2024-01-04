@@ -107,3 +107,48 @@ export const LANGUAGES_OPTIONS = [
   //   { value: "Zig", label: "Zig", emoji: "" },
   //   { value: "jq", label: "jq", emoji: "" },
 ];
+export const POLKADOT = "polkadot";
+export const SUBSTRATE = "substrate";
+export const KUSAMA = "kusama";
+export const EVM = "evm";
+export const ETHEREUM = "ethereum";
+export const DEFI = "defi";
+export const SMART_CONTRACTS = "smart-contracts";
+export const CUMULUS = "cumulus";
+export const BITCOIN = "bitcoin";
+export const BRIDGE = "bridge";
+export const WASM = "wasm";
+export const MEV = "mev";
+export const ROLLUP = "rollup";
+export const DEX = "dex";
+export const DAO = "dao";
+export const SOCIAL = "social";
+export const ZERO_KNOWLEDGE = "zero-knowledge";
+export const IOT = "iot";
+export const XCM = "xcm";
+export const WALLET = "wallet";
+export const AI = "ai";
+
+export const INTERESTS_OPTIONS = [
+  { value: POLKADOT, label: "Polkadot", emoji: "🔗" },
+  { value: SUBSTRATE, label: "Substrate", emoji: "🌐" },
+  { value: KUSAMA, label: "Kusama", emoji: "🐤" },
+  { value: EVM, label: "EVM", emoji: "💻" },
+  { value: ETHEREUM, label: "Ethereum", emoji: "🌌" },
+  { value: DEFI, label: "DeFi", emoji: "💸" },
+  { value: SMART_CONTRACTS, label: "Smart Contracts", emoji: "📜" },
+  { value: CUMULUS, label: "Cumulus", emoji: "⛅" },
+  { value: BITCOIN, label: "Bitcoin", emoji: "₿" },
+  { value: BRIDGE, label: "Bridge", emoji: "🌉" },
+  { value: WASM, label: "Wasm", emoji: "🛠️" },
+  { value: MEV, label: "MEV", emoji: "💎" },
+  { value: ROLLUP, label: "Rollup", emoji: "🔄" },
+  { value: DEX, label: "DEX", emoji: "💹" },
+  { value: DAO, label: "DAO", emoji: "🗳️" },
+  { value: SOCIAL, label: "Social", emoji: "👥" },
+  { value: ZERO_KNOWLEDGE, label: "Zero Knowledge", emoji: "🔒" },
+  { value: IOT, label: "IoT", emoji: "🤖" }, // Changed to Earth + Robot
+  { value: XCM, label: "XCM", emoji: "🔄" },
+  { value: WALLET, label: "Wallet", emoji: "💼" },
+  { value: AI, label: "AI", emoji: "🧠" },
+];
