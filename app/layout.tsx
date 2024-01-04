@@ -30,6 +30,41 @@ export const metadata: Metadata = {
     shortcut: "/favicon-16x16.png",
     apple: "/apple-touch-icon.png",
   },
+  themeColor: "#020817",
+  appleWebApp: {
+    capable: true,
+    title: SITE_CONFIG.name,
+    statusBarStyle: "black-translucent",
+  },
+  formatDetection: { telephone: false },
+  openGraph: {
+    type: "website",
+    url: "/",
+    title: SITE_CONFIG.name,
+    description: SITE_CONFIG.description,
+    siteName: SITE_CONFIG.name,
+    images: [
+      {
+        url: "/api/og",
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
+  twitter: {
+    title: SITE_CONFIG.name,
+    description: SITE_CONFIG.description,
+    card: "summary_large_image",
+    site: "@kudos_ink",
+    creator: "@kudos_ink",
+    images: [
+      {
+        url: "/api/og",
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
 };
 
 export const viewport: Viewport = {
