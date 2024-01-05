@@ -1,3 +1,4 @@
+import NextLink from "next/link";
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -9,14 +10,13 @@ import { Button } from "@nextui-org/button";
 import { Kbd } from "@nextui-org/kbd";
 import { Link } from "@nextui-org/link";
 import { Input } from "@nextui-org/input";
-import { SITE_CONFIG } from "@/data/config";
-import NextLink from "next/link";
 import BugIcon, {
   GithubIcon,
   HeartFilledIcon,
-  Logo,
   SearchIcon,
 } from "@/assets/icons";
+import { MyImage } from "@/components/ui/image";
+import { SITE_CONFIG } from "@/data/config";
 
 export const Navbar = () => {
   const searchInput = (
@@ -45,8 +45,14 @@ export const Navbar = () => {
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
-            <Logo />
-            <p className="font-bold text-inherit">Kudos</p>
+            <MyImage
+              className="border rounded-small"
+              src="/logo.png"
+              alt="Kudos Logo"
+              radius="sm"
+              height={45}
+              width={45}
+            />
           </NextLink>
         </NavbarBrand>
       </NavbarContent>
