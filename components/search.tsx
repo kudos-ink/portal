@@ -18,9 +18,8 @@ const Search: FC<SearchProps> = ({
   placeholder,
   emoji,
   items,
-  selectedValue
+  selectedValue,
 }: SearchProps) => {
-
   const [value, setValue] = React.useState(selectedValue);
 
   const router = useRouter();
@@ -28,12 +27,14 @@ const Search: FC<SearchProps> = ({
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    setValue(selectedValue ? selectedValue : "");
+    setValue(selectedValue || "");
   }, [selectedValue]);
+  console.log(value);
 
   useEffect(() => {
+    console.log(value);
     if (value === undefined || value === "") {
-      return
+      return;
     }
     const optionNameLowerCase = placeholder.toLowerCase();
     const optionSearchParams = new URLSearchParams(searchParams.toString());
@@ -44,30 +45,26 @@ const Search: FC<SearchProps> = ({
     }
     const optionUrl = createUrl(pathname, optionSearchParams);
     router.replace(optionUrl, { scroll: false });
-
   }, [value]);
   return (
     <Autocomplete
       placeholder={placeholder}
       variant="faded"
-      color="default"
       defaultItems={items}
       startContent={<Emoji emoji={emoji} className="text-xl"></Emoji>}
       className="max-w-md"
       size="lg"
-      allowsCustomValue={true}
       selectedKey={value}
       onSelectionChange={setValue}
     >
       {(item: FilterItem) => {
-
-
-        return <AutocompleteItem key={item.value} textValue={item.label}
-        >
-          <Emoji emoji={item.emoji} className="text-xl"></Emoji>
-          &nbsp;
-          <span className="text-l">{item.label}</span>
-        </AutocompleteItem>
+        return (
+          <AutocompleteItem key={item.value}>
+            <Emoji emoji={item.emoji} className="text-xl"></Emoji>
+            &nbsp;
+            <span className="text-l">{item.label}</span>
+          </AutocompleteItem>
+        );
       }}
     </Autocomplete>
   );
