@@ -21,13 +21,17 @@ export const Filter = ({
 }: IFilterProps) => {
   const [value, setValue] = React.useState(selectedValue);
 
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   useEffect(() => {
     setValue(selectedValue);
   }, [selectedValue]);
 
 
   useEffect(() => {
-    if (!value) {
+    if (value === undefined) {
       return
     }
     const optionNameLowerCase = placeholder.toLowerCase();
@@ -42,9 +46,6 @@ export const Filter = ({
   }) => {
     setValue(e.target.value);
   };
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   return (
     <Select
