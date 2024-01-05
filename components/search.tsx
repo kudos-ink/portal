@@ -25,6 +25,12 @@ const Search: FC<SearchProps> = ({
       className="max-w-md"
       size="lg"
       allowsCustomValue={true}
+      clearButtonProps={{
+        id: "clear-button",
+      }}
+      selectorButtonProps={{
+        id: "selector-button",
+      }}
     >
       {(item: FilterItem) => (
         <AutocompleteItem key={item.value} textValue={item.label}>

@@ -146,7 +146,10 @@ export const Time = ({ timestamp }: ITimeProps) => {
 
 interface IExternalLinkProps {
   href: string;
+  title: string;
 }
-export const ExternalLink = ({ href }: IExternalLinkProps) => {
-  return <Link isBlock showAnchorIcon href={href} color="foreground" />;
+export const ExternalLink = ({ href, title }: IExternalLinkProps) => {
+  return (
+    <Link isBlock showAnchorIcon href={href} color="foreground" title={title} />
+  );
 };

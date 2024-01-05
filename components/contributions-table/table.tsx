@@ -74,13 +74,21 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
           return (
             <div className="flex flex-col items-center gap-2">
               <div className="block sm:hidden">
-                <ExternalLink href={item.url} />
+                <ExternalLink
+                  href={item.url}
+                  title={`Open "${item.title}" on Github`}
+                />
               </div>
               <Time timestamp={item.timestamp} />
             </div>
           );
         case "actions":
-          return <ExternalLink href={item.url} />;
+          return (
+            <ExternalLink
+              href={item.url}
+              title={`Open "${item.title}" on Github`}
+            />
+          );
         default:
           return cellValue;
       }
