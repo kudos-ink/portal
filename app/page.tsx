@@ -17,6 +17,7 @@ export default async function Home({
   const params = searchParams as { [key: string]: string };
   const languagesFilterIsSelected = params && params.languages;
   const interestsFilterIsSelected = params && params.interests;
+  const hasSearch = params && params.search;
   let filter =
     params && params.languages
       ? {
@@ -29,7 +30,16 @@ export default async function Home({
           },
         },
       }
-      : undefined;
+      : params && params.languages ? {
+        property: "Project Name",
+        rollup: {
+          any: {
+            rich_text: {
+              contains: params.search
+            },
+          },
+        }
+      } : undefined;
 
   const data = await queryDatabase({
     page_size: 10,
@@ -51,6 +61,11 @@ export default async function Home({
       <div className="flex flex-col items-center gap-4 py-8 md:py-10">
         <div className="inline-block max-w-lg text-center justify-center">
           <Search placeholder="Search" emoji="🔍" items={SEARCH_OPTIONS} />
+          {/* TODO: 
+          1. make it controlled
+          2. set the selected value in the params
+          3. use custom function
+          4. reset the other values  */}
           <h2 className={subtitle({ class: "mt-4" })}>Banner</h2>
         </div>
       </div>
@@ -74,6 +89,9 @@ export default async function Home({
           {interestsFilterIsSelected && (
             <RemoveFilters value={params.interests} param="Interests" />
           )}
+          {hasSearch && (
+            <RemoveFilters value={params.search} param="Search" />
+          )}
         </div>
         <div className="flex justify-end">
           <div>
@@ -90,6 +108,6 @@ export default async function Home({
           />
         </div>
       </div>
-    </div>
+    </div >
   );
 }
