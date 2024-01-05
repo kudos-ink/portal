@@ -6,7 +6,7 @@ import { Chip } from "@nextui-org/chip";
 import { createUrl } from "@/utils/url";
 
 interface IRemoveFilters {
-  param: string;
+  param?: string;
   value: string;
 }
 
@@ -15,15 +15,19 @@ export const RemoveFilters = ({ param, value }: IRemoveFilters) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const removeSearchParams = () => {
-    const optionNameLowerCase = param.toLowerCase();
-    const optionSearchParams = new URLSearchParams(searchParams.toString());
-    optionSearchParams.delete(optionNameLowerCase);
-    const optionUrl = createUrl(pathname, optionSearchParams);
-    router.replace(optionUrl);
+    if (!!param) {
+      const optionNameLowerCase = param.toLowerCase();
+      const optionSearchParams = new URLSearchParams(searchParams.toString());
+      optionSearchParams.delete(optionNameLowerCase);
+      const optionUrl = createUrl(pathname, optionSearchParams);
+      router.replace(optionUrl);
+    } else {
+      router.replace(pathname);
+    }
   };
   return (
     <div className="flex gap-4">
-      <Chip color="secondary" onClose={removeSearchParams}>
+      <Chip variant="solid" onClose={removeSearchParams}>
         {value}
       </Chip>
     </div>

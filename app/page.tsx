@@ -2,9 +2,12 @@ import ContributionsTable from "@/components/contributions-table/table";
 import Filter from "@/components/filter";
 import { title, subtitle } from "@/components/primitives";
 import Search from "@/components/search";
-import { SEARCH_OPTIONS, LANGUAGES_OPTIONS, INTERESTS_OPTIONS, } from "@/data/filters";
-import { REPOSITORIES_BY_INTERESTS } from "@/data/interests";
-import { queryDatabase, getIssuesByProject } from "@/lib/notion";
+import {
+  SEARCH_OPTIONS,
+  LANGUAGES_OPTIONS,
+  INTERESTS_OPTIONS,
+} from "@/data/filters";
+import { queryDatabase } from "@/lib/notion";
 import { transformNotionDataToContributions } from "@/utils/contribution";
 import RemoveFilters from "@/components/removeFilters";
 
@@ -13,33 +16,39 @@ export default async function Home({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-
   const params = searchParams as { [key: string]: string };
-  const languagesFilterIsSelected = params && params.languages;
-  const interestsFilterIsSelected = params && params.interests;
-  const hasSearch = params && params.search;
+  const languagesFilterIsSelected = !!params && !!params.languages;
+  const interestsFilterIsSelected = !!params && !!params.interests;
+  const hasSearch = !!params && !!params.search;
+  const showRemoveAllFilters =
+    [languagesFilterIsSelected, interestsFilterIsSelected, hasSearch].filter(
+      Boolean,
+    ).length >= 2;
+
   let filter =
     params && params.languages
       ? {
-        property: "Repo Language",
-        rollup: {
-          any: {
-            multi_select: {
-              contains: params.languages,
-            },
-          },
-        },
-      }
-      : params && params.languages ? {
-        property: "Project Name",
-        rollup: {
-          any: {
-            rich_text: {
-              contains: params.search
+          property: "Repo Language",
+          rollup: {
+            any: {
+              multi_select: {
+                contains: params.languages,
+              },
             },
           },
         }
-      } : undefined;
+      : params && params.languages
+        ? {
+            property: "Project Name",
+            rollup: {
+              any: {
+                rich_text: {
+                  contains: params.search,
+                },
+              },
+            },
+          }
+        : undefined;
 
   const data = await queryDatabase({
     page_size: 10,
@@ -60,9 +69,12 @@ export default async function Home({
       </section>
       <div className="flex flex-col items-center gap-4 py-8 md:py-10">
         <div className="inline-block max-w-lg text-center justify-center">
-          <Search placeholder="Search" emoji="🔍"
+          <Search
+            placeholder="Search"
+            emoji="🔍"
             items={SEARCH_OPTIONS}
-            selectedValue={params.search} />
+            selectedValue={params.search}
+          />
           {/* TODO: 
           1. make it controlled
           2. set the selected value in the params
@@ -91,9 +103,9 @@ export default async function Home({
           {interestsFilterIsSelected && (
             <RemoveFilters value={params.interests} param="Interests" />
           )}
-          {hasSearch && (
-            <RemoveFilters value={params.search} param="Search" />
-          )}
+          {hasSearch && <RemoveFilters value={params.search} param="Search" />}
+
+          {showRemoveAllFilters && <RemoveFilters value={"All filters"} />}
         </div>
         <div className="flex justify-end">
           <div>
@@ -110,6 +122,6 @@ export default async function Home({
           />
         </div>
       </div>
-    </div >
+    </div>
   );
 }
