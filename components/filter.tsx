@@ -25,6 +25,18 @@ export const Filter = ({
     setValue(selectedValue);
   }, [selectedValue]);
 
+
+  useEffect(() => {
+    if (!value) {
+      return
+    }
+    const optionNameLowerCase = placeholder.toLowerCase();
+    const optionSearchParams = new URLSearchParams(searchParams.toString());
+    optionSearchParams.set(optionNameLowerCase, value);
+    const optionUrl = createUrl(pathname, optionSearchParams);
+    router.replace(optionUrl, { scroll: false });
+  }, [value]);
+
   const handleSelectionChange = (e: {
     target: { value: React.SetStateAction<string> };
   }) => {
@@ -46,19 +58,12 @@ export const Filter = ({
       size={"sm"}
     >
       {items.map((item) => {
-        const optionNameLowerCase = placeholder.toLowerCase();
-        const optionSearchParams = new URLSearchParams(searchParams.toString());
-        optionSearchParams.set(optionNameLowerCase, item.value);
-        const optionUrl = createUrl(pathname, optionSearchParams);
-
         return (
           <SelectItem
             key={item.value}
             value={item.value}
             startContent={<Emoji emoji={item.emoji} />}
-            onClick={() => {
-              router.replace(optionUrl, { scroll: false });
-            }}
+
           >
             {item.label}
           </SelectItem>
