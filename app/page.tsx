@@ -6,8 +6,9 @@ import {
   SEARCH_OPTIONS,
   LANGUAGES_OPTIONS,
   INTERESTS_OPTIONS,
+  REPOSITORIES_BY_INTERESTS,
 } from "@/data/filters";
-import { queryDatabase } from "@/lib/notion";
+import { queryDatabase, createFilter } from "@/lib/notion";
 import { transformNotionDataToContributions } from "@/utils/contribution";
 import RemoveFilters from "@/components/removeFilters";
 
@@ -24,31 +25,7 @@ export default async function Home({
     [languagesFilterIsSelected, interestsFilterIsSelected, hasSearch].filter(
       Boolean,
     ).length >= 2;
-
-  let filter =
-    params && params.languages
-      ? {
-          property: "Repo Language",
-          rollup: {
-            any: {
-              multi_select: {
-                contains: params.languages,
-              },
-            },
-          },
-        }
-      : params && params.languages
-        ? {
-            property: "Project Name",
-            rollup: {
-              any: {
-                rich_text: {
-                  contains: params.search,
-                },
-              },
-            },
-          }
-        : undefined;
+  const filter = await createFilter(params.languages, params.search, REPOSITORIES_BY_INTERESTS[params.interests])
 
   const data = await queryDatabase({
     page_size: 10,

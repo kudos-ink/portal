@@ -42,6 +42,7 @@ export async function queryDatabase(
     start_cursor: undefined,
     filter: undefined,
   };
+
   const query = {
     ...defaultQuery,
     ...queryOverrides,
@@ -274,18 +275,65 @@ export async function createRepoMap() {
   return out;
 }
 
-// async function main() {
-//   //   const r = await getGoodFirstIssues({ page_size: 1 });
-//   // const r = await getUnassignedIssues({ page_size: 1 });
-//   //   const r = await getIssuesByProject("Polkadot", { page_size: 1 });
-//   //   const r = await getIssuesByRepo("af89c412b69f4437a6a0cdf80070a4a9", {
-//   //     page_size: 1,
-//   //   });
-//   const r = await createRepoMap();
-//   // const r = await queryDatabase({ page_size: 105 });
-//   //   console.log(r.results.length);
-//   console.log(JSON.stringify(r, null, 2));
-//   //   console.log(JSON.stringify(r, null, 2));
-// }
+export async function createFilter(languages: string, search: string, interests: string[]) {
+  if (!languages && !search && !interests) {
+    // If all parameters are undefined, return undefined
+    return undefined;
+  } else {
+    const filters = [];
 
-// main();
+    if (languages) {
+      // If languages is defined, create a filter for Repo Language
+      filters.push({
+        property: "Repo Language",
+        rollup: {
+          any: {
+            multi_select: {
+              contains: languages,
+            },
+          },
+        },
+      });
+    }
+
+    if (search) {
+      // If search is defined, create a filter for Project Name
+      filters.push({
+        property: "Project Name",
+        rollup: {
+          any: {
+            rich_text: {
+              contains: search,
+            },
+          },
+        },
+      });
+    }
+    if (interests && interests.length > 0) {
+      // If interests is defined and not empty, create a filter for Interests using "or"
+      filters.push({
+        or: interests.map((interest) => ({
+          property: "Project Name",
+          rollup: {
+            any: {
+              rich_text: {
+                contains: interest,
+              },
+            },
+          },
+        })),
+      });
+    }
+
+
+    if (filters.length === 1) {
+      // If there's only one filter, return it directly
+      return filters[0];
+    } else if (filters.length > 1) {
+      // If there are multiple filters, combine them with "and"
+      return {
+        and: filters,
+      };
+    }
+  }
+}

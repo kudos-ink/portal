@@ -59,7 +59,7 @@ const Search: FC<SearchProps> = ({
     >
       {(item: FilterItem) => {
         return (
-          <AutocompleteItem key={item.value}>
+          <AutocompleteItem key={item.value} textValue={item.label}>
             <Emoji emoji={item.emoji} className="text-xl"></Emoji>
             &nbsp;
             <span className="text-l">{item.label}</span>
