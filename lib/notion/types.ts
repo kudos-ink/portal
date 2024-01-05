@@ -1,7 +1,4 @@
-import {
-  QueryDatabaseResponse,
-  QueryDatabaseParameters,
-} from "@notionhq/client/build/src/api-endpoints";
+import { QueryDatabaseParameters } from "@notionhq/client/build/src/api-endpoints";
 import {
   FIELDNAME_TO_PROPERTY_ID_MAP,
   REPO_LINK_TO_PAGE_ID_MAP,
@@ -172,8 +169,3 @@ export type RepoLanguageSelectArray = {
 };
 
 export type ProjectLogoImages = Record<string, string>;
-
-export type LoadMoreState = {
-  data: QueryDatabaseResponse[];
-  nextCursor: string | undefined;
-};
