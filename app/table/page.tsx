@@ -1,6 +1,6 @@
 import { getGoodFirstIssues } from "@/lib/notion";
 import ContributionsTable from "@/components/contributions-table/table";
-import { transformNotionDataToContributions } from "@/utils/contribution";
+import { transformNotionDataToContributions } from "@/utils/notion";
 
 export default async function Page() {
   const data = await getGoodFirstIssues({ page_size: 10 });

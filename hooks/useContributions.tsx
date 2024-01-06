@@ -4,7 +4,7 @@ import {
   QueryKey,
 } from "@tanstack/react-query";
 import { queryDatabase } from "@/lib/notion";
-import { transformNotionDataToContributions } from "@/utils/contribution";
+import { transformNotionDataToContributions } from "@/utils/notion";
 import { PaginatedContributions } from "@/types/contribution";
 import { KudosQueryParameters } from "@/lib/notion/types";
 
