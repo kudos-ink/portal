@@ -275,7 +275,11 @@ export async function createRepoMap() {
   return out;
 }
 
-export async function createFilter(languages: string, search: string, interests: string[]) {
+export async function createFilter(
+  languages: string,
+  search: string,
+  interests: string[],
+) {
   if (!languages && !search && !interests) {
     // If all parameters are undefined, return undefined
     return undefined;
@@ -299,13 +303,9 @@ export async function createFilter(languages: string, search: string, interests:
     if (search) {
       // If search is defined, create a filter for Project Name
       filters.push({
-        property: "Project Name",
-        rollup: {
-          any: {
-            rich_text: {
-              contains: search,
-            },
-          },
+        property: "Github Repo",
+        relation: {
+          contains: REPO_LINK_TO_PAGE_ID_MAP[search as ValidRepositoryLink],
         },
       });
     }
@@ -313,18 +313,13 @@ export async function createFilter(languages: string, search: string, interests:
       // If interests is defined and not empty, create a filter for Interests using "or"
       filters.push({
         or: interests.map((interest) => ({
-          property: "Project Name",
-          rollup: {
-            any: {
-              rich_text: {
-                contains: interest,
-              },
-            },
+          property: "Github Repo",
+          relation: {
+            contains: REPO_LINK_TO_PAGE_ID_MAP[search as ValidRepositoryLink],
           },
         })),
       });
     }
-
 
     if (filters.length === 1) {
       // If there's only one filter, return it directly
