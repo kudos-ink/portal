@@ -1,5 +1,5 @@
 import ContributionsTable from "@/components/contributions-table/table";
-import Filter from "@/components/filter";
+import SelectFilter from "@/components/filters/select-filter";
 import { title, subtitle } from "@/components/primitives";
 import Search from "@/components/search";
 import {
@@ -69,13 +69,13 @@ export default async function Home({
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="flex justify-around items-stretch gap-4">
-          <Filter
+          <SelectFilter
             placeholder="Languages"
             emoji={"💪"}
             items={LANGUAGES_OPTIONS}
             selectedValue={params.languages}
           />
-          <Filter
+          <SelectFilter
             placeholder="Interests"
             emoji={"🪄"}
             items={INTERESTS_OPTIONS}

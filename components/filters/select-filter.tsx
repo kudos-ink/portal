@@ -5,20 +5,20 @@ import { useRouter } from "next/navigation";
 import { Select, SelectItem } from "@nextui-org/select";
 import { FilterItem } from "@/types/filters";
 import { createUrl } from "@/utils/url";
-import Emoji from "./emoji";
+import Emoji from "../emoji";
 
-interface IFilterProps {
+interface ISelectFilterProps {
   placeholder: string;
   emoji: string;
   items: FilterItem[];
   selectedValue: string;
 }
-export const Filter = ({
+export const SelectFilter = ({
   placeholder,
   items,
   emoji,
   selectedValue,
-}: IFilterProps) => {
+}: ISelectFilterProps) => {
   const [value, setValue] = React.useState(selectedValue);
 
   const router = useRouter();
@@ -29,10 +29,9 @@ export const Filter = ({
     setValue(selectedValue);
   }, [selectedValue]);
 
-
   useEffect(() => {
     if (value === undefined) {
-      return
+      return;
     }
     const optionNameLowerCase = placeholder.toLowerCase();
     const optionSearchParams = new URLSearchParams(searchParams.toString());
@@ -64,7 +63,6 @@ export const Filter = ({
             key={item.value}
             value={item.value}
             startContent={<Emoji emoji={item.emoji} />}
-
           >
             {item.label}
           </SelectItem>
@@ -74,4 +72,4 @@ export const Filter = ({
   );
 };
 
-export default Filter;
+export default SelectFilter;
