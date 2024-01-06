@@ -5,16 +5,16 @@ import { useRouter } from "next/navigation";
 import { Chip } from "@nextui-org/chip";
 import { createUrl } from "@/utils/url";
 
-interface IRemoveFilters {
+interface IClearFilters {
   param?: string;
   value: string;
 }
 
-export const RemoveFilters = ({ param, value }: IRemoveFilters) => {
+export const ClearFilters = ({ param, value }: IClearFilters) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const removeSearchParams = () => {
+  const clearSearchParams = () => {
     if (!!param) {
       const optionNameLowerCase = param.toLowerCase();
       const optionSearchParams = new URLSearchParams(searchParams.toString());
@@ -27,11 +27,11 @@ export const RemoveFilters = ({ param, value }: IRemoveFilters) => {
   };
   return (
     <div className="flex gap-4">
-      <Chip variant="solid" onClose={removeSearchParams}>
+      <Chip variant="solid" onClose={clearSearchParams}>
         {value}
       </Chip>
     </div>
   );
 };
 
-export default RemoveFilters;
+export default ClearFilters;

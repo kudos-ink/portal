@@ -1,4 +1,5 @@
 import ContributionsTable from "@/components/contributions-table/table";
+import ClearFilters from "@/components/filters/clear-filters";
 import SelectFilter from "@/components/filters/select-filter";
 import { title, subtitle } from "@/components/primitives";
 import Search from "@/components/search";
@@ -13,7 +14,6 @@ import {
   createNotionFilter,
   transformNotionDataToContributions,
 } from "@/utils/notion";
-import RemoveFilters from "@/components/removeFilters";
 
 export default async function Home({
   searchParams,
@@ -82,14 +82,14 @@ export default async function Home({
             selectedValue={params.interests}
           />
           {languagesFilterIsSelected && (
-            <RemoveFilters value={params.languages} param="Languages" />
+            <ClearFilters value={params.languages} param="Languages" />
           )}
           {interestsFilterIsSelected && (
-            <RemoveFilters value={params.interests} param="Interests" />
+            <ClearFilters value={params.interests} param="Interests" />
           )}
-          {hasSearch && <RemoveFilters value={params.search} param="Search" />}
+          {hasSearch && <ClearFilters value={params.search} param="Search" />}
 
-          {showRemoveAllFilters && <RemoveFilters value={"All filters"} />}
+          {showRemoveAllFilters && <ClearFilters value={"All filters"} />}
         </div>
         <div className="flex justify-end">
           <div>
