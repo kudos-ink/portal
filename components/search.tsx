@@ -55,9 +55,9 @@ const Search: FC<SearchProps> = ({
       className="max-w-md"
       size="lg"
       selectedKey={value}
-      onSelectionChange={setValue}
+      // onSelectionChange={setValue}
     >
-      {(item: FilterItem) => {
+      {(item: FilterOption) => {
         return (
           <AutocompleteItem key={item.value} textValue={item.label}>
             <Emoji emoji={item.emoji} className="text-xl"></Emoji>
