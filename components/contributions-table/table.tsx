@@ -15,7 +15,6 @@ import { Contribution, PaginatedContributions } from "@/types/contribution";
 import { ExternalLink, Content, Labels, Time, Project } from "./row";
 import { useContributions } from "@/hooks/useContributions";
 import { KudosQueryParameters } from "@/lib/notion/types";
-import { isNotNull } from "@/utils/type-guard";
 
 interface IColumn {
   name: string;
