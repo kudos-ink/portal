@@ -1,7 +1,12 @@
+import {
+  QueryDatabaseResponse,
+  search,
+} from "@notionhq/client/build/src/api-endpoints";
+import { REPO_LINK_TO_PAGE_ID_MAP } from "@/lib/notion/constants";
+import { ValidRepositoryLink } from "@/lib/notion/types";
 import projectLogosJson from "@/public/images/imageMap.json";
 import { Contribution } from "@/types/contribution";
 import { getImagePath } from "./github";
-import { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
 
 export function transformNotionDataToContributions(
   notionData: QueryDatabaseResponse,
@@ -52,13 +57,10 @@ export function processNotionFilters(params?: {
 
   if (params?.search) {
     filters.push({
-      property: "Project Name",
-      rollup: {
-        any: {
-          rich_text: {
-            contains: params.search,
-          },
-        },
+      property: "Github Repo",
+      relation: {
+        contains:
+          REPO_LINK_TO_PAGE_ID_MAP[search as unknown as ValidRepositoryLink],
       },
     });
   }
@@ -69,13 +71,10 @@ export function processNotionFilters(params?: {
       : [params.interests];
     const interestsFilter = {
       or: interestsArray.map((interest) => ({
-        property: "Project Name",
-        rollup: {
-          any: {
-            rich_text: {
-              contains: interest,
-            },
-          },
+        property: "Github Repo",
+        relation: {
+          contains:
+            REPO_LINK_TO_PAGE_ID_MAP[search as unknown as ValidRepositoryLink],
         },
       })),
     };
