@@ -8,9 +8,10 @@ import { createUrl } from "@/utils/url";
 interface IClearFilters {
   param?: string;
   value: string;
+  onClear: () => void;
 }
 
-export const ClearFilters = ({ param, value }: IClearFilters) => {
+export const ClearFilters = ({ param, value, onClear }: IClearFilters) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -24,6 +25,7 @@ export const ClearFilters = ({ param, value }: IClearFilters) => {
     } else {
       router.replace(pathname);
     }
+    onClear();
   };
   return (
     <div className="flex gap-4">

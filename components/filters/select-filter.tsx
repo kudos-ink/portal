@@ -1,70 +1,63 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { Select, SelectItem } from "@nextui-org/select";
-import { FilterItem } from "@/types/filters";
+import { FilterOption } from "@/types/filters";
 import { createUrl } from "@/utils/url";
 import Emoji from "../emoji";
 
 interface ISelectFilterProps {
   placeholder: string;
-  emoji: string;
-  items: FilterItem[];
-  selectedValue: string;
+  mainEmoji: string;
+  options: FilterOption[];
+  selectedKey?: string;
+  onSelect: (value: string) => void;
 }
 export const SelectFilter = ({
   placeholder,
-  items,
-  emoji,
-  selectedValue,
+  mainEmoji,
+  options,
+  selectedKey,
+  onSelect,
 }: ISelectFilterProps) => {
-  const [value, setValue] = React.useState(selectedValue);
-
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  useEffect(() => {
-    setValue(selectedValue);
-  }, [selectedValue]);
-
-  useEffect(() => {
-    if (value === undefined) {
-      return;
-    }
-    const optionNameLowerCase = placeholder.toLowerCase();
-    const optionSearchParams = new URLSearchParams(searchParams.toString());
-    optionSearchParams.set(optionNameLowerCase, value);
-    const optionUrl = createUrl(pathname, optionSearchParams);
-    router.replace(optionUrl, { scroll: false });
-  }, [value]);
-
-  const handleSelectionChange = (e: {
-    target: { value: React.SetStateAction<string> };
-  }) => {
-    setValue(e.target.value);
+  const handleSelectionChange = (selection: unknown) => {
+    const selectedValue = Array.from(selection as Iterable<string>)[0];
+    onSelect(selectedValue);
   };
 
   return (
     <Select
+      aria-label={`Select Filter ${placeholder}`}
       color="default"
       variant="faded"
-      labelPlacement={"inside"}
-      label={placeholder}
-      onChange={handleSelectionChange}
-      selectedKeys={[value]}
-      startContent={value ? <Emoji emoji={emoji} className="text-sm" /> : <></>}
-      size={"sm"}
+      size="sm"
+      placeholder={placeholder}
+      selectionMode="single"
+      startContent={<Emoji emoji={mainEmoji} className="text-sm" />}
+      selectedKeys={selectedKey ? new Set([selectedKey]) : new Set()}
+      onSelectionChange={handleSelectionChange}
     >
-      {items.map((item) => {
+      {options.map(({ emoji, label, value }) => {
+        const optionNameLowerCase = placeholder.toLowerCase();
+        const optionSearchParams = new URLSearchParams(searchParams.toString());
+        optionSearchParams.set(optionNameLowerCase, value);
+        const optionUrl = createUrl(pathname, optionSearchParams);
+
         return (
           <SelectItem
-            key={item.value}
-            value={item.value}
-            startContent={<Emoji emoji={item.emoji} />}
+            key={value}
+            value={value}
+            startContent={<Emoji emoji={emoji} />}
+            onClick={() => {
+              router.replace(optionUrl, { scroll: false });
+            }}
           >
-            {item.label}
+            {label}
           </SelectItem>
         );
       })}
