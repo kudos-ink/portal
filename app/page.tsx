@@ -1,39 +1,19 @@
 import ContributionsTable from "@/components/contributions-table/table";
-import ClearFilters from "@/components/filters/clear-filters";
-import SelectFilter from "@/components/filters/select-filter";
-import { title, subtitle } from "@/components/primitives";
-import Search from "@/components/search";
-import {
-  SEARCH_OPTIONS,
-  LANGUAGES_OPTIONS,
-  INTERESTS_OPTIONS,
-  REPOSITORIES_BY_INTERESTS,
-} from "@/data/filters";
+import Toolbar from "@/components/filters/toolbar";
+import { title } from "@/components/primitives";
 import { queryDatabase } from "@/lib/notion";
+import { SearchParams } from "@/types/filters";
 import {
-  createNotionFilter,
+  processNotionFilters,
   transformNotionDataToContributions,
 } from "@/utils/notion";
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
-  const params = searchParams as { [key: string]: string };
-  const languagesFilterIsSelected = !!params && !!params.languages;
-  const interestsFilterIsSelected = !!params && !!params.interests;
-  const hasSearch = !!params && !!params.search;
-  const showRemoveAllFilters =
-    [languagesFilterIsSelected, interestsFilterIsSelected, hasSearch].filter(
-      Boolean,
-    ).length >= 2;
-  const filter = await createNotionFilter(
-    params.languages,
-    params.search,
-    REPOSITORIES_BY_INTERESTS[params.interests],
-  );
+interface IHomeProps {
+  searchParams: SearchParams;
+}
 
+export default async function Home({ searchParams }: IHomeProps) {
+  const filter = processNotionFilters(searchParams);
   const data = await queryDatabase({
     page_size: 10,
     filter,
@@ -51,51 +31,8 @@ export default async function Home({
         <h1 className={title()}>Find Collaborations,</h1>
         <h1 className={title()}>Collect Kudos</h1>
       </section>
-      <div className="flex flex-col items-center gap-4 py-8 md:py-10">
-        <div className="inline-block max-w-lg text-center justify-center">
-          <Search
-            placeholder="Search"
-            emoji="🔍"
-            items={SEARCH_OPTIONS}
-            selectedValue={params.search}
-          />
-          {/* TODO: 
-          1. make it controlled
-          2. set the selected value in the params
-          3. use custom function
-          4. reset the other values  */}
-          <h2 className={subtitle({ class: "mt-4" })}>Banner</h2>
-        </div>
-      </div>
-      <div className="grid grid-cols-2 gap-4">
-        <div className="flex justify-around items-stretch gap-4">
-          <SelectFilter
-            placeholder="Languages"
-            emoji={"💪"}
-            items={LANGUAGES_OPTIONS}
-            selectedValue={params.languages}
-          />
-          <SelectFilter
-            placeholder="Interests"
-            emoji={"🪄"}
-            items={INTERESTS_OPTIONS}
-            selectedValue={params.interests}
-          />
-          {languagesFilterIsSelected && (
-            <ClearFilters value={params.languages} param="Languages" />
-          )}
-          {interestsFilterIsSelected && (
-            <ClearFilters value={params.interests} param="Interests" />
-          )}
-          {hasSearch && <ClearFilters value={params.search} param="Search" />}
-
-          {showRemoveAllFilters && <ClearFilters value={"All filters"} />}
-        </div>
-        <div className="flex justify-end">
-          <div>
-            <h2 className={subtitle({ class: "mt-4" })}>Sort</h2>
-          </div>
-        </div>
+      <div className="flex flex-col gap-4">
+        <Toolbar searchParams={searchParams} />
         <div>
           <ContributionsTable
             items={items}
