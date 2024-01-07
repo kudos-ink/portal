@@ -29,10 +29,8 @@ const Search: FC<SearchProps> = ({
   useEffect(() => {
     setValue(selectedValue || "");
   }, [selectedValue]);
-  console.log(value);
 
   useEffect(() => {
-    console.log(value);
     if (value === undefined || value === "") {
       return;
     }
