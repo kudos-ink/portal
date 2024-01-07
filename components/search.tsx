@@ -1,7 +1,7 @@
 "use client";
 import React, { FC, useEffect } from "react";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/autocomplete";
-import { FilterItem } from "@/types/filters";
+import { FilterOption } from "@/types/filters";
 import Emoji from "./emoji";
 import { useRouter } from "next/navigation";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -10,8 +10,8 @@ import { createUrl } from "@/utils/url";
 interface SearchProps {
   placeholder: string;
   emoji: string;
-  items: FilterItem[];
-  selectedValue: string;
+  items: FilterOption[];
+  selectedValue?: string;
 }
 
 const Search: FC<SearchProps> = ({
@@ -55,9 +55,9 @@ const Search: FC<SearchProps> = ({
       className="max-w-md"
       size="lg"
       selectedKey={value}
-      onSelectionChange={setValue}
+      // onSelectionChange={setValue}
     >
-      {(item: FilterItem) => {
+      {(item: FilterOption) => {
         return (
           <AutocompleteItem key={item.value} textValue={item.label}>
             <Emoji emoji={item.emoji} className="text-xl"></Emoji>
