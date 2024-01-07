@@ -7,6 +7,7 @@ import { ValidRepositoryLink } from "@/lib/notion/types";
 import projectLogosJson from "@/public/images/imageMap.json";
 import { Contribution } from "@/types/contribution";
 import { getImagePath } from "./github";
+import { REPOSITORIES_BY_INTERESTS } from "@/data/filters";
 
 export function transformNotionDataToContributions(
   notionData: QueryDatabaseResponse,
@@ -66,18 +67,16 @@ export function processNotionFilters(params?: {
   }
 
   if (params?.interests) {
-    const interestsArray = Array.isArray(params.interests)
-      ? params.interests
-      : [params.interests];
+    const repositories = REPOSITORIES_BY_INTERESTS[params.interests];
     const interestsFilter = {
-      or: interestsArray.map((interest) => ({
+      or: repositories.map((interest) => ({
         property: "Github Repo",
         relation: {
           contains:
-            REPO_LINK_TO_PAGE_ID_MAP[search as unknown as ValidRepositoryLink],
+            REPO_LINK_TO_PAGE_ID_MAP[interest as unknown as ValidRepositoryLink],
         },
       })),
-    };
+    }
     filters.push(interestsFilter);
   }
 
