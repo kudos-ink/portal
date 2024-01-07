@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import {
   Table as NuiTable,
@@ -17,11 +17,22 @@ import { useContributions } from "@/hooks/useContributions";
 import { KudosQueryParameters } from "@/lib/notion/types";
 import { isNotNull } from "@/utils/type-guard";
 
+interface IColumn {
+  name: string;
+  uid: string;
+}
+
 interface ITableProps {
   items: PaginatedContributions;
   queries?: Partial<KudosQueryParameters>;
 }
 export const Table = ({ items, queries = {} }: ITableProps) => {
+  const [columns, setColumns] = useState<IColumn[]>([
+    { name: "PROJECT", uid: "project" },
+    { name: "CONTENT", uid: "content" },
+    { name: "LABELS", uid: "labels" },
+    { name: "DATE", uid: "date" },]);
+
   const {
     data: results,
     fetchNextPage,
@@ -32,19 +43,23 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
     onLoadMore: fetchNextPage,
   });
 
+  const isMobile = useMediaQuery({ maxWidth: 639 }); // tailwind lg default: 640px
+  const isLaptop = useMediaQuery({ minWidth: 1024 }); // tailwind lg default: 1024px
+  useEffect(() => {
+    setColumns([
+      { name: "PROJECT", uid: "project" },
+      { name: "CONTENT", uid: "content" },
+      ...(isLaptop ? [{ name: "LABELS", uid: "labels" }] : []),
+      { name: "DATE", uid: "date" },
+      ...(isMobile ? [] : [{ name: "ACTIONS", uid: "actions" }]),
+    ]);
+  }, [isMobile, isLaptop]);
+
+
   const contributions = React.useMemo(() => {
     return results?.pages.flatMap((page) => page.data) || [];
   }, [results]);
 
-  const isMobile = useMediaQuery({ maxWidth: 639 }); // tailwind lg default: 640px
-  const isLaptop = useMediaQuery({ minWidth: 1024 }); // tailwind lg default: 1024px
-  const COLUMNS = [
-    { name: "PROJECT", uid: "project" },
-    { name: "CONTENT", uid: "content" },
-    isLaptop ? { name: "LABELS", uid: "labels" } : null,
-    { name: "DATE", uid: "date" },
-    isMobile ? null : { name: "ACTIONS", uid: "actions" },
-  ].filter(isNotNull);
 
   const renderCell = React.useCallback(
     (item: Contribution, columnKey: React.Key) => {
@@ -120,7 +135,7 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
           td: "px-2 sm:px-inherit",
         }}
       >
-        <TableHeader columns={COLUMNS}>
+        <TableHeader columns={columns}>
           {(column) => (
             <TableColumn
               key={column.uid}
