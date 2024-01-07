@@ -10,6 +10,12 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundColor: {
+        "hover-overlay": "var(--light-overlay)",
+      },
+      borderColor: {
+        overlay: "var(--light-overlay)",
+      },
       fontFamily: {
         sans: ["var(--font-sans)"],
         mono: ["var(--font-mono)"],

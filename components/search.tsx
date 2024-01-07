@@ -56,6 +56,13 @@ const Search: FC<SearchProps> = ({
       size="lg"
       selectedKey={value}
       // onSelectionChange={setValue}
+      allowsCustomValue={true}
+      clearButtonProps={{
+        id: "clear-button",
+      }}
+      selectorButtonProps={{
+        id: "selector-button",
+      }}
     >
       {(item: FilterOption) => {
         return (
