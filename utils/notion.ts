@@ -32,68 +32,61 @@ export function transformNotionDataToContributions(
   }, []);
 }
 
-export async function createNotionFilter(
-  languages: string,
-  search: string,
-  interests: string[],
-) {
-  if (!languages && !search && !interests) {
-    // If all parameters are undefined, return undefined
-    return undefined;
-  } else {
-    const filters = [];
+export function processNotionFilters(params?: {
+  [key: string]: string | undefined;
+}) {
+  const filters = [];
 
-    if (languages) {
-      // If languages is defined, create a filter for Repo Language
-      filters.push({
-        property: "Repo Language",
-        rollup: {
-          any: {
-            multi_select: {
-              contains: languages,
-            },
+  if (params?.languages) {
+    filters.push({
+      property: "Repo Language",
+      rollup: {
+        any: {
+          multi_select: {
+            contains: params.languages,
           },
         },
-      });
-    }
+      },
+    });
+  }
 
-    if (search) {
-      // If search is defined, create a filter for Project Name
-      filters.push({
+  if (params?.search) {
+    filters.push({
+      property: "Project Name",
+      rollup: {
+        any: {
+          rich_text: {
+            contains: params.search,
+          },
+        },
+      },
+    });
+  }
+
+  if (params?.interests) {
+    const interestsArray = Array.isArray(params.interests)
+      ? params.interests
+      : [params.interests];
+    const interestsFilter = {
+      or: interestsArray.map((interest) => ({
         property: "Project Name",
         rollup: {
           any: {
             rich_text: {
-              contains: search,
+              contains: interest,
             },
           },
         },
-      });
-    }
-    if (interests && interests.length > 0) {
-      // If interests is defined and not empty, create a filter for Interests using "or"
-      filters.push({
-        or: interests.map((interest) => ({
-          property: "Project Name",
-          rollup: {
-            any: {
-              rich_text: {
-                contains: interest,
-              },
-            },
-          },
-        })),
-      });
-    }
-
-    if (filters.length === 1) {
-      // If there's only one filter, return it directly
-      return filters[0];
-    } else if (filters.length > 1) {
-      // If there are multiple filters, combine them with "and"
-      return {
-        and: filters,
-      };
-    }
+      })),
+    };
+    filters.push(interestsFilter);
   }
+
+  if (filters.length === 1) {
+    return filters[0];
+  } else if (filters.length > 1) {
+    return { and: filters };
+  }
+
+  return undefined;
 }
