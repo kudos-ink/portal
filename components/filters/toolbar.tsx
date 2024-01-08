@@ -4,18 +4,22 @@ import { useFilters } from "@/hooks/useFilters";
 import { SearchParams } from "@/types/filters";
 import ClearFilters from "./clear-filters";
 import SelectFilter from "./select-filter";
-
 interface IToolbarProps {
   searchParams: SearchParams;
 }
 
 const Toolbar = ({ searchParams }: IToolbarProps) => {
-  const { filters, updateFilter, clearAllFilters } = useFilters({
+  const { filters, updateFilter, clearFilter, clearAllFilters } = useFilters({
     initialParams: searchParams,
   });
 
   const handleSelect = (paramKey: string) => (value: string) => {
-    updateFilter(paramKey, value);
+    console.log(paramKey, value, filters)
+    if (value) {
+      updateFilter(paramKey, value);
+    } else {
+      clearFilter(paramKey);
+    }
   };
 
   const hasFilters = Object.keys(filters).length > 0;

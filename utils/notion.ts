@@ -66,7 +66,7 @@ export function processNotionFilters(params?: {
     });
   }
 
-  if (params?.interests) {
+  if (params?.interests && REPOSITORIES_BY_INTERESTS[params.interests]) {
     const repositories = REPOSITORIES_BY_INTERESTS[params.interests];
     const interestsFilter = {
       or: repositories.map((interest) => ({

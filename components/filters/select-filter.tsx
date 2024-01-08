@@ -28,6 +28,16 @@ export const SelectFilter = ({
   const handleSelectionChange = (selection: unknown) => {
     const selectedValue = Array.from(selection as Iterable<string>)[0];
     onSelect(selectedValue);
+    const optionNameLowerCase = placeholder.toLowerCase();
+    const optionSearchParams = new URLSearchParams(searchParams.toString());
+    if (selectedValue) {
+      optionSearchParams.set(optionNameLowerCase, selectedValue);
+    } else {
+      optionSearchParams.delete(optionNameLowerCase)
+    }
+    const optionUrl = createUrl(pathname, optionSearchParams);
+    router.replace(optionUrl, { scroll: false });
+
   };
 
   return (
@@ -43,19 +53,12 @@ export const SelectFilter = ({
       onSelectionChange={handleSelectionChange}
     >
       {options.map(({ emoji, label, value }) => {
-        const optionNameLowerCase = placeholder.toLowerCase();
-        const optionSearchParams = new URLSearchParams(searchParams.toString());
-        optionSearchParams.set(optionNameLowerCase, value);
-        const optionUrl = createUrl(pathname, optionSearchParams);
 
         return (
           <SelectItem
             key={value}
             value={value}
             startContent={<Emoji emoji={emoji} />}
-            onClick={() => {
-              router.replace(optionUrl, { scroll: false });
-            }}
           >
             {label}
           </SelectItem>
