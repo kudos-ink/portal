@@ -56,12 +56,14 @@ export function processNotionFilters(params?: {
     });
   }
 
-  if (params?.search) {
+  if (params?.projects) {
+    const repositories = REPO_LINK_TO_PAGE_ID_MAP[params.projects as unknown as ValidRepositoryLink];
+    console.log(repositories)
     filters.push({
       property: "Github Repo",
       relation: {
         contains:
-          REPO_LINK_TO_PAGE_ID_MAP[search as unknown as ValidRepositoryLink],
+          repositories,
       },
     });
   }

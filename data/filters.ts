@@ -100,7 +100,7 @@ export const INTERESTS_OPTIONS = [
   { value: AI, label: "AI", emoji: "🧠" },
 ];
 
-export const SEARCH_OPTIONS = [
+export const PROJECTS_OPTIONS = [
   {
     value: "paritytech/polkadot-sdk",
     label: "Polkadot Sdk",
@@ -297,7 +297,7 @@ export const SEARCH_OPTIONS = [
   { value: "bittensor", label: "Bittensor", emoji: "🧠" },
 ];
 
-// export const SEARCH_OPTIONS = [
+// export const PROJECTS_OPTIONS = [
 //   { value: "polkadot-sdk", label: "Polkadot Sdk", emoji: "🔗" },
 //   { value: "OAK-blockchain", label: "Oak Blockchain", emoji: "🌳" },
 //   { value: "InvArch-Node", label: "Invarch Node", emoji: "🏛️" },
