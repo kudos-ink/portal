@@ -57,25 +57,10 @@ const Toolbar = ({ searchParams }: IToolbarProps) => {
         />
       </div>
 
-      {
-        numberOfFilters > 0 &&
-        <div className="flex justify-left items-stretch gap-4">
+      {numberOfFilters > 1 && (
+        <ClearFilters onClear={clearAllFilters} value="All filters" />
+      )}
 
-          {searchParams?.languages && (
-            <ClearFilters onClear={clearLanguagesFilter} value={searchParams.languages} param="languages" />
-          )}
-          {searchParams?.interests && (
-            <ClearFilters onClear={clearInterestsFilter} value={searchParams.interests} param="interests" />
-          )}
-          {searchParams?.projects && (
-            <ClearFilters onClear={clearProjectsFilter} value={searchParams.projects} param="projects" />
-          )}
-          {numberOfFilters > 1 && (
-            <ClearFilters onClear={clearAllFilters} value="All filters" />
-          )}
-        </div>
-
-      }
     </>
   );
 };
