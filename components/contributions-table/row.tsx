@@ -49,13 +49,13 @@ interface IContentProps {
   title: string;
   project: string;
   repository: string;
-  language: string; //TODO: make it an enum type with available languages from filters
+  languages: string[]; //TODO: make it an enum type with available languages from filters
 }
 export const Content = ({
   title,
   project,
   repository,
-  language,
+  languages,
 }: IContentProps) => {
   return (
     <div className="flex flex-col space-y-unit-1 md:space-y-0">
@@ -63,9 +63,13 @@ export const Content = ({
         {title}
       </h3>
       <span className="text-small text-default-500 truncate md:hidden">{`${project} / ${repository}`}</span>
-      <Chip className="mt-[1px]" variant="bordered" size="sm">
-        {language}
-      </Chip>
+      <div className="flex gap-1 mt-[1px]">
+        {languages.map((language, idx) => (
+          <Chip key={idx} className="mx-1" variant="bordered" size="sm">
+            {language}
+          </Chip>
+        ))}
+      </div>
     </div>
   );
 };
