@@ -30,7 +30,8 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
     { name: "PROJECT", uid: "project" },
     { name: "CONTENT", uid: "content" },
     { name: "LABELS", uid: "labels" },
-    { name: "DATE", uid: "date" },]);
+    { name: "DATE", uid: "date" },
+  ]);
 
   const {
     data: results,
@@ -54,11 +55,9 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
     ]);
   }, [isMobile, isLaptop]);
 
-
   const contributions = React.useMemo(() => {
     return results?.pages.flatMap((page) => page.data) || [];
   }, [results]);
-
 
   const renderCell = React.useCallback(
     (item: Contribution, columnKey: React.Key) => {

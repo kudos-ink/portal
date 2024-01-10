@@ -34,15 +34,14 @@ export const SelectFilter = ({
     if (selectedValue) {
       optionSearchParams.set(optionNameLowerCase, selectedValue);
     } else {
-      optionSearchParams.delete(optionNameLowerCase)
+      optionSearchParams.delete(optionNameLowerCase);
     }
     const optionUrl = createUrl(pathname, optionSearchParams);
     router.replace(optionUrl, { scroll: false });
-
   };
   const resetFilter = () => {
-    handleSelectionChange("")
-  }
+    handleSelectionChange("");
+  };
   return (
     <Select
       aria-label={`Select Filter ${placeholder}`}
@@ -52,12 +51,18 @@ export const SelectFilter = ({
       placeholder={placeholder}
       selectionMode="single"
       startContent={<Emoji emoji={mainEmoji} className="text-sm" />}
-      endContent={selectedKey && <CircledCross className="z-10 appearance-none outline-none select-none transition-opacity opacity-70 hover:opacity-100 cursor-pointer active:opacity-disabled tap-highlight-transparent text-large" onClick={resetFilter} />}
+      endContent={
+        selectedKey && (
+          <CircledCross
+            className="z-10 appearance-none outline-none select-none transition-opacity opacity-70 hover:opacity-100 cursor-pointer active:opacity-disabled tap-highlight-transparent text-large"
+            onClick={resetFilter}
+          />
+        )
+      }
       selectedKeys={selectedKey ? new Set([selectedKey]) : new Set()}
       onSelectionChange={handleSelectionChange}
     >
       {options.map(({ emoji, label, value }) => {
-
         return (
           <SelectItem
             key={value}

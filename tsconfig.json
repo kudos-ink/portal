@@ -23,9 +23,16 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "postcss.config.js", "next.config.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "postcss.config.js",
+    "next.config.js"
+  ],
   "exclude": ["node_modules"],
   "ts-node": {
-    "esm": true, // «———— enabling ESM for ts-node   
-  },
+    "esm": true // «———— enabling ESM for ts-node
+  }
 }

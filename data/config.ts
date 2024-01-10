@@ -11,5 +11,5 @@ export const SITE_CONFIG = {
 };
 
 export const DATA = {
-  interests: "/data/interesets.json"
-}
+  interests: "/data/interesets.json",
+};

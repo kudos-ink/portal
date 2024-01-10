@@ -1,5 +1,9 @@
 "use client";
-import { LANGUAGES_OPTIONS, INTERESTS_OPTIONS, PROJECTS_OPTIONS } from "@/data/filters";
+import {
+  LANGUAGES_OPTIONS,
+  INTERESTS_OPTIONS,
+  PROJECTS_OPTIONS,
+} from "@/data/filters";
 import { useFilters } from "@/hooks/useFilters";
 import { SearchParams } from "@/types/filters";
 import ClearFilters from "./clear-filters";
@@ -21,14 +25,14 @@ const Toolbar = ({ searchParams }: IToolbarProps) => {
     }
   };
   const clearLanguagesFilter = () => {
-    clearFilter('languages')
-  }
+    clearFilter("languages");
+  };
   const clearInterestsFilter = () => {
-    clearFilter('interests')
-  }
+    clearFilter("interests");
+  };
   const clearProjectsFilter = () => {
-    clearFilter('projects')
-  }
+    clearFilter("projects");
+  };
   const numberOfFilters = Object.keys(filters).length;
 
   return (
@@ -60,7 +64,6 @@ const Toolbar = ({ searchParams }: IToolbarProps) => {
       {numberOfFilters > 1 && (
         <ClearFilters onClear={clearAllFilters} value="All filters" />
       )}
-
     </>
   );
 };
