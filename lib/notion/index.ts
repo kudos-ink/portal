@@ -42,6 +42,7 @@ export async function queryDatabase(
     start_cursor: undefined,
     filter: undefined,
   };
+
   const query = {
     ...defaultQuery,
     ...queryOverrides,
@@ -273,19 +274,3 @@ export async function createRepoMap() {
   }
   return out;
 }
-
-// async function main() {
-//   //   const r = await getGoodFirstIssues({ page_size: 1 });
-//   // const r = await getUnassignedIssues({ page_size: 1 });
-//   //   const r = await getIssuesByProject("Polkadot", { page_size: 1 });
-//   //   const r = await getIssuesByRepo("af89c412b69f4437a6a0cdf80070a4a9", {
-//   //     page_size: 1,
-//   //   });
-//   const r = await createRepoMap();
-//   // const r = await queryDatabase({ page_size: 105 });
-//   //   console.log(r.results.length);
-//   console.log(JSON.stringify(r, null, 2));
-//   //   console.log(JSON.stringify(r, null, 2));
-// }
-
-// main();

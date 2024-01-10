@@ -4,7 +4,7 @@ export type Contribution = {
   id: number;
   avatar: string;
   labels: string[];
-  language: string;
+  languages: string[];
   project: string;
   repository: string;
   title: string;
