@@ -37,7 +37,7 @@ const Toolbar = ({ searchParams }: IToolbarProps) => {
 
   return (
     <>
-      <div className="flex justify-around items-stretch gap-4">
+      <div className="flex flex-nowrap overflow-x-auto gap-4">
         <SelectFilter
           placeholder="Languages"
           mainEmoji="🌐"

@@ -59,10 +59,10 @@ export const Content = ({
 }: IContentProps) => {
   return (
     <div className="flex flex-col space-y-unit-1 md:space-y-0">
-      <h3 className="font-semibold max-w-64 sm:truncate sm:max-w-80 lg:max-w-64 xl:max-w-96">
+      <h3 className="font-semibold max-w-48 sm:truncate sm:max-w-80 lg:max-w-64 xl:max-w-96">
         {title}
       </h3>
-      <span className="text-small text-default-500 truncate md:hidden">{`${project} / ${repository}`}</span>
+      <span className="text-small text-default-500 max-w-48 truncate md:hidden">{`${project} / ${repository}`}</span>
       <div className="flex gap-1 mt-[1px]">
         {languages.map((language, idx) => (
           <Chip key={idx} className="mx-1" variant="bordered" size="sm">

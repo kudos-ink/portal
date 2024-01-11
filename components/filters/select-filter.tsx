@@ -45,6 +45,7 @@ export const SelectFilter = ({
   return (
     <Select
       aria-label={`Select Filter ${placeholder}`}
+      className="w-48 shrink-0"
       color="default"
       variant="faded"
       size="sm"

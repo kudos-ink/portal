@@ -27,7 +27,7 @@ export default async function Home({ searchParams }: IHomeProps) {
 
   return (
     <div>
-      <section className="flex flex-col items-center py-8 md:py-10">
+      <section className="flex flex-col items-center text-center pt-10 pb-28">
         <h1 className={title()}>Find Collaborations,</h1>
         <h1 className={title()}>Collect Kudos</h1>
       </section>
