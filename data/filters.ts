@@ -1,58 +1,19 @@
 export const LANGUAGES_OPTIONS = [
-  { value: "Assembly", label: "Assembly", emoji: "🔧" }, // Assembly
-  //   { value: "Astro", label: "Astro", emoji: "" },
-  //   { value: "Batchfile", label: "Batchfile", emoji: "" },
-  { value: "C", label: "C", emoji: "🐉" }, // C
-  { value: "C#", label: "C#", emoji: "♯" }, // C#
-  { value: "C++", label: "C++", emoji: "🚀" }, // C++
-  //   { value: "CMake", label: "CMake", emoji: "" },
-  { value: "CSS", label: "CSS", emoji: "🎨" }, // CSS
-  { value: "Cairo", label: "Cairo", emoji: "🖌️" }, // Cairo
-  //   { value: "Circom", label: "Circom", emoji: "" },
-  //   { value: "Cython", label: "Cython", emoji: "" },
-  { value: "Dart", label: "Dart", emoji: "🎯" }, // Dart
-  { value: "Dockerfile", label: "Dockerfile", emoji: "🐳" }, // Dockerfile
-  //   { value: "EJS", label: "EJS", emoji: "" },
-  //   { value: "GLSL", label: "GLSL", emoji: "" },
-  { value: "Go", label: "Go", emoji: "🏃‍♂️" }, // Go
-  //   { value: "Groovy", label: "Groovy", emoji: "" },
-  //   { value: "HCL", label: "HCL", emoji: "" },
-  { value: "HTML", label: "HTML", emoji: "🌐" }, // HTML
-  //   { value: "Handlebars", label: "Handlebars", emoji: "" },
-  { value: "Java", label: "Java", emoji: "☕" }, // Java
-  { value: "JavaScript", label: "JavaScript", emoji: "🚀" }, // JavaScript
-  { value: "Jinja", label: "Jinja", emoji: "🌀" }, // Jinja
-  { value: "Jupyter Notebook", label: "Jupyter Notebook", emoji: "📓" }, // Jupyter Notebook
-  //   { value: "Just", label: "Just", emoji: "" },
-  { value: "Kotlin", label: "Kotlin", emoji: "🎨" }, // Kotlin
-  //   { value: "M4", label: "M4", emoji: "" },
-  //   { value: "MDX", label: "MDX", emoji: "" },
-  { value: "Makefile", label: "Makefile", emoji: "🔨" }, // Makefile
-  { value: "Move", label: "Move", emoji: "🚚" }, // Move
-  //   { value: "NSIS", label: "NSIS", emoji: "" },
-  //   { value: "Nix", label: "Nix", emoji: "" },
-  { value: "Objective-C", label: "Objective-C", emoji: "🍏" }, // Objective-C
-  { value: "PLSQL", label: "PLSQL", emoji: "🐘" }, // PLSQL
-  // { value: "PLpgSQL", label: "PLpgSQL", emoji: "🐘" }, // PLpgSQL
-  { value: "PowerShell", label: "PowerShell", emoji: "💻" }, // PowerShell
-  //   { value: "Procfile", label: "Procfile", emoji: "" },
-  //   { value: "PureBasic", label: "PureBasic", emoji: "" },
-  { value: "Python", label: "Python", emoji: "🐍" }, // Python
-  //   { value: "Roff", label: "Roff", emoji: "" },
-  { value: "Ruby", label: "Ruby", emoji: "💎" }, // Ruby
   { value: "Rust", label: "Rust", emoji: "🦀" }, // Rust
-  { value: "SCSS", label: "SCSS", emoji: "🎨" }, // SCSS
-  //   { value: "Sage", label: "Sage", emoji: "" },
-  { value: "Shell", label: "Shell", emoji: "🐚" }, // Shell
-  //   { value: "Smarty", label: "Smarty", emoji: "" },
-  { value: "Solidity", label: "Solidity", emoji: "💸" }, // Solidity
-  //   { value: "Svelte", label: "Svelte", emoji: "" },
-  { value: "Swift", label: "Swift", emoji: "🚀" }, // Swift
-  //   { value: "TeX", label: "TeX", emoji: "" },
+  { value: "Ink", label: "Ink!", emoji: "🐙" }, // Ink
+  { value: "JavaScript", label: "JavaScript", emoji: "🚀" }, // JavaScript
   { value: "TypeScript", label: "TypeScript", emoji: "📜" }, // TypeScript
+  { value: "React", label: "React", emoji: "⚛️" }, // React
   { value: "Vue", label: "Vue", emoji: "🖖" }, // Vue
-  //   { value: "Zig", label: "Zig", emoji: "" },
-  //   { value: "jq", label: "jq", emoji: "" },
+  { value: "Solidity", label: "Solidity", emoji: "💸" }, // Solidity
+  { value: "Python", label: "Python", emoji: "🐍" }, // Python
+  { value: "Shell", label: "Shell", emoji: "🐚" }, // Shell
+  { value: "C", label: "C", emoji: "🐉" }, // C
+  { value: "C++", label: "C++", emoji: "🚀" }, // C++
+  { value: "CSS", label: "CSS", emoji: "🎨" }, // CSS
+  { value: "Go", label: "Go", emoji: "🏃‍♂️" }, // Go
+  { value: "HTML", label: "HTML", emoji: "🌐" }, // HTML
+  { value: "Java", label: "Java", emoji: "☕" }, // Java
 ];
 export const POLKADOT = "polkadot";
 export const SUBSTRATE = "substrate";
