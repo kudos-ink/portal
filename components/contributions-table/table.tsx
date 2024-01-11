@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import {
   Table as NuiTable,
@@ -10,7 +10,6 @@ import {
   TableCell,
 } from "@nextui-org/table";
 import { Spinner } from "@nextui-org/spinner";
-import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
 import { Contribution, PaginatedContributions } from "@/types/contribution";
 import { ExternalLink, Content, Labels, Time, Project } from "./row";
 import { useContributions } from "@/hooks/useContributions";
@@ -38,22 +37,12 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
     fetchNextPage,
     hasNextPage,
   } = useContributions(items, queries);
-  const [loaderRef, scrollerRef] = useInfiniteScroll({
-    hasMore: hasNextPage,
-    onLoadMore: fetchNextPage,
-  });
 
   const isMobile = useMediaQuery({ maxWidth: 639 }); // tailwind lg default: 640px
   const isLaptop = useMediaQuery({ minWidth: 1024 }); // tailwind lg default: 1024px
-  useEffect(() => {
-    setColumns([
-      { name: "PROJECT", uid: "project" },
-      { name: "CONTENT", uid: "content" },
-      ...(isLaptop ? [{ name: "LABELS", uid: "labels" }] : []),
-      { name: "DATE", uid: "date" },
-      ...(isMobile ? [] : [{ name: "ACTIONS", uid: "actions" }]),
-    ]);
-  }, [isMobile, isLaptop]);
+
+  const loaderRef = useRef<HTMLDivElement>(null);
+  const isFetchingRef = useRef(false);
 
   const contributions = React.useMemo(() => {
     return results?.pages.flatMap((page) => page.data) || [];
@@ -109,6 +98,38 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
     [],
   );
 
+  const handleScroll = useCallback(() => {
+    if (!hasNextPage || isFetchingRef.current) return;
+
+    const loaderElement = loaderRef.current;
+    if (loaderElement) {
+      const rect = loaderElement.getBoundingClientRect();
+      if (rect.top <= window.innerHeight) {
+        isFetchingRef.current = true;
+        fetchNextPage().then(() => {
+          isFetchingRef.current = false;
+        });
+      }
+    }
+  }, [hasNextPage, fetchNextPage]);
+
+  useEffect(() => {
+    setColumns([
+      { name: "PROJECT", uid: "project" },
+      { name: "CONTENT", uid: "content" },
+      ...(isLaptop ? [{ name: "LABELS", uid: "labels" }] : []),
+      { name: "DATE", uid: "date" },
+      ...(isMobile ? [] : [{ name: "ACTIONS", uid: "actions" }]),
+    ]);
+  }, [isMobile, isLaptop]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
+
   return (
     <>
       <div className="py-4 px-3 bg-default-100 border-small rounded-t-md">
@@ -117,18 +138,11 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
       <NuiTable
         hideHeader
         aria-label="Example table with infinite pagination"
-        baseRef={scrollerRef}
-        bottomContent={
-          hasNextPage ? (
-            <div className="flex w-full justify-center">
-              <Spinner ref={loaderRef} color="white" />
-            </div>
-          ) : null
-        }
         classNames={{
-          table: "w-full max-w-7xl border-spacing-0",
+          table:
+            "w-full max-w-7xl border-spacing-0 rounded-b-md overflow-hidden",
           wrapper:
-            "bg-background overflow-visible p-0 rounded-none border-small border-y-0",
+            "bg-background overflow-visible p-0 rounded-none border-small rounded-b-md",
           tr: "relative bg-gradient-to-r from-background to-background-200 to-80% border-y-small border-y-overlay before:content-[''] before:absolute before:bg-hover-overlay before:opacity-0 before:w-full before:h-full before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-100",
           td: "px-2 sm:px-inherit",
         }}
@@ -156,6 +170,11 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
           )}
         </TableBody>
       </NuiTable>
+      {hasNextPage && (
+        <div className="flex w-full justify-center pt-8">
+          <Spinner ref={loaderRef} color="white" />
+        </div>
+      )}
     </>
   );
 };
