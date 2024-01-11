@@ -24,20 +24,11 @@ const Toolbar = ({ searchParams }: IToolbarProps) => {
       clearFilter(paramKey);
     }
   };
-  const clearLanguagesFilter = () => {
-    clearFilter("languages");
-  };
-  const clearInterestsFilter = () => {
-    clearFilter("interests");
-  };
-  const clearProjectsFilter = () => {
-    clearFilter("projects");
-  };
   const numberOfFilters = Object.keys(filters).length;
 
   return (
-    <>
-      <div className="flex flex-nowrap overflow-x-auto gap-4">
+    <div className="flex flex-col gap-4 items-start overflow-hidden lg:flex-row lg:items-center">
+      <div className="flex flex-nowrap overflow-x-auto gap-4 w-full sm:w-auto">
         <SelectFilter
           placeholder="Languages"
           mainEmoji="🌐"
@@ -62,9 +53,9 @@ const Toolbar = ({ searchParams }: IToolbarProps) => {
       </div>
 
       {numberOfFilters > 1 && (
-        <ClearFilters onClear={clearAllFilters} value="All filters" />
+        <ClearFilters onClear={clearAllFilters} value="Clear all filters" />
       )}
-    </>
+    </div>
   );
 };
 

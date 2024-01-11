@@ -29,7 +29,13 @@ export const ClearFilters = ({ param, value, onClear }: IClearFilters) => {
   };
   return (
     <div className="flex gap-4">
-      <Chip variant="solid" onClose={clearSearchParams}>
+      <Chip
+        className="cursor-pointer"
+        variant="bordered"
+        color="danger"
+        onClick={clearSearchParams}
+        onClose={clearSearchParams}
+      >
         {value}
       </Chip>
     </div>

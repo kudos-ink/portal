@@ -39,6 +39,7 @@ export const SelectFilter = ({
     const optionUrl = createUrl(pathname, optionSearchParams);
     router.replace(optionUrl, { scroll: false });
   };
+
   const resetFilter = () => {
     handleSelectionChange("");
   };
