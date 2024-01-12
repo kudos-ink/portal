@@ -42,7 +42,7 @@ const Toolbar = ({ searchParams }: IToolbarProps) => {
     >
       <div className="container mx-auto max-w-7xl px-6 pt-6 flex flex-col gap-4">
         <div className="flex flex-col gap-4 items-start overflow-hidden lg:flex-row lg:items-center">
-          <div className="flex flex-nowrap overflow-x-auto gap-4 w-full sm:w-auto">
+          <div className="flex flex-nowrap overflow-x-auto overflow-y-hidden gap-4 w-full sm:w-auto xl:overflow-visible">
             <SelectFilter
               placeholder="Languages"
               mainEmoji="🌐"
