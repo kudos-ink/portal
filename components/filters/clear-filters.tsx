@@ -14,19 +14,18 @@ interface IClearFilters {
 export const ClearFilters = ({ param, value, onClear }: IClearFilters) => {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const params = useSearchParams();
+
   const clearSearchParams = () => {
     if (!!param) {
-      const optionNameLowerCase = param.toLowerCase();
-      const optionSearchParams = new URLSearchParams(searchParams.toString());
-      optionSearchParams.delete(optionNameLowerCase);
-      const optionUrl = createUrl(pathname, optionSearchParams);
-      router.replace(optionUrl);
+      const newUrl = createUrl(param, null, pathname, params);
+      router.replace(newUrl);
     } else {
       router.replace(pathname);
     }
     onClear();
   };
+
   return (
     <div className="flex gap-4">
       <Chip
