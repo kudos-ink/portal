@@ -1,4 +1,6 @@
 import NextLink from "next/link";
+import { Button } from "@nextui-org/button";
+import { Tooltip } from "@nextui-org/tooltip";
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -37,10 +39,20 @@ export const Navbar = () => {
           <Link
             isExternal
             href={SITE_CONFIG.links.bugReport}
+            target="_blank"
             aria-label="Bug report"
             title="Report a bug"
           >
-            <BugIcon className="text-default-500" />
+            <Tooltip content="Report a bug">
+              <Button
+                size="sm"
+                isIconOnly
+                aria-label="Report a bug"
+                variant="flat"
+              >
+                <BugIcon className="text-default-500" />
+              </Button>
+            </Tooltip>
           </Link>
         </NavbarItem>
       </NavbarContent>
