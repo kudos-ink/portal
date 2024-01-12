@@ -7,7 +7,11 @@ import { ValidRepositoryLink } from "@/lib/notion/types";
 import projectLogosJson from "@/public/images/imageMap.json";
 import { Contribution } from "@/types/contribution";
 import { getImagePath } from "./github";
-import { REPOSITORIES_BY_INTERESTS } from "@/data/filters";
+import {
+  GOOD_FIRST_ISSUE_KEY,
+  GOOD_FIRST_ISSUE_LABELS,
+  REPOSITORIES_BY_INTERESTS,
+} from "@/data/filters";
 
 export function transformNotionDataToContributions(
   notionData: QueryDatabaseResponse,
@@ -61,7 +65,6 @@ export function processNotionFilters(params?: {
       REPO_LINK_TO_PAGE_ID_MAP[
         params.projects as unknown as ValidRepositoryLink
       ];
-    console.log(repositories);
     filters.push({
       property: "Github Repo",
       relation: {
@@ -84,6 +87,17 @@ export function processNotionFilters(params?: {
       })),
     };
     filters.push(interestsFilter);
+  }
+
+  if (params?.[GOOD_FIRST_ISSUE_KEY]) {
+    filters.push({
+      or: GOOD_FIRST_ISSUE_LABELS.map((label) => ({
+        property: "Issue Labels",
+        multi_select: {
+          contains: label,
+        },
+      })),
+    });
   }
 
   if (filters.length === 1) {
