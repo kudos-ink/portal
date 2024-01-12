@@ -1,3 +1,5 @@
+export const GOOD_FIRST_ISSUE_KEY = "good-first-issue";
+
 export const LANGUAGES_OPTIONS = [
   { value: "Rust", label: "Rust", emoji: "🦀" }, // Rust
   { value: "Ink", label: "Ink!", emoji: "🐙" }, // Ink
