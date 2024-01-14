@@ -26,14 +26,14 @@ export default async function Home({ searchParams }: IHomeProps) {
   };
 
   return (
-    <div>
-      <section className="flex flex-col items-center text-center pt-10 pb-28">
+    <>
+      <section className="flex flex-col items-center text-center pt-10 pb-26 px-6 container mx-auto max-w-7xl">
         <h1 className={title()}>Find Collaborations,</h1>
         <h1 className={title()}>Collect Kudos</h1>
       </section>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col">
         <Toolbar searchParams={searchParams} />
-        <div>
+        <section className="px-6 container mx-auto max-w-7xl">
           <ContributionsTable
             items={items}
             queries={{
@@ -41,8 +41,8 @@ export default async function Home({ searchParams }: IHomeProps) {
               filter,
             }}
           />
-        </div>
+        </section>
       </div>
-    </div>
+    </>
   );
 }

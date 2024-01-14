@@ -132,9 +132,6 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
 
   return (
     <>
-      <div className="py-4 px-3 bg-default-100 border-small rounded-t-md">
-        <span className="text-lg font-bold">Good First Contributions</span>
-      </div>
       <NuiTable
         hideHeader
         aria-label="Example table with infinite pagination"
