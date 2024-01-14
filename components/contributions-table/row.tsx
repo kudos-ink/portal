@@ -7,7 +7,7 @@ import { useState, useRef, useEffect } from "react";
 const MAX_LABEL_WIDTH = 192;
 
 interface IProjectProps {
-  avatarSrc: string;
+  avatarSrc: string | null;
   name: string;
   repository: string;
 }
@@ -25,20 +25,22 @@ export const Project = ({ avatarSrc, name, repository }: IProjectProps) => {
 
 interface IAvatarProps {
   alt: string;
-  src: string;
+  src: string | null;
 }
 
 const Avatar = ({ alt, src }: IAvatarProps) => {
   return (
     <div className="bg-foreground rounded-md min-w-[45px] shrink-0">
-      <MyImage
-        className="border"
-        src={src}
-        alt={alt}
-        radius="sm"
-        height={45}
-        width={45}
-      />
+      {src !== null && (
+        <MyImage
+          className="border"
+          src={src}
+          alt={alt}
+          radius="sm"
+          height={45}
+          width={45}
+        />
+      )}
     </div>
   );
 };
