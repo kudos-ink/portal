@@ -1,5 +1,6 @@
 import ContributionsTable from "@/components/contributions-table/table";
 import Toolbar from "@/components/filters/toolbar";
+import CtaBanner from "@/components/cta-banner";
 import { title } from "@/components/primitives";
 import { queryDatabase } from "@/lib/notion";
 import { SearchParams } from "@/types/filters";
@@ -31,7 +32,8 @@ export default async function Home({ searchParams }: IHomeProps) {
         <h1 className={title()}>Find Collaborations,</h1>
         <h1 className={title()}>Collect Kudos</h1>
       </section>
-      <div className="flex flex-col">
+      <CtaBanner />
+      <div className="flex flex-col pt-10">
         <Toolbar searchParams={searchParams} />
         <section className="px-6 container mx-auto max-w-7xl">
           <ContributionsTable
