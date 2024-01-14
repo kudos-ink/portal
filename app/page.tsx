@@ -27,7 +27,7 @@ export default async function Home({ searchParams }: IHomeProps) {
 
   return (
     <>
-      <section className="flex flex-col items-center text-center pt-10 pb-26 px-6 container mx-auto max-w-7xl">
+      <section className="flex flex-col items-center text-center pt-10 pb-24 px-6 container mx-auto max-w-7xl">
         <h1 className={title()}>Find Collaborations,</h1>
         <h1 className={title()}>Collect Kudos</h1>
       </section>
