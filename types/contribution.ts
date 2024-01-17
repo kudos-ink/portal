@@ -6,6 +6,7 @@ export type Contribution = {
   labels: string[];
   languages: string[];
   project: string;
+  organization: string;
   repository: string;
   title: string;
   timestamp: string;

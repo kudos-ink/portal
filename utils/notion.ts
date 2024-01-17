@@ -20,6 +20,9 @@ export function transformNotionDataToContributions(
     const properties = currentItem.properties;
 
     const [avatarKey, id] = properties["Issue Link"].url.split("/issues/");
+    const urlElements = avatarKey.split("/");
+    const repository = urlElements.pop();
+    const organization = urlElements.pop();
     const contribution: Contribution = {
       id,
       avatar: getImagePath(avatarKey, projectLogosJson), // Assuming getImagePath is a defined function
@@ -31,7 +34,8 @@ export function transformNotionDataToContributions(
       ),
       project:
         properties["Project Name"].rollup.array[0].rich_text[0].plain_text,
-      repository: avatarKey.split("/").pop(),
+      organization,
+      repository,
       title: properties["Issue Title"].title[0].text.content,
       timestamp: properties["Opened Date"].date.start,
       url: properties["Issue Link"].url,

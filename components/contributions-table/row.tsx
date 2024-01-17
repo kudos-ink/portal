@@ -3,21 +3,56 @@ import { Link } from "@nextui-org/link";
 import MyImage from "@/components/ui/image";
 import { formatDate } from "@/utils/date";
 import { useState, useRef, useEffect } from "react";
+import { getProjectUrls } from "@/utils/github";
 
 const MAX_LABEL_WIDTH = 192;
 
 interface IProjectProps {
   avatarSrc: string | null;
   name: string;
+  organization: string;
   repository: string;
 }
-export const Project = ({ avatarSrc, name, repository }: IProjectProps) => {
+export const Project = ({
+  avatarSrc,
+  name,
+  organization,
+  repository,
+}: IProjectProps) => {
+  const { organizationUrl, repositoryUrl } = getProjectUrls(
+    organization,
+    repository,
+  );
   return (
     <div className="flex md:gap-4">
-      <Project.Avatar alt={`${name} logo`} src={avatarSrc} />
+      <Link
+        className="w-fit"
+        isExternal
+        href={organizationUrl}
+        color="foreground"
+        title={`${name}'s organization on Github`}
+      >
+        <Project.Avatar alt={`${name} logo`} src={avatarSrc} />
+      </Link>
       <div className="hidden md:flex flex-col w-36">
-        <h2 className="font-semibold truncate">{name}</h2>
-        <p className="text-small text-default-500 truncate">{repository}</p>
+        <Link
+          className="w-fit"
+          isExternal
+          href={organizationUrl}
+          color="foreground"
+          title={`${name}'s organization on Github`}
+        >
+          <h2 className="font-semibold truncate">{name}</h2>
+        </Link>
+        <Link
+          className="w-fit"
+          isExternal
+          href={repositoryUrl}
+          color="foreground"
+          title={`${name}'s repository on Github`}
+        >
+          <p className="text-small text-default-500 truncate">{repository}</p>
+        </Link>
       </div>
     </div>
   );
@@ -52,18 +87,28 @@ interface IContentProps {
   project: string;
   repository: string;
   languages: string[]; //TODO: make it an enum type with available languages from filters
+  url: string;
 }
 export const Content = ({
   title,
   project,
   repository,
   languages,
+  url,
 }: IContentProps) => {
   return (
     <div className="flex flex-col space-y-unit-1 md:space-y-0">
-      <h3 className="font-semibold max-w-48 sm:truncate sm:max-w-80 lg:max-w-64 xl:max-w-96">
-        {title}
-      </h3>
+      <Link
+        className="w-fit"
+        isExternal
+        href={url}
+        color="foreground"
+        title="Open task on Github"
+      >
+        <h3 className="font-semibold max-w-48 sm:truncate sm:max-w-80 lg:max-w-64 xl:max-w-96">
+          {title}
+        </h3>
+      </Link>
       <span className="text-small text-default-500 max-w-48 truncate md:hidden">{`${project} / ${repository}`}</span>
       <div className="flex gap-1 mt-[1px]">
         {languages.map((language, idx) => (
@@ -156,6 +201,13 @@ interface IExternalLinkProps {
 }
 export const ExternalLink = ({ href, title }: IExternalLinkProps) => {
   return (
-    <Link isBlock showAnchorIcon href={href} color="foreground" title={title} />
+    <Link
+      isBlock
+      isExternal
+      showAnchorIcon
+      href={href}
+      color="foreground"
+      title={title}
+    />
   );
 };

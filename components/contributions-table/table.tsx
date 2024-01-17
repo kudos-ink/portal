@@ -58,6 +58,7 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
             <Project
               avatarSrc={item.avatar}
               name={item.project}
+              organization={item.organization}
               repository={item.repository}
             />
           );
@@ -68,6 +69,7 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
               project={item.project}
               repository={item.repository}
               languages={item.languages}
+              url={item.url}
             />
           );
         case "labels":
