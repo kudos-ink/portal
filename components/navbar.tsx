@@ -55,6 +55,21 @@ export const Navbar = () => {
             </Tooltip>
           </Link>
         </NavbarItem>
+        <NavbarItem>
+          <Link
+            isExternal
+            href={SITE_CONFIG.links.includeProject}
+            target="_blank"
+            aria-label="Include your project"
+            title="Include your project"
+          >
+            <Tooltip content="Maintaining a project?">
+              <Button className="font-semibold" color="primary" size="sm">
+                Include your project
+              </Button>
+            </Tooltip>
+          </Link>
+        </NavbarItem>
       </NavbarContent>
     </NextUINavbar>
   );

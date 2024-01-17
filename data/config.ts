@@ -7,6 +7,8 @@ export const SITE_CONFIG = {
     twitter: "https://twitter.com/kudos_ink",
     bugReport:
       "https://github.com/kudos-ink/portal/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml&title=",
+    includeProject:
+      "https://github.com/kudos-ink/repository-classification/issues/new?labels=new-project&template=NEW_PROJECT.yaml&title=%5BAdd%5D%3A+",
   },
 };
 
