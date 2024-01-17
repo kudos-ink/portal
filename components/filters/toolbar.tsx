@@ -1,4 +1,5 @@
 "use client";
+import { useRef } from "react";
 import {
   LANGUAGES_OPTIONS,
   INTERESTS_OPTIONS,
@@ -7,11 +8,11 @@ import {
 } from "@/data/filters";
 import { useFilters } from "@/hooks/useFilters";
 import useSticky from "@/hooks/useSticky";
+import { containerStyle } from "@/styles";
 import { SearchParams } from "@/types/filters";
 import CheckboxFilter from "./checkbox-filter";
 import ClearFilters from "./clear-filters";
 import SelectFilter from "./select-filter";
-import { useRef } from "react";
 interface IToolbarProps {
   searchParams: SearchParams;
 }
@@ -40,7 +41,7 @@ const Toolbar = ({ searchParams }: IToolbarProps) => {
       }`}
       ref={toolbarRef}
     >
-      <div className="container mx-auto max-w-7xl px-6 pt-6 flex flex-col gap-4">
+      <div className={`pt-6 flex flex-col gap-4 ${containerStyle}`}>
         <div className="flex flex-col gap-4 items-start overflow-hidden lg:flex-row lg:items-center">
           <div className="flex flex-nowrap overflow-x-auto overflow-y-hidden gap-4 w-full sm:w-auto xl:overflow-visible">
             <SelectFilter
