@@ -1,11 +1,12 @@
+import { useState, useRef, useEffect, useMemo } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { Chip } from "@nextui-org/chip";
 import { Link } from "@nextui-org/link";
 import { Tooltip } from "@nextui-org/tooltip";
 import Emoji from "@/components/emoji";
 import MyImage from "@/components/ui/image";
+import { useFilters } from "@/contexts/filters";
 import { formatDate } from "@/utils/date";
-import { useState, useRef, useEffect, useMemo } from "react";
 import { getProjectUrls } from "@/utils/github";
 import {
   findInterestsByProject,
@@ -145,6 +146,8 @@ export const Labels = ({
   const pathname = usePathname();
   const params = useSearchParams();
 
+  const { updateFilter } = useFilters();
+
   const [visibleLabelCount, setVisibleLabelCount] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
   const indicatorRef = useRef<HTMLDivElement>(null);
@@ -163,6 +166,7 @@ export const Labels = ({
 
   const handleClick = (label: { type: string; value: string }) => {
     const paramKey = label.type;
+    updateFilter(paramKey, label.value);
     const newUrl = createUrl(paramKey, label.value, pathname, params);
     router.replace(newUrl, { scroll: false });
   };

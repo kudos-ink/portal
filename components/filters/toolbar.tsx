@@ -1,5 +1,6 @@
 "use client";
 import { useRef } from "react";
+import { useFilters } from "@/contexts/filters";
 import {
   LANGUAGES_OPTIONS,
   INTERESTS_OPTIONS,
@@ -9,7 +10,6 @@ import {
   LANGUAGES_KEY,
   PROJECTS_KEY,
 } from "@/data/filters";
-import { useFilters } from "@/hooks/useFilters";
 import useSticky from "@/hooks/useSticky";
 import { containerStyle } from "@/styles";
 import { SearchParams } from "@/types/filters";
@@ -24,9 +24,7 @@ const Toolbar = ({ searchParams }: IToolbarProps) => {
   const toolbarRef = useRef<HTMLDivElement>(null);
   const isToolbarSticky = useSticky(toolbarRef);
 
-  const { filters, updateFilter, clearFilter, clearAllFilters } = useFilters({
-    initialParams: searchParams,
-  });
+  const { filters, updateFilter, clearFilter, clearAllFilters } = useFilters();
 
   const handleSelect = (paramKey: string) => (value: string | null) => {
     if (value) {

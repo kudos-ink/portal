@@ -1,9 +1,10 @@
-import ContributionsTable from "@/components/contributions-table/table";
-import Toolbar from "@/components/filters/toolbar";
+import ControlledTable from "@/components/controlled-table";
 import CtaBanner from "@/components/cta-banner";
 import { title } from "@/components/primitives";
 import { queryDatabase } from "@/lib/notion";
 import { containerStyle } from "@/styles";
+import { PaginatedCustomDataResponse } from "@/types";
+import { Contribution } from "@/types/contribution";
 import { SearchParams } from "@/types/filters";
 import {
   processNotionFilters,
@@ -21,7 +22,7 @@ export default async function Home({ searchParams }: IHomeProps) {
     filter,
   });
   const contributions = transformNotionDataToContributions(data);
-  const items = {
+  const items: PaginatedCustomDataResponse<Contribution> = {
     data: contributions,
     hasMore: data.has_more,
     nextCursor: data.next_cursor ?? undefined,
@@ -38,17 +39,12 @@ export default async function Home({ searchParams }: IHomeProps) {
       <section className={containerStyle}>
         <CtaBanner />
       </section>
-      <div className="flex flex-col pt-10">
-        <Toolbar searchParams={searchParams} />
-        <section className={containerStyle}>
-          <ContributionsTable
-            items={items}
-            queries={{
-              page_size: 10,
-              filter,
-            }}
-          />
-        </section>
+      <div className="pt-10">
+        <ControlledTable
+          filter={filter}
+          items={items}
+          searchParams={searchParams}
+        />
       </div>
     </>
   );
