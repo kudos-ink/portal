@@ -48,8 +48,8 @@ export const metadata: Metadata = {
     title: SITE_CONFIG.name,
     description: SITE_CONFIG.description,
     card: "summary_large_image",
-    site: "@kudos_ink",
-    creator: "@kudos_ink",
+    site: "@KudosPortal",
+    creator: "@KudosPortal",
   },
 };
 
