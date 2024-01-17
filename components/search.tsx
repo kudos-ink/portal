@@ -24,7 +24,7 @@ const Search: FC<SearchProps> = ({
 
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const params = useSearchParams();
 
   useEffect(() => {
     setValue(selectedValue || "");
@@ -34,16 +34,10 @@ const Search: FC<SearchProps> = ({
     if (value === undefined || value === "") {
       return;
     }
-    const optionNameLowerCase = placeholder.toLowerCase();
-    const optionSearchParams = new URLSearchParams(searchParams.toString());
-    if (value !== null) {
-      optionSearchParams.set(optionNameLowerCase, value);
-    } else {
-      optionSearchParams.delete(optionNameLowerCase);
-    }
-    const optionUrl = createUrl(pathname, optionSearchParams);
-    router.replace(optionUrl, { scroll: false });
+    const newUrl = createUrl(placeholder, value, pathname, params);
+    router.replace(newUrl, { scroll: false });
   }, [value]);
+
   return (
     <Autocomplete
       placeholder={placeholder}

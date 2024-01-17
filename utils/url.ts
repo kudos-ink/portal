@@ -1,11 +1,21 @@
 import { ReadonlyURLSearchParams } from "next/navigation";
 
 export const createUrl = (
+  key: string,
+  value: string | null | undefined,
   pathname: string,
   params: URLSearchParams | ReadonlyURLSearchParams,
 ) => {
-  const paramsString = params.toString();
-  const queryString = `${paramsString.length ? "?" : ""}${paramsString}`;
+  const keyLowerCase = key.toLowerCase();
+  const searchParams = new URLSearchParams(params.toString());
+  if (value) {
+    searchParams.set(keyLowerCase, value.toString());
+  } else {
+    searchParams.delete(keyLowerCase);
+  }
 
-  return `${pathname}${queryString}`;
+  const newParams = searchParams.toString();
+  const queryString = `${newParams.length ? "?" : ""}${newParams}`;
+  const url = `${pathname}${queryString}`;
+  return url;
 };

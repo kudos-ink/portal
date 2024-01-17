@@ -3,10 +3,12 @@ import {
   LANGUAGES_OPTIONS,
   INTERESTS_OPTIONS,
   PROJECTS_OPTIONS,
+  GOOD_FIRST_ISSUE_KEY,
 } from "@/data/filters";
 import { useFilters } from "@/hooks/useFilters";
 import useSticky from "@/hooks/useSticky";
 import { SearchParams } from "@/types/filters";
+import CheckboxFilter from "./checkbox-filter";
 import ClearFilters from "./clear-filters";
 import SelectFilter from "./select-filter";
 import { useRef } from "react";
@@ -22,7 +24,7 @@ const Toolbar = ({ searchParams }: IToolbarProps) => {
     initialParams: searchParams,
   });
 
-  const handleSelect = (paramKey: string) => (value: string) => {
+  const handleSelect = (paramKey: string) => (value: string | null) => {
     if (value) {
       updateFilter(paramKey, value);
     } else {
@@ -40,7 +42,7 @@ const Toolbar = ({ searchParams }: IToolbarProps) => {
     >
       <div className="container mx-auto max-w-7xl px-6 pt-6 flex flex-col gap-4">
         <div className="flex flex-col gap-4 items-start overflow-hidden lg:flex-row lg:items-center">
-          <div className="flex flex-nowrap overflow-x-auto gap-4 w-full sm:w-auto">
+          <div className="flex flex-nowrap overflow-x-auto overflow-y-hidden gap-4 w-full sm:w-auto xl:overflow-visible">
             <SelectFilter
               placeholder="Languages"
               mainEmoji="🌐"
@@ -61,6 +63,12 @@ const Toolbar = ({ searchParams }: IToolbarProps) => {
               options={PROJECTS_OPTIONS}
               selectedKey={filters.projects}
               onSelect={handleSelect("projects")}
+            />
+            <CheckboxFilter
+              paramKey={GOOD_FIRST_ISSUE_KEY}
+              placeholder="Good first issues Only"
+              isSelected={filters[GOOD_FIRST_ISSUE_KEY] === "true"}
+              onSelect={handleSelect(GOOD_FIRST_ISSUE_KEY)}
             />
           </div>
 

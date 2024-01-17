@@ -1,3 +1,12 @@
+export const GOOD_FIRST_ISSUE_KEY = "good-first-issue";
+export const GOOD_FIRST_ISSUE_LABELS = [
+  "good first issue",
+  "C-good-first-issue",
+  "good first issue :baby:",
+  "c1-mentor",
+  "d0-easy",
+];
+
 export const LANGUAGES_OPTIONS = [
   { value: "Rust", label: "Rust", emoji: "🦀" }, // Rust
   { value: "Ink", label: "Ink!", emoji: "🐙" }, // Ink

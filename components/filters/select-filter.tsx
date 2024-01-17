@@ -24,20 +24,13 @@ export const SelectFilter = ({
 }: ISelectFilterProps) => {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const params = useSearchParams();
 
   const handleSelectionChange = (selection: unknown) => {
     const selectedValue = Array.from(selection as Iterable<string>)[0];
     onSelect(selectedValue);
-    const optionNameLowerCase = placeholder.toLowerCase();
-    const optionSearchParams = new URLSearchParams(searchParams.toString());
-    if (selectedValue) {
-      optionSearchParams.set(optionNameLowerCase, selectedValue);
-    } else {
-      optionSearchParams.delete(optionNameLowerCase);
-    }
-    const optionUrl = createUrl(pathname, optionSearchParams);
-    router.replace(optionUrl, { scroll: false });
+    const newUrl = createUrl(placeholder, selectedValue, pathname, params);
+    router.replace(newUrl, { scroll: false });
   };
 
   const resetFilter = () => {
