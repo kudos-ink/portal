@@ -1,5 +1,5 @@
 import React from "react";
-import ContributionsTable from "@/components/contributions-table/table";
+import ContributionsTable from "@/components/table/table";
 import Toolbar from "@/components/filters/toolbar";
 import { container } from "@/components/primitives";
 import { FiltersProvider } from "@/contexts/filters";
