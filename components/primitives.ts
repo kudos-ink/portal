@@ -51,3 +51,7 @@ export const subtitle = tv({
     fullWidth: true,
   },
 });
+
+export const container = tv({
+  base: "px-6 container mx-auto max-w-7xl",
+});
