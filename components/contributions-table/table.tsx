@@ -73,7 +73,13 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
             />
           );
         case "labels":
-          return <Labels labels={item.labels} />;
+          return (
+            <Labels
+              languages={item.languages}
+              organization={item.organization}
+              repository={item.repository}
+            />
+          );
         case "date":
           return (
             <div className="flex flex-col items-center gap-2">

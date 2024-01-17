@@ -5,6 +5,9 @@ import {
   INTERESTS_OPTIONS,
   PROJECTS_OPTIONS,
   GOOD_FIRST_ISSUE_KEY,
+  INTEREST_KEY,
+  LANGUAGES_KEY,
+  PROJECTS_KEY,
 } from "@/data/filters";
 import { useFilters } from "@/hooks/useFilters";
 import useSticky from "@/hooks/useSticky";
@@ -45,25 +48,25 @@ const Toolbar = ({ searchParams }: IToolbarProps) => {
         <div className="flex flex-col gap-4 items-start overflow-hidden lg:flex-row lg:items-center">
           <div className="flex flex-nowrap overflow-x-auto overflow-y-hidden gap-4 w-full sm:w-auto xl:overflow-visible">
             <SelectFilter
-              placeholder="Languages"
+              placeholder={LANGUAGES_KEY}
               mainEmoji="🌐"
               options={LANGUAGES_OPTIONS}
               selectedKey={filters.languages}
-              onSelect={handleSelect("languages")}
+              onSelect={handleSelect(LANGUAGES_KEY)}
             />
             <SelectFilter
-              placeholder="Interests"
+              placeholder={INTEREST_KEY}
               mainEmoji="🪄"
               options={INTERESTS_OPTIONS}
               selectedKey={filters.interests}
-              onSelect={handleSelect("interests")}
+              onSelect={handleSelect(INTEREST_KEY)}
             />
             <SelectFilter
-              placeholder="Projects"
+              placeholder={PROJECTS_KEY}
               mainEmoji="🖥️"
               options={PROJECTS_OPTIONS}
               selectedKey={filters.projects}
-              onSelect={handleSelect("projects")}
+              onSelect={handleSelect(PROJECTS_KEY)}
             />
             <CheckboxFilter
               paramKey={GOOD_FIRST_ISSUE_KEY}

@@ -1,9 +1,19 @@
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { Chip } from "@nextui-org/chip";
 import { Link } from "@nextui-org/link";
+import { Tooltip } from "@nextui-org/tooltip";
+import Emoji from "@/components/emoji";
 import MyImage from "@/components/ui/image";
 import { formatDate } from "@/utils/date";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { getProjectUrls } from "@/utils/github";
+import {
+  findInterestsByProject,
+  findLanguages,
+  shuffleArray,
+} from "@/utils/filters";
+import { createUrl } from "@/utils/url";
+import { INTEREST_KEY, LANGUAGES_KEY } from "@/data/filters";
 
 const MAX_LABEL_WIDTH = 192;
 
@@ -122,12 +132,40 @@ export const Content = ({
 };
 
 interface ILabelsProps {
-  labels: string[];
+  languages: string[];
+  organization: string;
+  repository: string;
 }
-export const Labels = ({ labels }: ILabelsProps) => {
+export const Labels = ({
+  languages,
+  organization,
+  repository,
+}: ILabelsProps) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useSearchParams();
+
   const [visibleLabelCount, setVisibleLabelCount] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
   const indicatorRef = useRef<HTMLDivElement>(null);
+
+  const interests = findInterestsByProject(`${organization}/${repository}`);
+  const fullLanguages = findLanguages(languages);
+
+  const labels = useMemo(
+    () =>
+      shuffleArray([
+        ...fullLanguages.map((label) => ({ ...label, type: LANGUAGES_KEY })),
+        ...interests.map((interest) => ({ ...interest, type: INTEREST_KEY })),
+      ]),
+    [fullLanguages, interests],
+  );
+
+  const handleClick = (label: { type: string; value: string }) => {
+    const paramKey = label.type;
+    const newUrl = createUrl(paramKey, label.value, pathname, params);
+    router.replace(newUrl, { scroll: false });
+  };
 
   useEffect(() => {
     const calculateVisibleLabels = () => {
@@ -167,7 +205,7 @@ export const Labels = ({ labels }: ILabelsProps) => {
     return () => {
       window.removeEventListener("resize", calculateVisibleLabels);
     };
-  }, [labels]);
+  }, [labels.length]);
 
   return (
     <div
@@ -175,14 +213,28 @@ export const Labels = ({ labels }: ILabelsProps) => {
       className={`flex max-w-[${MAX_LABEL_WIDTH}px] overflow-hidden`}
     >
       {labels.slice(0, visibleLabelCount).map((label, index) => (
-        <Chip className="mx-1" key={index}>
-          {label}
-        </Chip>
+        <Tooltip content="Add to filters" key={index}>
+          <Chip
+            className="mx-1 cursor-pointer"
+            onClick={() => handleClick(label)}
+          >
+            <Emoji emoji={label.emoji} className="text-xl" />
+            &nbsp;
+            {label.label}
+          </Chip>
+        </Tooltip>
       ))}
       {labels.length > visibleLabelCount && (
-        <div ref={indicatorRef} className="flex items-center ml-1 text-xs">
-          +{labels.length - visibleLabelCount}
-        </div>
+        <Tooltip
+          content={labels
+            .slice(visibleLabelCount)
+            .map(({ emoji, label }) => `${emoji} ${label}`)
+            .join("  -  ")}
+        >
+          <div ref={indicatorRef} className="flex items-center ml-1 text-xs">
+            +{labels.length - visibleLabelCount}
+          </div>
+        </Tooltip>
       )}
     </div>
   );
