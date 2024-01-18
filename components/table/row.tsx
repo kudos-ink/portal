@@ -34,7 +34,6 @@ export const Project = ({
     organization,
     repository,
   );
-  console.log({ avatarSrc });
   return (
     <div className="flex md:gap-4">
       <Link
