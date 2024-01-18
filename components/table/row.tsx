@@ -34,6 +34,7 @@ export const Project = ({
     organization,
     repository,
   );
+  console.log({ avatarSrc });
   return (
     <div className="flex md:gap-4">
       <Link
@@ -97,16 +98,9 @@ interface IContentProps {
   title: string;
   project: string;
   repository: string;
-  languages: string[]; //TODO: make it an enum type with available languages from filters
   url: string;
 }
-export const Content = ({
-  title,
-  project,
-  repository,
-  languages,
-  url,
-}: IContentProps) => {
+export const Content = ({ title, project, repository, url }: IContentProps) => {
   return (
     <div className="flex flex-col space-y-unit-1 md:space-y-0">
       <Link
@@ -116,18 +110,11 @@ export const Content = ({
         color="foreground"
         title="Open task on Github"
       >
-        <h3 className="font-semibold max-w-48 sm:truncate sm:max-w-80 lg:max-w-64 xl:max-w-96">
+        <h3 className="font-semibold max-w-48 sm:max-w-80 lg:max-w-64 xl:max-w-96 line-clamp-2 capitalize">
           {title}
         </h3>
       </Link>
       <span className="text-small text-default-500 max-w-48 truncate md:hidden">{`${project} / ${repository}`}</span>
-      <div className="flex gap-1 mt-[1px]">
-        {languages.map((language, idx) => (
-          <Chip key={idx} className="mx-1" variant="bordered" size="sm">
-            {language}
-          </Chip>
-        ))}
-      </div>
     </div>
   );
 };
