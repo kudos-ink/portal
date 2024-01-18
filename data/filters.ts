@@ -51,7 +51,7 @@ export const WALLET = "wallet";
 export const AI = "ai";
 
 export const INTERESTS_OPTIONS = [
-  { value: POLKADOT, label: "Polkadot", emoji: "🔗" },
+  { value: POLKADOT, label: "Polkadot", emoji: "🟣" },
   { value: SUBSTRATE, label: "Substrate", emoji: "🌐" },
   { value: KUSAMA, label: "Kusama", emoji: "🐤" },
   { value: EVM, label: "EVM", emoji: "💻" },
