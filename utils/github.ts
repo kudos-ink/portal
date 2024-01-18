@@ -1,11 +1,19 @@
-import { ProjectLogoImages } from "@/lib/notion/types";
-
 export function getImagePath(
   githubUrl: string,
-  projectLogos: ProjectLogoImages,
+  projectLogos: { [key: string]: string },
 ): string | null {
-  const endpoint = projectLogos[githubUrl];
-  return endpoint ? "/images/" + endpoint : null;
+  const lowerCaseGithubUrl = githubUrl.toLowerCase();
+
+  for (const key in projectLogos) {
+    if (
+      projectLogos.hasOwnProperty(key) &&
+      key.toLowerCase() === lowerCaseGithubUrl
+    ) {
+      return "/images/" + projectLogos[key];
+    }
+  }
+
+  return null;
 }
 
 export const getProjectUrls = (organization: string, repository?: string) => {

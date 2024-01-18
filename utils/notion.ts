@@ -25,7 +25,7 @@ export function transformNotionDataToContributions(
     const organization = urlElements.pop();
     const contribution: Contribution = {
       id,
-      avatar: getImagePath(avatarKey, projectLogosJson), // Assuming getImagePath is a defined function
+      avatar: getImagePath(avatarKey, projectLogosJson),
       labels: properties["Issue Labels"].multi_select.map(
         (label: any) => label.name,
       ),
