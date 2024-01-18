@@ -36,7 +36,7 @@ const Search: FC<SearchProps> = ({
     }
     const newUrl = createUrl(placeholder, value, pathname, params);
     router.replace(newUrl, { scroll: false });
-  }, [value]);
+  }, [params, pathname, placeholder, router, value]);
 
   return (
     <Autocomplete

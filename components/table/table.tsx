@@ -68,7 +68,6 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
               title={item.title}
               project={item.project}
               repository={item.repository}
-              languages={item.languages}
               url={item.url}
             />
           );
