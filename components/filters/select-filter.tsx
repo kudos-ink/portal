@@ -27,10 +27,11 @@ export const SelectFilter = ({
 
   const handleSelectionChange = (selection: unknown) => {
     onSelect(Array.from(selection as Set<string>));
+    const currentPath = pathname === "/" ? "/explore/" : pathname;
     const newUrl = createUrl(
       placeholder,
       Array.from(selection as Set<string>),
-      pathname,
+      currentPath,
     );
     router.replace(newUrl, { scroll: false });
   };

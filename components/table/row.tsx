@@ -164,7 +164,8 @@ export const Labels = ({
 
   const handleClick = (key: FilterKeys, values: string[]) => {
     updateFilter(key, values);
-    const newUrl = createUrl(key, values, pathname);
+    const currentPath = pathname === "/" ? "/explore/" : pathname;
+    const newUrl = createUrl(key, values, currentPath);
     router.replace(newUrl, { scroll: false });
   };
 
