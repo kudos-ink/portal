@@ -7,6 +7,7 @@ import {
 import { decodingSlug } from "@/utils/url";
 import { queryDatabase } from "@/lib/notion";
 import ControlledTable from "@/components/controlled-table";
+import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
 
 export default async function ExplorePage({
   params,
@@ -16,7 +17,7 @@ export default async function ExplorePage({
   const filters = decodingSlug(params.slug);
   const queryFilter = processNotionFilters(filters);
   const data = await queryDatabase({
-    page_size: 10,
+    page_size: DEFAULT_PAGE_SIZE,
     filter: queryFilter,
   });
   const contributions = transformNotionDataToContributions(data);

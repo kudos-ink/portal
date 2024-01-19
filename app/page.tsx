@@ -1,6 +1,7 @@
 import ControlledTable from "@/components/controlled-table";
 import CtaBanner from "@/components/cta-banner";
 import { container, title } from "@/components/primitives";
+import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
 import { queryDatabase } from "@/lib/notion";
 import { PaginatedCustomDataResponse } from "@/types";
 import { Contribution } from "@/types/contribution";
@@ -10,7 +11,7 @@ import { transformNotionDataToContributions } from "@/utils/notion";
 export default async function Home() {
   const filters = initFilters();
   const data = await queryDatabase({
-    page_size: 10,
+    page_size: DEFAULT_PAGE_SIZE,
   });
   const contributions = transformNotionDataToContributions(data);
   const items: PaginatedCustomDataResponse<Contribution> = {

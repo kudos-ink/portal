@@ -6,6 +6,7 @@ import { FiltersProvider } from "@/contexts/filters";
 import { PaginatedCustomDataResponse } from "@/types";
 import { Contribution } from "@/types/contribution";
 import { Filters } from "@/types/filters";
+import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
 
 interface IControlledTableProps {
   items: PaginatedCustomDataResponse<Contribution>;
@@ -25,7 +26,7 @@ const ControlledTable = ({
           <ContributionsTable
             items={items}
             queries={{
-              page_size: 10,
+              page_size: DEFAULT_PAGE_SIZE,
               filter: queryFilter,
             }}
           />

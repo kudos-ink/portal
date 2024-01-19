@@ -7,6 +7,7 @@ import { queryDatabase } from "@/lib/notion";
 import { transformNotionDataToContributions } from "@/utils/notion";
 import { PaginatedContributions } from "@/types/contribution";
 import { KudosQueryParameters } from "@/lib/notion/types";
+import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
 
 type PageParamType = string | undefined;
 
@@ -25,7 +26,7 @@ export const useContributions = (
     queryFn: async ({ pageParam: next_cursor }) => {
       const response = await queryDatabase({
         ...queries,
-        page_size: 10,
+        page_size: DEFAULT_PAGE_SIZE,
         start_cursor: next_cursor,
       });
       return {
