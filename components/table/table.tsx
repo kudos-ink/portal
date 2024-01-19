@@ -11,9 +11,14 @@ import {
 } from "@nextui-org/table";
 import { Spinner } from "@nextui-org/spinner";
 import { Contribution, PaginatedContributions } from "@/types/contribution";
-import { ExternalLink, Content, Labels, Time, Project } from "./row";
+import { ExternalLink, Content, Time, Project } from "./row";
+
 import { useContributions } from "@/hooks/useContributions";
 import { KudosQueryParameters } from "@/lib/notion/types";
+import dynamic from "next/dynamic";
+const Labels = dynamic(() => import("./row").then((m) => m.Labels), {
+  ssr: false,
+});
 
 interface IColumn {
   name: string;
