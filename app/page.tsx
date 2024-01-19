@@ -1,6 +1,4 @@
 import ControlledTable from "@/components/controlled-table";
-import CtaBanner from "@/components/cta-banner";
-import { container, title } from "@/components/primitives";
 import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
 import { queryDatabase } from "@/lib/notion";
 import { PaginatedCustomDataResponse } from "@/types";
@@ -21,23 +19,6 @@ export default async function Home() {
   };
 
   return (
-    <>
-      <section
-        className={`flex flex-col items-center text-center pt-10 pb-24 ${container()}`}
-      >
-        <h1 className={title()}>Find Collaborations,</h1>
-        <h1 className={title()}>Collect Kudos</h1>
-      </section>
-      <section className={container()}>
-        <CtaBanner />
-      </section>
-      <div className="pt-10">
-        <ControlledTable
-          filters={filters}
-          items={items}
-          queryFilter={undefined}
-        />
-      </div>
-    </>
+    <ControlledTable filters={filters} items={items} queryFilter={undefined} />
   );
 }

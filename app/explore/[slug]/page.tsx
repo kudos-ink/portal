@@ -27,14 +27,10 @@ export default async function ExplorePage({
     nextCursor: data.next_cursor ?? undefined,
   };
   return (
-    <>
-      <div className="pt-10">
-        <ControlledTable
-          items={items}
-          filters={filters}
-          queryFilter={queryFilter}
-        />
-      </div>
-    </>
+    <ControlledTable
+      items={items}
+      filters={filters}
+      queryFilter={queryFilter}
+    />
   );
 }
