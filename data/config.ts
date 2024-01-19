@@ -9,6 +9,8 @@ export const SITE_CONFIG = {
       "https://github.com/kudos-ink/portal/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml&title=",
     includeProject:
       "https://github.com/kudos-ink/repository-classification/issues/new?labels=new-project&template=NEW_PROJECT.yaml&title=%5BAdd%5D%3A+",
+    maintainerFeedback: "https://eu.jotform.com/form/233383475336057",
+    contributorFeedback: "https://eu.jotform.com/form/233386452273055",
   },
 };
 

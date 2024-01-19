@@ -1,3 +1,4 @@
+"use client";
 import NextLink from "next/link";
 import { Button } from "@nextui-org/button";
 import { Tooltip } from "@nextui-org/tooltip";
@@ -9,9 +10,17 @@ import {
 } from "@nextui-org/navbar";
 import { Chip } from "@nextui-org/chip";
 import { Link } from "@nextui-org/link";
-import BugIcon from "@/assets/icons";
+import { BugIcon, FeedbackIcon } from "@/assets/icons";
 import { MyImage } from "@/components/ui/image";
 import { SITE_CONFIG } from "@/data/config";
+
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownSection,
+  DropdownItem,
+} from "@nextui-org/dropdown";
 
 export const Navbar = () => {
   return (
@@ -54,6 +63,44 @@ export const Navbar = () => {
               </Button>
             </Tooltip>
           </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Dropdown>
+            <Tooltip content="Give us feedback">
+              {/* add wrapper div workaround for tool tip */}
+              <div className="hover:brightness-90">
+                <DropdownTrigger>
+                  <Button
+                    size="sm"
+                    isIconOnly
+                    aria-label="Give us feedback"
+                    variant="flat"
+                  >
+                    <FeedbackIcon className="text-default-500" />
+                  </Button>
+                </DropdownTrigger>
+              </div>
+            </Tooltip>
+            <DropdownMenu aria-label="Feedback options">
+              <DropdownItem
+                key="contributor"
+                href={SITE_CONFIG.links.contributorFeedback}
+                target="_blank"
+                description="How can we improve your experience as a contributor?"
+              >
+                Contributor
+              </DropdownItem>
+
+              <DropdownItem
+                key="maintainer"
+                href={SITE_CONFIG.links.maintainerFeedback}
+                target="_blank"
+                description="Let us know about your experience as a maintainer"
+              >
+                Project maintainer
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         </NavbarItem>
         <NavbarItem>
           <Link
