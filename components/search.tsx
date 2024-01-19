@@ -34,7 +34,7 @@ const Search: FC<SearchProps> = ({
     if (value === undefined || value === "") {
       return;
     }
-    const newUrl = createUrl(placeholder, value, pathname, params);
+    const newUrl = createUrl(placeholder, [value], pathname);
     router.replace(newUrl, { scroll: false });
   }, [params, pathname, placeholder, router, value]);
 
