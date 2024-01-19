@@ -15,7 +15,7 @@ import useSticky from "@/hooks/useSticky";
 import CheckboxFilter from "./checkbox-filter";
 import ClearFilters from "./clear-filters";
 import SelectFilter from "./select-filter";
-import { FilterKeys, Filters } from "@/types/filters";
+import { FilterKeys } from "@/types/filters";
 import { countNonEmptyFilters } from "@/utils/filters";
 
 const Toolbar = () => {
@@ -77,7 +77,7 @@ const Toolbar = () => {
           )}
         </div>
         <div className="py-4 px-3 bg-default-100 border-small rounded-t-md">
-          <span className="text-lg font-bold">Good First Contributions</span>
+          <span className="text-lg font-bold">Open Contributions</span>
         </div>
       </div>
     </div>

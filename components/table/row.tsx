@@ -132,7 +132,7 @@ export const Labels = ({
   const router = useRouter();
   const pathname = usePathname();
 
-  const { updateFilter } = useFilters();
+  const { filters, updateFilter } = useFilters();
 
   const [visibleLabelCount, setVisibleLabelCount] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -143,17 +143,23 @@ export const Labels = ({
 
   const labels = useMemo(
     () =>
-      shuffleArray([
-        ...fullLanguages.map((label) => ({
-          ...label,
-          type: LANGUAGES_KEY as FilterKeys,
-        })),
-        ...interests.map((interest) => ({
-          ...interest,
-          type: INTEREST_KEY as FilterKeys,
-        })),
-      ]),
-    [fullLanguages, interests],
+      shuffleArray(
+        [
+          ...fullLanguages.map((label) => ({
+            ...label,
+            type: LANGUAGES_KEY as FilterKeys,
+          })),
+          ...interests.map((interest) => ({
+            ...interest,
+            type: INTEREST_KEY as FilterKeys,
+          })),
+        ].filter(
+          ({ value }) =>
+            !filters[INTEREST_KEY].includes(value) &&
+            !filters[LANGUAGES_KEY].includes(value),
+        ),
+      ),
+    [filters, fullLanguages, interests],
   );
 
   const handleClick = (key: FilterKeys, values: string[]) => {
