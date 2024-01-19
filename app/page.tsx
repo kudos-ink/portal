@@ -4,21 +4,13 @@ import { container, title } from "@/components/primitives";
 import { queryDatabase } from "@/lib/notion";
 import { PaginatedCustomDataResponse } from "@/types";
 import { Contribution } from "@/types/contribution";
-import { SearchParams } from "@/types/filters";
-import {
-  processNotionFilters,
-  transformNotionDataToContributions,
-} from "@/utils/notion";
+import { initFilters } from "@/utils/filters";
+import { transformNotionDataToContributions } from "@/utils/notion";
 
-interface IHomeProps {
-  searchParams: SearchParams;
-}
-
-export default async function Home({ searchParams }: IHomeProps) {
-  const filter = processNotionFilters(searchParams);
+export default async function Home() {
+  const filters = initFilters();
   const data = await queryDatabase({
     page_size: 10,
-    filter,
   });
   const contributions = transformNotionDataToContributions(data);
   const items: PaginatedCustomDataResponse<Contribution> = {
@@ -40,9 +32,9 @@ export default async function Home({ searchParams }: IHomeProps) {
       </section>
       <div className="pt-10">
         <ControlledTable
-          filter={filter}
+          filters={filters}
           items={items}
-          searchParams={searchParams}
+          queryFilter={undefined}
         />
       </div>
     </>

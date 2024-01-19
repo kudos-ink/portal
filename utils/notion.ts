@@ -1,7 +1,4 @@
-import {
-  QueryDatabaseResponse,
-  search,
-} from "@notionhq/client/build/src/api-endpoints";
+import { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
 import { REPO_LINK_TO_PAGE_ID_MAP } from "@/lib/notion/constants";
 import { ValidRepositoryLink } from "@/lib/notion/types";
 import projectLogosJson from "@/public/images/imageMap.json";
@@ -10,8 +7,12 @@ import { getImagePath } from "./github";
 import {
   GOOD_FIRST_ISSUE_KEY,
   GOOD_FIRST_ISSUE_LABELS,
+  INTEREST_KEY,
+  LANGUAGES_KEY,
+  PROJECTS_KEY,
   REPOSITORIES_BY_INTERESTS,
 } from "@/data/filters";
+import { Filters } from "@/types/filters";
 
 export function transformNotionDataToContributions(
   notionData: QueryDatabaseResponse,
@@ -46,55 +47,64 @@ export function transformNotionDataToContributions(
   }, []);
 }
 
-export function processNotionFilters(params?: {
-  [key: string]: string | undefined;
-}) {
-  const filters = [];
+export function processNotionFilters(filters: Filters) {
+  const queryFilters: any[] = [];
 
-  if (params?.languages) {
-    filters.push({
-      property: "Repo Language",
-      rollup: {
-        any: {
-          multi_select: {
-            contains: params.languages,
+  if (filters[LANGUAGES_KEY].length > 0) {
+    queryFilters.push({
+      or: filters[LANGUAGES_KEY].map((language) => ({
+        property: "Repo Language",
+        rollup: {
+          any: {
+            multi_select: {
+              contains: language,
+            },
           },
         },
-      },
-    });
-  }
-
-  if (params?.projects) {
-    const repositories =
-      REPO_LINK_TO_PAGE_ID_MAP[
-        params.projects as unknown as ValidRepositoryLink
-      ];
-    filters.push({
-      property: "Github Repo",
-      relation: {
-        contains: repositories,
-      },
-    });
-  }
-
-  if (params?.interests && REPOSITORIES_BY_INTERESTS[params.interests]) {
-    const repositories = REPOSITORIES_BY_INTERESTS[params.interests];
-    const interestsFilter = {
-      or: repositories.map((interest) => ({
-        property: "Github Repo",
-        relation: {
-          contains:
-            REPO_LINK_TO_PAGE_ID_MAP[
-              interest as unknown as ValidRepositoryLink
-            ],
-        },
       })),
-    };
-    filters.push(interestsFilter);
+    });
   }
 
-  if (params?.[GOOD_FIRST_ISSUE_KEY]) {
-    filters.push({
+  if (filters[PROJECTS_KEY].length > 0) {
+    const repositories = filters[PROJECTS_KEY].flatMap(
+      (project) =>
+        REPO_LINK_TO_PAGE_ID_MAP[project as ValidRepositoryLink] || [],
+    ).filter((value, index, self) => self.indexOf(value) === index); // Remove duplicates, if necessary
+
+    if (repositories.length > 0) {
+      const projectsFilter = {
+        or: repositories.map((repoId: string) => ({
+          property: "Github Repo",
+          relation: {
+            contains: repoId,
+          },
+        })),
+      };
+      queryFilters.push(projectsFilter);
+    }
+  } else if (filters[INTEREST_KEY].length > 0) {
+    const repositories = filters[INTEREST_KEY].flatMap(
+      (interest) => REPOSITORIES_BY_INTERESTS[interest] || [],
+    ).filter((value, index, self) => self.indexOf(value) === index); // Remove duplicates, if necessary
+
+    if (repositories.length > 0) {
+      const interestsFilter = {
+        or: repositories.map((repo) => ({
+          property: "Github Repo",
+          relation: {
+            contains: REPO_LINK_TO_PAGE_ID_MAP[repo as ValidRepositoryLink],
+          },
+        })),
+      };
+      queryFilters.push(interestsFilter);
+    }
+  }
+
+  if (
+    filters[GOOD_FIRST_ISSUE_KEY].length > 0 &&
+    filters[GOOD_FIRST_ISSUE_KEY][0] === "true"
+  ) {
+    queryFilters.push({
       or: GOOD_FIRST_ISSUE_LABELS.map((label) => ({
         property: "Issue Labels",
         multi_select: {
@@ -104,10 +114,10 @@ export function processNotionFilters(params?: {
     });
   }
 
-  if (filters.length === 1) {
-    return filters[0];
-  } else if (filters.length > 1) {
-    return { and: filters };
+  if (queryFilters.length === 1) {
+    return queryFilters[0];
+  } else if (queryFilters.length > 1) {
+    return { and: queryFilters };
   }
 
   return undefined;

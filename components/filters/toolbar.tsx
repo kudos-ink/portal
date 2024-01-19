@@ -12,28 +12,26 @@ import {
   PROJECTS_KEY,
 } from "@/data/filters";
 import useSticky from "@/hooks/useSticky";
-import { SearchParams } from "@/types/filters";
 import CheckboxFilter from "./checkbox-filter";
 import ClearFilters from "./clear-filters";
 import SelectFilter from "./select-filter";
-interface IToolbarProps {
-  searchParams: SearchParams;
-}
+import { FilterKeys, Filters } from "@/types/filters";
+import { countNonEmptyFilters } from "@/utils/filters";
 
-const Toolbar = ({ searchParams }: IToolbarProps) => {
+const Toolbar = () => {
   const toolbarRef = useRef<HTMLDivElement>(null);
   const isToolbarSticky = useSticky(toolbarRef);
 
   const { filters, updateFilter, clearFilter, clearAllFilters } = useFilters();
 
-  const handleSelect = (paramKey: string) => (value: string | null) => {
-    if (value) {
-      updateFilter(paramKey, value);
+  const handleSelect = (key: FilterKeys) => (values: string[]) => {
+    if (values.length > 0) {
+      updateFilter(key, values);
     } else {
-      clearFilter(paramKey);
+      clearFilter(key);
     }
   };
-  const numberOfFilters = Object.keys(filters).length;
+  const numberOfFilters = countNonEmptyFilters(filters);
 
   return (
     <div
@@ -49,27 +47,27 @@ const Toolbar = ({ searchParams }: IToolbarProps) => {
               placeholder={LANGUAGES_KEY}
               mainEmoji="🌐"
               options={LANGUAGES_OPTIONS}
-              selectedKey={filters.languages}
+              selectKeys={filters.languages}
               onSelect={handleSelect(LANGUAGES_KEY)}
             />
             <SelectFilter
               placeholder={INTEREST_KEY}
               mainEmoji="🪄"
               options={INTERESTS_OPTIONS}
-              selectedKey={filters.interests}
+              selectKeys={filters.interests}
               onSelect={handleSelect(INTEREST_KEY)}
             />
             <SelectFilter
               placeholder={PROJECTS_KEY}
               mainEmoji="🖥️"
               options={PROJECTS_OPTIONS}
-              selectedKey={filters.projects}
+              selectKeys={filters.projects}
               onSelect={handleSelect(PROJECTS_KEY)}
             />
             <CheckboxFilter
               paramKey={GOOD_FIRST_ISSUE_KEY}
               placeholder="Good first issues Only"
-              isSelected={filters[GOOD_FIRST_ISSUE_KEY] === "true"}
+              isSelected={filters[GOOD_FIRST_ISSUE_KEY].includes("true")}
               onSelect={handleSelect(GOOD_FIRST_ISSUE_KEY)}
             />
           </div>
