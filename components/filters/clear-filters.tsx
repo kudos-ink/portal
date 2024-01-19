@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { Chip } from "@nextui-org/chip";
 import { createUrl } from "@/utils/url";
@@ -14,11 +14,10 @@ interface IClearFilters {
 export const ClearFilters = ({ param, value, onClear }: IClearFilters) => {
   const router = useRouter();
   const pathname = usePathname();
-  const params = useSearchParams();
 
-  const clearSearchParams = () => {
+  const handleClear = () => {
     if (!!param) {
-      const newUrl = createUrl(param, null, pathname, params);
+      const newUrl = createUrl(param, [], pathname);
       router.replace(newUrl);
     } else {
       router.replace(pathname);
@@ -32,8 +31,8 @@ export const ClearFilters = ({ param, value, onClear }: IClearFilters) => {
         className="cursor-pointer"
         variant="bordered"
         color="danger"
-        onClick={clearSearchParams}
-        onClose={clearSearchParams}
+        onClick={handleClear}
+        onClose={handleClear}
       >
         {value}
       </Chip>

@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Checkbox } from "@nextui-org/checkbox";
 import { createUrl } from "@/utils/url";
 
