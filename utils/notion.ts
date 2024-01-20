@@ -57,7 +57,7 @@ export function processNotionFilters(filters: Filters) {
         rollup: {
           any: {
             multi_select: {
-              contains: language,
+              contains: language.value,
             },
           },
         },
@@ -66,14 +66,14 @@ export function processNotionFilters(filters: Filters) {
   }
 
   if (filters[PROJECTS_KEY].length > 0) {
-    const repositories = filters[PROJECTS_KEY].flatMap(
+    const repositoryIds = filters[PROJECTS_KEY].flatMap(
       (project) =>
-        REPO_LINK_TO_PAGE_ID_MAP[project as ValidRepositoryLink] || [],
+        REPO_LINK_TO_PAGE_ID_MAP[project.value as ValidRepositoryLink] || [],
     ).filter((value, index, self) => self.indexOf(value) === index); // Remove duplicates, if necessary
 
-    if (repositories.length > 0) {
+    if (repositoryIds.length > 0) {
       const projectsFilter = {
-        or: repositories.map((repoId: string) => ({
+        or: repositoryIds.map((repoId: string) => ({
           property: "Github Repo",
           relation: {
             contains: repoId,
@@ -84,7 +84,7 @@ export function processNotionFilters(filters: Filters) {
     }
   } else if (filters[INTEREST_KEY].length > 0) {
     const repositories = filters[INTEREST_KEY].flatMap(
-      (interest) => REPOSITORIES_BY_INTERESTS[interest] || [],
+      (interest) => REPOSITORIES_BY_INTERESTS[interest.value] || [],
     ).filter((value, index, self) => self.indexOf(value) === index); // Remove duplicates, if necessary
 
     if (repositories.length > 0) {
@@ -100,10 +100,7 @@ export function processNotionFilters(filters: Filters) {
     }
   }
 
-  if (
-    filters[GOOD_FIRST_ISSUE_KEY].length > 0 &&
-    filters[GOOD_FIRST_ISSUE_KEY][0] === "true"
-  ) {
+  if (filters[GOOD_FIRST_ISSUE_KEY]) {
     queryFilters.push({
       or: GOOD_FIRST_ISSUE_LABELS.map((label) => ({
         property: "Issue Labels",

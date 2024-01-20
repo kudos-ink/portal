@@ -155,8 +155,8 @@ export const Labels = ({
           })),
         ].filter(
           ({ value }) =>
-            !filters[INTEREST_KEY].includes(value) &&
-            !filters[LANGUAGES_KEY].includes(value),
+            !filters[INTEREST_KEY].find((option) => option.value === value) &&
+            !filters[LANGUAGES_KEY].find((option) => option.value === value),
         ),
       ),
     [filters, fullLanguages, interests],

@@ -1,7 +1,8 @@
 import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FilterKeys, Filters } from "@/types/filters";
-import { initFilters } from "@/utils/filters";
+import { getNewFilterOption, initFilters } from "@/utils/filters";
+import { GOOD_FIRST_ISSUE_KEY } from "@/data/filters";
 
 export interface IConfigProps {
   initialFilters: Filters;
@@ -22,16 +23,25 @@ export const useFilters = ({
 
   const updateFilter = useCallback((key: FilterKeys, values: string[]) => {
     setFilters((prev) => {
-      const updatedArray = prev[key] ? [...prev[key]] : [];
+      // Handle the boolean value for GOOD_FIRST_ISSUE_KEY
+      if (key === GOOD_FIRST_ISSUE_KEY) {
+        return { ...prev, [GOOD_FIRST_ISSUE_KEY]: values.includes("true") };
+      }
 
+      const updatedArray = prev[key];
       values.forEach((value) => {
-        const valueIndex = updatedArray.indexOf(value);
+        const valueIndex = updatedArray.findIndex(
+          (option) => option.value === value,
+        );
         if (valueIndex >= 0) {
           // If the value exists, remove it
           updatedArray.splice(valueIndex, 1);
         } else {
           // If the value doesn't exist, add it
-          updatedArray.push(value);
+          const newOption = getNewFilterOption(key, value);
+          if (newOption) {
+            updatedArray.push(newOption);
+          }
         }
       });
 

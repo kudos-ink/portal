@@ -33,6 +33,8 @@ const Toolbar = () => {
   };
   const numberOfFilters = countNonEmptyFilters(filters);
 
+  console.log({ filters });
+
   return (
     <div
       className={`sticky top-0 z-10 bg-background ${
@@ -47,27 +49,27 @@ const Toolbar = () => {
               placeholder={LANGUAGES_KEY}
               mainEmoji="🌐"
               options={LANGUAGES_OPTIONS}
-              selectKeys={filters.languages}
+              selectKeys={filters.languages.map(({ value }) => value)}
               onSelect={handleSelect(LANGUAGES_KEY)}
             />
             <SelectFilter
               placeholder={INTEREST_KEY}
               mainEmoji="🪄"
               options={INTERESTS_OPTIONS}
-              selectKeys={filters.interests}
+              selectKeys={filters.interests.map(({ value }) => value)}
               onSelect={handleSelect(INTEREST_KEY)}
             />
             <SelectFilter
               placeholder={PROJECTS_KEY}
               mainEmoji="🖥️"
               options={PROJECTS_OPTIONS}
-              selectKeys={filters.projects}
+              selectKeys={filters.projects.map(({ value }) => value)}
               onSelect={handleSelect(PROJECTS_KEY)}
             />
             <CheckboxFilter
               paramKey={GOOD_FIRST_ISSUE_KEY}
               placeholder="Good first issues Only"
-              isSelected={filters[GOOD_FIRST_ISSUE_KEY].includes("true")}
+              isSelected={filters[GOOD_FIRST_ISSUE_KEY]}
               onSelect={handleSelect(GOOD_FIRST_ISSUE_KEY)}
             />
           </div>

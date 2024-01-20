@@ -20,6 +20,9 @@ export type FilterKeys =
   | typeof INTEREST_KEY
   | typeof PROJECTS_KEY
   | typeof GOOD_FIRST_ISSUE_KEY;
+
 export type Filters = {
-  [key in FilterKeys]: string[];
+  [key in Exclude<FilterKeys, typeof GOOD_FIRST_ISSUE_KEY>]: FilterOption[];
+} & {
+  [GOOD_FIRST_ISSUE_KEY]: boolean;
 };

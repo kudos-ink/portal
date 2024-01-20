@@ -5,9 +5,10 @@ import {
   LANGUAGES_KEY,
   LANGUAGES_OPTIONS,
   PROJECTS_KEY,
+  PROJECTS_OPTIONS,
   REPOSITORIES_BY_INTERESTS,
 } from "@/data/filters";
-import { FilterKeys, Filters } from "@/types/filters";
+import { FilterKeys, FilterOption, Filters } from "@/types/filters";
 
 export const findInterestsByProject = (project: string) => {
   const matchingInterests = [];
@@ -55,7 +56,7 @@ export const initFilters = (): Filters => {
     [INTEREST_KEY]: [],
     [LANGUAGES_KEY]: [],
     [PROJECTS_KEY]: [],
-    [GOOD_FIRST_ISSUE_KEY]: ["false"],
+    [GOOD_FIRST_ISSUE_KEY]: false,
   };
 };
 
@@ -67,11 +68,11 @@ export const countNonEmptyFilters = (filters: Filters): number => {
 
     if (key === GOOD_FIRST_ISSUE_KEY) {
       // Count as non-empty if the value is 'true'
-      if (value.includes("true")) {
+      if (value === true) {
         nonEmptyCount++;
       }
     } else {
-      if (value && value.length > 0) {
+      if (Array.isArray(value) && value.length > 0) {
         nonEmptyCount++;
       }
     }
@@ -79,3 +80,26 @@ export const countNonEmptyFilters = (filters: Filters): number => {
 
   return nonEmptyCount;
 };
+
+export function getNewFilterOption(
+  key: FilterKeys,
+  value: string,
+): FilterOption | undefined {
+  let optionsArray;
+
+  switch (key) {
+    case LANGUAGES_KEY:
+      optionsArray = LANGUAGES_OPTIONS;
+      break;
+    case INTEREST_KEY:
+      optionsArray = INTERESTS_OPTIONS;
+      break;
+    case PROJECTS_KEY:
+      optionsArray = PROJECTS_OPTIONS;
+      break;
+    default:
+      return undefined;
+  }
+
+  return optionsArray.find((option) => option.value === value);
+}
