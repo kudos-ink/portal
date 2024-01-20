@@ -15,6 +15,7 @@ import {
 } from "@/utils/filters";
 import { createUrl } from "@/utils/url";
 import { INTEREST_KEY, LANGUAGES_KEY } from "@/data/filters";
+import { FilterKeys } from "@/types/filters";
 
 const MAX_LABEL_WIDTH = 192;
 
@@ -34,7 +35,6 @@ export const Project = ({
     organization,
     repository,
   );
-  console.log({ avatarSrc });
   return (
     <div className="flex md:gap-4">
       <Link
@@ -131,9 +131,8 @@ export const Labels = ({
 }: ILabelsProps) => {
   const router = useRouter();
   const pathname = usePathname();
-  const params = useSearchParams();
 
-  const { updateFilter } = useFilters();
+  const { filters, updateFilter } = useFilters();
 
   const [visibleLabelCount, setVisibleLabelCount] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -144,17 +143,29 @@ export const Labels = ({
 
   const labels = useMemo(
     () =>
-      shuffleArray([
-        ...fullLanguages.map((label) => ({ ...label, type: LANGUAGES_KEY })),
-        ...interests.map((interest) => ({ ...interest, type: INTEREST_KEY })),
-      ]),
-    [fullLanguages, interests],
+      shuffleArray(
+        [
+          ...fullLanguages.map((label) => ({
+            ...label,
+            type: LANGUAGES_KEY as FilterKeys,
+          })),
+          ...interests.map((interest) => ({
+            ...interest,
+            type: INTEREST_KEY as FilterKeys,
+          })),
+        ].filter(
+          ({ value }) =>
+            !filters[INTEREST_KEY].find((option) => option.value === value) &&
+            !filters[LANGUAGES_KEY].find((option) => option.value === value),
+        ),
+      ),
+    [filters, fullLanguages, interests],
   );
 
-  const handleClick = (label: { type: string; value: string }) => {
-    const paramKey = label.type;
-    updateFilter(paramKey, label.value);
-    const newUrl = createUrl(paramKey, label.value, pathname, params);
+  const handleClick = (key: FilterKeys, values: string[]) => {
+    updateFilter(key, values);
+    const currentPath = pathname === "/" ? "/explore/" : pathname;
+    const newUrl = createUrl(key, values, currentPath);
     router.replace(newUrl, { scroll: false });
   };
 
@@ -203,18 +214,20 @@ export const Labels = ({
       ref={containerRef}
       className={`flex max-w-[${MAX_LABEL_WIDTH}px] overflow-hidden`}
     >
-      {labels.slice(0, visibleLabelCount).map((label, index) => (
-        <Tooltip content="Add to filters" key={index}>
-          <Chip
-            className="mx-1 cursor-pointer"
-            onClick={() => handleClick(label)}
-          >
-            <Emoji emoji={label.emoji} className="text-xl" />
-            &nbsp;
-            {label.label}
-          </Chip>
-        </Tooltip>
-      ))}
+      {labels
+        .slice(0, visibleLabelCount)
+        .map(({ emoji, label, type, value }, index) => (
+          <Tooltip content="Add to filters" key={index}>
+            <Chip
+              className="mx-1 cursor-pointer"
+              onClick={() => handleClick(type, [value])}
+            >
+              <Emoji emoji={emoji} className="text-xl" />
+              &nbsp;
+              {label}
+            </Chip>
+          </Tooltip>
+        ))}
       {labels.length > visibleLabelCount && (
         <Tooltip
           content={labels

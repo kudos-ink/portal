@@ -4,9 +4,10 @@ import { Fira_Code, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { Providers } from "./providers";
 import { Navbar } from "@/components/navbar";
-import { Link } from "@nextui-org/link";
 import { SITE_CONFIG } from "@/data/config";
 import clsx from "clsx";
+import CtaBanner from "@/components/cta-banner";
+import { container, title } from "@/components/primitives";
 
 export const fontSans = Inter({
   subsets: ["latin"],
@@ -73,7 +74,18 @@ export default function RootLayout({
         <Providers themeProps={{ attribute: "class", defaultTheme: "kudos" }}>
           <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-default from-0% to-background to-80% relative flex flex-col h-screen">
             <Navbar />
-            <main className="py-16 flex-grow">{children}</main>
+            <main className="py-16 flex-grow">
+              <section
+                className={`flex flex-col items-center text-center pt-10 pb-24 ${container()}`}
+              >
+                <h1 className={title()}>Find Collaborations,</h1>
+                <h1 className={title()}>Collect Kudos</h1>
+              </section>
+              <section className={container()}>
+                <CtaBanner />
+              </section>
+              <div className="pt-10">{children}</div>
+            </main>
             <footer className="py-6 px-6 md:px-8 md:py-0">
               <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
                 <p className="text-balance text-center text-sm leading-loose text-muted-foreground md:text-left">

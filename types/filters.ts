@@ -1,3 +1,10 @@
+import {
+  LANGUAGES_KEY,
+  INTEREST_KEY,
+  PROJECTS_KEY,
+  GOOD_FIRST_ISSUE_KEY,
+} from "@/data/filters";
+
 export type FilterOption = {
   label: string;
   emoji: string;
@@ -6,4 +13,16 @@ export type FilterOption = {
 
 export type SearchParams = {
   [key: string]: string | undefined;
+};
+
+export type FilterKeys =
+  | typeof LANGUAGES_KEY
+  | typeof INTEREST_KEY
+  | typeof PROJECTS_KEY
+  | typeof GOOD_FIRST_ISSUE_KEY;
+
+export type Filters = {
+  [key in Exclude<FilterKeys, typeof GOOD_FIRST_ISSUE_KEY>]: FilterOption[];
+} & {
+  [GOOD_FIRST_ISSUE_KEY]: boolean;
 };

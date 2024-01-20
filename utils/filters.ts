@@ -1,8 +1,14 @@
 import {
+  GOOD_FIRST_ISSUE_KEY,
   INTERESTS_OPTIONS,
+  INTEREST_KEY,
+  LANGUAGES_KEY,
   LANGUAGES_OPTIONS,
+  PROJECTS_KEY,
+  PROJECTS_OPTIONS,
   REPOSITORIES_BY_INTERESTS,
 } from "@/data/filters";
+import { FilterKeys, FilterOption, Filters } from "@/types/filters";
 
 export const findInterestsByProject = (project: string) => {
   const matchingInterests = [];
@@ -44,3 +50,56 @@ export const shuffleArray = <T>(array: T[]): T[] => {
 
   return array;
 };
+
+export const initFilters = (): Filters => {
+  return {
+    [INTEREST_KEY]: [],
+    [LANGUAGES_KEY]: [],
+    [PROJECTS_KEY]: [],
+    [GOOD_FIRST_ISSUE_KEY]: false,
+  };
+};
+
+export const countNonEmptyFilters = (filters: Filters): number => {
+  let nonEmptyCount = 0;
+
+  (Object.keys(filters) as FilterKeys[]).forEach((key) => {
+    const value = filters[key];
+
+    if (key === GOOD_FIRST_ISSUE_KEY) {
+      // Count as non-empty if the value is 'true'
+      if (value === true) {
+        nonEmptyCount++;
+      }
+    } else {
+      if (Array.isArray(value) && value.length > 0) {
+        nonEmptyCount++;
+      }
+    }
+  });
+
+  return nonEmptyCount;
+};
+
+export function getNewFilterOption(
+  key: FilterKeys,
+  value: string,
+): FilterOption | undefined {
+  let optionsArray;
+
+  switch (key) {
+    case LANGUAGES_KEY:
+      optionsArray = LANGUAGES_OPTIONS;
+      break;
+    case INTEREST_KEY:
+      optionsArray = INTERESTS_OPTIONS;
+      break;
+    case PROJECTS_KEY:
+      optionsArray = PROJECTS_OPTIONS;
+      break;
+    default:
+      return undefined;
+  }
+
+  return optionsArray.find((option) => option.value === value);
+}

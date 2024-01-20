@@ -7,8 +7,8 @@ export const GOOD_FIRST_ISSUE_LABELS = [
   "good first issue",
   "C-good-first-issue",
   "good first issue :baby:",
-  "c1-mentor",
-  "d0-easy",
+  "C1-mentor",
+  "D0-easy",
 ];
 
 export const LANGUAGES_OPTIONS = [

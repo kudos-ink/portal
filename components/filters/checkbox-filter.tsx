@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Checkbox } from "@nextui-org/checkbox";
 import { createUrl } from "@/utils/url";
 
@@ -8,7 +8,7 @@ interface ICheckboxFilterProps {
   paramKey: string;
   placeholder: string;
   isSelected?: boolean;
-  onSelect: (value: string | null) => void;
+  onSelect: (values: string[]) => void;
 }
 export const CheckboxFilter = ({
   paramKey,
@@ -18,12 +18,12 @@ export const CheckboxFilter = ({
 }: ICheckboxFilterProps) => {
   const router = useRouter();
   const pathname = usePathname();
-  const params = useSearchParams();
 
   const handleValueChange = (value: boolean) => {
-    const newValue = value ? value.toString() : null;
+    const newValue = value ? [value.toString()] : [];
     onSelect(newValue);
-    const newUrl = createUrl(paramKey, newValue, pathname, params);
+    const currentPath = pathname === "/" ? "/explore/" : pathname;
+    const newUrl = createUrl(paramKey, newValue, currentPath);
     router.replace(newUrl, { scroll: false });
   };
 
