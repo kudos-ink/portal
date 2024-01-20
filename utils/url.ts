@@ -26,11 +26,7 @@ export const createUrl = (key: string, values: string[], pathname: string) => {
       const newOptions = values
         .map((value) => getNewFilterOption(keyLowerCase, value))
         .filter((option): option is FilterOption => option !== undefined);
-      const updatedValues = new Set([
-        ...(filters[keyLowerCase] as FilterOption[]),
-        ...newOptions,
-      ]);
-      filters[keyLowerCase] = Array.from(updatedValues);
+      filters[keyLowerCase] = newOptions;
     }
   } else {
     if (keyLowerCase === GOOD_FIRST_ISSUE_KEY) {
