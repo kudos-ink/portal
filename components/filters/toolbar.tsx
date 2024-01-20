@@ -33,8 +33,6 @@ const Toolbar = () => {
   };
   const numberOfFilters = countNonEmptyFilters(filters);
 
-  console.log({ filters });
-
   return (
     <div
       className={`sticky top-0 z-10 bg-background ${
