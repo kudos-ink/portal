@@ -35,6 +35,7 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
     { name: "CONTENT", uid: "content" },
     { name: "LABELS", uid: "labels" },
     { name: "DATE", uid: "date" },
+    { name: "ACTIONS", uid: "actions" },
   ]);
 
   const {

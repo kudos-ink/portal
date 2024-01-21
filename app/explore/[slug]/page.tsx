@@ -1,3 +1,6 @@
+import ContributionsTable from "@/components/table/table";
+import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
+import { queryDatabase } from "@/lib/notion";
 import { PaginatedCustomDataResponse } from "@/types";
 import { Contribution } from "@/types/contribution";
 import {
@@ -5,9 +8,6 @@ import {
   transformNotionDataToContributions,
 } from "@/utils/notion";
 import { decodingSlug } from "@/utils/url";
-import { queryDatabase } from "@/lib/notion";
-import ControlledTable from "@/components/controlled-table";
-import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
 
 export default async function ExplorePage({
   params,
@@ -27,10 +27,12 @@ export default async function ExplorePage({
     nextCursor: data.next_cursor ?? undefined,
   };
   return (
-    <ControlledTable
+    <ContributionsTable
       items={items}
-      filters={filters}
-      queryFilter={queryFilter}
+      queries={{
+        page_size: DEFAULT_PAGE_SIZE,
+        filter: queryFilter,
+      }}
     />
   );
 }
