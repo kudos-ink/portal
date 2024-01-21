@@ -1,11 +1,13 @@
-import ContributionsTable from "@/components/table/table";
+import ControlledTable from "@/components/controlled-table";
 import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
 import { queryDatabase } from "@/lib/notion";
 import { PaginatedCustomDataResponse } from "@/types";
 import { Contribution } from "@/types/contribution";
+import { initFilters } from "@/utils/filters";
 import { transformNotionDataToContributions } from "@/utils/notion";
 
 export default async function Home() {
+  const filters = initFilters();
   const data = await queryDatabase({
     page_size: DEFAULT_PAGE_SIZE,
   });
@@ -17,11 +19,6 @@ export default async function Home() {
   };
 
   return (
-    <ContributionsTable
-      items={items}
-      queries={{
-        page_size: DEFAULT_PAGE_SIZE,
-      }}
-    />
+    <ControlledTable filters={filters} items={items} queryFilter={undefined} />
   );
 }

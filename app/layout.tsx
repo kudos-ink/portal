@@ -8,10 +8,6 @@ import { SITE_CONFIG } from "@/data/config";
 import clsx from "clsx";
 import CtaBanner from "@/components/cta-banner";
 import { container, title } from "@/components/primitives";
-import Toolbar from "@/components/filters/toolbar";
-import { FiltersProvider } from "@/contexts/filters";
-import { decodingSlug } from "@/utils/url";
-import { initFilters } from "@/utils/filters";
 
 export const fontSans = Inter({
   subsets: ["latin"],
@@ -64,13 +60,9 @@ export const viewport: Viewport = {
 
 export default function RootLayout({
   children,
-  params,
 }: {
   children: React.ReactNode;
-  params: { slug: string };
 }) {
-  const filters = params.slug ? decodingSlug(params.slug) : initFilters();
-
   return (
     <html
       lang="en"
@@ -92,14 +84,7 @@ export default function RootLayout({
               <section className={container()}>
                 <CtaBanner />
               </section>
-              <div className="pt-10">
-                <FiltersProvider initialFilters={filters}>
-                  <div className="flex flex-col">
-                    <Toolbar />
-                    <section className={container()}>{children}</section>
-                  </div>
-                </FiltersProvider>
-              </div>
+              <div className="pt-10">{children}</div>
             </main>
             <footer className="py-6 px-6 md:px-8 md:py-0">
               <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
