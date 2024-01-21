@@ -14,8 +14,13 @@ import {
   shuffleArray,
 } from "@/utils/filters";
 import { createUrl } from "@/utils/url";
-import { INTEREST_KEY, LANGUAGES_KEY } from "@/data/filters";
-import { FilterKeys } from "@/types/filters";
+import {
+  GOOD_FIRST_ISSUE_KEY,
+  GOOD_FIRST_ISSUE_LABELS,
+  INTEREST_KEY,
+  LANGUAGES_KEY,
+} from "@/data/filters";
+import { FilterKeys, FilterOption, Filters } from "@/types/filters";
 
 const MAX_LABEL_WIDTH = 192;
 
@@ -120,11 +125,13 @@ export const Content = ({ title, project, repository, url }: IContentProps) => {
 };
 
 interface ILabelsProps {
+  gitLabels: string[];
   languages: string[];
   organization: string;
   repository: string;
 }
 export const Labels = ({
+  gitLabels,
   languages,
   organization,
   repository,
@@ -138,29 +145,23 @@ export const Labels = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const indicatorRef = useRef<HTMLDivElement>(null);
 
+  const isGoodFirstIssue = GOOD_FIRST_ISSUE_LABELS.some((label) =>
+    gitLabels.includes(label),
+  );
   const interests = findInterestsByProject(`${organization}/${repository}`);
   const fullLanguages = findLanguages(languages);
 
-  const labels = useMemo(
-    () =>
-      shuffleArray(
-        [
-          ...fullLanguages.map((label) => ({
-            ...label,
-            type: LANGUAGES_KEY as FilterKeys,
-          })),
-          ...interests.map((interest) => ({
-            ...interest,
-            type: INTEREST_KEY as FilterKeys,
-          })),
-        ].filter(
-          ({ value }) =>
-            !filters[INTEREST_KEY].find((option) => option.value === value) &&
-            !filters[LANGUAGES_KEY].find((option) => option.value === value),
-        ),
-      ),
-    [filters, fullLanguages, interests],
-  );
+  const labels = useMemo(() => {
+    const goodFirstIssueLabels = getGoodFirstIssueLabel(isGoodFirstIssue);
+    const languageAndInterestLabels = getLanguageAndInterestLabels(
+      fullLanguages,
+      interests,
+    );
+
+    return [...goodFirstIssueLabels, ...languageAndInterestLabels].filter(
+      (label) => !isLabelFilteredOut(label, filters),
+    );
+  }, [filters, fullLanguages, interests, isGoodFirstIssue]);
 
   const handleClick = (key: FilterKeys, values: string[]) => {
     updateFilter(key, values);
@@ -219,12 +220,15 @@ export const Labels = ({
         .map(({ emoji, label, type, value }, index) => (
           <Tooltip content="Add to filters" key={index}>
             <Chip
+              color={type === GOOD_FIRST_ISSUE_KEY ? "danger" : "default"}
               className="mx-1 cursor-pointer"
               onClick={() => handleClick(type, [value])}
             >
-              <Emoji emoji={emoji} className="text-xl" />
-              &nbsp;
-              {label}
+              <div className="flex items-center gap-2">
+                <Emoji emoji={emoji} className="text-xl" />
+                &nbsp;
+                {label}
+              </div>
             </Chip>
           </Tooltip>
         ))}
@@ -265,5 +269,42 @@ export const ExternalLink = ({ href, title }: IExternalLinkProps) => {
       color="foreground"
       title={title}
     />
+  );
+};
+
+const getGoodFirstIssueLabel = (isGoodFirstIssue: boolean) => {
+  return isGoodFirstIssue
+    ? [
+        {
+          emoji: "🌟",
+          label: "Good First Issue",
+          type: GOOD_FIRST_ISSUE_KEY as FilterKeys,
+          value: "true",
+        },
+      ]
+    : [];
+};
+
+const getLanguageAndInterestLabels = (
+  fullLanguages: FilterOption[],
+  interests: FilterOption[],
+) => {
+  return shuffleArray([
+    ...fullLanguages.map((label) => ({
+      ...label,
+      type: LANGUAGES_KEY as FilterKeys,
+    })),
+    ...interests.map((interest) => ({
+      ...interest,
+      type: INTEREST_KEY as FilterKeys,
+    })),
+  ]);
+};
+
+const isLabelFilteredOut = (label: FilterOption, filters: Filters) => {
+  return (
+    (filters[GOOD_FIRST_ISSUE_KEY] && label.value === "true") ||
+    filters[INTEREST_KEY].some((option) => option.value === label.value) ||
+    filters[LANGUAGES_KEY].some((option) => option.value === label.value)
   );
 };

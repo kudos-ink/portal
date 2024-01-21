@@ -80,6 +80,7 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
         case "labels":
           return (
             <Labels
+              gitLabels={item.labels}
               languages={item.languages}
               organization={item.organization}
               repository={item.repository}
