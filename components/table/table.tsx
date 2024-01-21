@@ -169,7 +169,7 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
         </TableHeader>
         <TableBody
           items={contributions}
-          loadingContent={<Spinner color="white" />}
+          emptyContent="No contributions to display."
         >
           {(item) => (
             <TableRow key={item.id}>
