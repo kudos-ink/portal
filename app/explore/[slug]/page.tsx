@@ -1,4 +1,4 @@
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
 import ContributionsTable from "@/components/table/table";
 import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
 import { queryDatabase } from "@/lib/notion";
