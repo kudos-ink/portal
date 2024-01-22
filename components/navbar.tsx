@@ -18,7 +18,6 @@ import {
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
-  DropdownSection,
   DropdownItem,
 } from "@nextui-org/dropdown";
 
@@ -41,7 +40,7 @@ export const Navbar = () => {
       </NavbarContent>
 
       <NavbarContent className="flex basis-1/5 sm:basis-full" justify="end">
-        <NavbarItem>
+        <NavbarItem className="hidden sm:block">
           <Chip variant="bordered">alpha</Chip>
         </NavbarItem>
         <NavbarItem className="hidden sm:flex gap-2">
