@@ -48,7 +48,7 @@ export const useFilters = ({
   const clearAllFilters = useCallback(() => {
     const emptyFilters = initFilters();
     setFilters(emptyFilters);
-    router.replace("/explore/open-contributions", { scroll: false });
+    router.replace("/explore/open-contributions", { scroll: true });
   }, [router]);
 
   return {

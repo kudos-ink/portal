@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from "react";
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Chip } from "@nextui-org/chip";
 import { Link } from "@nextui-org/link";
 import { Tooltip } from "@nextui-org/tooltip";
@@ -167,7 +167,7 @@ export const Labels = ({
     updateFilter(key, values);
     const currentPath = pathname === "/" ? "/explore/" : pathname;
     const newUrl = createUrl(key, values, currentPath);
-    router.replace(newUrl, { scroll: false });
+    router.replace(newUrl, { scroll: true });
   };
 
   useEffect(() => {

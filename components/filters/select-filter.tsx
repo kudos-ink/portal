@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Select, SelectItem } from "@nextui-org/select";
 import { FilterOption } from "@/types/filters";
 import { createUrl } from "@/utils/url";
@@ -33,7 +32,7 @@ export const SelectFilter = ({
       Array.from(selection as Set<string>),
       currentPath,
     );
-    router.replace(newUrl, { scroll: false });
+    router.replace(newUrl, { scroll: true });
   };
 
   const resetFilter = () => {

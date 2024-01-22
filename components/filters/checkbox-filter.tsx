@@ -27,7 +27,7 @@ export const CheckboxFilter = ({
     onSelect(newValue);
     const currentPath = pathname === "/" ? "/explore/" : pathname;
     const newUrl = createUrl(paramKey, newValue, currentPath);
-    router.replace(newUrl, { scroll: false });
+    router.replace(newUrl, { scroll: true });
   };
 
   return (
