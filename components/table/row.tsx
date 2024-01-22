@@ -115,7 +115,7 @@ export const Content = ({ title, project, repository, url }: IContentProps) => {
         color="foreground"
         title="Open task on Github"
       >
-        <h3 className="font-semibold max-w-48 sm:max-w-80 lg:max-w-64 xl:max-w-96 line-clamp-2 capitalize">
+        <h3 className="font-semibold leading-tight max-w-48 sm:max-w-80 lg:max-w-64 xl:max-w-96 line-clamp-2 capitalize">
           {title}
         </h3>
       </Link>

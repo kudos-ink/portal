@@ -154,7 +154,7 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
             "w-full bg-gradient-to-r from-background to-background-200 to-80% max-w-7xl border-spacing-0 rounded-b-md overflow-hidden",
           wrapper:
             "bg-background overflow-visible p-0 rounded-none border-small rounded-b-md",
-          tr: "relative bg-red border-y-small border-y-overlay before:content-[''] before:absolute before:bg-hover-overlay before:opacity-0 before:w-full before:h-full before:transition-opacity before:duration-300 before:ease-in-out sm:before:max-h-[88px] md:before:max-h-[62px] hover:before:opacity-100",
+          tr: "relative bg-red border-y-small border-y-overlay lg:before:content-[''] lg:before:absolute lg:before:bg-hover-overlay lg:before:opacity-0 lg:before:w-full lg:before:h-full lg:before:transition-opacity lg:before:duration-300 lg:before:ease-in-out lg:before:max-h-[62px] lg:hover:before:opacity-100",
           td: "px-2 sm:px-inherit",
         }}
       >
