@@ -35,7 +35,7 @@ const Toolbar = () => {
 
   return (
     <div
-      className={`sticky top-0 z-10 bg-background ${
+      className={`sticky top-0 z-10 transition-colors ease-in-out duration-75 ${
         isToolbarSticky ? "bg-background" : "bg-transparent"
       }`}
       ref={toolbarRef}

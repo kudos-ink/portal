@@ -1,24 +1,29 @@
 import { useState, useEffect, RefObject } from "react";
-import { debounce } from "@/utils/misc";
+import { throttle } from "@/utils/misc";
 
 const useSticky = (ref: RefObject<HTMLElement>) => {
   const [isSticky, setIsSticky] = useState(false);
 
   useEffect(() => {
-    const handleScroll = debounce(() => {
-      if (ref.current) {
-        const boundingRect = ref.current.getBoundingClientRect();
-        const isElementTopAboveViewport = boundingRect.top <= 0;
-        setIsSticky(isElementTopAboveViewport);
-      }
-    }, 10); // Adjust the debounce time (in ms) as needed
+    const handleScroll = throttle(() => {
+      requestAnimationFrame(() => {
+        if (ref.current) {
+          const boundingRect = ref.current.getBoundingClientRect();
+          const isElementTopAboveViewport = boundingRect.top < 10;
+
+          if (isSticky !== isElementTopAboveViewport) {
+            setIsSticky(isElementTopAboveViewport);
+          }
+        }
+      });
+    }, 500);
 
     window.addEventListener("scroll", handleScroll);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [ref]);
+  }, [isSticky, ref]);
 
   return isSticky;
 };
