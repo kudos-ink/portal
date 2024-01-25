@@ -1,12 +1,14 @@
 import ControlledTable from "@/components/controlled-table";
 import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
 import { queryDatabase } from "@/lib/notion";
+import { fetchFilterOptions } from "@/lib/repository-metadata";
 import { PaginatedCustomDataResponse } from "@/types";
 import { Contribution } from "@/types/contribution";
 import { initFilters } from "@/utils/filters";
 import { transformNotionDataToContributions } from "@/utils/notion";
 
 export default async function Home() {
+  const filterOptions = await fetchFilterOptions();
   const filters = initFilters();
   const data = await queryDatabase({
     page_size: DEFAULT_PAGE_SIZE,
@@ -19,6 +21,11 @@ export default async function Home() {
   };
 
   return (
-    <ControlledTable filters={filters} items={items} queryFilter={undefined} />
+    <ControlledTable
+      filters={filters}
+      items={items}
+      queryFilter={undefined}
+      filterOptions={filterOptions}
+    />
   );
 }

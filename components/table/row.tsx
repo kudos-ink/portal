@@ -8,11 +8,7 @@ import MyImage from "@/components/ui/image";
 import { useFilters } from "@/contexts/filters";
 import { formatDate } from "@/utils/date";
 import { getProjectUrls } from "@/utils/github";
-import {
-  findInterestsByProject,
-  findLanguages,
-  shuffleArray,
-} from "@/utils/filters";
+import { findInterestsByProject, shuffleArray } from "@/utils/filters";
 import { createUrl } from "@/utils/url";
 import {
   GOOD_FIRST_ISSUE_KEY,
@@ -139,17 +135,24 @@ export const Labels = ({
   const router = useRouter();
   const pathname = usePathname();
 
-  const { filters, updateFilter } = useFilters();
+  const { filters, updateFilter, filterOptions } = useFilters();
 
   const [visibleLabelCount, setVisibleLabelCount] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
   const indicatorRef = useRef<HTMLDivElement>(null);
 
-  const isGoodFirstIssue = GOOD_FIRST_ISSUE_LABELS.some((label) =>
-    gitLabels.includes(label),
+  const isGoodFirstIssue = GOOD_FIRST_ISSUE_LABELS.some((name) =>
+    gitLabels.includes(name),
   );
-  const interests = findInterestsByProject(`${organization}/${repository}`);
-  const fullLanguages = findLanguages(languages);
+  const interests = findInterestsByProject(
+    `${organization}/${repository}`,
+    filterOptions.interests,
+    filterOptions.repositories,
+  );
+
+  const fullLanguages = filterOptions.languages.filter(({ value }) =>
+    languages.includes(value),
+  );
 
   const labels = useMemo(() => {
     const goodFirstIssueLabels = getGoodFirstIssueLabel(isGoodFirstIssue);
@@ -159,14 +162,14 @@ export const Labels = ({
     );
 
     return [...goodFirstIssueLabels, ...languageAndInterestLabels].filter(
-      (label) => !isLabelFilteredOut(label, filters),
+      (name) => !isLabelFilteredOut(name, filters),
     );
   }, [filters, fullLanguages, interests, isGoodFirstIssue]);
 
   const handleClick = (key: FilterKeys, values: string[]) => {
     updateFilter(key, values);
     const currentPath = pathname === "/" ? "/explore/" : pathname;
-    const newUrl = createUrl(key, values, currentPath);
+    const newUrl = createUrl(key, values, currentPath, filterOptions);
     router.replace(newUrl, { scroll: true });
   };
 
@@ -194,7 +197,7 @@ export const Labels = ({
           // Check if there's space for the indicator
           totalWidth += indicator.offsetWidth;
           if (totalWidth > MAX_LABEL_WIDTH && labelCount > 0) {
-            labelCount--; // Decrease label count to fit the indicator
+            labelCount--; // Decrease name count to fit the indicator
           }
         }
 
@@ -217,7 +220,7 @@ export const Labels = ({
     >
       {labels
         .slice(0, visibleLabelCount)
-        .map(({ emoji, label, type, value }, index) => (
+        .map(({ emoji, name, type, value }, index) => (
           <Tooltip content="Add to filters" key={index}>
             <Chip
               color={type === GOOD_FIRST_ISSUE_KEY ? "danger" : "default"}
@@ -227,7 +230,7 @@ export const Labels = ({
               <div className="flex items-center gap-2">
                 <Emoji emoji={emoji} className="text-xl" />
                 &nbsp;
-                {label}
+                {name}
               </div>
             </Chip>
           </Tooltip>
@@ -236,7 +239,7 @@ export const Labels = ({
         <Tooltip
           content={labels
             .slice(visibleLabelCount)
-            .map(({ emoji, label }) => `${emoji} ${label}`)
+            .map(({ emoji, name }) => `${emoji} ${name}`)
             .join("  -  ")}
         >
           <div ref={indicatorRef} className="flex items-center ml-1 text-xs">
@@ -277,7 +280,7 @@ const getGoodFirstIssueLabel = (isGoodFirstIssue: boolean) => {
     ? [
         {
           emoji: "🌟",
-          label: "Good First Issue",
+          name: "Good First Issue",
           type: GOOD_FIRST_ISSUE_KEY as FilterKeys,
           value: "true",
         },
@@ -290,8 +293,8 @@ const getLanguageAndInterestLabels = (
   interests: FilterOption[],
 ) => {
   return shuffleArray([
-    ...fullLanguages.map((label) => ({
-      ...label,
+    ...fullLanguages.map((name) => ({
+      ...name,
       type: LANGUAGES_KEY as FilterKeys,
     })),
     ...interests.map((interest) => ({
@@ -301,10 +304,10 @@ const getLanguageAndInterestLabels = (
   ]);
 };
 
-const isLabelFilteredOut = (label: FilterOption, filters: Filters) => {
+const isLabelFilteredOut = (name: FilterOption, filters: Filters) => {
   return (
-    (filters[GOOD_FIRST_ISSUE_KEY] && label.value === "true") ||
-    filters[INTEREST_KEY].some((option) => option.value === label.value) ||
-    filters[LANGUAGES_KEY].some((option) => option.value === label.value)
+    (filters[GOOD_FIRST_ISSUE_KEY] && name.value === "true") ||
+    filters[INTEREST_KEY].some((option) => option.value === name.value) ||
+    filters[LANGUAGES_KEY].some((option) => option.value === name.value)
   );
 };

@@ -9,6 +9,7 @@ import {
   transformNotionDataToContributions,
 } from "@/utils/notion";
 import { decodingSlug } from "@/utils/url";
+import { fetchFilterOptions } from "@/lib/repository-metadata";
 
 interface IProps {
   params: { slug: string };
@@ -27,8 +28,9 @@ export async function generateMetadata({ params }: IProps): Promise<Metadata> {
 }
 
 export default async function ExplorePage({ params }: IProps) {
-  const filters = decodingSlug(params.slug);
-  const queryFilter = processNotionFilters(filters);
+  const filterOptions = await fetchFilterOptions();
+  const filters = decodingSlug(params.slug, filterOptions);
+  const queryFilter = processNotionFilters(filters, filterOptions.repositories);
   const data = await queryDatabase({
     page_size: DEFAULT_PAGE_SIZE,
     filter: queryFilter,
@@ -39,6 +41,7 @@ export default async function ExplorePage({ params }: IProps) {
     hasMore: data.has_more,
     nextCursor: data.next_cursor ?? undefined,
   };
+
   return (
     <ContributionsTable
       items={items}

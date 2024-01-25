@@ -1,9 +1,9 @@
-import { FilterOption } from "@/types/filters";
+import { FilterOption, FilterOptions } from "@/types/filters";
 
-export async function fetchInterests(): Promise<FilterOption[]> {
-  const url =
-    "https://kudos-ink.github.io/repository-classification/interests.json";
+const REPOSITORY_CLASSIFICATION_URL =
+  "https://kudos-ink.github.io/repository-classification/";
 
+async function fetchData(url: string): Promise<FilterOption[]> {
   try {
     const response = await fetch(url);
 
@@ -11,50 +11,32 @@ export async function fetchInterests(): Promise<FilterOption[]> {
       throw new Error(`Failed to fetch data. Status: ${response.status}`);
     }
 
-    const jsonData: { interests: FilterOption[] } = await response.json();
-    const { interests } = jsonData;
-    return interests;
+    const jsonData: { [key: string]: FilterOption[] } = await response.json();
+    const data = Object.values(jsonData)[0];
+    return data;
   } catch (error) {
     console.error("Error fetching data:", error);
-    throw new Error("Failed to fetch interests data");
+    throw new Error(`Failed to fetch data from ${url}`);
   }
 }
 
-export async function fetchLanguages(): Promise<FilterOption[]> {
-  const url =
-    "https://kudos-ink.github.io/repository-classification/languages.json";
-
+export async function fetchFilterOptions(): Promise<FilterOptions> {
   try {
-    const response = await fetch(url);
+    const interests = await fetchData(
+      `${REPOSITORY_CLASSIFICATION_URL}/interests.json`,
+    );
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch data. Status: ${response.status}`);
-    }
+    const languages = await fetchData(
+      `${REPOSITORY_CLASSIFICATION_URL}/languages.json`,
+    );
 
-    const languages: FilterOption[] = await response.json();
-    return languages;
+    const repositories = await fetchData(
+      `${REPOSITORY_CLASSIFICATION_URL}/repository_full.json`,
+    );
+
+    return { interests, languages, repositories };
   } catch (error) {
-    console.error("Error fetching data:", error);
-    throw new Error("Failed to fetch languages data");
-  }
-}
-
-export async function fetchRepositories(): Promise<FilterOption[]> {
-  const url =
-    "https://kudos-ink.github.io/repository-classification/repository_full.json";
-
-  try {
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch data. Status: ${response.status}`);
-    }
-
-    const jsonData: { repositories: FilterOption[] } = await response.json();
-    const { repositories } = jsonData;
-    return repositories;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    throw new Error("Failed to fetch projects data");
+    console.error("Error fetching filter options:", error);
+    throw new Error("Failed to fetch filter options data");
   }
 }

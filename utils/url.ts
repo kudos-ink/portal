@@ -1,20 +1,25 @@
-import { FilterKeys, FilterOption, Filters } from "@/types/filters";
 import {
-  GOOD_FIRST_ISSUE_KEY,
-  INTERESTS_OPTIONS,
-  LANGUAGES_OPTIONS,
-  PROJECTS_OPTIONS,
-} from "@/data/filters";
+  FilterKeys,
+  FilterOption,
+  FilterOptions,
+  Filters,
+} from "@/types/filters";
+import { GOOD_FIRST_ISSUE_KEY } from "@/data/filters";
 import { getNewFilterOption, initFilters } from "./filters";
 
 type Keys = FilterKeys | typeof GOOD_FIRST_ISSUE_KEY;
 
-export const createUrl = (key: string, values: string[], pathname: string) => {
+export const createUrl = (
+  key: string,
+  values: string[],
+  pathname: string,
+  filterOptions: FilterOptions,
+) => {
   const slugParts = pathname.split("/");
   const currentSlug = slugParts[slugParts.length - 1];
 
   // Decode existing filters from the slug
-  let filters = decodingSlug(currentSlug);
+  let filters = decodingSlug(currentSlug, filterOptions);
 
   // Update the specific filter based on the provided key and value
   const keyLowerCase = key.toLowerCase() as Keys;
@@ -24,7 +29,7 @@ export const createUrl = (key: string, values: string[], pathname: string) => {
       filters[GOOD_FIRST_ISSUE_KEY] = values.includes("true");
     } else {
       const newOptions = values
-        .map((value) => getNewFilterOption(keyLowerCase, value))
+        .map((value) => getNewFilterOption(keyLowerCase, value, filterOptions))
         .filter((option): option is FilterOption => option !== undefined);
       filters[keyLowerCase] = newOptions;
     }
@@ -55,7 +60,7 @@ export const encodingSlug = (filters: Filters): string => {
       return "";
     }
     return `${prefix}${options
-      .map(({ label }) => label.toLocaleLowerCase().replaceAll(" ", "-"))
+      .map(({ name }) => name.toLocaleLowerCase().replaceAll(" ", "-"))
       .join("-and-")
       .toLowerCase()}`;
   };
@@ -75,7 +80,10 @@ export const encodingSlug = (filters: Filters): string => {
   return urlParts.filter((part) => part).join("-");
 };
 
-export const decodingSlug = (slug: string): Filters => {
+export const decodingSlug = (
+  slug: string,
+  filterOptions: FilterOptions,
+): Filters => {
   const filters = initFilters();
 
   // Check for 'good-first' and extract languages
@@ -84,7 +92,10 @@ export const decodingSlug = (slug: string): Filters => {
   const languagePart = isGoodFirstIssue
     ? slug.split("good-first-open-contributions")[0]
     : slug.split("open-contributions")[0];
-  filters.languages = extractValuesFromOptions(languagePart, LANGUAGES_OPTIONS);
+  filters.languages = extractValuesFromOptions(
+    languagePart,
+    filterOptions.languages,
+  );
 
   // Check for 'in' and 'for' and extract interests and projects
   const hasInterests = slug.includes("-in-");
@@ -95,11 +106,11 @@ export const decodingSlug = (slug: string): Filters => {
         ? slug.split("-in-")[1].split("-for-")[0]
         : slug.split("-in-")[1]
       : "",
-    INTERESTS_OPTIONS,
+    filterOptions.interests,
   );
   filters.projects = extractValuesFromOptions(
     hasProjects ? slug.split("-for-")[1] : "",
-    PROJECTS_OPTIONS,
+    filterOptions.repositories,
   );
 
   return filters;
@@ -117,10 +128,10 @@ const extractValuesFromOptions = (
   const labels = extractValues(section);
 
   return labels
-    .map((label) =>
+    .map((name) =>
       options.find(
         (project) =>
-          project.label.toLocaleLowerCase().replaceAll(" ", "-") === label,
+          project.name.toLocaleLowerCase().replaceAll(" ", "-") === name,
       ),
     )
     .filter((option): option is FilterOption => option !== undefined);
