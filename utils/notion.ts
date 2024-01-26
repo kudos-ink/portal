@@ -1,6 +1,4 @@
 import { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
-import { REPO_LINK_TO_PAGE_ID_MAP } from "@/lib/notion/constants";
-import { ValidRepositoryLink } from "@/lib/notion/types";
 import projectLogosJson from "@/public/images/imageMap.json";
 import { Contribution } from "@/types/contribution";
 import { getImagePath } from "./github";
@@ -70,8 +68,7 @@ export function processNotionFilters(
   if (filters[PROJECTS_KEY].length > 0) {
     const repositoryIds = filters[PROJECTS_KEY].flatMap(
       //TODO: if the filter has no issues all are display (bug)
-      (project) =>
-        REPO_LINK_TO_PAGE_ID_MAP[project.value as ValidRepositoryLink] || [],
+      (project) => project?.id || [],
     )
       .filter((value, index, self) => self.indexOf(value) === index)
       .filter(Boolean); // Remove duplicates, if necessary
@@ -89,25 +86,21 @@ export function processNotionFilters(
     }
   } else if (filters[INTEREST_KEY].length > 0) {
     const interests = filters[INTEREST_KEY].map((interest) => interest.value);
-    const repos = repositories
+    const ids = repositories
       .filter((item) => {
         return item.interests?.some((interest) => interests.includes(interest));
       })
-      .map((i) => i.value);
-    if (repos.length > 0) {
+      .map((i) => i.id);
+    if (ids.length > 0) {
       const interestsFilter = {
-        or: repos
-          .map((repo) => {
-            if (REPO_LINK_TO_PAGE_ID_MAP[repo as ValidRepositoryLink]) {
-              return {
-                property: "Github Repo",
-                relation: {
-                  contains:
-                    REPO_LINK_TO_PAGE_ID_MAP[repo as ValidRepositoryLink],
-                },
-              };
-            }
-            return null;
+        or: ids
+          .map((id) => {
+            return {
+              property: "Github Repo",
+              relation: {
+                contains: id,
+              },
+            };
           })
           .filter(Boolean), // temp fix until we got the each id in the repositories list.
       };

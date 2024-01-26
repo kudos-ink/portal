@@ -30,10 +30,13 @@ export async function fetchFilterOptions(): Promise<FilterOptions> {
       `${REPOSITORY_CLASSIFICATION_URL}/languages.json`,
     );
 
-    const repositories = await fetchData(
+    const allRepositories = await fetchData(
       `${REPOSITORY_CLASSIFICATION_URL}/repository_full.json`,
     );
-
+    // We want repositories with the id used in Notion.
+    // If they don't have it means they aren't loaded in the
+    // Notion table yet
+    const repositories = allRepositories.filter((value) => !!value.id);
     return { interests, languages, repositories };
   } catch (error) {
     console.error("Error fetching filter options:", error);

@@ -10,9 +10,8 @@ import {
   DATABASE_ID,
   DEFAULT_FILTER_PROPERTIES,
   DEFAULT_SORT,
-  REPO_LINK_TO_PAGE_ID_MAP,
 } from "./constants";
-import { KudosQueryParameters, ValidRepositoryLink } from "./types";
+import { KudosQueryParameters } from "./types";
 
 const notion = new Client({
   auth: process.env.NOTION_API_KEY,
@@ -203,31 +202,6 @@ export async function getIssuesByProject(
     filter_properties,
     sorts,
     start_cursor,
-  });
-}
-
-export async function getIssuesByRepo(
-  repoLink: ValidRepositoryLink,
-  {
-    database_id = DATABASE_ID,
-    page_size = 100,
-    filter_properties = DEFAULT_FILTER_PROPERTIES,
-    sorts = DEFAULT_SORT,
-    start_cursor,
-  }: KudosQueryParameters = {},
-): Promise<QueryDatabaseResponse> {
-  return await queryDatabase({
-    filter: {
-      property: "Github Repo",
-      relation: {
-        contains: REPO_LINK_TO_PAGE_ID_MAP[repoLink],
-      },
-    },
-    page_size,
-    filter_properties,
-    sorts,
-    start_cursor,
-    database_id,
   });
 }
 

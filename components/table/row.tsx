@@ -149,7 +149,6 @@ export const Labels = ({
     filterOptions.interests,
     filterOptions.repositories,
   );
-
   const fullLanguages = filterOptions.languages.filter(({ value }) =>
     languages.includes(value),
   );
@@ -160,7 +159,6 @@ export const Labels = ({
       fullLanguages,
       interests,
     );
-
     return [...goodFirstIssueLabels, ...languageAndInterestLabels].filter(
       (name) => !isLabelFilteredOut(name, filters),
     );

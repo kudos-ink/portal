@@ -18,16 +18,14 @@ export const findInterestsByProject = (
 ) => {
   const matchingInterests = [];
   const repository = repositories.find(({ value }) => value == project);
-
-  if (repository) {
-    for (const interest in repository.interests) {
+  if (repository && !!repository.interests) {
+    for (const interest of repository.interests) {
       const interestObject = interests.find(({ value }) => value === interest);
       if (interestObject) {
         matchingInterests.push(interestObject);
       }
     }
   }
-
   return matchingInterests;
 };
 

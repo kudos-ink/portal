@@ -10,6 +10,7 @@ export type FilterOption = {
   emoji: string;
   value: string;
   interests?: string[];
+  id?: string;
 };
 
 export type FilterOptions = {

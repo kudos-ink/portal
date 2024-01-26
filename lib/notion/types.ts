@@ -1,11 +1,7 @@
 import { QueryDatabaseParameters } from "@notionhq/client/build/src/api-endpoints";
-import {
-  FIELDNAME_TO_PROPERTY_ID_MAP,
-  REPO_LINK_TO_PAGE_ID_MAP,
-} from "./constants";
+import { FIELDNAME_TO_PROPERTY_ID_MAP } from "./constants";
 
 export type ValueOf<T> = T[keyof T];
-export type ValidRepositoryLink = keyof typeof REPO_LINK_TO_PAGE_ID_MAP;
 export type ValidFilterProperty = ValueOf<typeof FIELDNAME_TO_PROPERTY_ID_MAP>;
 export type ValidSortProperty = keyof typeof FIELDNAME_TO_PROPERTY_ID_MAP;
 export type ValidSort = Array<
