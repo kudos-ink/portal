@@ -1,6 +1,4 @@
 import { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
-import { REPO_LINK_TO_PAGE_ID_MAP } from "@/lib/notion/constants";
-import { ValidRepositoryLink } from "@/lib/notion/types";
 import projectLogosJson from "@/public/images/imageMap.json";
 import { Contribution } from "@/types/contribution";
 import { getImagePath } from "./github";
@@ -10,9 +8,8 @@ import {
   INTEREST_KEY,
   LANGUAGES_KEY,
   PROJECTS_KEY,
-  REPOSITORIES_BY_INTERESTS,
 } from "@/data/filters";
-import { Filters } from "@/types/filters";
+import { FilterOption, Filters } from "@/types/filters";
 
 export function transformNotionDataToContributions(
   notionData: QueryDatabaseResponse,
@@ -47,7 +44,10 @@ export function transformNotionDataToContributions(
   }, []);
 }
 
-export function processNotionFilters(filters: Filters) {
+export function processNotionFilters(
+  filters: Filters,
+  repositories: FilterOption[],
+) {
   const queryFilters: any[] = [];
 
   if (filters[LANGUAGES_KEY].length > 0) {
@@ -67,9 +67,11 @@ export function processNotionFilters(filters: Filters) {
 
   if (filters[PROJECTS_KEY].length > 0) {
     const repositoryIds = filters[PROJECTS_KEY].flatMap(
-      (project) =>
-        REPO_LINK_TO_PAGE_ID_MAP[project.value as ValidRepositoryLink] || [],
-    ).filter((value, index, self) => self.indexOf(value) === index); // Remove duplicates, if necessary
+      //TODO: if the filter has no issues all are display (bug)
+      (project) => project?.id || [],
+    )
+      .filter((value, index, self) => self.indexOf(value) === index)
+      .filter(Boolean); // Remove duplicates, if necessary
 
     if (repositoryIds.length > 0) {
       const projectsFilter = {
@@ -83,18 +85,24 @@ export function processNotionFilters(filters: Filters) {
       queryFilters.push(projectsFilter);
     }
   } else if (filters[INTEREST_KEY].length > 0) {
-    const repositories = filters[INTEREST_KEY].flatMap(
-      (interest) => REPOSITORIES_BY_INTERESTS[interest.value] || [],
-    ).filter((value, index, self) => self.indexOf(value) === index); // Remove duplicates, if necessary
-
-    if (repositories.length > 0) {
+    const interests = filters[INTEREST_KEY].map((interest) => interest.value);
+    const ids = repositories
+      .filter((item) => {
+        return item.interests?.some((interest) => interests.includes(interest));
+      })
+      .map((i) => i.id);
+    if (ids.length > 0) {
       const interestsFilter = {
-        or: repositories.map((repo) => ({
-          property: "Github Repo",
-          relation: {
-            contains: REPO_LINK_TO_PAGE_ID_MAP[repo as ValidRepositoryLink],
-          },
-        })),
+        or: ids
+          .map((id) => {
+            return {
+              property: "Github Repo",
+              relation: {
+                contains: id,
+              },
+            };
+          })
+          .filter(Boolean), // temp fix until we got the each id in the repositories list.
       };
       queryFilters.push(interestsFilter);
     }

@@ -1,15 +1,22 @@
 import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
-import { FilterKeys, FilterOption, Filters } from "@/types/filters";
+import {
+  FilterKeys,
+  FilterOption,
+  FilterOptions,
+  Filters,
+} from "@/types/filters";
 import { getNewFilterOption, initFilters } from "@/utils/filters";
 import { GOOD_FIRST_ISSUE_KEY } from "@/data/filters";
 
 export interface IConfigProps {
   initialFilters: Filters;
+  initialFilterOptions: FilterOptions;
 }
 
 export interface IFiltersContext {
   filters: Filters;
+  filterOptions: FilterOptions;
   updateFilter: (key: FilterKeys, values: string[]) => void;
   clearFilter: (key: FilterKeys) => void;
   clearAllFilters: () => void;
@@ -17,9 +24,11 @@ export interface IFiltersContext {
 
 export const useFilters = ({
   initialFilters,
+  initialFilterOptions,
 }: IConfigProps): IFiltersContext => {
   const router = useRouter();
   const [filters, setFilters] = useState(initialFilters);
+  const [filterOptions, _] = useState(initialFilterOptions);
 
   const updateFilter = useCallback((key: FilterKeys, values: string[]) => {
     setFilters((prev) => {
@@ -30,7 +39,7 @@ export const useFilters = ({
 
       const newOptions: FilterOption[] = [];
       values.forEach((value) => {
-        const newOption = getNewFilterOption(key, value);
+        const newOption = getNewFilterOption(key, value, filterOptions);
         if (newOption) {
           newOptions.push(newOption);
         }
@@ -53,6 +62,7 @@ export const useFilters = ({
 
   return {
     filters,
+    filterOptions,
     updateFilter,
     clearFilter,
     clearAllFilters,

@@ -6,17 +6,20 @@ import { Tooltip } from "@nextui-org/tooltip";
 import { InfoIcon } from "@/assets/icons";
 import { GOOD_FIRST_ISSUE_LABELS } from "@/data/filters";
 import { createUrl } from "@/utils/url";
+import { FilterOptions } from "@/types/filters";
 
 interface ICheckboxFilterProps {
   paramKey: string;
   placeholder: string;
   isSelected?: boolean;
+  filterOptions: FilterOptions;
   onSelect: (values: string[]) => void;
 }
 export const CheckboxFilter = ({
   paramKey,
   placeholder,
   isSelected,
+  filterOptions,
   onSelect,
 }: ICheckboxFilterProps) => {
   const router = useRouter();
@@ -26,7 +29,7 @@ export const CheckboxFilter = ({
     const newValue = value ? [value.toString()] : [];
     onSelect(newValue);
     const currentPath = pathname === "/" ? "/explore/" : pathname;
-    const newUrl = createUrl(paramKey, newValue, currentPath);
+    const newUrl = createUrl(paramKey, newValue, currentPath, filterOptions);
     router.replace(newUrl, { scroll: true });
   };
 

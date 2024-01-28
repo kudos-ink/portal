@@ -4,20 +4,27 @@ import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { Chip } from "@nextui-org/chip";
 import { createUrl } from "@/utils/url";
+import { FilterOptions } from "@/types/filters";
 
 interface IClearFilters {
   param?: string;
   value: string;
+  filterOptions: FilterOptions;
   onClear: () => void;
 }
 
-export const ClearFilters = ({ param, value, onClear }: IClearFilters) => {
+export const ClearFilters = ({
+  param,
+  value,
+  onClear,
+  filterOptions,
+}: IClearFilters) => {
   const router = useRouter();
   const pathname = usePathname();
 
   const handleClear = () => {
     if (!!param) {
-      const newUrl = createUrl(param, [], pathname);
+      const newUrl = createUrl(param, [], pathname, filterOptions);
       router.replace(newUrl);
     } else {
       router.replace(pathname);

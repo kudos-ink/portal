@@ -6,11 +6,18 @@ import {
 } from "@/data/filters";
 
 export type FilterOption = {
-  label: string;
+  name: string;
   emoji: string;
   value: string;
+  interests?: string[];
+  id?: string;
 };
 
+export type FilterOptions = {
+  interests: FilterOption[];
+  languages: FilterOption[];
+  repositories: FilterOption[];
+};
 export type SearchParams = {
   [key: string]: string | undefined;
 };

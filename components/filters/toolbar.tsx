@@ -3,9 +3,6 @@ import { useRef } from "react";
 import { container } from "@/components/primitives";
 import { useFilters } from "@/contexts/filters";
 import {
-  LANGUAGES_OPTIONS,
-  INTERESTS_OPTIONS,
-  PROJECTS_OPTIONS,
   GOOD_FIRST_ISSUE_KEY,
   INTEREST_KEY,
   LANGUAGES_KEY,
@@ -22,8 +19,9 @@ const Toolbar = () => {
   const toolbarRef = useRef<HTMLDivElement>(null);
   const isToolbarSticky = useSticky(toolbarRef);
 
-  const { filters, updateFilter, clearFilter, clearAllFilters } = useFilters();
-
+  const { filters, updateFilter, clearFilter, clearAllFilters, filterOptions } =
+    useFilters();
+  const { languages, interests, repositories } = filterOptions;
   const handleSelect = (key: FilterKeys) => (values: string[]) => {
     if (values.length > 0) {
       updateFilter(key, values);
@@ -46,34 +44,42 @@ const Toolbar = () => {
             <SelectFilter
               placeholder={LANGUAGES_KEY}
               mainEmoji="🌐"
-              options={LANGUAGES_OPTIONS}
+              options={languages}
               selectKeys={filters.languages.map(({ value }) => value)}
               onSelect={handleSelect(LANGUAGES_KEY)}
+              filterOptions={filterOptions}
             />
             <SelectFilter
               placeholder={INTEREST_KEY}
               mainEmoji="🪄"
-              options={INTERESTS_OPTIONS}
+              options={interests}
               selectKeys={filters.interests.map(({ value }) => value)}
               onSelect={handleSelect(INTEREST_KEY)}
+              filterOptions={filterOptions}
             />
             <SelectFilter
               placeholder={PROJECTS_KEY}
               mainEmoji="🖥️"
-              options={PROJECTS_OPTIONS}
+              options={repositories}
               selectKeys={filters.projects.map(({ value }) => value)}
               onSelect={handleSelect(PROJECTS_KEY)}
+              filterOptions={filterOptions}
             />
             <CheckboxFilter
               paramKey={GOOD_FIRST_ISSUE_KEY}
               placeholder="Good first issues Only"
               isSelected={filters[GOOD_FIRST_ISSUE_KEY]}
               onSelect={handleSelect(GOOD_FIRST_ISSUE_KEY)}
+              filterOptions={filterOptions}
             />
           </div>
 
           {numberOfFilters > 1 && (
-            <ClearFilters onClear={clearAllFilters} value="Clear all filters" />
+            <ClearFilters
+              onClear={clearAllFilters}
+              value="Clear all filters"
+              filterOptions={filterOptions}
+            />
           )}
         </div>
         <div className="py-4 px-3 bg-default-100 border-small rounded-t-md">

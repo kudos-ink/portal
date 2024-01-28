@@ -1,34 +1,33 @@
 import {
   GOOD_FIRST_ISSUE_KEY,
-  INTERESTS_OPTIONS,
   INTEREST_KEY,
   LANGUAGES_KEY,
-  LANGUAGES_OPTIONS,
   PROJECTS_KEY,
-  PROJECTS_OPTIONS,
-  REPOSITORIES_BY_INTERESTS,
 } from "@/data/filters";
-import { FilterKeys, FilterOption, Filters } from "@/types/filters";
+import {
+  FilterKeys,
+  FilterOption,
+  FilterOptions,
+  Filters,
+} from "@/types/filters";
 
-export const findInterestsByProject = (project: string) => {
+export const findInterestsByProject = (
+  project: string,
+  interests: FilterOption[],
+  repositories: FilterOption[],
+) => {
   const matchingInterests = [];
-
-  for (const interest in REPOSITORIES_BY_INTERESTS) {
-    if (REPOSITORIES_BY_INTERESTS[interest].includes(project)) {
-      const interestObject = INTERESTS_OPTIONS.find(
-        ({ value }) => value === interest,
-      );
+  const repository = repositories.find(({ value }) => value == project);
+  if (repository && !!repository.interests) {
+    for (const interest of repository.interests) {
+      const interestObject = interests.find(({ value }) => value === interest);
       if (interestObject) {
         matchingInterests.push(interestObject);
       }
     }
   }
-
   return matchingInterests;
 };
-
-export const findLanguages = (languages: string[]) =>
-  LANGUAGES_OPTIONS.filter(({ value }) => languages.includes(value));
 
 // Fisher-Yates (or Knuth) shuffle algorithm
 export const shuffleArray = <T>(array: T[]): T[] => {
@@ -84,18 +83,19 @@ export const countNonEmptyFilters = (filters: Filters): number => {
 export function getNewFilterOption(
   key: FilterKeys,
   value: string,
+  filterOptions: FilterOptions,
 ): FilterOption | undefined {
   let optionsArray;
 
   switch (key) {
     case LANGUAGES_KEY:
-      optionsArray = LANGUAGES_OPTIONS;
+      optionsArray = filterOptions.languages;
       break;
     case INTEREST_KEY:
-      optionsArray = INTERESTS_OPTIONS;
+      optionsArray = filterOptions.interests;
       break;
     case PROJECTS_KEY:
-      optionsArray = PROJECTS_OPTIONS;
+      optionsArray = filterOptions.repositories;
       break;
     default:
       return undefined;

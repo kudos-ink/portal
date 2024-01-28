@@ -13,7 +13,3 @@ export const SITE_CONFIG = {
     contributorFeedback: "https://eu.jotform.com/form/233386452273055",
   },
 };
-
-export const DATA = {
-  interests: "/data/interesets.json",
-};
