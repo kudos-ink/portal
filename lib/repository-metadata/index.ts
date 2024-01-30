@@ -1,6 +1,6 @@
 import { FilterOption, FilterOptions } from "@/types/filters";
 
-const REPOSITORY_CLASSIFICATION_URL = process.env.REPOSITORY_CLASSIFICATION_URL;
+const REPOSITORY_CLASSIFICATION_URL = process.env.REPOSITORY_CLASSIFICATION_URL || "https://kudos-ink.github.io/repository-classification/";
 
 async function fetchData(url: string): Promise<FilterOption[]> {
   try {
