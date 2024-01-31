@@ -10,10 +10,11 @@
     "format": "prettier --write \"**/*.{js,cjs,mjs,ts,tsx,md,json}\" --ignore-path .gitignore"
   },
   "dependencies": {
+    "@next/third-parties": "^14.1.0",
     "@nextui-org/autocomplete": "^2.0.9",
     "@nextui-org/button": "2.0.26",
-    "@nextui-org/checkbox": "^2.0.25",
     "@nextui-org/card": "^2.0.24",
+    "@nextui-org/checkbox": "^2.0.25",
     "@nextui-org/chip": "^2.0.25",
     "@nextui-org/dropdown": "^2.1.16",
     "@nextui-org/image": "^2.0.24",
@@ -43,6 +44,7 @@
     "eslint": "8.56.0",
     "eslint-config-next": "14.0.4",
     "framer-motion": "^10.16.16",
+    "google": "link:@next/third-parties/google",
     "intl-messageformat": "^10.5.8",
     "next": "14.0.4",
     "next-themes": "^0.2.1",

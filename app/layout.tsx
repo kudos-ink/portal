@@ -8,7 +8,7 @@ import { SITE_CONFIG } from "@/data/config";
 import clsx from "clsx";
 import CtaBanner from "@/components/cta-banner";
 import { container, title } from "@/components/primitives";
-import GoogleAnalytics from "@/components/google-analytics";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const fontSans = Inter({
   subsets: ["latin"],
@@ -70,11 +70,7 @@ export default function RootLayout({
       className={clsx(fontMono.variable, fontSans.variable)}
       suppressHydrationWarning
     >
-      <head>
-        {SITE_CONFIG.googleAnalyticsId && (
-          <GoogleAnalytics id={SITE_CONFIG.googleAnalyticsId} />
-        )}
-      </head>
+      <head />
       <body className="min-h-screen bg-background font-sans antialiased">
         <Providers themeProps={{ attribute: "class", defaultTheme: "kudos" }}>
           <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-default from-0% to-background to-80% relative flex flex-col h-screen">
@@ -120,6 +116,10 @@ export default function RootLayout({
         </Providers>
         <Analytics />
       </body>
+
+      {SITE_CONFIG.googleAnalyticsId && (
+        <GoogleAnalytics gaId={SITE_CONFIG.googleAnalyticsId} />
+      )}
     </html>
   );
 }
