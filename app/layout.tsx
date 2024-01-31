@@ -70,11 +70,12 @@ export default function RootLayout({
       className={clsx(fontMono.variable, fontSans.variable)}
       suppressHydrationWarning
     >
-      <head />
-      <body className="min-h-screen bg-background font-sans antialiased">
+      <head>
         {SITE_CONFIG.googleAnalyticsId && (
           <GoogleAnalytics id={SITE_CONFIG.googleAnalyticsId} />
         )}
+      </head>
+      <body className="min-h-screen bg-background font-sans antialiased">
         <Providers themeProps={{ attribute: "class", defaultTheme: "kudos" }}>
           <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-default from-0% to-background to-80% relative flex flex-col h-screen">
             <Navbar />
