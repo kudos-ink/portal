@@ -12,5 +12,6 @@ export const SITE_CONFIG = {
     maintainerFeedback: "https://eu.jotform.com/form/233383475336057",
     contributorFeedback: "https://eu.jotform.com/form/233386452273055",
   },
+  url: process.env.NEXT_PUBLIC_URL,
   googleAnalyticsId: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID
 };
