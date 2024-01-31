@@ -13,5 +13,5 @@ export const SITE_CONFIG = {
     contributorFeedback: "https://eu.jotform.com/form/233386452273055",
   },
   url: process.env.NEXT_PUBLIC_URL,
-  googleAnalyticsId: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID
+  googleAnalyticsId: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || "",
 };
