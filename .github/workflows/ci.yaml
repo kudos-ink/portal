@@ -65,3 +65,4 @@ jobs:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           REPO_LIST_DB_ID: ${{ secrets.REPO_LIST_DB_ID }}
           REPOSITORY_CLASSIFICATION_URL: https://kudos-ink.github.io/repository-classification/
+          NEXT_PUBLIC_URL: https://kudos-hub.vercel.app
