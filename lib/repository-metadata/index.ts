@@ -1,10 +1,11 @@
 import { FilterOption, FilterOptions } from "@/types/filters";
+import { FILTER_TAGS } from "@/utils/cache";
 
 const REPOSITORY_CLASSIFICATION_URL = process.env.REPOSITORY_CLASSIFICATION_URL;
 
 async function fetchData(url: string): Promise<FilterOption[]> {
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, { next: { tags: [FILTER_TAGS] } });
 
     if (!response.ok) {
       throw new Error(`Failed to fetch data. Status: ${response.status}`);
@@ -35,7 +36,9 @@ export async function fetchFilterOptions(): Promise<FilterOptions> {
     // We want repositories with the id used in Notion.
     // If they don't have it means they aren't loaded in the
     // Notion table yet
-    const repositories = allRepositories.filter((value) => value.id && value.id !== "");
+    const repositories = allRepositories.filter(
+      (value) => value.id && value.id !== "",
+    );
     return { interests, languages, repositories };
   } catch (error) {
     console.error("Error fetching filter options:", error);
