@@ -24,7 +24,6 @@ function isAuthenticated(req: NextRequest) {
   const auth = Buffer.from(authheader.split(" ")[1], "base64")
     .toString()
     .split(":");
-  console.log(auth);
 
   const user = auth[0];
   const pass = auth[1];
