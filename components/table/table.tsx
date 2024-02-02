@@ -16,6 +16,7 @@ import { ExternalLink, Content, Time, Project } from "./row";
 import { useContributions } from "@/hooks/useContributions";
 import { KudosQueryParameters } from "@/lib/notion/types";
 import dynamic from "next/dynamic";
+import { useFilters } from "@/contexts/filters";
 const Labels = dynamic(() => import("./row").then((m) => m.Labels), {
   ssr: false,
 });
@@ -38,6 +39,8 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
     { name: "ACTIONS", uid: "actions" },
   ]);
 
+  const { filterOptions } = useFilters();
+
   const {
     data: results,
     fetchNextPage,
@@ -57,12 +60,21 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
   const renderCell = React.useCallback(
     (item: Contribution, columnKey: React.Key) => {
       const cellValue = item[columnKey as keyof Contribution];
+      // TODO: this is slow and repetitive.
+      // 1. Instead of filters, create a map of repo => icon url
+      // 2. Create a helper function that receives the the issue id, extracts the main url
+      // and returns the icon url
+      const avatar =
+        filterOptions.repositories.find((repo) =>
+          item.url.startsWith(repo.repository_url!),
+        )?.icon || null;
 
+      console.log(avatar, item.url);
       switch (columnKey) {
         case "project":
           return (
             <Project
-              avatarSrc={item.avatar}
+              avatarSrc={avatar}
               name={item.project}
               organization={item.organization}
               repository={item.repository}

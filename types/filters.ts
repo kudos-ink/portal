@@ -11,6 +11,8 @@ export type FilterOption = {
   value: string;
   interests?: string[];
   id?: string;
+  icon?: string;
+  repository_url?: string;
 };
 
 export type FilterOptions = {
