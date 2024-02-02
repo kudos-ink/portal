@@ -1,4 +1,3 @@
-import { unstable_noStore } from "next/cache";
 import ControlledTable from "@/components/controlled-table";
 import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
 import { queryDatabase } from "@/lib/notion";
@@ -9,7 +8,6 @@ import { initFilters } from "@/utils/filters";
 import { transformNotionDataToContributions } from "@/utils/notion";
 
 export default async function Home() {
-  unstable_noStore();
   const filterOptions = await fetchFilterOptions();
   const filters = initFilters();
   const data = await queryDatabase({
