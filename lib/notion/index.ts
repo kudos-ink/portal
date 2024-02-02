@@ -15,6 +15,12 @@ import { KudosQueryParameters } from "./types";
 
 const notion = new Client({
   auth: process.env.NOTION_API_KEY,
+  fetch: (url, opts) => {
+    return fetch(url, {
+      ...opts,
+      next: { revalidate: +process.env.NOTION_CACHE_DURATION! },
+    });
+  },
 });
 
 export async function baseQueryDatabase(
