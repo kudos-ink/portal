@@ -16,8 +16,9 @@ export type FilterOption = {
 export type FilterOptions = {
   interests: FilterOption[];
   languages: FilterOption[];
-  repositories: FilterOption[];
+  repositories: Repository[];
 };
+
 export type SearchParams = {
   [key: string]: string | undefined;
 };
@@ -33,3 +34,10 @@ export type Filters = {
 } & {
   [GOOD_FIRST_ISSUE_KEY]: boolean;
 };
+
+export interface Repository extends FilterOption {
+  repository_url: string;
+  topics: string[];
+  about: string;
+  icon: string;
+}

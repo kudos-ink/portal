@@ -35,7 +35,10 @@ export default async function ExplorePage({ params }: IProps) {
     page_size: DEFAULT_PAGE_SIZE,
     filter: queryFilter,
   });
-  const contributions = transformNotionDataToContributions(data);
+  const contributions = transformNotionDataToContributions(
+    data,
+    filterOptions.repositories,
+  );
   const items: PaginatedCustomDataResponse<Contribution> = {
     data: contributions,
     hasMore: data.has_more,

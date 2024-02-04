@@ -1,19 +1,20 @@
+import { Repository } from "@/types/filters";
+
 export function getImagePath(
   githubUrl: string,
-  projectLogos: { [key: string]: string },
+  repositories: Repository[],
 ): string | null {
   const lowerCaseGithubUrl = githubUrl.toLowerCase();
 
-  for (const key in projectLogos) {
-    if (
-      projectLogos.hasOwnProperty(key) &&
-      key.toLowerCase() === lowerCaseGithubUrl
-    ) {
-      return "/images/" + projectLogos[key];
-    }
+  if (lowerCaseGithubUrl.includes("polkadot")) {
+    return "/images/polkadot-logo.png";
   }
 
-  return null;
+  const repository = repositories.find(
+    ({ repository_url }) => repository_url.toLowerCase() === lowerCaseGithubUrl,
+  );
+
+  return repository?.icon ?? null;
 }
 
 export const getProjectUrls = (organization: string, repository?: string) => {

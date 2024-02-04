@@ -8,6 +8,7 @@ import { transformNotionDataToContributions } from "@/utils/notion";
 import { PaginatedContributions } from "@/types/contribution";
 import { KudosQueryParameters } from "@/lib/notion/types";
 import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
+import { useFilters } from "@/contexts/filters";
 
 type PageParamType = string | undefined;
 
@@ -15,6 +16,7 @@ export const useContributions = (
   initialItems: PaginatedContributions,
   queries: Partial<KudosQueryParameters> = {},
 ) => {
+  const { filterOptions } = useFilters();
   return useInfiniteQuery<
     PaginatedContributions,
     Error,
@@ -22,7 +24,7 @@ export const useContributions = (
     QueryKey,
     PageParamType
   >({
-    queryKey: ["contributions", queries],
+    queryKey: ["contributions", queries, filterOptions.repositories],
     queryFn: async ({ pageParam: next_cursor }) => {
       const response = await queryDatabase({
         ...queries,
@@ -30,7 +32,10 @@ export const useContributions = (
         start_cursor: next_cursor,
       });
       return {
-        data: transformNotionDataToContributions(response),
+        data: transformNotionDataToContributions(
+          response,
+          filterOptions.repositories,
+        ),
         hasMore: response.has_more,
         nextCursor: response.next_cursor ?? undefined,
       };
