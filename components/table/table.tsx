@@ -1,5 +1,11 @@
 "use client";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useMediaQuery } from "react-responsive";
 import {
   Table as NuiTable,
@@ -17,6 +23,7 @@ import { useContributions } from "@/hooks/useContributions";
 import { KudosQueryParameters } from "@/lib/notion/types";
 import dynamic from "next/dynamic";
 import { useFilters } from "@/contexts/filters";
+import { extractRepositoryUrlFromIssue } from "@/utils/github";
 const Labels = dynamic(() => import("./row").then((m) => m.Labels), {
   ssr: false,
 });
@@ -30,6 +37,11 @@ interface ITableProps {
   items: PaginatedContributions;
   queries?: Partial<KudosQueryParameters>;
 }
+
+interface RepositoryMap {
+  [key: string]: string;
+}
+
 export const Table = ({ items, queries = {} }: ITableProps) => {
   const [columns, setColumns] = useState<IColumn[]>([
     { name: "PROJECT", uid: "project" },
@@ -57,19 +69,33 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
     return results?.pages.flatMap((page) => page.data) || [];
   }, [results]);
 
+  const repositoryIconMap: RepositoryMap = useMemo(() => {
+    const map: RepositoryMap = {};
+    filterOptions.repositories.forEach((repository) => {
+      if (repository.repository_url && repository.icon) {
+        map[repository.repository_url] = repository.icon;
+      }
+    });
+    return map;
+  }, [filterOptions.repositories]);
+  const useGetIconByRepositoryUrl = (repositoryIconMap: RepositoryMap) => {
+    const getIconByRepositoryUrl = useCallback(
+      (repositoryUrl: string): string | null => {
+        return repositoryIconMap[repositoryUrl];
+      },
+      [repositoryIconMap],
+    );
+
+    return getIconByRepositoryUrl;
+  };
+
+  const getIconByRepositoryUrl = useGetIconByRepositoryUrl(repositoryIconMap);
+
   const renderCell = React.useCallback(
     (item: Contribution, columnKey: React.Key) => {
       const cellValue = item[columnKey as keyof Contribution];
-      // TODO: this is slow and repetitive.
-      // 1. Instead of filters, create a map of repo => icon url
-      // 2. Create a helper function that receives the the issue id, extracts the main url
-      // and returns the icon url
-      const avatar =
-        filterOptions.repositories.find((repo) =>
-          item.url.startsWith(repo.repository_url!),
-        )?.icon || null;
-
-      console.log(avatar, item.url);
+      const repository = extractRepositoryUrlFromIssue(item.url);
+      const avatar = !!repository ? getIconByRepositoryUrl(repository) : null;
       switch (columnKey) {
         case "project":
           return (
