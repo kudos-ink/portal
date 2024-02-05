@@ -1,5 +1,4 @@
 import { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
-import projectLogosJson from "@/public/images/imageMap.json";
 import { Contribution } from "@/types/contribution";
 import { getImagePath } from "./github";
 import {
@@ -9,10 +8,11 @@ import {
   LANGUAGES_KEY,
   PROJECTS_KEY,
 } from "@/data/filters";
-import { FilterOption, Filters } from "@/types/filters";
+import { FilterOption, Filters, Repository } from "@/types/filters";
 
 export function transformNotionDataToContributions(
   notionData: QueryDatabaseResponse,
+  repositoriesData: Repository[],
 ): Contribution[] {
   return notionData.results.reduce((acc: Contribution[], currentItem: any) => {
     const properties = currentItem.properties;
@@ -23,7 +23,7 @@ export function transformNotionDataToContributions(
     const organization = urlElements.pop();
     const contribution: Contribution = {
       id,
-      avatar: getImagePath(avatarKey, projectLogosJson),
+      avatar: getImagePath(avatarKey, repositoriesData),
       labels: properties["Issue Labels"].multi_select.map(
         (label: any) => label.name,
       ),

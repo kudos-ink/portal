@@ -72,9 +72,7 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
   const repositoryIconMap: RepositoryMap = useMemo(() => {
     const map: RepositoryMap = {};
     filterOptions.repositories.forEach((repository) => {
-      if (repository.repository_url && repository.icon) {
-        map[repository.repository_url] = repository.icon;
-      }
+      map[repository.repository_url] = repository.icon;
     });
     return map;
   }, [filterOptions.repositories]);
