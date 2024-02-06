@@ -13,10 +13,7 @@ export default async function Home() {
   const data = await queryDatabase({
     page_size: DEFAULT_PAGE_SIZE,
   });
-  const contributions = transformNotionDataToContributions(
-    data,
-    filterOptions.repositories,
-  );
+  const contributions = transformNotionDataToContributions(data);
   const items: PaginatedCustomDataResponse<Contribution> = {
     data: contributions,
     hasMore: data.has_more,

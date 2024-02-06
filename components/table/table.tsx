@@ -1,5 +1,11 @@
 "use client";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useMediaQuery } from "react-responsive";
 import {
   Table as NuiTable,
@@ -16,6 +22,8 @@ import { ExternalLink, Content, Time, Project } from "./row";
 import { useContributions } from "@/hooks/useContributions";
 import { KudosQueryParameters } from "@/lib/notion/types";
 import dynamic from "next/dynamic";
+import { useFilters } from "@/contexts/filters";
+import { extractRepositoryUrlFromIssue } from "@/utils/github";
 const Labels = dynamic(() => import("./row").then((m) => m.Labels), {
   ssr: false,
 });
@@ -29,6 +37,11 @@ interface ITableProps {
   items: PaginatedContributions;
   queries?: Partial<KudosQueryParameters>;
 }
+
+interface RepositoryMap {
+  [key: string]: string;
+}
+
 export const Table = ({ items, queries = {} }: ITableProps) => {
   const [columns, setColumns] = useState<IColumn[]>([
     { name: "PROJECT", uid: "project" },
@@ -37,6 +50,8 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
     { name: "DATE", uid: "date" },
     { name: "ACTIONS", uid: "actions" },
   ]);
+
+  const { filterOptions } = useFilters();
 
   const {
     data: results,
@@ -54,15 +69,40 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
     return results?.pages.flatMap((page) => page.data) || [];
   }, [results]);
 
+  const repositoryIconMap: RepositoryMap = useMemo(() => {
+    const map: RepositoryMap = {};
+    filterOptions.repositories.forEach((repository) => {
+      map[repository.repository_url] = repository.repository_url
+        .toLowerCase()
+        .includes("polkadot")
+        ? "/images/polkadot-logo.png"
+        : repository.icon;
+    });
+    return map;
+  }, [filterOptions.repositories]);
+  const useGetIconByRepositoryUrl = (repositoryIconMap: RepositoryMap) => {
+    const getIconByRepositoryUrl = useCallback(
+      (repositoryUrl: string): string | null => {
+        return repositoryIconMap[repositoryUrl];
+      },
+      [repositoryIconMap],
+    );
+
+    return getIconByRepositoryUrl;
+  };
+
+  const getIconByRepositoryUrl = useGetIconByRepositoryUrl(repositoryIconMap);
+
   const renderCell = React.useCallback(
     (item: Contribution, columnKey: React.Key) => {
       const cellValue = item[columnKey as keyof Contribution];
-
+      const repository = extractRepositoryUrlFromIssue(item.url);
+      const avatar = !!repository ? getIconByRepositoryUrl(repository) : null;
       switch (columnKey) {
         case "project":
           return (
             <Project
-              avatarSrc={item.avatar}
+              avatarSrc={avatar}
               name={item.project}
               organization={item.organization}
               repository={item.repository}
@@ -109,7 +149,7 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
           return cellValue;
       }
     },
-    [],
+    [getIconByRepositoryUrl],
   );
 
   const handleScroll = useCallback(() => {
