@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -19,11 +20,6 @@ const nextConfig = {
             key: "X-Frame-Options",
             value: "DENY",
           },
-          // {
-          //   key: "Content-Security-Policy",
-          //   value:
-          //     "default-src 'self'; image-src 'self' 'https://avatars.githubusercontent.com'; script-src 'self' https://www.google-analytics.com; font-src 'self' 'https://fonts.googleapis.com'",
-          // },
           {
             key: "X-Content-Type-Options",
             value: "nosniff",
