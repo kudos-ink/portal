@@ -2,7 +2,6 @@ import { PaginatedCustomDataResponse } from ".";
 
 export type Contribution = {
   id: number;
-  avatar: string | null;
   labels: string[];
   languages: string[];
   project: string;

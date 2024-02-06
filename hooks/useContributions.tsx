@@ -32,10 +32,7 @@ export const useContributions = (
         start_cursor: next_cursor,
       });
       return {
-        data: transformNotionDataToContributions(
-          response,
-          filterOptions.repositories,
-        ),
+        data: transformNotionDataToContributions(response),
         hasMore: response.has_more,
         nextCursor: response.next_cursor ?? undefined,
       };
