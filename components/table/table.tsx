@@ -149,7 +149,7 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
           return cellValue;
       }
     },
-    [],
+    [getIconByRepositoryUrl],
   );
 
   const handleScroll = useCallback(() => {
