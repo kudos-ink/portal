@@ -23,9 +23,10 @@ export async function generateMetadata({ params }: IProps): Promise<Metadata> {
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
-
+  const description = title + " GitHub Issues";
   return {
     title,
+    description,
     alternates: {
       canonical: `${url}/${slug}`,
     },
