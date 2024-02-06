@@ -77,15 +77,18 @@ export default function RootLayout({
             <Navbar />
             <main className="py-16 flex-grow">
               <section
-                className={`flex flex-col items-center text-center pt-10 pb-24 ${container()}`}
+                className={`flex flex-col items-center text-center pt-10 pb-22 ${container()}`}
               >
-                <h1 className={title()}>Find Collaborations,</h1>
-                <h1 className={title()}>Collect Kudos</h1>
+                <h1 className={title()}>
+                  Find Collaborations,
+                  <br />
+                  Collect Kudos
+                </h1>
               </section>
-              <section className={container()}>
+              <section className={container() + " py-6"}>
                 <CtaBanner />
               </section>
-              <div className="pt-10">{children}</div>
+              <div>{children}</div>
             </main>
             <footer className="py-6 px-6 md:px-8 md:py-0">
               <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
