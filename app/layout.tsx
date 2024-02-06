@@ -23,6 +23,9 @@ export const fontMono = Fira_Code({
 });
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: SITE_CONFIG.url,
+  },
   title: {
     default: SITE_CONFIG.name,
     template: `%s | ${SITE_CONFIG.name}`,

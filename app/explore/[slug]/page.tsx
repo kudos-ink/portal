@@ -10,12 +10,14 @@ import {
 } from "@/utils/notion";
 import { decodingSlug } from "@/utils/url";
 import { fetchFilterOptions } from "@/lib/repository-metadata";
+import { SITE_CONFIG } from "@/data/config";
 
 interface IProps {
   params: { slug: string };
 }
 
 export async function generateMetadata({ params }: IProps): Promise<Metadata> {
+  const url = SITE_CONFIG.url;
   const { slug } = params;
   const title = slug
     .split("-")
@@ -24,6 +26,9 @@ export async function generateMetadata({ params }: IProps): Promise<Metadata> {
 
   return {
     title,
+    alternates: {
+      canonical: `${url}/${slug}`,
+    },
   };
 }
 
