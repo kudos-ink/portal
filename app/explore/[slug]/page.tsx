@@ -17,7 +17,6 @@ interface IProps {
 }
 
 export async function generateMetadata({ params }: IProps): Promise<Metadata> {
-  const url = SITE_CONFIG.url;
   const { slug } = params;
   const title = slug
     .split("-")
@@ -28,7 +27,7 @@ export async function generateMetadata({ params }: IProps): Promise<Metadata> {
     title,
     description,
     alternates: {
-      canonical: `${url}/${slug}`,
+      canonical: `/${slug}`,
     },
   };
 }
