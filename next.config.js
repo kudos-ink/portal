@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const cspHeader = `
     default-src 'self';
+    connect-src https://www.google-analytics.com/;
     script-src 'self' 'unsafe-eval' 'unsafe-inline' https://va.vercel-scripts.com/ https://www.google-analytics.com/ https://tagmanager.google.com/ https://www.googletagmanager.com/;
     style-src 'self' 'unsafe-inline';
     img-src 'self' https://avatars.githubusercontent.com/ blob: data:;
