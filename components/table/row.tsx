@@ -253,7 +253,12 @@ interface ITimeProps {
   timestamp: string;
 }
 export const Time = ({ timestamp }: ITimeProps) => {
-  return <div className="">{formatDate(new Date(timestamp))}</div>;
+  const [date, setDate] = useState<Date>();
+  useEffect(() => {
+    setDate(new Date(timestamp));
+  }, []);
+
+  return <div className="">{formatDate(date!)}</div>;
 };
 
 interface IExternalLinkProps {
