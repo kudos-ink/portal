@@ -59,6 +59,9 @@ jobs:
       - name: Install
         run: pnpm install
 
+      - name: Check unused dependencies
+        run: npx depcheck
+
       - name: Build
         run: pnpm run build
         env:
