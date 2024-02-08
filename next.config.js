@@ -12,10 +12,11 @@ const cspHeader = `
     frame-ancestors 'none';
     block-all-mixed-content;
     upgrade-insecure-requests;
-`
- 
+`;
+
 const nextConfig = {
   images: {
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: "https",
@@ -31,12 +32,12 @@ const nextConfig = {
         source: "/(.*)",
         headers: [
           {
-            key: 'X-DNS-Prefetch-Control',
-            value: 'on'
+            key: "X-DNS-Prefetch-Control",
+            value: "on",
           },
           {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=63072000; includeSubDomains; preload'
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
           },
           {
             key: "X-Frame-Options",
@@ -48,15 +49,15 @@ const nextConfig = {
           },
           {
             key: "Permissions-Policy",
-            value: 'camera=(), microphone=(), geolocation=()'
+            value: "camera=(), microphone=(), geolocation=()",
           },
           {
             key: "Referrer-Policy",
             value: "origin-when-cross-origin",
           },
           {
-            key: 'Content-Security-Policy',
-            value: cspHeader.replace(/\n/g, ''),
+            key: "Content-Security-Policy",
+            value: cspHeader.replace(/\n/g, ""),
           },
         ],
       },
