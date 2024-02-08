@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const [AUTH_USER, AUTH_PASS] = (process.env.HTTP_BASIC_AUTH || ":").split(":");
+const [AUTH_USER, AUTH_PASS] = process.env.HTTP_BASIC_AUTH!.split(":");
 
 export function middleware(req: NextRequest) {
   if (!isAuthenticated(req)) {
@@ -21,18 +21,26 @@ function isAuthenticated(req: NextRequest) {
   if (!authheader) {
     return false;
   }
-  const auth = Buffer.from(authheader.split(" ")[1], "base64")
-    .toString()
-    .split(":");
+  const values = authheader.split(" ");
+
+  if (values.length != 2) {
+    return false;
+  }
+
+  if (values[0] != "Basic") {
+    return false;
+  }
+
+  const auth = Buffer.from(values[1], "base64").toString().split(":");
+
+  if (auth.length != 2) {
+    return false;
+  }
 
   const user = auth[0];
   const pass = auth[1];
 
-  if (user == AUTH_USER && pass == AUTH_PASS) {
-    return true;
-  } else {
-    return false;
-  }
+  return user == AUTH_USER && pass == AUTH_PASS;
 }
 
 export const config = {
