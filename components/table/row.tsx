@@ -256,7 +256,7 @@ export const Time = ({ timestamp }: ITimeProps) => {
   const [date, setDate] = useState<Date>();
   useEffect(() => {
     setDate(new Date(timestamp));
-  }, []);
+  }, [timestamp]);
 
   return <div className="">{formatDate(date!)}</div>;
 };

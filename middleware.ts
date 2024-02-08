@@ -15,16 +15,13 @@ export function middleware(req: NextRequest) {
 }
 
 function isAuthenticated(req: NextRequest) {
-  console.log(JSON.stringify(req.headers));
   const authheader =
     req.headers.get("authorization") || req.headers.get("Authorization");
-  console.log(authheader);
 
   if (!authheader) {
     return false;
   }
   const values = authheader.split(" ");
-  console.log(values);
 
   if (values.length != 2) {
     return false;
@@ -36,17 +33,12 @@ function isAuthenticated(req: NextRequest) {
 
   const auth = Buffer.from(values[1], "base64").toString().split(":");
 
-  console.log(auth);
-
   if (auth.length != 2) {
     return false;
   }
 
   const user = auth[0];
   const pass = auth[1];
-
-  console.log(user, AUTH_USER);
-  console.log(pass, AUTH_PASS);
 
   return user == AUTH_USER && pass == AUTH_PASS;
 }
