@@ -34,6 +34,9 @@ jobs:
       - name: Lint
         run: pnpm run lint
 
+      - name: Check unused dependencies
+        run: pnpm depcheck
+
   build:
     needs: test
     runs-on: ubuntu-latest
@@ -58,9 +61,6 @@ jobs:
 
       - name: Install
         run: pnpm install
-
-      - name: Check unused dependencies
-        run: npx depcheck
 
       - name: Build
         run: pnpm run build
