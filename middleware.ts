@@ -16,7 +16,7 @@ export function middleware(req: NextRequest) {
 
 function isAuthenticated(req: NextRequest) {
   const authheader =
-    req.headers.get("authorization") || req.headers.get("Authorization");
+    req.headers.get("x-authorization") || req.headers.get("X-Authorization");
 
   if (!authheader) {
     return false;
