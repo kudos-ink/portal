@@ -12,6 +12,7 @@ import {
   DEFAULT_SORT,
 } from "./constants";
 import { KudosQueryParameters } from "./types";
+import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
 
 const notion = new Client({
   auth: process.env.NOTION_API_KEY,
@@ -43,7 +44,7 @@ export async function queryDatabase(
     database_id: DATABASE_ID,
     filter_properties: DEFAULT_FILTER_PROPERTIES,
     sorts: DEFAULT_SORT,
-    page_size: 100,
+    page_size: DEFAULT_PAGE_SIZE,
     start_cursor: undefined,
     filter: undefined,
   };

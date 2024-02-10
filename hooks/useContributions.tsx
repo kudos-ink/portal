@@ -28,7 +28,6 @@ export const useContributions = (
     queryFn: async ({ pageParam: next_cursor }) => {
       const response = await queryDatabase({
         ...queries,
-        page_size: DEFAULT_PAGE_SIZE,
         start_cursor: next_cursor,
       });
       return {

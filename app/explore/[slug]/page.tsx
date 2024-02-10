@@ -37,7 +37,6 @@ export default async function ExplorePage({ params }: IProps) {
   const filters = decodingSlug(params.slug, filterOptions);
   const queryFilter = processNotionFilters(filters, filterOptions.repositories);
   const data = await queryDatabase({
-    page_size: DEFAULT_PAGE_SIZE,
     filter: queryFilter,
   });
   const contributions = transformNotionDataToContributions(data);
