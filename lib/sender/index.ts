@@ -7,16 +7,16 @@ export async function addEmail(email: string): Promise<boolean> {
     Accept: "application/json",
   };
   try {
-    const { success } = await fetch(url, {
+    const response = await fetch(url, {
       method: "POST",
       headers,
       body: JSON.stringify({
         email,
       }),
-    }).then((response) => response.json());
-    return success;
+    });
+    return response.ok;
   } catch (error) {
-    console.error("Error adding email:", error);
+    console.error(error);
     return false;
   }
 }
