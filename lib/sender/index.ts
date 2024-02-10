@@ -14,7 +14,14 @@ export async function addEmail(email: string): Promise<boolean> {
         email,
       }),
     });
-    return response.ok;
+    const { success, message } = await response.json();
+
+    if (response.ok && success) {
+      return true;
+    } else {
+      console.error("error adding the email: ", message);
+      return false;
+    }
   } catch (error) {
     console.error(error);
     return false;
