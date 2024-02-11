@@ -1,8 +1,9 @@
-import ControlledTable from "@/components/controlled-table";
+import StaticTable from "@/components/table/static-table";
+import Toolbar from "@/components/filters/toolbar";
+import { container } from "@/components/primitives";
+import { FiltersProvider } from "@/contexts/filters";
 import { queryDatabase } from "@/lib/notion";
 import { fetchFilterOptions } from "@/lib/repository-metadata";
-import { PaginatedCustomDataResponse } from "@/types";
-import { Contribution } from "@/types/contribution";
 import { initFilters } from "@/utils/filters";
 import { transformNotionDataToContributions } from "@/utils/notion";
 
@@ -11,18 +12,18 @@ export default async function Home() {
   const filters = initFilters();
   const data = await queryDatabase();
   const contributions = transformNotionDataToContributions(data);
-  const items: PaginatedCustomDataResponse<Contribution> = {
-    data: contributions,
-    hasMore: data.has_more,
-    nextCursor: data.next_cursor ?? undefined,
-  };
 
   return (
-    <ControlledTable
-      filters={filters}
-      items={items}
-      queryFilter={undefined}
-      filterOptions={filterOptions}
-    />
+    <FiltersProvider
+      initialFilters={filters}
+      initialFilterOptions={filterOptions}
+    >
+      <div className="flex flex-col">
+        <Toolbar />
+        <section className={container()}>
+          <StaticTable data={contributions} />
+        </section>
+      </div>
+    </FiltersProvider>
   );
 }

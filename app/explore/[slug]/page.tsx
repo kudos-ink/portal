@@ -1,6 +1,5 @@
 import { Metadata } from "next";
-import ContributionsTable from "@/components/table/table";
-import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
+import InfiniteTable from "@/components/table/infinite-table";
 import { queryDatabase } from "@/lib/notion";
 import { PaginatedCustomDataResponse } from "@/types";
 import { Contribution } from "@/types/contribution";
@@ -10,7 +9,6 @@ import {
 } from "@/utils/notion";
 import { decodingSlug } from "@/utils/url";
 import { fetchFilterOptions } from "@/lib/repository-metadata";
-import { SITE_CONFIG } from "@/data/config";
 
 interface IProps {
   params: { slug: string };
@@ -47,10 +45,9 @@ export default async function ExplorePage({ params }: IProps) {
   };
 
   return (
-    <ContributionsTable
+    <InfiniteTable
       items={items}
       queries={{
-        page_size: DEFAULT_PAGE_SIZE,
         filter: queryFilter,
       }}
     />
