@@ -3,11 +3,9 @@ import { Metadata, Viewport } from "next";
 import { Fira_Code, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { Providers } from "./providers";
-import { Navbar } from "@/components/navbar";
+import Navbar from "@/components/nav/navbar";
 import { SITE_CONFIG } from "@/data/config";
 import clsx from "clsx";
-import CtaBanner from "@/components/cta-banner";
-import { container, title } from "@/components/primitives";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const fontSans = Inter({
@@ -80,18 +78,6 @@ export default function RootLayout({
           <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-default from-0% to-background to-80% relative flex flex-col h-screen">
             <Navbar />
             <main className="py-16 flex-grow">
-              <section
-                className={`flex flex-col items-center text-center pt-10 pb-22 ${container()}`}
-              >
-                <h1 className={title()}>
-                  Find Collaborations,
-                  <br />
-                  Collect Kudos
-                </h1>
-              </section>
-              <section className={container() + " py-6"}>
-                <CtaBanner />
-              </section>
               <div>{children}</div>
             </main>
             <footer className="py-6 px-6 md:px-8 md:py-0">
