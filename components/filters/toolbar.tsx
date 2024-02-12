@@ -15,7 +15,11 @@ import SelectFilter from "./select-filter";
 import { FilterKeys } from "@/types/filters";
 import { countNonEmptyFilters } from "@/utils/filters";
 
-const Toolbar = () => {
+interface IToolbarProps {
+  label: string;
+}
+
+const Toolbar = ({ label }: IToolbarProps) => {
   const toolbarRef = useRef<HTMLDivElement>(null);
   const isToolbarSticky = useSticky(toolbarRef);
 
@@ -83,7 +87,7 @@ const Toolbar = () => {
           )}
         </div>
         <div className="py-4 px-3 bg-default-100 border-small rounded-t-md">
-          <span className="text-lg font-bold">Open Contributions</span>
+          <span className="text-lg font-bold">{label}</span>
         </div>
       </div>
     </div>

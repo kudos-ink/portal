@@ -42,7 +42,7 @@ export default async function Home() {
         initialFilterOptions={filterOptions}
       >
         <div className="flex flex-col">
-          <Toolbar />
+          <Toolbar label="Latest Contributions" />
           <section className={container()}>
             <StaticTable data={contributions} />
           </section>
