@@ -42,27 +42,24 @@ const About = () => (
       </div>
       <div className="flex flex-col gap-4">
         <p>Our work spans a wide range of areas, including:</p>
-        <ul className="list-disc pl-4">
+        <ul className="list-disc pl-4 space-y-4">
           <li>
             <strong>Unified Repository Access</strong>: The portal consolidates
             repositories from the entire ecosystem into a single platform,
             providing a comprehensive view without the need to navigate through
             GitHub,
           </li>
-          <br />
           <li>
             <strong>Project Categorisation</strong>: The portal allows for
             refined searches based on specific interests and programming
             languages, enabling users to easily find projects that align with
             their skills and passions,
           </li>
-          <br />
           <li>
             <strong>Issue Curation</strong>: Kudos will actively collaborate
             with projects to curate sets of high quality issues which provide
             all of the necessary context to allow a contributor to begin work,
           </li>
-          <br />
           <li>
             <strong>Custom Incentives</strong>: We offer project maintainers the
             chance to utilise our smart contract templates along with
