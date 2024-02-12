@@ -9,6 +9,7 @@ import clsx from "clsx";
 import CtaBanner from "@/components/cta-banner";
 import { container, title } from "@/components/primitives";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import ProjectCarousel from "@/components/project-carousel";
 
 export const fontSans = Inter({
   subsets: ["latin"],
@@ -91,6 +92,9 @@ export default function RootLayout({
               </section>
               <section className={container() + " py-6"}>
                 <CtaBanner />
+              </section>
+              <section>
+                <ProjectCarousel />
               </section>
               <div>{children}</div>
             </main>
