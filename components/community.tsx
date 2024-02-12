@@ -13,7 +13,7 @@ const CommunityCard = ({ icon, isRtl, link, name }: ICommunityCardProps) => (
   <Link href={link} target="_blank" rel="noreferrer" title={name}>
     <Card className="w-[350px] bg-primary">
       <CardBody
-        className={`flex items-center gap-8 h-full p-6 ${
+        className={`flex items-center gap-8 h-full p-6 font-bentoga ${
           isRtl ? "flex-row-reverse" : "flex-row"
         }`}
       >
@@ -30,7 +30,7 @@ interface ICommunityProps {
 
 const Community = ({ children }: ICommunityProps) => (
   <div className="mx-auto md:container">
-    <h2 className="text-5xl text-center">Community</h2>
+    <h2 className="text-5xl text-center font-bentoga">Community</h2>
     <h3 className="text-3xl text-center mt-4">
       <strong className="font-bold">Join the conversation now</strong>
     </h3>

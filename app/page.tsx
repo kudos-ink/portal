@@ -74,7 +74,7 @@ export default async function Home() {
           <Community.Card
             icon={<GithubIcon className="text-background" size={56} />}
             link={SITE_CONFIG.links.githubOrg}
-            name="GitHub"
+            name="Github"
           />
           <Community.Card
             icon={<TwitterIcon className="text-background" size={56} />}

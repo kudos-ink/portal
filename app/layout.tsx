@@ -1,7 +1,8 @@
 import "@/styles/globals.css";
 import clsx from "clsx";
 import { Metadata, Viewport } from "next";
-import { Fira_Code, Inter } from "next/font/google";
+import { Archivo, Archivo_Black } from "next/font/google";
+import localFont from "next/font/local";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
 import Footer from "@/components/footer";
@@ -9,16 +10,25 @@ import Navbar from "@/components/nav/navbar";
 import { SITE_CONFIG } from "@/data/config";
 import { Providers } from "./providers";
 
-export const fontSans = Inter({
+export const fontSans = Archivo({
   subsets: ["latin"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
   display: "swap",
   variable: "--font-sans",
 });
 
-export const fontMono = Fira_Code({
+export const fontSansBlack = Archivo_Black({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-mono",
+  variable: "--font-sans-black",
+  weight: "400",
+});
+
+export const fontBentoga = localFont({
+  src: "./Bentoga-Thin.otf",
+  display: "swap",
+  variable: "--font-bentoga",
 });
 
 export const metadata: Metadata = {
@@ -70,7 +80,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={clsx(fontMono.variable, fontSans.variable)}
+      className={clsx(
+        fontBentoga.variable,
+        fontSans.variable,
+        fontSansBlack.variable,
+      )}
       suppressHydrationWarning
     >
       <head />

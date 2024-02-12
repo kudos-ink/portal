@@ -18,7 +18,8 @@ module.exports = {
       },
       fontFamily: {
         sans: ["var(--font-sans)"],
-        mono: ["var(--font-mono)"],
+        sansBlack: ["var(--font-sans-black)"],
+        bentoga: ["var(--font-bentoga)"],
         emoji: ["Noto Color Emoji"],
       },
     },

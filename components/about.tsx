@@ -5,11 +5,8 @@ const ABOUT_TITLE = "About Kudos";
 const About = () => (
   <>
     <Link href="#about" aria-label={ABOUT_TITLE} title={ABOUT_TITLE}>
-      <h2
-        id="about"
-        className="text-2xl font-bold md:text-3xl md:leading-normal"
-      >
-        {ABOUT_TITLE}
+      <h2 id="about" className="text-2xl md:text-3xl md:leading-normal">
+        About <span className="font-sansBlack">Kudos</span>
       </h2>
     </Link>
     <div className="mt-6 grid gap-12 md:grid-cols-2">
