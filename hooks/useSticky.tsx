@@ -20,7 +20,7 @@ const useSticky = (ref: RefObject<HTMLElement>) => {
 
     const handleScroll = isMobile
       ? throttle(updateSticky, 500)
-      : debounce(updateSticky, 10);
+      : debounce(updateSticky, 5);
 
     window.addEventListener("scroll", handleScroll);
 
