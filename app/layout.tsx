@@ -1,12 +1,13 @@
 import "@/styles/globals.css";
+import clsx from "clsx";
 import { Metadata, Viewport } from "next";
 import { Fira_Code, Inter } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
-import { Providers } from "./providers";
+import Footer from "@/components/footer";
 import Navbar from "@/components/nav/navbar";
 import { SITE_CONFIG } from "@/data/config";
-import clsx from "clsx";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { Providers } from "./providers";
 
 export const fontSans = Inter({
   subsets: ["latin"],
@@ -76,34 +77,14 @@ export default function RootLayout({
       <body className="min-h-screen bg-background font-sans antialiased">
         <Providers themeProps={{ attribute: "class", defaultTheme: "kudos" }}>
           <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-default from-0% to-background to-80% relative flex flex-col h-screen">
-            <Navbar />
+            <header>
+              <Navbar />
+            </header>
             <main className="py-16 flex-grow">
               <div>{children}</div>
             </main>
             <footer className="py-6 px-6 md:px-8 md:py-0">
-              <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
-                <p className="text-balance text-center text-sm leading-loose text-muted-foreground md:text-left">
-                  Built by{" "}
-                  <a
-                    href={SITE_CONFIG.links.twitter}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="font-medium underline underline-offset-4"
-                  >
-                    Kudos
-                  </a>
-                  . The source code is available on{" "}
-                  <a
-                    href={SITE_CONFIG.links.github}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="font-medium underline underline-offset-4"
-                  >
-                    GitHub
-                  </a>
-                  .
-                </p>
-              </div>
+              <Footer />
             </footer>
           </div>
         </Providers>

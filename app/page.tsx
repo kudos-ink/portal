@@ -1,11 +1,14 @@
 import { Button } from "@nextui-org/button";
 import { Link } from "@nextui-org/link";
+import { GithubIcon, TwitterIcon } from "@/assets/icons";
 import About from "@/components/about";
+import Community from "@/components/community";
 import CtaBanner from "@/components/cta-banner";
 import Toolbar from "@/components/filters/toolbar";
 import { container, title } from "@/components/primitives";
 import StaticTable from "@/components/table/static-table";
 import { FiltersProvider } from "@/contexts/filters";
+import { SITE_CONFIG } from "@/data/config";
 import { queryDatabase } from "@/lib/notion";
 import { fetchFilterOptions } from "@/lib/repository-metadata";
 import { initFilters } from "@/utils/filters";
@@ -30,7 +33,7 @@ export default async function Home() {
           Collect Kudos
         </h1>
       </section>
-      <section className={container() + " py-6"}>
+      <section className={container() + " py-8 pt-24"}>
         <CtaBanner />
       </section>
 
@@ -62,8 +65,24 @@ export default async function Home() {
         </Link>
       </section>
 
-      <section className={container() + " pt-24"}>
+      <section className={container() + " pt-40"}>
         <About />
+      </section>
+
+      <section className={container() + " py-40"}>
+        <Community>
+          <Community.Card
+            icon={<GithubIcon className="text-background" size={56} />}
+            link={SITE_CONFIG.links.githubOrg}
+            name="GitHub"
+          />
+          <Community.Card
+            icon={<TwitterIcon className="text-background" size={56} />}
+            isRtl
+            link={SITE_CONFIG.links.twitter}
+            name="Twitter"
+          />
+        </Community>
       </section>
     </>
   );
