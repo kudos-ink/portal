@@ -16,13 +16,14 @@ export default async function ({}: IProjectCarouselProps) {
         name: repository.name,
         repoUrl: repository.repository_url,
         slug: repository.name.toLocaleLowerCase().replaceAll(" ", "-"),
+        key: repository.name,
       },
     );
   });
   const repoMap = Array.from(map).concat(
     Array.from(map).map((item, index) => [
       item[0],
-      { ...item[1], name: `${item[1].name}-duplicate-${index}` },
+      { ...item[1], key: `${item[1].key}-duplicate-${index}` },
     ]),
   );
 
@@ -37,12 +38,12 @@ export default async function ({}: IProjectCarouselProps) {
               href={`/explore/open-contributions-for-${repoPlusIcon[1].slug}`}
               color="foreground"
               title={repoPlusIcon[1].name}
+              key={repoPlusIcon[1].key}
             >
               <MyImage
                 className="min-w-12 bg-foreground"
                 src={repoPlusIcon[0]}
                 alt={` logo`}
-                key={repoPlusIcon[1].repoUrl}
                 width={75}
                 height={75}
               />
