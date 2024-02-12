@@ -22,7 +22,17 @@ const InfiniteTable = ({ items, queries = {} }: IInfiniteTableProps) => {
   } = useContributions(items, queries);
 
   const contributions = React.useMemo(() => {
-    return results?.pages.flatMap((page) => page.data) || [];
+    const uniqueContributions = new Map();
+
+    results?.pages
+      .flatMap((page) => page.data)
+      .forEach((contribution) => {
+        if (!uniqueContributions.has(contribution.id)) {
+          uniqueContributions.set(contribution.id, contribution);
+        }
+      });
+
+    return Array.from(uniqueContributions.values());
   }, [results]);
 
   const handleScroll = useCallback(() => {
