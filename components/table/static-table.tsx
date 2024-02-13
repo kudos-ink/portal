@@ -1,26 +1,18 @@
 "use client";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import {
-  Table as NuiTable,
+  Table as NextUITable,
   TableHeader,
   TableBody,
   TableColumn,
   TableRow,
   TableCell,
 } from "@nextui-org/table";
-import { Spinner } from "@nextui-org/spinner";
-import { Contribution, PaginatedContributions } from "@/types/contribution";
+import { Contribution } from "@/types/contribution";
 import { ExternalLink, Content, Time, Project } from "./row";
 
-import { useContributions } from "@/hooks/useContributions";
-import { KudosQueryParameters } from "@/lib/notion/types";
 import dynamic from "next/dynamic";
 import { useFilters } from "@/contexts/filters";
 import { extractRepositoryUrlFromIssue } from "@/utils/github";
@@ -33,16 +25,19 @@ interface IColumn {
   uid: string;
 }
 
-interface ITableProps {
-  items: PaginatedContributions;
-  queries?: Partial<KudosQueryParameters>;
-}
-
 interface RepositoryMap {
   [key: string]: string;
 }
 
-export const Table = ({ items, queries = {} }: ITableProps) => {
+interface IStaticTableProps {
+  data: Contribution[];
+}
+
+const StaticTable = ({ data }: IStaticTableProps) => {
+  const { filterOptions } = useFilters();
+  const isMobile = useMediaQuery({ maxWidth: 639 }); // tailwind lg default: 640px
+  const isLaptop = useMediaQuery({ minWidth: 1024 }); // tailwind lg default: 1024px
+
   const [columns, setColumns] = useState<IColumn[]>([
     { name: "PROJECT", uid: "project" },
     { name: "CONTENT", uid: "content" },
@@ -50,24 +45,6 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
     { name: "DATE", uid: "date" },
     { name: "ACTIONS", uid: "actions" },
   ]);
-
-  const { filterOptions } = useFilters();
-
-  const {
-    data: results,
-    fetchNextPage,
-    hasNextPage,
-  } = useContributions(items, queries);
-
-  const isMobile = useMediaQuery({ maxWidth: 639 }); // tailwind lg default: 640px
-  const isLaptop = useMediaQuery({ minWidth: 1024 }); // tailwind lg default: 1024px
-
-  const loaderRef = useRef<HTMLDivElement>(null);
-  const isFetchingRef = useRef(false);
-
-  const contributions = React.useMemo(() => {
-    return results?.pages.flatMap((page) => page.data) || [];
-  }, [results]);
 
   const repositoryIconMap: RepositoryMap = useMemo(() => {
     const map: RepositoryMap = {};
@@ -80,6 +57,7 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
     });
     return map;
   }, [filterOptions.repositories]);
+
   const useGetIconByRepositoryUrl = (repositoryIconMap: RepositoryMap) => {
     const getIconByRepositoryUrl = useCallback(
       (repositoryUrl: string): string | null => {
@@ -152,21 +130,6 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
     [getIconByRepositoryUrl],
   );
 
-  const handleScroll = useCallback(() => {
-    if (!hasNextPage || isFetchingRef.current) return;
-
-    const loaderElement = loaderRef.current;
-    if (loaderElement) {
-      const rect = loaderElement.getBoundingClientRect();
-      if (rect.top <= window.innerHeight) {
-        isFetchingRef.current = true;
-        fetchNextPage().then(() => {
-          isFetchingRef.current = false;
-        });
-      }
-    }
-  }, [hasNextPage, fetchNextPage]);
-
   useEffect(() => {
     setColumns([
       { name: "PROJECT", uid: "project" },
@@ -177,57 +140,40 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
     ]);
   }, [isMobile, isLaptop]);
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [handleScroll]);
-
   return (
-    <>
-      <NuiTable
-        hideHeader
-        aria-label="Example table with infinite pagination"
-        classNames={{
-          table:
-            "w-full bg-gradient-to-r from-background to-background-200 to-80% max-w-7xl border-spacing-0 rounded-b-md overflow-hidden",
-          wrapper:
-            "bg-background overflow-visible p-0 rounded-none border-small rounded-b-md",
-          tr: "relative bg-red border-y-small border-y-overlay lg:before:content-[''] lg:before:absolute lg:before:bg-hover-overlay lg:before:opacity-0 lg:before:w-full lg:before:h-full lg:before:transition-opacity lg:before:duration-300 lg:before:ease-in-out lg:before:max-h-[62px] lg:hover:before:opacity-100",
-          td: "px-2 sm:px-inherit",
-        }}
-      >
-        <TableHeader columns={columns}>
-          {(column) => (
-            <TableColumn
-              key={column.uid}
-              align={column.uid === "actions" ? "center" : "start"}
-            >
-              {column.name}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody
-          items={contributions}
-          emptyContent="No contributions to display."
-        >
-          {(item) => (
-            <TableRow key={item.id}>
-              {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      </NuiTable>
-      {hasNextPage && (
-        <div className="flex w-full justify-center pt-8">
-          <Spinner ref={loaderRef} color="white" />
-        </div>
-      )}
-    </>
+    <NextUITable
+      hideHeader
+      aria-label="Open contributions list"
+      classNames={{
+        table:
+          "w-full bg-gradient-to-r from-background to-background-200 to-80% max-w-7xl border-spacing-0 rounded-b-md overflow-hidden",
+        wrapper:
+          "bg-background overflow-visible p-0 rounded-none border-small rounded-b-md",
+        tr: "relative bg-red border-y-small border-y-overlay lg:before:content-[''] lg:before:absolute lg:before:bg-hover-overlay lg:before:opacity-0 lg:before:w-full lg:before:h-full lg:before:transition-opacity lg:before:duration-300 lg:before:ease-in-out lg:before:max-h-[62px] lg:hover:before:opacity-100",
+        td: "px-2 sm:px-inherit",
+      }}
+    >
+      <TableHeader columns={columns}>
+        {(column) => (
+          <TableColumn
+            key={column.uid}
+            align={column.uid === "actions" ? "center" : "start"}
+          >
+            {column.name}
+          </TableColumn>
+        )}
+      </TableHeader>
+      <TableBody items={data} emptyContent="No contributions to display.">
+        {(item) => (
+          <TableRow key={item.id}>
+            {(columnKey) => (
+              <TableCell>{renderCell(item, columnKey)}</TableCell>
+            )}
+          </TableRow>
+        )}
+      </TableBody>
+    </NextUITable>
   );
 };
 
-export default Table;
+export default StaticTable;

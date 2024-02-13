@@ -46,7 +46,7 @@ const CtaBanner = ({}: ICtaBannerProps) => {
     >
       <CardBody>
         <p className="text-center font-semibold">
-          Maintaining a project? Reach +1000 builders on the #1 Polkadot
+          Maintaining a project? Reach +2000 builders on the #1 Polkadot ⭕️
           ecosystem contribution hub
         </p>
         <div className="flex items-center gap-2">

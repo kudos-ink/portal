@@ -1,26 +1,34 @@
 import "@/styles/globals.css";
-import { Metadata, Viewport } from "next";
-import { Fira_Code, Inter } from "next/font/google";
-import { Analytics } from "@vercel/analytics/react";
-import { Providers } from "./providers";
-import { Navbar } from "@/components/navbar";
-import { SITE_CONFIG } from "@/data/config";
 import clsx from "clsx";
-import CtaBanner from "@/components/cta-banner";
-import { container, title } from "@/components/primitives";
+import { Metadata, Viewport } from "next";
+import { Archivo, Archivo_Black } from "next/font/google";
+import localFont from "next/font/local";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import Community from "@/components/community";
+import { Analytics } from "@vercel/analytics/react";
+import Footer from "@/components/footer";
+import Navbar from "@/components/nav/navbar";
+import { SITE_CONFIG } from "@/data/config";
+import { Providers } from "./providers";
 
-export const fontSans = Inter({
+export const fontSans = Archivo({
   subsets: ["latin"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
   display: "swap",
   variable: "--font-sans",
 });
 
-export const fontMono = Fira_Code({
+export const fontSansBlack = Archivo_Black({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-mono",
+  variable: "--font-sans-black",
+  weight: "400",
+});
+
+export const fontBentoga = localFont({
+  src: "./Bentoga-Thin.otf",
+  display: "swap",
+  variable: "--font-bentoga",
 });
 
 export const metadata: Metadata = {
@@ -72,56 +80,25 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={clsx(fontMono.variable, fontSans.variable)}
+      className={clsx(
+        fontBentoga.variable,
+        fontSans.variable,
+        fontSansBlack.variable,
+      )}
       suppressHydrationWarning
     >
       <head />
       <body className="min-h-screen bg-background font-sans antialiased">
         <Providers themeProps={{ attribute: "class", defaultTheme: "kudos" }}>
-          <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-default from-0% to-background to-80% relative flex flex-col h-screen">
-            <Navbar />
-            <main className="py-12 flex-grow">
-              <section
-                className={`flex flex-col items-center text-center pt-10 pb-22 ${container()}`}
-              >
-                <h1 className={title()}>
-                  Find Collaborations,
-                  <br />
-                  Collect Kudos
-                </h1>
-              </section>
-              <section className={container() + " py-6"}>
-                <CtaBanner />
-              </section>
+          <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-default from-0% to-background to-50% relative flex flex-col h-screen">
+            <header>
+              <Navbar />
+            </header>
+            <main className="py-16 flex-grow">
               <div>{children}</div>
             </main>
             <footer className="py-6 px-6 md:px-8 md:py-0">
-              <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
-                <Community />
-              </div>
-              <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
-                <p className="text-balance text-center text-sm leading-loose text-muted-foreground md:text-left">
-                  Built by{" "}
-                  <a
-                    href={SITE_CONFIG.links.twitter}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="font-medium underline underline-offset-4"
-                  >
-                    Kudos
-                  </a>
-                  . The source code is available on{" "}
-                  <a
-                    href={SITE_CONFIG.links.github}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="font-medium underline underline-offset-4"
-                  >
-                    GitHub
-                  </a>
-                  .
-                </p>
-              </div>
+              <Footer />
             </footer>
           </div>
         </Providers>

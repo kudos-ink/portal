@@ -1,27 +1,75 @@
-"use client";
-import React from "react";
+import { ReactNode } from "react";
+import { Card, CardBody } from "@nextui-org/card";
+import { Link } from "@nextui-org/link";
 import Email from "./email";
-import { container, subtitle, title } from "./primitives";
 
-const Community = () => {
-  return (
-    <div className={`pt-6 flex flex-col gap-4 ${container()}`}>
-      <div className="flex flex-col gap-4 items-start overflow-hidden lg:flex-row lg:items-center">
-        <div className="flex flex-nowrap overflow-x-auto overflow-y-hidden gap-4 w-full sm:w-auto xl:overflow-visible"></div>
-        <div>
-          <h3 className={subtitle()}>Stay in the loop</h3>
-          <h4 className="pb-4">
-            Join our mailing list to stay in the loop with our newest feature
-            releases.
-          </h4>
+const COMMUNITY_TITLE = "Community";
+
+interface ICommunityCardProps {
+  icon: ReactNode;
+  isRtl?: boolean;
+  link: string;
+  name: string;
+}
+
+const CommunityCard = ({ icon, isRtl, link, name }: ICommunityCardProps) => (
+  <Link href={link} target="_blank" rel="noreferrer" title={name}>
+    <Card className="w-[350px] bg-primary">
+      <CardBody
+        className={`flex items-center gap-8 h-full p-6 font-bentoga ${
+          isRtl ? "flex-row-reverse" : "flex-row"
+        }`}
+      >
+        {icon}
+        <h4 className="text-6xl text-cente text-background">{name}</h4>
+      </CardBody>
+    </Card>
+  </Link>
+);
+
+interface ICommunityProps {
+  children: ReactNode;
+}
+
+const Community = ({ children }: ICommunityProps) => (
+  <div className="flex flex-col items-center mx-auto md:container">
+    <Link
+      href="#community"
+      aria-label={COMMUNITY_TITLE}
+      title={COMMUNITY_TITLE}
+    >
+      <h2
+        id="community"
+        className="text-foreground text-5xl text-center font-bentoga"
+      >
+        {COMMUNITY_TITLE}
+      </h2>
+    </Link>
+    <div className="flex flex-row items-center mx-auto md:container">
+      <div>
+        <h3 className="text-3xl text-center mt-4">
+          <strong className="font-bold">Stay in the loop</strong>
+        </h3>
+        <h4 className="text-xl text-center mt-4">
+          Join our mailing list to stay in the loop with our newest feature
+          releases (no spam).
+        </h4>
+        <div className="flex flex-col justify-center items-center gap-8 mt-16 md:flex-row">
           <Email />
         </div>
-        <div>
-          <h3 className={subtitle()}>Join the community</h3>
+      </div>
+      <div>
+        <h3 className="text-3xl text-center mt-4">
+          <strong className="font-bold">Join the conversation now</strong>
+        </h3>
+        <div className="flex flex-col justify-center items-center gap-8 mt-16 md:flex-row">
+          {children}
         </div>
       </div>
     </div>
-  );
-};
+  </div>
+);
+
+Community.Card = CommunityCard;
 
 export default Community;
