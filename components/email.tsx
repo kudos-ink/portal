@@ -1,8 +1,14 @@
+"use client";
 import React from "react";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 
 import { isValidEmail } from "@/utils/mail";
+import { GetServerSideProps, NextPage } from "next";
+
+type Props = {
+  csrfToken: string;
+};
 type ColorType =
   | "default"
   | "success"
@@ -11,7 +17,7 @@ type ColorType =
   | "secondary"
   | "warning";
 
-export default function Email() {
+const Email = () => {
   const defaultButtonMessage = "Sign up";
   const defaultButtonColor = "default";
   const [email, setEmail] = React.useState("");
@@ -46,6 +52,7 @@ export default function Email() {
     }
   };
   const handleOnBlur = () => {
+    //TODO: fix
     if (isInvalid) {
       validateEmail();
     }
@@ -56,9 +63,16 @@ export default function Email() {
     }
     try {
       setButtonLoading(true);
+      const csrfResp = await fetch("/csrf-token");
+      const { csrfToken } = await csrfResp.json();
+
       const response = await fetch("/api/subscriber", {
         method: "POST",
         body: JSON.stringify({ email }),
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": csrfToken,
+        },
       });
       setButtonLoading(false);
       console.log(response);
@@ -103,4 +117,5 @@ export default function Email() {
       </Button>
     </div>
   );
-}
+};
+export default Email;
