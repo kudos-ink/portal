@@ -18,6 +18,7 @@
     "@nextui-org/chip": "^2.0.25",
     "@nextui-org/dropdown": "^2.1.16",
     "@nextui-org/image": "^2.0.24",
+    "@nextui-org/input": "^2.1.16",
     "@nextui-org/link": "2.0.26",
     "@nextui-org/navbar": "2.0.27",
     "@nextui-org/select": "^2.1.20",
@@ -36,13 +37,16 @@
     "clsx": "^2.0.0",
     "dayjs": "^1.11.10",
     "dotenv": "^16.3.1",
+    "edge-csrf": "^1.0.9",
     "eslint": "8.56.0",
     "eslint-config-next": "14.0.4",
     "framer-motion": "^10.16.16",
+    "is-email": "^1.0.2",
     "next": "14.0.4",
     "next-themes": "^0.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.50.1",
     "react-responsive": "^9.0.2",
     "sharp": "0.32.6",
     "tailwind-variants": "^0.1.19",
@@ -51,6 +55,7 @@
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.14.6",
+    "@types/is-email": "^1.0.0",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.1.1"
   }
