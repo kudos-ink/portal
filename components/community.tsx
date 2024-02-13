@@ -45,7 +45,7 @@ const Community = ({ children }: ICommunityProps) => (
         {COMMUNITY_TITLE}
       </h2>
     </Link>
-    <div className="flex flex-row items-center mx-auto md:container">
+    <div className="grid gap-12 md:grid-cols-2">
       <div>
         <h3 className="text-3xl text-center mt-4">
           <strong className="font-bold">Stay in the loop</strong>

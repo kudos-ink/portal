@@ -4,11 +4,7 @@ import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 
 import { isValidEmail } from "@/utils/mail";
-import { GetServerSideProps, NextPage } from "next";
 
-type Props = {
-  csrfToken: string;
-};
 type ColorType =
   | "default"
   | "success"
@@ -51,13 +47,22 @@ const Email = () => {
       return true;
     }
   };
-  const handleOnBlur = () => {
-    //TODO: fix
+  const handleOnChange = () => {
     if (isInvalid) {
       validateEmail();
     }
   };
+
+  const handleKeyDown = async (event: { key: string }) => {
+    if (event.key === "Enter") {
+      await registerEmail();
+    }
+  };
   const handleOnClick = async () => {
+    await registerEmail();
+  };
+
+  const registerEmail = async () => {
     if (!validateEmail()) {
       return;
     }
@@ -75,17 +80,16 @@ const Email = () => {
         },
       });
       setButtonLoading(false);
-      console.log(response);
       if (response.status == 201) {
         setButtonLoading(false);
-        setButtonMessage("Success");
+        setButtonMessage("Success!");
         setButtonColor("success");
       } else {
         setButtonMessage("Error");
         setButtonColor("danger");
       }
     } catch (e) {
-      setButtonLoading(false);
+      console.error(e);
     } finally {
       setButtonLoading(false);
     }
@@ -95,23 +99,23 @@ const Email = () => {
     <div className="flex flex-row gap-2">
       <Input
         value={email}
-        size="sm"
         type="email"
         variant="bordered"
         label="Enter your email"
         isInvalid={isInvalid}
         color={isInvalid ? "danger" : "default"}
         errorMessage={errorMessage}
-        onBlur={handleOnBlur}
+        onChange={handleOnChange}
         onValueChange={setEmail}
-        className="max-w-[220px]"
+        onKeyDown={handleKeyDown}
+        className="h-24"
       />
 
       <Button
         color={buttonColor}
-        size="md"
         isLoading={buttonLoading}
         onClick={handleOnClick}
+        className="h-14"
       >
         {buttonMessage}
       </Button>
