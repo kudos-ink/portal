@@ -83,6 +83,9 @@ dependencies:
   dotenv:
     specifier: ^16.3.1
     version: 16.3.1
+  edge-csrf:
+    specifier: ^1.0.9
+    version: 1.0.9(next@14.0.4)
   eslint:
     specifier: 8.56.0
     version: 8.56.0
@@ -2355,10 +2358,6 @@ packages:
     engines: {node: '>= 6'}
     dev: false
 
-  /caniuse-lite@1.0.30001571:
-    resolution: {integrity: sha512-tYq/6MoXhdezDLFZuCO/TKboTzuQ/xR5cFdgXPfDtM7/kchBO3b4VWghE/OAi/DV7tTdhmLjZiZBZi1fA/GheQ==}
-    dev: false
-
   /caniuse-lite@1.0.30001585:
     resolution: {integrity: sha512-yr2BWR1yLXQ8fMpdS/4ZZXpseBgE7o4g41x3a6AJOqZuOi+iE/WdJYAuZ6Y95i4Ohd2Y+9MzIWRR+uGABH4s3Q==}
     dev: false
@@ -2589,6 +2588,14 @@ packages:
 
   /eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
+    dev: false
+
+  /edge-csrf@1.0.9(next@14.0.4):
+    resolution: {integrity: sha512-3F89YTh42UDdISr3s9AEcgJDLi4ysgjGfnybzF0LuZGaG2W31h1ZwgWwEQBLMj04lAklcP4XHZYi7vk9o8zcbg==}
+    peerDependencies:
+      next: ^13.0.0 || ^14.0.0
+    dependencies:
+      next: 14.0.4(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
   /electron-to-chromium@1.4.661:
@@ -3799,7 +3806,7 @@ packages:
       '@next/env': 14.0.4
       '@swc/helpers': 0.5.2
       busboy: 1.6.0
-      caniuse-lite: 1.0.30001571
+      caniuse-lite: 1.0.30001585
       graceful-fs: 4.2.11
       postcss: 8.4.31
       react: 18.2.0
