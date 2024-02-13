@@ -3,15 +3,55 @@ import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 
 import { isValidEmail } from "@/utils/mail";
+type ColorType =
+  | "default"
+  | "success"
+  | "danger"
+  | "primary"
+  | "secondary"
+  | "warning";
 
 export default function Email() {
+  const defaultButtonMessage = "Sign up";
+  const defaultButtonColor = "default";
   const [email, setEmail] = React.useState("");
+  const [errorMessage, setErrorMessage] = React.useState("");
+  const [buttonMessage, setButtonMessage] =
+    React.useState(defaultButtonMessage);
+  const [buttonColor, setButtonColor] =
+    React.useState<ColorType>(defaultButtonColor);
   const [buttonLoading, setButtonLoading] = React.useState(false);
   const [isInvalid, setIsInvalid] = React.useState(false);
 
-  const handleOnClick = async () => {
-    if (email === "" || !isValidEmail(email)) {
+  React.useEffect(() => {
+    setTimeout(() => {
+      setButtonMessage(defaultButtonMessage);
+      setButtonColor(defaultButtonColor);
+    }, 10_000);
+  }, [defaultButtonColor, buttonMessage]);
+
+  const validateEmail = () => {
+    if (email === "") {
       setIsInvalid(true);
+      setErrorMessage("Please, enter a valid email");
+      return false;
+    } else if (!isValidEmail(email)) {
+      setIsInvalid(true);
+      setErrorMessage("Please, enter an email");
+      return false;
+    } else {
+      setIsInvalid(false);
+      setErrorMessage("");
+      return true;
+    }
+  };
+  const handleOnBlur = () => {
+    if (isInvalid) {
+      validateEmail();
+    }
+  };
+  const handleOnClick = async () => {
+    if (!validateEmail()) {
       return;
     }
     try {
@@ -20,11 +60,15 @@ export default function Email() {
         method: "POST",
         body: JSON.stringify({ email }),
       });
+      setButtonLoading(false);
+      console.log(response);
       if (response.status == 201) {
-        console.log("added");
         setButtonLoading(false);
+        setButtonMessage("Success");
+        setButtonColor("success");
       } else {
-        console.log("not added");
+        setButtonMessage("Error");
+        setButtonColor("danger");
       }
     } catch (e) {
       setButtonLoading(false);
@@ -42,20 +86,20 @@ export default function Email() {
         variant="bordered"
         label="Enter your email"
         isInvalid={isInvalid}
-        // color={isInvalid ? "danger" : "primary"}
-        errorMessage={isInvalid && "Please enter a valid email"}
+        color={isInvalid ? "danger" : "default"}
+        errorMessage={errorMessage}
+        onBlur={handleOnBlur}
         onValueChange={setEmail}
-        // className="max-w-xs"
+        className="max-w-[220px]"
       />
 
       <Button
-        color="primary"
+        color={buttonColor}
         size="md"
         isLoading={buttonLoading}
         onClick={handleOnClick}
-        // isDisabled={buttonDisabled}
       >
-        Sing up
+        {buttonMessage}
       </Button>
     </div>
   );
