@@ -2,8 +2,8 @@
 import React from "react";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
-
-import { isValidEmail } from "@/utils/mail";
+import isEmail from "is-email";
+import { useForm } from "react-hook-form";
 
 type ColorType =
   | "default"
@@ -16,14 +16,12 @@ type ColorType =
 const Email = () => {
   const defaultButtonMessage = "Sign up";
   const defaultButtonColor = "default";
+  const [isLoading, setIsLoading] = React.useState(false);
   const [email, setEmail] = React.useState("");
-  const [errorMessage, setErrorMessage] = React.useState("");
   const [buttonMessage, setButtonMessage] =
     React.useState(defaultButtonMessage);
   const [buttonColor, setButtonColor] =
     React.useState<ColorType>(defaultButtonColor);
-  const [buttonLoading, setButtonLoading] = React.useState(false);
-  const [isInvalid, setIsInvalid] = React.useState(false);
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -32,45 +30,15 @@ const Email = () => {
     }, 10_000);
   }, [defaultButtonColor, buttonMessage]);
 
-  const validateEmail = () => {
-    if (email === "") {
-      setIsInvalid(true);
-      setErrorMessage("Please, enter a valid email");
-      return false;
-    } else if (!isValidEmail(email)) {
-      setIsInvalid(true);
-      setErrorMessage("Please, enter an email");
-      return false;
-    } else {
-      setIsInvalid(false);
-      setErrorMessage("");
-      return true;
-    }
-  };
-  const handleOnChange = () => {
-    if (isInvalid) {
-      validateEmail();
-    }
+  const handleOnClick = async (data: any) => {
+    await registerEmail(data.email);
   };
 
-  const handleKeyDown = async (event: { key: string }) => {
-    if (event.key === "Enter") {
-      await registerEmail();
-    }
-  };
-  const handleOnClick = async () => {
-    await registerEmail();
-  };
-
-  const registerEmail = async () => {
-    if (!validateEmail()) {
-      return;
-    }
+  const registerEmail = async (email: string) => {
     try {
-      setButtonLoading(true);
+      setIsLoading(true);
       const csrfResp = await fetch("/csrf-token");
       const { csrfToken } = await csrfResp.json();
-
       const response = await fetch("/api/subscriber", {
         method: "POST",
         body: JSON.stringify({ email }),
@@ -79,9 +47,7 @@ const Email = () => {
           "X-CSRF-Token": csrfToken,
         },
       });
-      setButtonLoading(false);
       if (response.status == 201) {
-        setButtonLoading(false);
         setButtonMessage("Success!");
         setButtonColor("success");
       } else {
@@ -91,35 +57,52 @@ const Email = () => {
     } catch (e) {
       console.error(e);
     } finally {
-      setButtonLoading(false);
+      setIsLoading(false);
     }
   };
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const emailIsInvalid = !!errors.email;
   return (
-    <div className="flex flex-row gap-2">
+    <form
+      className="flex flex-row gap-2"
+      onSubmit={handleSubmit(handleOnClick)}
+    >
       <Input
         value={email}
         type="email"
         variant="bordered"
         label="Enter your email"
-        isInvalid={isInvalid}
-        color={isInvalid ? "danger" : "default"}
-        errorMessage={errorMessage}
-        onChange={handleOnChange}
+        isInvalid={emailIsInvalid}
+        color={emailIsInvalid ? "danger" : "default"}
+        errorMessage={errors.email?.message?.toString()}
         onValueChange={setEmail}
-        onKeyDown={handleKeyDown}
         className="h-24"
+        {...register("email", {
+          required: "Email is required",
+          validate: {
+            maxLength: (v) =>
+              v.length <= 50 || "The email should have at most 50 characters",
+            matchPattern: (v) =>
+              isEmail(v) || "Email address must be a valid address",
+          },
+        })}
       />
-
       <Button
+        type="submit"
         color={buttonColor}
-        isLoading={buttonLoading}
-        onClick={handleOnClick}
         className="h-14"
+        isDisabled={emailIsInvalid}
+        isLoading={isLoading}
       >
         {buttonMessage}
       </Button>
-    </div>
+    </form>
   );
 };
 export default Email;

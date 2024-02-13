@@ -41,10 +41,12 @@
     "eslint": "8.56.0",
     "eslint-config-next": "14.0.4",
     "framer-motion": "^10.16.16",
+    "is-email": "^1.0.2",
     "next": "14.0.4",
     "next-themes": "^0.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.50.1",
     "react-responsive": "^9.0.2",
     "sharp": "0.32.6",
     "tailwind-variants": "^0.1.19",
@@ -53,6 +55,7 @@
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.14.6",
+    "@types/is-email": "^1.0.0",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.1.1"
   }
