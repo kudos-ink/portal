@@ -80,7 +80,7 @@ export default function RootLayout({
         <Providers themeProps={{ attribute: "class", defaultTheme: "kudos" }}>
           <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-default from-0% to-background to-80% relative flex flex-col h-screen">
             <Navbar />
-            <main className="py-16 flex-grow">
+            <main className="py-12 flex-grow">
               <section
                 className={`flex flex-col items-center text-center pt-10 pb-22 ${container()}`}
               >
