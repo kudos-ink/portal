@@ -12,6 +12,51 @@ type ProjectLogo = {
   key: string;
 };
 
+function createCarousel(repoMap: Map<string, {project: string; repoUrl: string, slug: string, key:string}>, duplicate: boolean) {
+  let projectRow: ProjectLogo[] = [];
+  repoMap.forEach((repoData, repoIcon) => {
+    if (duplicate) {
+      projectRow.push({
+        ...repoData,
+        repoIcon,
+        key: `${repoData.key}-duplicate`
+      });
+    } else {
+      projectRow.push({
+        ...repoData,
+        repoIcon,
+      })
+    }
+  });
+  if (projectRow.length % 2 !== 0) {
+    projectRow.pop()
+  }
+  return projectRow.map((repo, index) => {
+    return (
+      <Link
+        className={`w-36 ${index % 2 == 0 ? '' : 'mt-20'}`}
+        isExternal
+        href={`/explore/open-contributions-for-${repo.slug}`}
+        color="foreground"
+        title={repo.project}
+        key={repo.key}
+      >
+        <div className="flex items-center space-x-2 justify-evenly">
+          <MyImage
+            className="rounded-md min-w-[30px] shrink-0 bg-foreground"
+            src={repo.repoIcon}
+            alt={`${repo.project} logo`}
+            radius="sm"
+            width={30}
+            height={30}
+          />
+          <div>{repo.project}</div>
+        </div>
+      </Link>
+    );
+  });
+}
+
 export default async function ({}: IProjectCarouselProps) {
   const { repositories } = await fetchFilterOptions();
   const map = new Map();
@@ -28,102 +73,22 @@ export default async function ({}: IProjectCarouselProps) {
       },
     );
   });
+  const projectRowLogos = createCarousel(map, false);
+  const dupeRowLogos = createCarousel(map, true);
 
-  let count = 0;
-  let topRow: ProjectLogo[] = [];
-  let bottomRow: ProjectLogo[] = [];
-  map.forEach((repoData, repoIcon) => {
-    if (count % 2 == 0) {
-      topRow.push({
-        ...repoData,
-        repoIcon,
-      });
-    } else {
-      bottomRow.push({
-        ...repoData,
-        repoIcon,
-      });
-    }
-    count++;
-  });
-  count = 1;
-  map.forEach((repoData, repoIcon) => {
-    if (count % 2 == 0) {
-      topRow.push({
-        ...repoData,
-        repoIcon,
-        key: `${repoData.key}-duplicate`,
-      });
-    } else {
-      bottomRow.push({
-        ...repoData,
-        repoIcon,
-        key: `${repoData.key}-duplicate`,
-      });
-    }
-    count++;
-  });
-
-  const topRowLogos = topRow.map((logo) => {
-    return (
-      <Link
-        className="w-fit"
-        isExternal
-        href={`/explore/open-contributions-for-${logo.slug}`}
-        color="foreground"
-        title={logo.project}
-        key={logo.key}
-      >
-        <div className="flex items-center space-x-2 justify-evenly">
-          <MyImage
-            className="min-w-12 bg-foreground"
-            src={logo.repoIcon}
-            alt={` logo`}
-            width={75}
-            height={75}
-          />
-          <div>{logo.project}</div>
-        </div>
-      </Link>
-    );
-  });
-
-  const bottomRowLogos = bottomRow.map((logo) => {
-    return (
-      <Link
-        className="w-fit"
-        isExternal
-        href={`/explore/open-contributions-for-${logo.slug}`}
-        color="foreground"
-        title={logo.project}
-        key={logo.key}
-      >
-        <div className="flex items-center space-x-2 justify-evenly">
-          <MyImage
-            className="min-w-12 bg-foreground"
-            src={logo.repoIcon}
-            alt={` logo`}
-            width={75}
-            height={75}
-          />
-          <div>{logo.project}</div>
-        </div>
-      </Link>
-    );
-  });
 
   return (
     //group group-hover:[animation-play-state:paused] add to enable animation
-    <div className="items-center">
-      <div className="text-center">
-        FUELING THE FUTURE OF OPEN SOURCE SOFTWARE
+    <div className="flex flex-col bg-slate-900 py-4">
+      <div className="text-center uppercase tracking-wide font-semibold">
+        Fueling the future of open source software
       </div>
-      <div className="w-full overflow-hidden py-4 [mask-image:linear-gradient(90deg,_transparent_0%,_white_10%,_white_90%,_transparent_100%)]">
-        <div className="inline-flex flex-nowrap items-center justify-center md:justify-start gap-x-20 animate-infinite-scroll">
-          {topRowLogos}
+      <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:linear-gradient(90deg,_transparent_0%,_white_10%,_white_90%,_transparent_100%)] group">
+        <div className="flex items-center justify-center md:justify-start gap-x-8 animate-infinite-scroll group-hover:[animation-play-state:paused] px-2">
+          {projectRowLogos}
         </div>
-        <div className="inline-flex flex-nowrap items-center justify-center md:justify-start gap-x-20 animate-infinite-scroll">
-          {bottomRowLogos}
+        <div className="flex items-center justify-center md:justify-start gap-x-8 animate-infinite-scroll group-hover:[animation-play-state:paused] px-2">
+          {dupeRowLogos}
         </div>
       </div>
     </div>

@@ -22,12 +22,12 @@ module.exports = {
         emoji: ["Noto Color Emoji"],
       },
       animation: {
-        "infinite-scroll": "infinite-scroll 12s linear infinite",
+        "infinite-scroll": "infinite-scroll 120s linear infinite",
       },
       keyframes: {
         "infinite-scroll": {
           from: { transform: "translateX(0)" },
-          to: { transform: "translateX(-50%)" },
+          to: { transform: "translateX(-100%)" },
         },
       },
     },
