@@ -28,8 +28,7 @@ export const Navbar = () => {
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
             <MyImage
-              className="border rounded-small"
-              src="/logo.png"
+              src="/logo.svg"
               alt="Kudos Logo"
               radius="sm"
               height={45}
