@@ -78,6 +78,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const isProduction = process.env.VERCEL_ENV === "production";
+
   return (
     <html
       lang="en"
@@ -106,7 +108,7 @@ export default function RootLayout({
         </Providers>
         <Analytics />
       </body>
-      <GoogleAnalytics gaId={SITE_CONFIG.googleAnalyticsId} />
+      {isProduction && <GoogleAnalytics gaId={SITE_CONFIG.googleAnalyticsId} />}
     </html>
   );
 }

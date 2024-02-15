@@ -21,7 +21,7 @@ const Navbar = () => {
           <NextLink className="flex justify-start items-center gap-1" href="/">
             <MyImage
               className="border rounded-small"
-              src="/logo.png"
+              src="/logo.svg"
               alt="Kudos Logo"
               radius="sm"
               height={45}
