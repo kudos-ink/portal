@@ -12,6 +12,10 @@ import {
   DEFAULT_SORT,
 } from "./constants";
 import { KudosQueryParameters } from "./types";
+import {
+  DEFAULT_PAGE_SIZE,
+  UNASSIGNED_CONTRIBUTION_FILTER,
+} from "@/data/fetch";
 
 const notion = new Client({
   auth: process.env.NOTION_API_KEY,
@@ -43,14 +47,21 @@ export async function queryDatabase(
     database_id: DATABASE_ID,
     filter_properties: DEFAULT_FILTER_PROPERTIES,
     sorts: DEFAULT_SORT,
-    page_size: 100,
+    page_size: DEFAULT_PAGE_SIZE,
     start_cursor: undefined,
-    filter: undefined,
   };
+
+  // Always filter unassigned issues for now, merge it with existing query filters
+  const filter = queryOverrides.filter
+    ? "and" in queryOverrides.filter
+      ? { and: [...queryOverrides.filter.and, UNASSIGNED_CONTRIBUTION_FILTER] }
+      : { and: [queryOverrides.filter, UNASSIGNED_CONTRIBUTION_FILTER] }
+    : UNASSIGNED_CONTRIBUTION_FILTER;
 
   const query = {
     ...defaultQuery,
     ...queryOverrides,
+    filter,
   } as QueryDatabaseParameters;
   return await baseQueryDatabase(query);
 }

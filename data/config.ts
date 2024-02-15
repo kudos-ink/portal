@@ -3,6 +3,7 @@ export const SITE_CONFIG = {
   description:
     "A portal for the Substrate, Polkadot and Kusama ecosystem contributors. Find collaborations, collect kudos.",
   links: {
+    githubOrg: "https://github.com/kudos-ink",
     github: "https://github.com/kudos-ink/portal",
     twitter: "https://twitter.com/KudosPortal",
     bugReport:
