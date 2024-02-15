@@ -5,7 +5,7 @@ import About from "@/components/about";
 import Community from "@/components/community";
 import CtaBanner from "@/components/cta-banner";
 import Toolbar from "@/components/filters/toolbar";
-import { container, title } from "@/components/primitives";
+import { container, subtitle, title } from "@/components/primitives";
 import StaticTable from "@/components/table/static-table";
 import { FiltersProvider } from "@/contexts/filters";
 import { SITE_CONFIG } from "@/data/config";
@@ -25,13 +25,18 @@ export default async function Home() {
   return (
     <>
       <section
-        className={`flex flex-col items-center text-center pt-10 pb-28 ${container()}`}
+        className={`flex flex-col items-center text-center pt-10 pb-24 ${container()}`}
       >
         <h1 className={title()}>
-          Find Collaborations,
+          Find Great-Fit <span className="text-primary">Polkadot</span>{" "}
+          Collaborations:
           <br />
-          Collect Kudos
+          Earn Incentives, Collect Kudos
         </h1>
+        <h2 className={`mt-8 ${subtitle()}`}>
+          Navigate the Substrate ecosystem like never before - to meet teams and
+          start proactively working on your next challenge.
+        </h2>
       </section>
 
       <FiltersProvider
@@ -62,7 +67,7 @@ export default async function Home() {
         </Link>
       </section>
 
-      <section className={container() + " py-8 pt-40"}>
+      <section className={container() + " pt-32"}>
         <CtaBanner />
       </section>
 
@@ -70,7 +75,7 @@ export default async function Home() {
         <About />
       </section>
 
-      <section className={container() + " pt-40 pb-24 sm:py-24"}>
+      <section className={container() + " py-24"}>
         <Community>
           <Community.Card
             icon={<GithubIcon className="text-background" size={56} />}

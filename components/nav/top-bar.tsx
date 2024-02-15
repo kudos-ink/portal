@@ -2,15 +2,19 @@ import Email from "../email";
 
 const TopBar = () => (
   <div className="bg-primary top-0 z-10">
-    <div className="flex flex-col justify-center items-center gap-4 py-3 lg:flex-row lg:gap-8">
-      <div className="mr-2 rounded bg-danger px-1.5 py-0.5 text-xs font-bold text-white">
-        <span className="mr-1">Mailing list</span>▶
-      </div>
-      <div className="font-bold">
-        <span className="hidden sm:inline">
-          stay in the loop with our newest feature releases (no spam)
-        </span>
-        <span className="inline sm:hidden">stay in the loop (no spam)</span>
+    <div className="flex flex-col justify-center items-center gap-3 py-3 lg:flex-row lg:gap-8">
+      <div className="flex items-center gap-2">
+        <div className="mr-2 rounded bg-danger px-1.5 py-0.5 text-xs font-bold text-white">
+          <span className="mr-1 hidden sm:inline">Mailing list</span>▶
+        </div>
+        <div className="font-bold">
+          <span className="hidden sm:inline">
+            Get the Latest Features (zero spam): Join Kudos Updates
+          </span>
+          <span className="inline sm:hidden">
+            Get Kudos Updates (zero spam)
+          </span>
+        </div>
       </div>
       <Email
         buttonProps={{

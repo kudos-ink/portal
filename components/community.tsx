@@ -14,14 +14,16 @@ interface ICommunityCardProps {
 
 const CommunityCard = ({ icon, isRtl, link, name }: ICommunityCardProps) => (
   <Link href={link} target="_blank" rel="noreferrer" title={name}>
-    <Card className="w-[350px] bg-primary">
+    <Card className="w-[280px] sm:w-[350px] bg-primary">
       <CardBody
         className={`flex items-center gap-8 h-full p-6 font-bentoga ${
           isRtl ? "flex-row-reverse" : "flex-row"
         }`}
       >
         {icon}
-        <h4 className="text-6xl text-cente text-background">{name}</h4>
+        <h4 className="text-4xl sm:text-6xl text-center text-background">
+          {name}
+        </h4>
       </CardBody>
     </Card>
   </Link>
@@ -45,7 +47,7 @@ const Community = ({ children }: ICommunityProps) => (
         {COMMUNITY_TITLE}
       </h2>
     </Link>
-    <div className="flex flex-col gap-40">
+    <div className="flex flex-col gap-32">
       <div>
         <h3 className="text-3xl text-center mt-4">
           <strong className="font-bold">Join the conversation now</strong>
@@ -56,11 +58,11 @@ const Community = ({ children }: ICommunityProps) => (
       </div>
       <div>
         <h3 className="text-3xl text-center mt-4">
-          <strong className="font-bold">Stay in the loop</strong>
+          <strong className="font-bold">Get Kudos Updates</strong>
         </h3>
         <h4 className="text-xl text-center mt-4">
           Join our mailing list to stay in the loop with our newest feature
-          releases (no spam).
+          releases (zero spam).
         </h4>
         <div className="flex flex-col justify-center items-center gap-8 mt-16 md:flex-row">
           <Email />
