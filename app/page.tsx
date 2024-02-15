@@ -25,16 +25,13 @@ export default async function Home() {
   return (
     <>
       <section
-        className={`flex flex-col items-center text-center pt-10 pb-22 ${container()}`}
+        className={`flex flex-col items-center text-center pt-10 pb-28 ${container()}`}
       >
         <h1 className={title()}>
           Find Collaborations,
           <br />
           Collect Kudos
         </h1>
-      </section>
-      <section className={container() + " py-8 pt-24"}>
-        <CtaBanner />
       </section>
 
       <FiltersProvider
@@ -65,7 +62,11 @@ export default async function Home() {
         </Link>
       </section>
 
-      <section className={container() + " pt-40"}>
+      <section className={container() + " py-8 pt-40"}>
+        <CtaBanner />
+      </section>
+
+      <section className={container() + " pt-24"}>
         <About />
       </section>
 

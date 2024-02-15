@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import { Input } from "@nextui-org/input";
-import { Button } from "@nextui-org/button";
+import { Input, InputProps } from "@nextui-org/input";
+import { Button, ButtonProps } from "@nextui-org/button";
 import isEmail from "is-email";
 import { useForm } from "react-hook-form";
 
@@ -13,7 +13,12 @@ type ColorType =
   | "secondary"
   | "warning";
 
-const Email = () => {
+interface IEmailProps {
+  buttonProps?: ButtonProps;
+  inputProps?: InputProps;
+}
+
+const Email = ({ buttonProps, inputProps }: IEmailProps) => {
   const defaultButtonMessage = "Sign up";
   const defaultButtonColor = "default";
   const [isLoading, setIsLoading] = React.useState(false);
@@ -77,12 +82,12 @@ const Email = () => {
         value={email}
         type="email"
         variant="bordered"
-        label="Enter your email"
+        label="Type your email.."
         isInvalid={emailIsInvalid}
         color={emailIsInvalid ? "danger" : "default"}
         errorMessage={errors.email?.message?.toString()}
         onValueChange={setEmail}
-        className="h-24"
+        size="sm"
         {...register("email", {
           required: "Email is required",
           validate: {
@@ -92,13 +97,15 @@ const Email = () => {
               isEmail(v) || "Email address must be a valid address",
           },
         })}
+        {...inputProps}
       />
       <Button
         type="submit"
         color={buttonColor}
-        className="h-14"
         isDisabled={emailIsInvalid}
         isLoading={isLoading}
+        className="h-12"
+        {...buttonProps}
       >
         {buttonMessage}
       </Button>

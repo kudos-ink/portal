@@ -7,6 +7,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
 import Footer from "@/components/footer";
 import Navbar from "@/components/nav/navbar";
+import TopBar from "@/components/nav/top-bar";
 import { SITE_CONFIG } from "@/data/config";
 import { Providers } from "./providers";
 
@@ -90,8 +91,9 @@ export default function RootLayout({
       <head />
       <body className="min-h-screen bg-background font-sans antialiased">
         <Providers themeProps={{ attribute: "class", defaultTheme: "kudos" }}>
-          <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-default from-0% to-background to-50% relative flex flex-col h-screen">
+          <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-default from-0% to-background to-50% relative flex flex-col">
             <header>
+              <TopBar />
               <Navbar />
             </header>
             <main className="py-16 flex-grow">
