@@ -69,7 +69,7 @@ export default async function Home() {
         <About />
       </section>
 
-      <section className={container() + " pt-40 pb-24 sm:py-40"}>
+      <section className={container() + " pt-40 pb-24 sm:py-24"}>
         <Community>
           <Community.Card
             icon={<GithubIcon className="text-background" size={56} />}

@@ -45,7 +45,15 @@ const Community = ({ children }: ICommunityProps) => (
         {COMMUNITY_TITLE}
       </h2>
     </Link>
-    <div className="grid gap-12 md:grid-cols-2">
+    <div className="flex flex-col gap-40">
+      <div>
+        <h3 className="text-3xl text-center mt-4">
+          <strong className="font-bold">Join the conversation now</strong>
+        </h3>
+        <div className="flex flex-col justify-center items-center gap-8 mt-16 md:flex-row">
+          {children}
+        </div>
+      </div>
       <div>
         <h3 className="text-3xl text-center mt-4">
           <strong className="font-bold">Stay in the loop</strong>
@@ -56,14 +64,6 @@ const Community = ({ children }: ICommunityProps) => (
         </h4>
         <div className="flex flex-col justify-center items-center gap-8 mt-16 md:flex-row">
           <Email />
-        </div>
-      </div>
-      <div>
-        <h3 className="text-3xl text-center mt-4">
-          <strong className="font-bold">Join the conversation now</strong>
-        </h3>
-        <div className="flex flex-col justify-center items-center gap-8 mt-16 md:flex-row">
-          {children}
         </div>
       </div>
     </div>
