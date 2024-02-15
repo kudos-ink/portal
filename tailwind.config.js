@@ -22,7 +22,7 @@ module.exports = {
         emoji: ["Noto Color Emoji"],
       },
       animation: {
-        "infinite-scroll": "infinite-scroll 120s linear infinite",
+        "infinite-scroll": "infinite-scroll 12s linear infinite",
       },
       keyframes: {
         "infinite-scroll": {

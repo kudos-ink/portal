@@ -38,6 +38,7 @@ export type Filters = {
 };
 
 export interface Repository extends FilterOption {
+  project: string;
   repository_url: string;
   topics: string[];
   about: string;

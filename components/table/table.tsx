@@ -72,11 +72,10 @@ export const Table = ({ items, queries = {} }: ITableProps) => {
   const repositoryIconMap: RepositoryMap = useMemo(() => {
     const map: RepositoryMap = {};
     filterOptions.repositories.forEach((repository) => {
-      map[repository.repository_url] = repository.repository_url
-        .toLowerCase()
-        .includes("polkadot")
-        ? "/images/polkadot-logo.png"
-        : repository.icon;
+      map[repository.repository_url] =
+        repository.project.toLocaleLowerCase() == "polkadot"
+          ? "/images/polkadot-logo.png"
+          : repository.icon;
     });
     return map;
   }, [filterOptions.repositories]);
