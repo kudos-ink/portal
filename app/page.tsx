@@ -5,6 +5,7 @@ import About from "@/components/about";
 import Community from "@/components/community";
 import CtaBanner from "@/components/cta-banner";
 import Toolbar from "@/components/filters/toolbar";
+import ProjectCarousel from "@/components/project-carousel";
 import { container, subtitle, title } from "@/components/primitives";
 import StaticTable from "@/components/table/static-table";
 import { FiltersProvider } from "@/contexts/filters";
@@ -65,6 +66,9 @@ export default async function Home() {
             {EXPLORE_LABEL}
           </Button>
         </Link>
+      </section>
+      <section className={container() + " pt-32"}>
+        <ProjectCarousel/>
       </section>
 
       <section className={container() + " pt-32"}>

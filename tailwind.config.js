@@ -22,6 +22,15 @@ module.exports = {
         bentoga: ["var(--font-bentoga)"],
         emoji: ["Noto Color Emoji"],
       },
+      animation: {
+        "infinite-scroll": "infinite-scroll 120s linear infinite",
+      },
+      keyframes: {
+        "infinite-scroll": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-100%)" },
+        },
+      },
     },
   },
   darkMode: "class",
