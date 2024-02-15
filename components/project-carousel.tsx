@@ -43,7 +43,7 @@ function createCarousel(repoMap: Map<string, {project: string; repoUrl: string, 
       >
         <div className="flex items-center space-x-2 justify-evenly">
           <MyImage
-            className="rounded-md min-w-[30px] shrink-0 bg-foreground"
+            className="rounded-md min-w-[45px] min-h-[45px] shrink-0 bg-foreground"
             src={repo.repoIcon}
             alt={`${repo.project} logo`}
             radius="sm"
@@ -78,7 +78,7 @@ export default async function ({}: IProjectCarouselProps) {
 
 
   return (
-    //group group-hover:[animation-play-state:paused] add to enable animation
+    //group group-hover:[animation-play-state:paused] add to enable pausing animation
     <div className="flex flex-col py-4">
       <div className="text-center uppercase tracking-wide font-semibold">
         Fueling the future of open source software
@@ -87,7 +87,7 @@ export default async function ({}: IProjectCarouselProps) {
         <div className="flex items-center justify-center md:justify-start gap-x-8 animate-infinite-scroll group-hover:[animation-play-state:paused] px-2">
           {projectRowLogos}
         </div>
-        <div className="flex items-center justify-center md:justify-start gap-x-8 animate-infinite-scroll group-hover:[animation-play-state:paused] px-2">
+        <div className="flex items-center justify-center md:justify-start gap-x-8 animate-infinite-scroll group-hover:[animation-play-state:paused] px-2" aria-hidden="true">
           {dupeRowLogos}
         </div>
       </div>
