@@ -40,6 +40,7 @@ function createCarousel(
   return projectRow.map((repo, index) => {
     return (
       <Link
+        aria-hidden="true"
         className={index % 2 == 0 ? "" : "mt-16 pt-16"}
         isExternal
         href={`/explore/open-contributions-for-${repo.slug}`}
@@ -89,12 +90,15 @@ export default async function ProjectCarousel({}: IProjectCarouselProps) {
         Fueling the future of open source software
       </div>
       <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:linear-gradient(90deg,_transparent_0%,_white_10%,_white_90%,_transparent_100%)] group">
-        <div className="flex items-center justify-center md:justify-start gap-x-2 animate-infinite-scroll group-hover:[animation-play-state:paused] px-2">
+        <div
+          aria-hidden="true"
+          className="flex items-center justify-center md:justify-start gap-x-2 animate-infinite-scroll group-hover:[animation-play-state:paused] px-2"
+        >
           {projectRowLogos}
         </div>
         <div
-          className="flex items-center justify-center md:justify-start gap-x-2 animate-infinite-scroll group-hover:[animation-play-state:paused] px-2"
           aria-hidden="true"
+          className="flex items-center justify-center md:justify-start gap-x-2 animate-infinite-scroll group-hover:[animation-play-state:paused] px-2"
         >
           {dupeRowLogos}
         </div>
