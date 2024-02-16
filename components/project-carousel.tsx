@@ -56,6 +56,7 @@ function createCarousel(
             radius="sm"
             width={45}
             height={45}
+            loading="eager"
           />
           <div>{repo.project}</div>
         </div>
