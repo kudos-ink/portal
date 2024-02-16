@@ -26,7 +26,7 @@ export default async function Home() {
   return (
     <>
       <section
-        className={`flex flex-col items-center text-center pt-10 pb-24 ${container()}`}
+        className={`flex flex-col items-center text-center pt-10 pb-24 sm:pb-28 ${container()}`}
       >
         <h1 className={title()}>
           Find Great-Fit <span className="text-primary">Polkadot</span>{" "}
@@ -68,14 +68,14 @@ export default async function Home() {
         </Link>
       </section>
       <section className={container() + " pt-32"}>
-        <ProjectCarousel/>
+        <ProjectCarousel />
       </section>
 
-      <section className={container() + " pt-32"}>
+      <section className={container() + " pt-20"}>
         <CtaBanner />
       </section>
 
-      <section className={container() + " pt-24"}>
+      <section className={container() + " pt-32"}>
         <About />
       </section>
 
