@@ -42,4 +42,5 @@ export interface Repository extends FilterOption {
   topics: string[];
   about: string;
   icon: string;
+  project: string;
 }
