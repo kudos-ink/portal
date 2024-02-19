@@ -16,9 +16,14 @@ type ColorType =
 interface IEmailProps {
   buttonProps?: ButtonProps;
   inputProps?: InputProps;
+  onSuccessfulSubscription?: () => void;
 }
 
-const Email = ({ buttonProps, inputProps }: IEmailProps) => {
+const Email = ({
+  buttonProps,
+  inputProps,
+  onSuccessfulSubscription,
+}: IEmailProps) => {
   const defaultButtonMessage = "Sign up";
   const defaultButtonColor = "default";
   const [isLoading, setIsLoading] = React.useState(false);
@@ -55,6 +60,7 @@ const Email = ({ buttonProps, inputProps }: IEmailProps) => {
       if (response.status == 201) {
         setButtonMessage("Success!");
         setButtonColor("success");
+        if (onSuccessfulSubscription) onSuccessfulSubscription();
       } else {
         setButtonMessage("Error");
         setButtonColor("danger");
