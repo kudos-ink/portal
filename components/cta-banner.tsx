@@ -6,6 +6,7 @@ import { Card, CardBody } from "@nextui-org/card";
 import { Link } from "@nextui-org/link";
 import { Skeleton } from "@nextui-org/skeleton";
 import { SITE_CONFIG } from "@/data/config";
+import { IS_PROJECT_CTA_BANNER_CLOSED } from "@/data/local-storage";
 import useClientReady from "@/hooks/useClientReady";
 
 interface ICtaBannerProps {}
@@ -14,14 +15,14 @@ const CtaBanner = ({}: ICtaBannerProps) => {
   const isClientReady = useClientReady();
   const [isVisible, setIsVisible] = useState(true);
 
-  const localStorageKey = "ctaBannerClosed";
   const handleClose = () => {
     setIsVisible(false);
-    localStorage.setItem(localStorageKey, "true");
+    localStorage.setItem(IS_PROJECT_CTA_BANNER_CLOSED, "true");
   };
 
   useEffect(() => {
-    const isBannerClosed = localStorage.getItem(localStorageKey) === "true";
+    const isBannerClosed =
+      localStorage.getItem(IS_PROJECT_CTA_BANNER_CLOSED) === "true";
     setIsVisible(!isBannerClosed);
   }, []);
 
