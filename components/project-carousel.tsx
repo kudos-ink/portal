@@ -70,7 +70,7 @@ export default async function ProjectCarousel({}: IProjectCarouselProps) {
   const map = new Map();
   repositories.forEach((repository) => {
     map.set(
-      repository.project.toLowerCase() == "polkadot"
+      repository.project?.toLowerCase() == "polkadot"
         ? "/images/polkadot-logo.png"
         : repository.icon,
       {
