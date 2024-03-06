@@ -2,6 +2,7 @@ import { PaginatedCustomDataResponse } from ".";
 
 export type Contribution = {
   id: number;
+  isCertified: boolean;
   labels: string[];
   languages: string[];
   project: string;

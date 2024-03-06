@@ -100,20 +100,52 @@ interface IContentProps {
   project: string;
   repository: string;
   url: string;
+  isCertified: boolean;
 }
-export const Content = ({ title, project, repository, url }: IContentProps) => {
+export const Content = ({
+  title,
+  project,
+  repository,
+  url,
+  isCertified,
+}: IContentProps) => {
   return (
-    <div className="flex flex-col space-y-unit-1 md:space-y-0">
+    <div className="flex flex-col space-y-unit-1 md:space-y-0 lg:w-[270px] xl:w-[500px]">
       <Link
-        className="w-fit"
+        className="w-fit flex gap-1 flex-grow relative"
         isExternal
         href={url}
         color="foreground"
         title="Open task on Github"
       >
-        <h3 className="font-semibold leading-tight max-w-48 sm:max-w-80 lg:max-w-64 xl:max-w-96 line-clamp-2 capitalize">
+        <h3 className="font-semibold leading-tight line-clamp-2 capitalize">
           {title}
         </h3>
+        {isCertified && (
+          <Tooltip
+            content={
+              <div className="px-1 py-2">
+                <div className="text-small font-bold">
+                  Kudos Certified Issue
+                </div>
+                <a className="text-primary-500 underline" href="/#kudos-issue">
+                  Learn more
+                </a>
+              </div>
+            }
+          >
+            <div className="hidden absolute -top-1 -left-6 md:block">
+              <MyImage
+                className="flex-shrink-0 max-w-5 max-h-5 lg:mb-4"
+                src="/kudos_certified.svg"
+                alt="Kudos Certified"
+                radius="sm"
+                height={20}
+                width={20}
+              />
+            </div>
+          </Tooltip>
+        )}
       </Link>
       <span className="text-small text-default-500 max-w-48 truncate md:hidden">{`${project} / ${repository}`}</span>
     </div>
@@ -258,7 +290,9 @@ export const Time = ({ timestamp }: ITimeProps) => {
     setDate(new Date(timestamp));
   }, [timestamp]);
 
-  return <div className="">{formatDate(date!)}</div>;
+  return (
+    <div className="w-14 text-center lg:text-right">{formatDate(date!)}</div>
+  );
 };
 
 interface IExternalLinkProps {
@@ -268,6 +302,7 @@ interface IExternalLinkProps {
 export const ExternalLink = ({ href, title }: IExternalLinkProps) => {
   return (
     <Link
+      className="w-fit"
       isBlock
       isExternal
       showAnchorIcon

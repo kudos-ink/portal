@@ -5,3 +5,7 @@
 :root {
   --light-overlay: hsl(var(--nextui-foreground) / 0.1);
 }
+
+tr > :nth-child(2) {
+  flex-grow: 1;
+}

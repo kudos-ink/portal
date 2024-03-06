@@ -14,6 +14,10 @@ export function transformNotionDataToContributions(
 ): Contribution[] {
   return notionData.results.reduce((acc: Contribution[], currentItem: any) => {
     const properties = currentItem.properties;
+    const labels: string[] = properties["Issue Labels"].multi_select.map(
+      (label: any) => label.name,
+    );
+    const isCertified = labels.some((label) => label.includes("kudos"));
 
     const [avatarKey, id] = properties["Issue Link"].url.split("/issues/");
     const urlElements = avatarKey.split("/");
@@ -21,9 +25,8 @@ export function transformNotionDataToContributions(
     const organization = urlElements.pop();
     const contribution: Contribution = {
       id,
-      labels: properties["Issue Labels"].multi_select.map(
-        (label: any) => label.name,
-      ),
+      isCertified,
+      labels,
       languages: properties["Repo Language"].rollup.array[0].multi_select.map(
         (language: any) => language.name,
       ),
