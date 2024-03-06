@@ -1,16 +1,16 @@
 "use client";
-import React from "react";
+import React, { ReactNode } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Checkbox } from "@nextui-org/checkbox";
 import { Tooltip } from "@nextui-org/tooltip";
-import { InfoIcon } from "@/assets/icons";
-import { GOOD_FIRST_ISSUE_LABELS } from "@/data/filters";
 import { createUrl } from "@/utils/url";
 import { FilterOptions } from "@/types/filters";
 
 interface ICheckboxFilterProps {
   paramKey: string;
   placeholder: string;
+  content: ReactNode;
+  icon: ReactNode;
   isSelected?: boolean;
   filterOptions: FilterOptions;
   onSelect: (values: string[]) => void;
@@ -18,6 +18,8 @@ interface ICheckboxFilterProps {
 export const CheckboxFilter = ({
   paramKey,
   placeholder,
+  content,
+  icon,
   isSelected,
   filterOptions,
   onSelect,
@@ -34,20 +36,7 @@ export const CheckboxFilter = ({
   };
 
   return (
-    <Tooltip
-      content={
-        <div className="px-1 py-2">
-          <div className="text-small font-bold">
-            Based on the following GitHub labels:
-          </div>
-          {GOOD_FIRST_ISSUE_LABELS.map((label, idx) => (
-            <div className="text-tiny" key={idx}>
-              • {label}
-            </div>
-          ))}
-        </div>
-      }
-    >
+    <Tooltip content={content}>
       <div className="flex">
         <Checkbox
           classNames={{
@@ -58,7 +47,7 @@ export const CheckboxFilter = ({
           onValueChange={handleValueChange}
         >
           {placeholder}
-          <InfoIcon className="text-default-500" size={16} />
+          {icon}
         </Checkbox>
       </div>
     </Tooltip>

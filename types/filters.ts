@@ -3,6 +3,7 @@ import {
   INTEREST_KEY,
   PROJECTS_KEY,
   GOOD_FIRST_ISSUE_KEY,
+  KUDOS_ISSUE_KEY,
 } from "@/data/filters";
 
 export type FilterOption = {
@@ -29,12 +30,19 @@ export type FilterKeys =
   | typeof LANGUAGES_KEY
   | typeof INTEREST_KEY
   | typeof PROJECTS_KEY
-  | typeof GOOD_FIRST_ISSUE_KEY;
+  | typeof GOOD_FIRST_ISSUE_KEY
+  | typeof KUDOS_ISSUE_KEY;
+
+type ExcludedFilterKeys = Exclude<
+  FilterKeys,
+  typeof GOOD_FIRST_ISSUE_KEY | typeof KUDOS_ISSUE_KEY
+>;
 
 export type Filters = {
-  [key in Exclude<FilterKeys, typeof GOOD_FIRST_ISSUE_KEY>]: FilterOption[];
+  [key in ExcludedFilterKeys]: FilterOption[];
 } & {
   [GOOD_FIRST_ISSUE_KEY]: boolean;
+  [KUDOS_ISSUE_KEY]: boolean;
 };
 
 export interface Repository extends FilterOption {

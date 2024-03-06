@@ -7,7 +7,7 @@ import {
   Filters,
 } from "@/types/filters";
 import { getNewFilterOption, initFilters } from "@/utils/filters";
-import { GOOD_FIRST_ISSUE_KEY } from "@/data/filters";
+import { GOOD_FIRST_ISSUE_KEY, KUDOS_ISSUE_KEY } from "@/data/filters";
 
 export interface IConfigProps {
   initialFilters: Filters;
@@ -30,24 +30,29 @@ export const useFilters = ({
   const [filters, setFilters] = useState(initialFilters);
   const [filterOptions, _] = useState(initialFilterOptions);
 
-  const updateFilter = useCallback((key: FilterKeys, values: string[]) => {
-    setFilters((prev) => {
-      // Handle the boolean value for GOOD_FIRST_ISSUE_KEY
-      if (key === GOOD_FIRST_ISSUE_KEY) {
-        return { ...prev, [GOOD_FIRST_ISSUE_KEY]: values.includes("true") };
-      }
-
-      const newOptions: FilterOption[] = [];
-      values.forEach((value) => {
-        const newOption = getNewFilterOption(key, value, filterOptions);
-        if (newOption) {
-          newOptions.push(newOption);
+  const updateFilter = useCallback(
+    (key: FilterKeys, values: string[]) => {
+      setFilters((prev) => {
+        // Handle the boolean value for GOOD_FIRST_ISSUE_KEY & KUDOS_ISSUE_KEY
+        if (key === GOOD_FIRST_ISSUE_KEY) {
+          return { ...prev, [GOOD_FIRST_ISSUE_KEY]: values.includes("true") };
+        } else if (key === KUDOS_ISSUE_KEY) {
+          return { ...prev, [KUDOS_ISSUE_KEY]: values.includes("true") };
         }
-      });
 
-      return { ...prev, [key]: newOptions };
-    });
-  }, []);
+        const newOptions: FilterOption[] = [];
+        values.forEach((value) => {
+          const newOption = getNewFilterOption(key, value, filterOptions);
+          if (newOption) {
+            newOptions.push(newOption);
+          }
+        });
+
+        return { ...prev, [key]: newOptions };
+      });
+    },
+    [filterOptions],
+  );
 
   const clearFilter = useCallback(
     (key: FilterKeys) => setFilters((prev) => ({ ...prev, [key]: [] })),

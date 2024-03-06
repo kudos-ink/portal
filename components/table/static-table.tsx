@@ -16,6 +16,20 @@ import { ExternalLink, Content, Time, Project } from "./row";
 import dynamic from "next/dynamic";
 import { useFilters } from "@/contexts/filters";
 import { extractRepositoryUrlFromIssue } from "@/utils/github";
+import { KUDOS_ISSUE_KEY } from "@/data/filters";
+
+const KUDOS_HIGHLIGHT_STYLES = `before:absolute before:content-['']
+  before:bg-[conic-gradient(transparent_270deg,_#BABABC,_transparent)]
+  before:-translate-x-1/2 before:-translate-y-1/2
+  before:top-1/2 before:left-1/2
+  before:w-full before:aspect-square
+  before:animate-kudos-highlight
+
+  after:absolute after:content-['']
+  after:bg-inherit after:border-inherit
+  after:inset-[1px] after:h-[calc(100%_-_2px)] after:w-[calc(100%_-_2px)]
+`;
+
 const Labels = dynamic(() => import("./row").then((m) => m.Labels), {
   ssr: false,
 });
@@ -34,7 +48,7 @@ interface IStaticTableProps {
 }
 
 const StaticTable = ({ data }: IStaticTableProps) => {
-  const { filterOptions } = useFilters();
+  const { filters, filterOptions } = useFilters();
   const isMobile = useMediaQuery({ maxWidth: 639 }); // tailwind lg default: 640px
   const isLaptop = useMediaQuery({ minWidth: 1024 }); // tailwind lg default: 1024px
 
@@ -92,6 +106,7 @@ const StaticTable = ({ data }: IStaticTableProps) => {
               project={item.project}
               repository={item.repository}
               url={item.url}
+              isCertified={item.isCertified}
             />
           );
         case "labels":
@@ -148,8 +163,8 @@ const StaticTable = ({ data }: IStaticTableProps) => {
           "w-full bg-gradient-to-r from-background to-background-200 to-80% max-w-7xl border-spacing-0 rounded-b-md overflow-hidden",
         wrapper:
           "bg-background overflow-visible p-0 rounded-none border-small rounded-b-md",
-        tr: "relative bg-red border-y-small border-y-overlay lg:before:content-[''] lg:before:absolute lg:before:bg-hover-overlay lg:before:opacity-0 lg:before:w-full lg:before:h-full lg:before:transition-opacity lg:before:duration-300 lg:before:ease-in-out lg:before:max-h-[62px] lg:hover:before:opacity-100",
-        td: "px-2 sm:px-inherit",
+        tr: "flex items-center relative border-y-small border-y-overlay hover:bg-hover-overlay",
+        td: "px-2 sm:px-inherit z-10",
       }}
     >
       <TableHeader columns={columns}>
@@ -163,13 +178,23 @@ const StaticTable = ({ data }: IStaticTableProps) => {
         )}
       </TableHeader>
       <TableBody items={data} emptyContent="No contributions to display.">
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
+        {(item) => {
+          const isHighlighted = item.isCertified && !filters[KUDOS_ISSUE_KEY];
+          return (
+            <TableRow
+              key={item.id}
+              className={
+                isHighlighted
+                  ? `bg-[#1e3054] hover:bg-[#284070] relative overflow-hidden whitespace-nowrap ${KUDOS_HIGHLIGHT_STYLES}`
+                  : ""
+              }
+            >
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          );
+        }}
       </TableBody>
     </NextUITable>
   );

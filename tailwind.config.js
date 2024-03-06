@@ -24,11 +24,16 @@ module.exports = {
       },
       animation: {
         "infinite-scroll": "infinite-scroll 160s linear infinite",
+        "kudos-highlight": "kudos-highlight 2.5s linear infinite",
       },
       keyframes: {
         "infinite-scroll": {
           from: { transform: "translateX(0)" },
           to: { transform: "translateX(-100%)" },
+        },
+        "kudos-highlight": {
+          from: { transform: "translate(-50%, -50%) scale(1.4) rotate(0turn)" },
+          to: { transform: "translate(-50%, -50%) scale(1.4) rotate(1turn)" },
         },
       },
     },

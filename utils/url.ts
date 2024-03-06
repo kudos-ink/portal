@@ -4,10 +4,10 @@ import {
   FilterOptions,
   Filters,
 } from "@/types/filters";
-import { GOOD_FIRST_ISSUE_KEY } from "@/data/filters";
+import { GOOD_FIRST_ISSUE_KEY, KUDOS_ISSUE_KEY } from "@/data/filters";
 import { getNewFilterOption, initFilters } from "./filters";
 
-type Keys = FilterKeys | typeof GOOD_FIRST_ISSUE_KEY;
+type Keys = FilterKeys | typeof GOOD_FIRST_ISSUE_KEY | typeof KUDOS_ISSUE_KEY;
 
 export const createUrl = (
   key: string,
@@ -27,6 +27,8 @@ export const createUrl = (
     // Add the new value to the existing array for the specific filter, avoiding duplicates
     if (keyLowerCase === GOOD_FIRST_ISSUE_KEY) {
       filters[GOOD_FIRST_ISSUE_KEY] = values.includes("true");
+    } else if (keyLowerCase === KUDOS_ISSUE_KEY) {
+      filters[KUDOS_ISSUE_KEY] = values.includes("true");
     } else {
       const newOptions = values
         .map((value) => getNewFilterOption(keyLowerCase, value, filterOptions))
@@ -36,6 +38,8 @@ export const createUrl = (
   } else {
     if (keyLowerCase === GOOD_FIRST_ISSUE_KEY) {
       filters[GOOD_FIRST_ISSUE_KEY] = false;
+    } else if (keyLowerCase === KUDOS_ISSUE_KEY) {
+      filters[KUDOS_ISSUE_KEY] = false;
     } else {
       filters[keyLowerCase] = [];
     }
@@ -69,9 +73,11 @@ export const encodingSlug = (filters: Filters): string => {
   const interestsSegment = createSegment(interests, "in-");
   const projectsSegment = createSegment(projects, "for-");
   const goodFirstSegment = filters[GOOD_FIRST_ISSUE_KEY] ? "good-first" : "";
+  const certifiedSegment = filters[KUDOS_ISSUE_KEY] ? "certified" : "";
 
   let urlParts = [
     languagesSegment,
+    certifiedSegment,
     goodFirstSegment,
     "open-contributions",
     interestsSegment,
@@ -86,12 +92,16 @@ export const decodingSlug = (
 ): Filters => {
   const filters = initFilters();
 
-  // Check for 'good-first' and extract languages
+  // Check for 'good-first', 'certified' and extract languages
+  const isCertified = slug.includes("certified-");
+  filters[KUDOS_ISSUE_KEY] = isCertified;
   const isGoodFirstIssue = slug.includes("good-first-");
   filters[GOOD_FIRST_ISSUE_KEY] = isGoodFirstIssue;
-  const languagePart = isGoodFirstIssue
-    ? slug.split("good-first-open-contributions")[0]
-    : slug.split("open-contributions")[0];
+  const languagePart = isCertified
+    ? slug.split("certified")[0]
+    : isGoodFirstIssue
+      ? slug.split("good-first-open-contributions")[0]
+      : slug.split("open-contributions")[0];
   filters.languages = extractValuesFromOptions(
     languagePart,
     filterOptions.languages,
