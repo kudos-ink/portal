@@ -16,6 +16,7 @@ import { ExternalLink, Content, Time, Project } from "./row";
 import dynamic from "next/dynamic";
 import { useFilters } from "@/contexts/filters";
 import { extractRepositoryUrlFromIssue } from "@/utils/github";
+import { KUDOS_ISSUE_KEY } from "@/data/filters";
 
 const KUDOS_HIGHLIGHT_STYLES = `before:absolute before:content-['']
   before:bg-[conic-gradient(transparent_270deg,_#BABABC,_transparent)]
@@ -47,7 +48,7 @@ interface IStaticTableProps {
 }
 
 const StaticTable = ({ data }: IStaticTableProps) => {
-  const { filterOptions } = useFilters();
+  const { filters, filterOptions } = useFilters();
   const isMobile = useMediaQuery({ maxWidth: 639 }); // tailwind lg default: 640px
   const isLaptop = useMediaQuery({ minWidth: 1024 }); // tailwind lg default: 1024px
 
@@ -177,20 +178,23 @@ const StaticTable = ({ data }: IStaticTableProps) => {
         )}
       </TableHeader>
       <TableBody items={data} emptyContent="No contributions to display.">
-        {(item) => (
-          <TableRow
-            key={item.id}
-            className={
-              item.isCertified
-                ? `bg-[#1e3054] hover:bg-[#284070] relative overflow-hidden whitespace-nowrap ${KUDOS_HIGHLIGHT_STYLES}`
-                : ""
-            }
-          >
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
+        {(item) => {
+          const isHighlighted = item.isCertified && !filters[KUDOS_ISSUE_KEY];
+          return (
+            <TableRow
+              key={item.id}
+              className={
+                isHighlighted
+                  ? `bg-[#1e3054] hover:bg-[#284070] relative overflow-hidden whitespace-nowrap ${KUDOS_HIGHLIGHT_STYLES}`
+                  : ""
+              }
+            >
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          );
+        }}
       </TableBody>
     </NextUITable>
   );

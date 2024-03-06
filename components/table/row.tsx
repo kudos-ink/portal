@@ -122,18 +122,7 @@ export const Content = ({
           {title}
         </h3>
         {isCertified && (
-          <Tooltip
-            content={
-              <div className="px-1 py-2">
-                <div className="text-small font-bold">
-                  Kudos Certified Issue
-                </div>
-                <a className="text-primary-500 underline" href="/#kudos-issue">
-                  Learn more
-                </a>
-              </div>
-            }
-          >
+          <Tooltip content={<KudosIssueTooltipContent />}>
             <div className="hidden absolute -top-1 -left-6 md:block">
               <MyImage
                 className="flex-shrink-0 max-w-5 max-h-5 lg:mb-4"
@@ -312,6 +301,15 @@ export const ExternalLink = ({ href, title }: IExternalLinkProps) => {
     />
   );
 };
+
+export const KudosIssueTooltipContent = () => (
+  <div className="px-1 py-2">
+    <div className="text-small font-bold">Kudos Certified Issue</div>
+    <a className="text-primary-500 underline" href="/#kudos-issue">
+      Learn more
+    </a>
+  </div>
+);
 
 const getGoodFirstIssueLabel = (isGoodFirstIssue: boolean) => {
   return isGoodFirstIssue

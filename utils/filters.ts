@@ -1,6 +1,7 @@
 import {
   GOOD_FIRST_ISSUE_KEY,
   INTEREST_KEY,
+  KUDOS_ISSUE_KEY,
   LANGUAGES_KEY,
   PROJECTS_KEY,
 } from "@/data/filters";
@@ -56,6 +57,7 @@ export const initFilters = (): Filters => {
     [LANGUAGES_KEY]: [],
     [PROJECTS_KEY]: [],
     [GOOD_FIRST_ISSUE_KEY]: false,
+    [KUDOS_ISSUE_KEY]: false,
   };
 };
 

@@ -4,6 +4,8 @@ import {
   GOOD_FIRST_ISSUE_KEY,
   GOOD_FIRST_ISSUE_LABELS,
   INTEREST_KEY,
+  KUDOS_ISSUE_KEY,
+  KUDOS_ISSUE_LABELS,
   LANGUAGES_KEY,
   PROJECTS_KEY,
 } from "@/data/filters";
@@ -111,6 +113,17 @@ export function processNotionFilters(
   if (filters[GOOD_FIRST_ISSUE_KEY]) {
     queryFilters.push({
       or: GOOD_FIRST_ISSUE_LABELS.map((label) => ({
+        property: "Issue Labels",
+        multi_select: {
+          contains: label,
+        },
+      })),
+    });
+  }
+
+  if (filters[KUDOS_ISSUE_KEY]) {
+    queryFilters.push({
+      or: KUDOS_ISSUE_LABELS.map((label) => ({
         property: "Issue Labels",
         multi_select: {
           contains: label,
