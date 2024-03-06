@@ -304,10 +304,11 @@ export const ExternalLink = ({ href, title }: IExternalLinkProps) => {
 
 export const KudosIssueTooltipContent = () => (
   <div className="px-1 py-2">
-    <div className="text-small font-bold">Kudos Certified Issue</div>
-    <a className="text-primary-500 underline" href="/#kudos-issue">
-      Learn more
-    </a>
+    <div className="text-small font-bold">Top Certified Contributions</div>
+    <div className="text-tiny max-w-64">
+      Creators honour to have a well-detailed problem statement and an assigned
+      mentor available
+    </div>
   </div>
 );
 
