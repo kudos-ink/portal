@@ -150,3 +150,14 @@ const extractValuesFromOptions = (
 export const sanitizeUrl = (url: string): string => {
   return url.replace(/\/+$/, "");
 };
+
+export function serializeQueryParams(params: Record<string, any>): string {
+  return Object.keys(params)
+    .filter((key) => params[key] != null)
+    .map((key) => {
+      const value = params[key];
+      const formattedValue = Array.isArray(value) ? value.join(",") : value;
+      return `${encodeURIComponent(key)}=${encodeURIComponent(formattedValue)}`;
+    })
+    .join("&");
+}

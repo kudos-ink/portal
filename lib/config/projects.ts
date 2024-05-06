@@ -9,5 +9,5 @@ const PROJECTS_PATH =
 export async function getProjectInfos(slug: string): Promise<ProjectInfos> {
   const url = `${PROJECTS_PATH}/${slug}.json`;
   const tag = tags.projectInfos(slug);
-  return fetchData<ProjectInfos>(url, tag);
+  return fetchData<ProjectInfos>(url, { tag });
 }

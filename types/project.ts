@@ -1,3 +1,5 @@
+import { Repository } from "./filters";
+
 type ProjectPurpose =
   | "ai"
   | "bridge"
@@ -60,4 +62,5 @@ export interface IProject {
 
 export interface IProjectFull extends IProject {
   // TODO: add project page sections - metrics, contributions, milestones, wishes, tips
+  repositories: Repository[];
 }

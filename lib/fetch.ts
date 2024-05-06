@@ -1,6 +1,18 @@
-export async function fetchData<T>(url: string, tag: string): Promise<T> {
+type Options = {
+  tag?: string;
+  noStoreCache?: boolean;
+};
+
+export async function fetchData<T>(
+  url: string,
+  options: Options = {},
+): Promise<T> {
   try {
-    const response = await fetch(url, { next: { tags: [tag] } });
+    const { tag, noStoreCache } = options;
+    const response = await fetch(url, {
+      ...(tag ? { next: { tags: [tag] } } : {}),
+      ...(noStoreCache ? { cache: "no-store" } : {}),
+    });
 
     if (!response.ok) {
       throw new Error(`Failed to fetch data. Status: ${response.status}`);
