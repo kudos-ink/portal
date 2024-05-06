@@ -146,3 +146,7 @@ const extractValuesFromOptions = (
     )
     .filter((option): option is FilterOption => option !== undefined);
 };
+
+export const sanitizeUrl = (url: string): string => {
+  return url.replace(/\/+$/, "");
+};

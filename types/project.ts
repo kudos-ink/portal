@@ -41,7 +41,7 @@ type ProjectLinks = {
   socialMedia: string[];
 };
 
-type ProjectInfos = {
+export type ProjectInfos = {
   name: string;
   slug: string;
   description: string;
