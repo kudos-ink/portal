@@ -1,39 +1,15 @@
+import {
+  FPurposes,
+  FProjectTypes,
+  FStackLevels,
+  FTechnologies,
+} from "@/data/filters";
 import { Repository } from "./filters";
 
-type ProjectPurpose =
-  | "ai"
-  | "bridge"
-  | "dao"
-  | "data"
-  | "defi"
-  | "evm"
-  | "gaming"
-  | "governance"
-  | "nft"
-  | "oracles"
-  | "rwa"
-  | "socialfi"
-  | "staking"
-  | "testing"
-  | "universal";
-
-type ProjectType =
-  | "platform"
-  | "tool"
-  | "library"
-  | "client"
-  | "framework"
-  | "template"
-  | "mobile"
-  | "service"
-  | "dApp";
-
-type ProjectStackLevels =
-  | "protocol"
-  | "runtime"
-  | "smart-contract"
-  | "messaging"
-  | "offchain";
+export type ProjectPurpose = (typeof FPurposes)[number];
+export type ProjectType = (typeof FProjectTypes)[number];
+export type ProjectStackLevel = (typeof FStackLevels)[number];
+export type ProjectTechnologies = (typeof FTechnologies)[number];
 
 type ProjectLinks = {
   websites: string[];
@@ -50,17 +26,24 @@ export type ProjectInfos = {
   links: ProjectLinks;
   networks: string[];
   purposes: ProjectPurpose[];
-  stackLevels: ProjectStackLevels[];
-  technologies: string[];
+  stackLevels: ProjectStackLevel[];
+  technologies: ProjectTechnologies[];
   types: ProjectType[];
 };
 
-export interface IProject {
+export type Project = {
+  id: number;
+  name: string;
+  slug: string;
+  categories: string[];
+  purposes: string[];
+  stack_levels: string[];
+  technologies: string[];
+};
+
+export interface IProjectFull {
   id: number;
   infos: ProjectInfos;
-}
-
-export interface IProjectFull extends IProject {
   // TODO: add project page sections - metrics, contributions, milestones, wishes, tips
   repositories: Repository[];
 }

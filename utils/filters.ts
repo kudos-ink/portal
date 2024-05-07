@@ -10,6 +10,7 @@ import {
   FilterOption,
   FilterOptions,
   Filters,
+  NewFilterOption,
 } from "@/types/filters";
 
 export const findInterestsByProject = (
@@ -104,4 +105,17 @@ export function getNewFilterOption(
   }
 
   return optionsArray.find((option) => option.value === value);
+}
+
+export function createFilterOptions(
+  items: readonly string[],
+  emojiMap?: Record<string, string>,
+): NewFilterOption[] {
+  return items.map((item) => ({
+    value: item,
+    label: item
+      .replace("-", " ")
+      .replace(/(^|\s)\S/g, (letter) => letter.toUpperCase()),
+    emoji: emojiMap ? emojiMap[item] : undefined,
+  }));
 }

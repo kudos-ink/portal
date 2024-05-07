@@ -1,7 +1,12 @@
-export const INTEREST_KEY = "interests";
-export const LANGUAGES_KEY = "languages";
+export const PURPOSE_KEY = "purposes";
+export const PROJECT_TYPE_KEY = "project-types";
+export const TECHNOLOGY_KEY = "technologies";
+export const STACK_LEVEL_KEY = "stack-levels";
 export const PROJECTS_KEY = "projects";
 export const GOOD_FIRST_ISSUE_KEY = "good-first-issue";
+
+export const INTEREST_KEY = "interests";
+export const LANGUAGES_KEY = "languages";
 export const KUDOS_ISSUE_KEY = "certified";
 
 export const GOOD_FIRST_ISSUE_LABELS = [
@@ -13,3 +18,92 @@ export const GOOD_FIRST_ISSUE_LABELS = [
 ];
 
 export const KUDOS_ISSUE_LABELS = ["kudos", "kudos-milestone"];
+
+export const FPurposes = [
+  "ai",
+  "bridge",
+  "dao",
+  "data",
+  "defi",
+  "evm",
+  "gaming",
+  "governance",
+  "nft",
+  "oracles",
+  "rwa",
+  "socialfi",
+  "staking",
+  "testing",
+  "universal",
+] as const;
+
+export const FProjectTypes = [
+  "platform",
+  "tool",
+  "library",
+  "client",
+  "framework",
+  "template",
+  "mobile",
+  "service",
+  "dApp",
+] as const;
+
+export const FStackLevels = [
+  "protocol",
+  "runtime",
+  "smart-contract",
+  "messaging",
+  "offchain",
+] as const;
+
+export const FTechnologies = ["substrate", "ink"] as const;
+
+export const emojiMapForPurposes: Record<string, string> = {
+  ai: "🤖",
+  bridge: "🌉",
+  dao: "🏛️",
+  data: "📊",
+  defi: "💸",
+  evm: "🔗",
+  gaming: "🎮",
+  governance: "⚖️",
+  nft: "🖼️",
+  oracles: "🔮",
+  rwa: "🏢",
+  socialfi: "🗣️",
+  staking: "🔒",
+  testing: "🧪",
+  universal: "🌐",
+};
+
+export const emojiMapForTechnologies: Record<string, string> = {
+  go: "🏃‍♂️",
+  ink: "🐙",
+  javascript: "☕️",
+  python: "🐍",
+  rust: "🦀",
+  substrate: "🟣",
+  solidity: "💸",
+  typescript: "📜",
+};
+
+export const emojiMapForStackLevels: Record<string, string> = {
+  protocol: "📡",
+  runtime: "💾",
+  "smart-contract": "📜",
+  messaging: "💬",
+  offchain: "🌐",
+};
+
+export const emojiMapForProjectTypes: Record<string, string> = {
+  platform: "🏗️",
+  tool: "🛠️",
+  library: "📚",
+  client: "🖥️",
+  framework: "🌉",
+  template: "📄",
+  mobile: "📱",
+  service: "🔧",
+  dApp: "📲",
+};

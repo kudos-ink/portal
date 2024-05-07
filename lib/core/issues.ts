@@ -11,13 +11,12 @@ type QueryParams = {
   projectIds?: string[];
 };
 
-const ISSUES_PATH =
-  sanitizeUrl(process.env.PROJECT_CLASSIFICATION_URL || "") + "/issues";
+const ISSUES_PATH = sanitizeUrl(process.env.API_URL || "") + "/issues";
 
 export async function getIssues(query: QueryParams & PaginationQueryParams) {
   const queryString = serializeQueryParams(query);
   const url = `${ISSUES_PATH}${queryString ? `?${queryString}` : ""}`;
-  return fetchData<PaginatedCustomResponse<Issue[]>>(url, {
+  return fetchData<PaginatedCustomResponse<Issue>>(url, {
     noStoreCache: true,
   });
 }

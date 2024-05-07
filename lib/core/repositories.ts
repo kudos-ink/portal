@@ -15,7 +15,7 @@ type QueryParams = {
 };
 
 const REPOSITORIES_PATH =
-  sanitizeUrl(process.env.PROJECT_CLASSIFICATION_URL || "") + "/repositories";
+  sanitizeUrl(process.env.API_URL || "") + "/repositories";
 
 export async function getRepositories(
   query: QueryParams & PaginationQueryParams,
@@ -23,5 +23,5 @@ export async function getRepositories(
   const queryString = serializeQueryParams(query);
   const url = `${REPOSITORIES_PATH}${queryString ? `?${queryString}` : ""}`;
   const tag = tags.repositories(query.slugs?.join("-") || "");
-  return fetchData<PaginatedCustomResponse<Repository[]>>(url, { tag });
+  return fetchData<PaginatedCustomResponse<Repository>>(url, { tag });
 }

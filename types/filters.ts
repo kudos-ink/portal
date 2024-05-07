@@ -4,8 +4,13 @@ import {
   PROJECTS_KEY,
   GOOD_FIRST_ISSUE_KEY,
   KUDOS_ISSUE_KEY,
+  PURPOSE_KEY,
+  PROJECT_TYPE_KEY,
+  TECHNOLOGY_KEY,
+  STACK_LEVEL_KEY,
 } from "@/data/filters";
 
+// TODO: Replace FilterOption by NewFilterOption and rename
 export type FilterOption = {
   name: string;
   emoji: string;
@@ -14,6 +19,23 @@ export type FilterOption = {
   id?: string;
   icon?: string;
   repository_url?: string;
+};
+
+export type NewFilterOption = {
+  value: string;
+  label: string;
+  emoji?: string;
+};
+
+export type NewFilterKeys =
+  | typeof PURPOSE_KEY
+  | typeof PROJECT_TYPE_KEY
+  | typeof TECHNOLOGY_KEY
+  | typeof STACK_LEVEL_KEY
+  | typeof PROJECTS_KEY;
+
+export type NewFilters = {
+  [key in NewFilterKeys]: NewFilterOption[];
 };
 
 export type FilterOptions = {
