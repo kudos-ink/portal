@@ -1,6 +1,4 @@
 import {
-  LANGUAGES_KEY,
-  INTEREST_KEY,
   PROJECTS_KEY,
   GOOD_FIRST_ISSUE_KEY,
   KUDOS_ISSUE_KEY,
@@ -10,67 +8,36 @@ import {
   STACK_LEVEL_KEY,
 } from "@/data/filters";
 
-// TODO: Replace FilterOption by NewFilterOption and rename
-export type FilterOption = {
-  name: string;
-  emoji: string;
-  value: string;
-  interests?: string[];
-  id?: string;
-  icon?: string;
-  repository_url?: string;
-};
-
-export type NewFilterOption = {
+export interface IFilterOption {
   value: string;
   label: string;
   emoji?: string;
-};
+}
 
-export type NewFilterKeys =
+export type FilterKeys =
+  | typeof PURPOSE_KEY
+  | typeof PROJECT_TYPE_KEY
+  | typeof TECHNOLOGY_KEY
+  | typeof STACK_LEVEL_KEY
+  | typeof PROJECTS_KEY
+  | typeof GOOD_FIRST_ISSUE_KEY
+  | typeof KUDOS_ISSUE_KEY;
+
+export type SelectFilterKeys =
   | typeof PURPOSE_KEY
   | typeof PROJECT_TYPE_KEY
   | typeof TECHNOLOGY_KEY
   | typeof STACK_LEVEL_KEY
   | typeof PROJECTS_KEY;
 
-export type NewFilters = {
-  [key in NewFilterKeys]: NewFilterOption[];
-};
-
-export type FilterOptions = {
-  interests: FilterOption[];
-  languages: FilterOption[];
-  repositories: Repository[];
-};
-
-export type SearchParams = {
-  [key: string]: string | undefined;
-};
-
-export type FilterKeys =
-  | typeof LANGUAGES_KEY
-  | typeof INTEREST_KEY
-  | typeof PROJECTS_KEY
+export type BooleanFilterKeys =
   | typeof GOOD_FIRST_ISSUE_KEY
   | typeof KUDOS_ISSUE_KEY;
 
-type ExcludedFilterKeys = Exclude<
-  FilterKeys,
-  typeof GOOD_FIRST_ISSUE_KEY | typeof KUDOS_ISSUE_KEY
->;
-
-export type Filters = {
-  [key in ExcludedFilterKeys]: FilterOption[];
-} & {
-  [GOOD_FIRST_ISSUE_KEY]: boolean;
-  [KUDOS_ISSUE_KEY]: boolean;
+export type FilterOptions = {
+  [key in SelectFilterKeys]: IFilterOption[];
 };
 
-export interface Repository extends FilterOption {
-  repository_url: string;
-  topics: string[];
-  about: string;
-  icon: string;
-  project: string;
-}
+export type Filters = FilterOptions & {
+  [key in BooleanFilterKeys]: boolean;
+};

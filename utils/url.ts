@@ -1,13 +1,13 @@
 import {
   FilterKeys,
-  FilterOption,
+  IFilterOption,
   FilterOptions,
   Filters,
 } from "@/types/filters";
 import { GOOD_FIRST_ISSUE_KEY, KUDOS_ISSUE_KEY } from "@/data/filters";
-import { getNewFilterOption, initFilters } from "./filters";
+import { initFilters } from "./filters";
 
-type Keys = FilterKeys | typeof GOOD_FIRST_ISSUE_KEY | typeof KUDOS_ISSUE_KEY;
+type Keys = FilterKeys;
 
 export const createUrl = (
   key: string,
@@ -16,33 +16,27 @@ export const createUrl = (
   filterOptions: FilterOptions,
 ) => {
   const slugParts = pathname.split("/");
-  const currentSlug = slugParts[slugParts.length - 1];
+  const currentSlug = slugParts.pop() || "";
 
   // Decode existing filters from the slug
   let filters = decodingSlug(currentSlug, filterOptions);
 
   // Update the specific filter based on the provided key and value
   const keyLowerCase = key.toLowerCase() as Keys;
-  if (values.length > 0) {
-    // Add the new value to the existing array for the specific filter, avoiding duplicates
-    if (keyLowerCase === GOOD_FIRST_ISSUE_KEY) {
-      filters[GOOD_FIRST_ISSUE_KEY] = values.includes("true");
-    } else if (keyLowerCase === KUDOS_ISSUE_KEY) {
-      filters[KUDOS_ISSUE_KEY] = values.includes("true");
-    } else {
-      const newOptions = values
-        .map((value) => getNewFilterOption(keyLowerCase, value, filterOptions))
-        .filter((option): option is FilterOption => option !== undefined);
-      filters[keyLowerCase] = newOptions;
-    }
+
+  // Boolean keys
+  if (
+    keyLowerCase === GOOD_FIRST_ISSUE_KEY ||
+    keyLowerCase === KUDOS_ISSUE_KEY
+  ) {
+    filters[keyLowerCase] = values.includes("true");
   } else {
-    if (keyLowerCase === GOOD_FIRST_ISSUE_KEY) {
-      filters[GOOD_FIRST_ISSUE_KEY] = false;
-    } else if (keyLowerCase === KUDOS_ISSUE_KEY) {
-      filters[KUDOS_ISSUE_KEY] = false;
-    } else {
-      filters[keyLowerCase] = [];
-    }
+    // Select filter options, avoid duplicates
+    filters[keyLowerCase] = values
+      .map((value) =>
+        filterOptions[keyLowerCase]?.find((option) => option.value === value),
+      )
+      .filter((option): option is IFilterOption => option !== undefined);
   }
 
   // Use encodingSlug to create a slug from the updated filters
@@ -54,33 +48,37 @@ export const createUrl = (
 };
 
 export const encodingSlug = (filters: Filters): string => {
-  const { languages, interests, projects } = filters;
+  const { technologies, purposes, projects } = filters;
 
   const createSegment = (
-    options: FilterOption[] | undefined,
+    options: IFilterOption[] | undefined,
     prefix: string = "",
   ): string => {
     if (!options || options.length === 0) {
       return "";
     }
     return `${prefix}${options
-      .map(({ name }) => name.toLocaleLowerCase().replaceAll(" ", "-"))
+      .map(({ label }) => label.toLocaleLowerCase().replaceAll(" ", "-"))
       .join("-and-")
       .toLowerCase()}`;
   };
 
-  const languagesSegment = createSegment(languages);
-  const interestsSegment = createSegment(interests, "in-");
-  const projectsSegment = createSegment(projects, "for-");
+  const technologiesSegment = createSegment(technologies);
+  // const projectTypesSegment = createSegment(filters["project-types"], "for-");
+  // const stackLevelsSegment = createSegment(filters["stack-levels"], "level-");
+  const purposesSegment = createSegment(purposes, "in-");
+  const projectsSegment = createSegment(projects, "at-");
   const goodFirstSegment = filters[GOOD_FIRST_ISSUE_KEY] ? "good-first" : "";
   const certifiedSegment = filters[KUDOS_ISSUE_KEY] ? "certified" : "";
 
   let urlParts = [
-    languagesSegment,
+    technologiesSegment,
     certifiedSegment,
     goodFirstSegment,
     "open-contributions",
-    interestsSegment,
+    // projectTypesSegment,
+    // stackLevelsSegment,
+    purposesSegment,
     projectsSegment,
   ];
   return urlParts.filter((part) => part).join("-");
@@ -94,33 +92,34 @@ export const decodingSlug = (
 
   // Check for 'good-first', 'certified' and extract languages
   const isCertified = slug.includes("certified-");
-  filters[KUDOS_ISSUE_KEY] = isCertified;
   const isGoodFirstIssue = slug.includes("good-first-");
+  filters[KUDOS_ISSUE_KEY] = isCertified;
   filters[GOOD_FIRST_ISSUE_KEY] = isGoodFirstIssue;
-  const languagePart = isCertified
+
+  const technologiesPart = isCertified
     ? slug.split("certified")[0]
     : isGoodFirstIssue
       ? slug.split("good-first-open-contributions")[0]
       : slug.split("open-contributions")[0];
-  filters.languages = extractValuesFromOptions(
-    languagePart,
-    filterOptions.languages,
+  filters.technologies = extractValuesFromOptions(
+    technologiesPart,
+    filterOptions.technologies,
   );
 
-  // Check for 'in' and 'for' and extract interests and projects
-  const hasInterests = slug.includes("-in-");
+  // Check for 'in', "at-", "level-" and 'for' and extract queries
+  const hasPurposes = slug.includes("-in-");
   const hasProjects = slug.includes("-for-");
-  filters.interests = extractValuesFromOptions(
-    hasInterests
+  filters.purposes = extractValuesFromOptions(
+    hasPurposes
       ? hasProjects
         ? slug.split("-in-")[1].split("-for-")[0]
         : slug.split("-in-")[1]
       : "",
-    filterOptions.interests,
+    filterOptions.purposes,
   );
   filters.projects = extractValuesFromOptions(
     hasProjects ? slug.split("-for-")[1] : "",
-    filterOptions.repositories,
+    filterOptions.projects,
   );
 
   return filters;
@@ -133,18 +132,18 @@ const extractValues = (section: string): string[] => {
 
 const extractValuesFromOptions = (
   section: string,
-  options: FilterOption[],
-): FilterOption[] => {
+  options: IFilterOption[],
+): IFilterOption[] => {
   const labels = extractValues(section);
 
   return labels
     .map((name) =>
       options.find(
         (project) =>
-          project.name.toLocaleLowerCase().replaceAll(" ", "-") === name,
+          project.label.toLocaleLowerCase().replaceAll(" ", "-") === name,
       ),
     )
-    .filter((option): option is FilterOption => option !== undefined);
+    .filter((option): option is IFilterOption => option !== undefined);
 };
 
 export const sanitizeUrl = (url: string): string => {

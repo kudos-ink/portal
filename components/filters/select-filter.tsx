@@ -2,22 +2,20 @@
 import React from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Select, SelectItem } from "@nextui-org/select";
-import { FilterOption, FilterOptions } from "@/types/filters";
+import { IFilterOption, FilterOptions } from "@/types/filters";
 import { createUrl } from "@/utils/url";
 import Emoji from "../emoji";
 import { CircledCross } from "@/assets/icons";
 
 interface ISelectFilterProps {
   placeholder: string;
-  mainEmoji: string;
-  options: FilterOption[];
+  options: IFilterOption[];
   selectKeys: string[];
   filterOptions: FilterOptions;
   onSelect: (values: string[]) => void;
 }
 export const SelectFilter = ({
   placeholder,
-  mainEmoji,
   options,
   selectKeys,
   filterOptions,
@@ -52,7 +50,6 @@ export const SelectFilter = ({
       size="sm"
       placeholder={placeholder}
       selectionMode="multiple"
-      startContent={<Emoji emoji={mainEmoji} className="text-sm" />}
       endContent={
         selectKeys.length > 0 && (
           <CircledCross
@@ -64,14 +61,14 @@ export const SelectFilter = ({
       selectedKeys={new Set(selectKeys)}
       onSelectionChange={handleSelectionChange}
     >
-      {options.map(({ emoji, name, value }) => {
+      {options.map(({ emoji, label, value }) => {
         return (
           <SelectItem
             key={value}
             value={value}
-            startContent={<Emoji emoji={emoji} />}
+            startContent={emoji && <Emoji emoji={emoji} />}
           >
-            {name}
+            {label}
           </SelectItem>
         );
       })}

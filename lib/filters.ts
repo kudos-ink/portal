@@ -1,4 +1,4 @@
-import { NewFilterOption, NewFilters } from "@/types/filters";
+import { IFilterOption, FilterOptions } from "@/types/filters";
 import { getLanguages } from "./core/languages";
 import {
   FProjectTypes,
@@ -18,7 +18,7 @@ import {
 import { createFilterOptions } from "@/utils/filters";
 import { getAllProjectOptions } from "./core/projects";
 
-export async function getFilters(): Promise<NewFilters> {
+export async function getFilterOptions(): Promise<FilterOptions> {
   let languageValues: string[];
   try {
     languageValues = await getLanguages();
@@ -27,7 +27,7 @@ export async function getFilters(): Promise<NewFilters> {
     languageValues = [];
   }
 
-  let projects: NewFilterOption[] = [];
+  let projects: IFilterOption[] = [];
   try {
     projects = await getAllProjectOptions();
   } catch (error) {

@@ -3,7 +3,7 @@ import Toolbar from "@/components/filters/toolbar";
 import { container } from "@/components/primitives";
 import { FiltersProvider } from "@/contexts/filters";
 import { decodingSlug } from "@/utils/url";
-import { fetchFilterOptions } from "@/lib/repository-metadata";
+import { getFilterOptions } from "@/lib/filters";
 
 export default async function ExploreLayout({
   children,
@@ -12,7 +12,7 @@ export default async function ExploreLayout({
   children: React.ReactNode;
   params: { slug: string };
 }) {
-  const filterOptions = await fetchFilterOptions();
+  const filterOptions = await getFilterOptions();
   const filters = decodingSlug(params.slug, filterOptions);
   return (
     <FiltersProvider

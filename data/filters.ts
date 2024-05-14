@@ -4,9 +4,6 @@ export const TECHNOLOGY_KEY = "technologies";
 export const STACK_LEVEL_KEY = "stack-levels";
 export const PROJECTS_KEY = "projects";
 export const GOOD_FIRST_ISSUE_KEY = "good-first-issue";
-
-export const INTEREST_KEY = "interests";
-export const LANGUAGES_KEY = "languages";
 export const KUDOS_ISSUE_KEY = "certified";
 
 export const GOOD_FIRST_ISSUE_LABELS = [

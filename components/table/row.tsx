@@ -8,17 +8,21 @@ import MyImage from "@/components/ui/image";
 import { useFilters } from "@/contexts/filters";
 import { formatDate } from "@/utils/date";
 import { getProjectUrls } from "@/utils/github";
-import { findInterestsByProject, shuffleArray } from "@/utils/filters";
+import { findPurposesByProject, shuffleArray } from "@/utils/filters";
 import { createUrl } from "@/utils/url";
 import {
   GOOD_FIRST_ISSUE_KEY,
   GOOD_FIRST_ISSUE_LABELS,
-  INTEREST_KEY,
-  LANGUAGES_KEY,
+  TECHNOLOGY_KEY,
+  PURPOSE_KEY,
 } from "@/data/filters";
-import { FilterKeys, FilterOption, Filters } from "@/types/filters";
+import { FilterKeys, IFilterOption, Filters } from "@/types/filters";
 
 const MAX_LABEL_WIDTH = 192;
+
+interface ILabelOption extends IFilterOption {
+  type: FilterKeys;
+}
 
 interface IProjectProps {
   avatarSrc: string | null;
@@ -143,13 +147,13 @@ export const Content = ({
 
 interface ILabelsProps {
   gitLabels: string[];
-  languages: string[];
+  technologies: string[];
   organization: string;
   repository: string;
 }
 export const Labels = ({
   gitLabels,
-  languages,
+  technologies,
   organization,
   repository,
 }: ILabelsProps) => {
@@ -165,25 +169,25 @@ export const Labels = ({
   const isGoodFirstIssue = GOOD_FIRST_ISSUE_LABELS.some((name) =>
     gitLabels.includes(name),
   );
-  const interests = findInterestsByProject(
+  const purposes = findPurposesByProject(
     `${organization}/${repository}`,
-    filterOptions.interests,
-    filterOptions.repositories,
+    filterOptions.technologies,
+    filterOptions.projects,
   );
-  const fullLanguages = filterOptions.languages.filter(({ value }) =>
-    languages.includes(value),
+  const fullTechnologies = filterOptions.technologies.filter(({ value }) =>
+    technologies.includes(value),
   );
 
   const labels = useMemo(() => {
     const goodFirstIssueLabels = getGoodFirstIssueLabel(isGoodFirstIssue);
-    const languageAndInterestLabels = getLanguageAndInterestLabels(
-      fullLanguages,
-      interests,
+    const technologyAndPurposeLabels = getTechnologyAndPurposeLabels(
+      fullTechnologies,
+      purposes,
     );
-    return [...goodFirstIssueLabels, ...languageAndInterestLabels].filter(
-      (name) => !isLabelFilteredOut(name, filters),
+    return [...goodFirstIssueLabels, ...technologyAndPurposeLabels].filter(
+      (option) => !isLabelFilteredOut(option, filters),
     );
-  }, [filters, fullLanguages, interests, isGoodFirstIssue]);
+  }, [filters, fullTechnologies, purposes, isGoodFirstIssue]);
 
   const handleClick = (key: FilterKeys, values: string[]) => {
     updateFilter(key, values);
@@ -239,7 +243,7 @@ export const Labels = ({
     >
       {labels
         .slice(0, visibleLabelCount)
-        .map(({ emoji, name, type, value }, index) => (
+        .map(({ emoji, label, type, value }, index) => (
           <Tooltip content="Add to filters" key={index}>
             <Chip
               color={type === GOOD_FIRST_ISSUE_KEY ? "danger" : "default"}
@@ -247,9 +251,13 @@ export const Labels = ({
               onClick={() => handleClick(type, [value])}
             >
               <div className="flex items-center gap-2">
-                <Emoji emoji={emoji} className="text-xl" />
-                &nbsp;
-                {name}
+                {emoji && (
+                  <>
+                    <Emoji emoji={emoji} className="text-xl" />
+                    &nbsp;
+                  </>
+                )}
+                {label}
               </div>
             </Chip>
           </Tooltip>
@@ -258,7 +266,7 @@ export const Labels = ({
         <Tooltip
           content={labels
             .slice(visibleLabelCount)
-            .map(({ emoji, name }) => `${emoji} ${name}`)
+            .map(({ emoji, label }) => `${emoji} ${label}`)
             .join("  -  ")}
         >
           <div ref={indicatorRef} className="flex items-center ml-1 text-xs">
@@ -312,12 +320,12 @@ export const KudosIssueTooltipContent = () => (
   </div>
 );
 
-const getGoodFirstIssueLabel = (isGoodFirstIssue: boolean) => {
+const getGoodFirstIssueLabel = (isGoodFirstIssue: boolean): ILabelOption[] => {
   return isGoodFirstIssue
     ? [
         {
           emoji: "🌟",
-          name: "Good First Issue",
+          label: "Good First Issue",
           type: GOOD_FIRST_ISSUE_KEY as FilterKeys,
           value: "true",
         },
@@ -325,26 +333,26 @@ const getGoodFirstIssueLabel = (isGoodFirstIssue: boolean) => {
     : [];
 };
 
-const getLanguageAndInterestLabels = (
-  fullLanguages: FilterOption[],
-  interests: FilterOption[],
-) => {
+const getTechnologyAndPurposeLabels = (
+  fullTechnologies: IFilterOption[],
+  purposes: IFilterOption[],
+): ILabelOption[] => {
   return shuffleArray([
-    ...fullLanguages.map((name) => ({
-      ...name,
-      type: LANGUAGES_KEY as FilterKeys,
+    ...fullTechnologies.map((tech) => ({
+      ...tech,
+      type: TECHNOLOGY_KEY as FilterKeys,
     })),
-    ...interests.map((interest) => ({
-      ...interest,
-      type: INTEREST_KEY as FilterKeys,
+    ...purposes.map((purpose) => ({
+      ...purpose,
+      type: PURPOSE_KEY as FilterKeys,
     })),
   ]);
 };
 
-const isLabelFilteredOut = (name: FilterOption, filters: Filters) => {
+const isLabelFilteredOut = (option: IFilterOption, filters: Filters) => {
   return (
-    (filters[GOOD_FIRST_ISSUE_KEY] && name.value === "true") ||
-    filters[INTEREST_KEY].some((option) => option.value === name.value) ||
-    filters[LANGUAGES_KEY].some((option) => option.value === name.value)
+    (filters[GOOD_FIRST_ISSUE_KEY] && option.value === "true") ||
+    filters[PURPOSE_KEY].some(({ value }) => value === option.value) ||
+    filters[TECHNOLOGY_KEY].some(({ value }) => value === option.value)
   );
 };

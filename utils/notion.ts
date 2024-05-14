@@ -9,7 +9,7 @@ import {
   LANGUAGES_KEY,
   PROJECTS_KEY,
 } from "@/data/filters";
-import { FilterOption, Filters } from "@/types/filters";
+import { IFilterOption, Filters } from "@/types/filters";
 
 export function transformNotionDataToContributions(
   notionData: QueryDatabaseResponse,
@@ -48,7 +48,7 @@ export function transformNotionDataToContributions(
 
 export function processNotionFilters(
   filters: Filters,
-  repositories: FilterOption[],
+  repositories: IFilterOption[],
 ) {
   const queryFilters: any[] = [];
 

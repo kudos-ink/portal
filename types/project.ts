@@ -4,7 +4,7 @@ import {
   FStackLevels,
   FTechnologies,
 } from "@/data/filters";
-import { Repository } from "./filters";
+import { Repository } from "./repository";
 
 export type ProjectPurpose = (typeof FPurposes)[number];
 export type ProjectType = (typeof FProjectTypes)[number];
