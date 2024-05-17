@@ -1,64 +1,37 @@
-import { fetchFilterOptions } from "@/lib/repository-metadata";
 import { Link } from "@nextui-org/link";
 import MyImage from "@/components/ui/image";
+import { getProjects } from "@/lib/core/projects";
+import { Project } from "@/types/project";
 
 interface IProjectCarouselProps {}
 
-type ProjectLogo = {
-  repoIcon: string;
-  project: string;
-  repoUrl: string;
-  slug: string;
-  key: string;
-};
-
-function createCarousel(
-  repoMap: Map<
-    string,
-    { project: string; repoUrl: string; slug: string; key: string }
-  >,
-  duplicate: boolean,
-) {
-  let projectRow: ProjectLogo[] = [];
-  repoMap.forEach((repoData, repoIcon) => {
-    if (duplicate) {
-      projectRow.push({
-        ...repoData,
-        repoIcon,
-        key: `${repoData.key}-duplicate`,
-      });
-    } else {
-      projectRow.push({
-        ...repoData,
-        repoIcon,
-      });
-    }
-  });
-  if (projectRow.length % 2 !== 0) {
-    projectRow.pop();
+function createCarousel(projects: Project[], keyPrefix: string) {
+  if (projects.length % 2 !== 0) {
+    projects.pop();
   }
-  return projectRow.map((repo, index) => {
+  return projects.map(({ id, name, slug }, index) => {
     return (
       <Link
         aria-hidden="true"
         className={index % 2 == 0 ? "" : "mt-16 pt-16"}
         isExternal
-        href={`/explore/open-contributions-for-${repo.slug}`}
+        href={`/projects/${slug}`}
         color="foreground"
-        title={repo.project}
-        key={repo.key}
+        title={name}
+        key={`${keyPrefix}-${id}`}
       >
         <div className="flex items-center space-x-2 justify-evenly">
-          <MyImage
+          {/* TODO: use tinified static logo */}
+          {/* <MyImage
             className="rounded-md min-w-[45px] min-h-[45px] shrink-0 bg-foreground border"
             src={repo.repoIcon}
-            alt={`${repo.project} logo`}
+            alt={`${name} logo`}
             radius="sm"
             width={45}
             height={45}
             loading="eager"
-          />
-          <div>{repo.project}</div>
+          /> */}
+          <div>{name}</div>
         </div>
       </Link>
     );
@@ -66,23 +39,9 @@ function createCarousel(
 }
 
 export default async function ProjectCarousel({}: IProjectCarouselProps) {
-  const { repositories } = await fetchFilterOptions();
-  const map = new Map();
-  repositories.forEach((repository) => {
-    map.set(
-      repository.project?.toLowerCase() == "polkadot"
-        ? "/images/polkadot-logo.png"
-        : repository.icon,
-      {
-        project: repository.project,
-        repoUrl: repository.repository_url,
-        slug: repository.name.toLocaleLowerCase().replaceAll(" ", "-"),
-        key: repository.name,
-      },
-    );
-  });
-  const projectRowLogos = createCarousel(map, false);
-  const dupeRowLogos = createCarousel(map, true);
+  const { data } = await getProjects();
+  const projectRowLogos = createCarousel(data, "1");
+  const dupeRowLogos = createCarousel(data, "2");
 
   return (
     //group group-hover:[animation-play-state:paused] add to enable pausing animation

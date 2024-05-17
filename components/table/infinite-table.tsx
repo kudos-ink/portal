@@ -2,37 +2,32 @@
 
 import React, { useRef, useCallback, useEffect } from "react";
 import { Spinner } from "@nextui-org/spinner";
-import { useContributions } from "@/hooks/useContributions";
-import { KudosQueryParameters } from "@/lib/notion/types";
-import { PaginatedContributions } from "@/types/contribution";
+import { useIssues } from "@/hooks/useIssues";
+import { PaginatedCustomResponse } from "@/types/pagination";
 import StaticTable from "./static-table";
+import { Issue, IssueWithProject, IssueQueryParams } from "@/types/issue";
 
-interface IInfiniteTableProps {
-  items: PaginatedContributions;
-  queries?: Partial<KudosQueryParameters>;
+interface IInfiniteTableProps<I extends Issue | IssueWithProject> {
+  items: PaginatedCustomResponse<I>;
+  query?: IssueQueryParams;
+  slug?: string;
 }
 
-const InfiniteTable = ({ items, queries = {} }: IInfiniteTableProps) => {
+const InfiniteTable = <I extends Issue | IssueWithProject>({
+  items,
+  query = {},
+  slug,
+}: IInfiniteTableProps<I>) => {
   const loaderRef = useRef<HTMLDivElement>(null);
   const isFetchingRef = useRef(false);
   const {
     data: results,
     fetchNextPage,
     hasNextPage,
-  } = useContributions(items, queries);
+  } = useIssues<I>(items, query, slug);
 
   const contributions = React.useMemo(() => {
-    const uniqueContributions = new Map();
-
-    results?.pages
-      .flatMap((page) => page.data)
-      .forEach((contribution) => {
-        if (!uniqueContributions.has(contribution.id)) {
-          uniqueContributions.set(contribution.id, contribution);
-        }
-      });
-
-    return Array.from(uniqueContributions.values());
+    return results?.pages.flatMap((page) => page.data);
   }, [results]);
 
   const handleScroll = useCallback(() => {

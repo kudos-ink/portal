@@ -10,18 +10,17 @@ import { container, subtitle, title } from "@/components/primitives";
 import StaticTable from "@/components/table/static-table";
 import { FiltersProvider } from "@/contexts/filters";
 import { SITE_CONFIG } from "@/data/config";
-import { queryDatabase } from "@/lib/notion";
-import { fetchFilterOptions } from "@/lib/repository-metadata";
+import { getIssues } from "@/lib/core/issues";
+import { getFilterOptions } from "@/lib/filters";
 import { initFilters } from "@/utils/filters";
-import { transformNotionDataToContributions } from "@/utils/notion";
+import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
 
 const EXPLORE_LABEL = "Explore Open Contributions";
 
 export default async function Home() {
-  const filterOptions = await fetchFilterOptions();
+  const filterOptions = await getFilterOptions();
   const filters = initFilters();
-  const data = await queryDatabase();
-  const contributions = transformNotionDataToContributions(data);
+  const issues = await getIssues({ offset: 0, limit: DEFAULT_PAGE_SIZE });
 
   return (
     <>
@@ -47,7 +46,7 @@ export default async function Home() {
         <div className="flex flex-col">
           <Toolbar label="Latest Contributions" />
           <section className={container()}>
-            <StaticTable data={contributions} />
+            <StaticTable data={issues.data} />
           </section>
         </div>
       </FiltersProvider>

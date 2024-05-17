@@ -1,14 +1,14 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
+import { Link as NuiLink } from "@nextui-org/link";
 import { Chip } from "@nextui-org/chip";
-import { Link } from "@nextui-org/link";
 import { Tooltip } from "@nextui-org/tooltip";
 import Emoji from "@/components/emoji";
 import MyImage from "@/components/ui/image";
 import { useFilters } from "@/contexts/filters";
 import { formatDate } from "@/utils/date";
-import { getProjectUrls } from "@/utils/github";
-import { findPurposesByProject, shuffleArray } from "@/utils/filters";
+import { shuffleArray } from "@/utils/filters";
 import { createUrl } from "@/utils/url";
 import {
   GOOD_FIRST_ISSUE_KEY,
@@ -17,6 +17,7 @@ import {
   PURPOSE_KEY,
 } from "@/data/filters";
 import { FilterKeys, IFilterOption, Filters } from "@/types/filters";
+import { Repository } from "@/types/repository";
 
 const MAX_LABEL_WIDTH = 192;
 
@@ -26,54 +27,48 @@ interface ILabelOption extends IFilterOption {
 
 interface IProjectProps {
   avatarSrc: string | null;
+  slug: string;
   name: string;
-  organization: string;
-  repository: string;
+  repository: Repository;
 }
 export const Project = ({
   avatarSrc,
+  slug,
   name,
-  organization,
   repository,
-}: IProjectProps) => {
-  const { organizationUrl, repositoryUrl } = getProjectUrls(
-    organization,
-    repository,
-  );
-  return (
-    <div className="flex md:gap-4">
+}: IProjectProps) => (
+  <div className="flex md:gap-4">
+    <Link
+      className="w-fit"
+      href={`/projects/${slug}`}
+      color="foreground"
+      title={`${name}'s project page`}
+    >
+      <Project.Avatar alt={`${name} logo`} src={avatarSrc} />
+    </Link>
+    <div className="hidden md:flex flex-col w-36">
       <Link
         className="w-fit"
-        isExternal
-        href={organizationUrl}
+        href={`/projects/${slug}`}
         color="foreground"
-        title={`${name}'s organization on Github`}
+        title={`${name}'s project page`}
       >
-        <Project.Avatar alt={`${name} logo`} src={avatarSrc} />
+        <h2 className="font-semibold truncate">{name}</h2>
       </Link>
-      <div className="hidden md:flex flex-col w-36">
-        <Link
-          className="w-fit"
-          isExternal
-          href={organizationUrl}
-          color="foreground"
-          title={`${name}'s organization on Github`}
-        >
-          <h2 className="font-semibold truncate">{name}</h2>
-        </Link>
-        <Link
-          className="w-fit"
-          isExternal
-          href={repositoryUrl}
-          color="foreground"
-          title={`${name}'s repository on Github`}
-        >
-          <p className="text-small text-default-500 truncate">{repository}</p>
-        </Link>
-      </div>
+      <NuiLink
+        className="w-fit"
+        isExternal
+        href={repository.url}
+        color="foreground"
+        title={`${name}'s repository on Github`}
+      >
+        <p className="text-small text-default-500 truncate">
+          {repository.name}
+        </p>
+      </NuiLink>
     </div>
-  );
-};
+  </div>
+);
 
 interface IAvatarProps {
   alt: string;
@@ -101,21 +96,21 @@ Project.Avatar = Avatar;
 
 interface IContentProps {
   title: string;
-  project: string;
-  repository: string;
+  projectName?: string;
+  repositoryName: string;
   url: string;
   isCertified: boolean;
 }
 export const Content = ({
   title,
-  project,
-  repository,
+  projectName,
+  repositoryName,
   url,
   isCertified,
 }: IContentProps) => {
   return (
     <div className="flex flex-col space-y-unit-1 md:space-y-0 lg:w-[270px] xl:w-[500px]">
-      <Link
+      <NuiLink
         className="w-fit flex gap-1 flex-grow relative"
         isExternal
         href={url}
@@ -139,8 +134,10 @@ export const Content = ({
             </div>
           </Tooltip>
         )}
-      </Link>
-      <span className="text-small text-default-500 max-w-48 truncate md:hidden">{`${project} / ${repository}`}</span>
+      </NuiLink>
+      <span className="text-small text-default-500 max-w-48 truncate md:hidden">
+        {(projectName ? `${projectName} / ` : "") + repositoryName}
+      </span>
     </div>
   );
 };
@@ -148,15 +145,9 @@ export const Content = ({
 interface ILabelsProps {
   gitLabels: string[];
   technologies: string[];
-  organization: string;
-  repository: string;
+  purposes: string[];
 }
-export const Labels = ({
-  gitLabels,
-  technologies,
-  organization,
-  repository,
-}: ILabelsProps) => {
+export const Labels = ({ gitLabels, technologies, purposes }: ILabelsProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -169,25 +160,23 @@ export const Labels = ({
   const isGoodFirstIssue = GOOD_FIRST_ISSUE_LABELS.some((name) =>
     gitLabels.includes(name),
   );
-  const purposes = findPurposesByProject(
-    `${organization}/${repository}`,
-    filterOptions.technologies,
-    filterOptions.projects,
-  );
-  const fullTechnologies = filterOptions.technologies.filter(({ value }) =>
+  const restTechnologies = filterOptions.technologies.filter(({ value }) =>
     technologies.includes(value),
+  );
+  const restPurposes = filterOptions.purposes.filter(({ value }) =>
+    purposes.includes(value),
   );
 
   const labels = useMemo(() => {
     const goodFirstIssueLabels = getGoodFirstIssueLabel(isGoodFirstIssue);
     const technologyAndPurposeLabels = getTechnologyAndPurposeLabels(
-      fullTechnologies,
-      purposes,
+      restTechnologies,
+      restPurposes,
     );
     return [...goodFirstIssueLabels, ...technologyAndPurposeLabels].filter(
       (option) => !isLabelFilteredOut(option, filters),
     );
-  }, [filters, fullTechnologies, purposes, isGoodFirstIssue]);
+  }, [filters, restTechnologies, restPurposes, isGoodFirstIssue]);
 
   const handleClick = (key: FilterKeys, values: string[]) => {
     updateFilter(key, values);
@@ -298,7 +287,7 @@ interface IExternalLinkProps {
 }
 export const ExternalLink = ({ href, title }: IExternalLinkProps) => {
   return (
-    <Link
+    <NuiLink
       className="w-fit"
       isBlock
       isExternal

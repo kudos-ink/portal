@@ -14,24 +14,6 @@ import {
   Filters,
 } from "@/types/filters";
 
-export const findPurposesByProject = (
-  project: string,
-  purposes: IFilterOption[],
-  repositories: IFilterOption[],
-) => {
-  const matchingInterests = [];
-  const repository = repositories.find(({ value }) => value == project);
-  if (repository && !!repository.interests) {
-    for (const interest of repository.interests) {
-      const interestObject = interests.find(({ value }) => value === interest);
-      if (interestObject) {
-        matchingInterests.push(interestObject);
-      }
-    }
-  }
-  return matchingInterests;
-};
-
 // Fisher-Yates (or Knuth) shuffle algorithm
 export const shuffleArray = <T>(array: T[]): T[] => {
   let currentIndex = array.length,

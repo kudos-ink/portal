@@ -6,8 +6,8 @@ import { Project } from "@/types/project";
 import tags from "@/utils/tags";
 import { sanitizeUrl, serializeQueryParams } from "@/utils/url";
 import { fetchData } from "../fetch";
-import { NewFilterOption } from "@/types/filters";
-import { DEFAULT_BIG_PAGE_SIZE } from "@/data/fetch";
+import { IFilterOption } from "@/types/filters";
+import { DEFAULT_BIG_PAGE_SIZE, DEFAULT_QUERY } from "@/data/fetch";
 
 type QueryParams = {
   slugs?: string[];
@@ -19,7 +19,7 @@ type QueryParams = {
 const PROJECTS_PATH = sanitizeUrl(process.env.API_URL || "") + "/projects";
 
 export async function getProjects(
-  query: QueryParams & PaginationQueryParams,
+  query: QueryParams & PaginationQueryParams = DEFAULT_QUERY,
   tag?: string,
 ) {
   const queryString = serializeQueryParams(query);
@@ -31,7 +31,7 @@ export async function getProjects(
 export async function getAllProjectOptions() {
   let offset = 0;
   let hasMore = true;
-  let projects: NewFilterOption[] = [];
+  let projects: IFilterOption[] = [];
 
   while (hasMore) {
     const paginationParams = {

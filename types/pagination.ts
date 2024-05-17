@@ -1,6 +1,6 @@
 export type PaginationQueryParams = {
-  offset?: number;
-  limit?: number;
+  offset: number;
+  limit: number;
 };
 
 export type PaginatedCustomResponse<TData> = {

@@ -10,13 +10,12 @@ import {
   TableRow,
   TableCell,
 } from "@nextui-org/table";
-import { Contribution } from "@/types/contribution";
 import { ExternalLink, Content, Time, Project } from "./row";
 
 import dynamic from "next/dynamic";
 import { useFilters } from "@/contexts/filters";
-import { extractRepositoryUrlFromIssue } from "@/utils/github";
 import { KUDOS_ISSUE_KEY } from "@/data/filters";
+import { Issue, IssueWithProject } from "@/types/issue";
 
 const KUDOS_HIGHLIGHT_STYLES = `before:absolute before:content-['']
   before:bg-[conic-gradient(transparent_270deg,_#BABABC,_transparent)]
@@ -43,14 +42,22 @@ interface RepositoryMap {
   [key: string]: string;
 }
 
-interface IStaticTableProps {
-  data: Contribution[];
+interface IStaticTableProps<T extends Issue | IssueWithProject> {
+  data: T[];
 }
 
-const StaticTable = ({ data }: IStaticTableProps) => {
-  const { filters, filterOptions } = useFilters();
+const StaticTable = <T extends Issue | IssueWithProject>({
+  data,
+}: IStaticTableProps<T>) => {
+  const { filters } = useFilters();
   const isMobile = useMediaQuery({ maxWidth: 639 }); // tailwind lg default: 640px
   const isLaptop = useMediaQuery({ minWidth: 1024 }); // tailwind lg default: 1024px
+
+  const isIssueWithProject = (
+    item: Issue | IssueWithProject,
+  ): item is IssueWithProject => {
+    return "project" in item;
+  };
 
   const [columns, setColumns] = useState<IColumn[]>([
     { name: "PROJECT", uid: "project" },
@@ -60,62 +67,71 @@ const StaticTable = ({ data }: IStaticTableProps) => {
     { name: "ACTIONS", uid: "actions" },
   ]);
 
-  const repositoryIconMap: RepositoryMap = useMemo(() => {
-    const map: RepositoryMap = {};
-    filterOptions.repositories.forEach((repository) => {
-      map[repository.repository_url] =
-        repository.project?.toLowerCase() == "polkadot"
-          ? "/images/polkadot-logo.png"
-          : repository.icon;
-    });
-    return map;
-  }, [filterOptions.repositories]);
+  // TODO used static tinyfied images for project logos
+  //
+  // const repositoryIconMap: RepositoryMap = useMemo(() => {
+  //   const map: RepositoryMap = {};
+  //   filterOptions.repositories.forEach((repository) => {
+  //     map[repository.repository_url] =
+  //       repository.project?.toLowerCase() == "polkadot"
+  //         ? "/images/polkadot-logo.png"
+  //         : repository.icon;
+  //   });
+  //   return map;
+  // }, [filterOptions.repositories]);
 
-  const useGetIconByRepositoryUrl = (repositoryIconMap: RepositoryMap) => {
-    const getIconByRepositoryUrl = useCallback(
-      (repositoryUrl: string): string | null => {
-        return repositoryIconMap[repositoryUrl];
-      },
-      [repositoryIconMap],
-    );
+  // const useGetIconByRepositoryUrl = (repositoryIconMap: RepositoryMap) => {
+  //   const getIconByRepositoryUrl = useCallback(
+  //     (repositoryUrl: string): string | null => {
+  //       return repositoryIconMap[repositoryUrl];
+  //     },
+  //     [repositoryIconMap],
+  //   );
 
-    return getIconByRepositoryUrl;
-  };
+  //   return getIconByRepositoryUrl;
+  // };
 
-  const getIconByRepositoryUrl = useGetIconByRepositoryUrl(repositoryIconMap);
+  // const getIconByRepositoryUrl = useGetIconByRepositoryUrl(repositoryIconMap);
 
   const renderCell = React.useCallback(
-    (item: Contribution, columnKey: React.Key) => {
-      const cellValue = item[columnKey as keyof Contribution];
-      const repository = extractRepositoryUrlFromIssue(item.url);
-      const avatar = !!repository ? getIconByRepositoryUrl(repository) : null;
+    (item: T, columnKey: React.Key) => {
+      const hasProject = isIssueWithProject(item);
       switch (columnKey) {
-        case "project":
-          return (
-            <Project
-              avatarSrc={avatar}
-              name={item.project}
-              organization={item.organization}
-              repository={item.repository}
-            />
-          );
-        case "content":
+        case "project": {
+          if (hasProject) {
+            const { project, repository } = item;
+            // const avatar = !!repository ? getIconByRepositoryUrl(repository) : null;
+            const avatar = null;
+            return (
+              <Project
+                avatarSrc={avatar}
+                slug={project.slug}
+                name={project.name}
+                repository={repository}
+              />
+            );
+          }
+          return null;
+        }
+        case "content": {
+          const { isCertified, title, repository, url } = item;
+          const projectName = hasProject ? item.project.name : undefined;
           return (
             <Content
-              title={item.title}
-              project={item.project}
-              repository={item.repository}
-              url={item.url}
-              isCertified={item.isCertified}
+              title={title}
+              projectName={projectName}
+              repositoryName={repository.name}
+              url={url}
+              isCertified={isCertified}
             />
           );
+        }
         case "labels":
           return (
             <Labels
               gitLabels={item.labels}
-              languages={item.languages}
-              organization={item.organization}
-              repository={item.repository}
+              technologies={hasProject ? item.project.technologies : []}
+              purposes={hasProject ? item.project.purposes : []}
             />
           );
         case "date":
@@ -127,7 +143,7 @@ const StaticTable = ({ data }: IStaticTableProps) => {
                   title={`Open "${item.title}" on Github`}
                 />
               </div>
-              <Time timestamp={item.timestamp} />
+              <Time timestamp={item.timestamp_create} />
             </div>
           );
         case "actions":
@@ -138,10 +154,11 @@ const StaticTable = ({ data }: IStaticTableProps) => {
             />
           );
         default:
-          return cellValue;
+          return null;
       }
     },
-    [getIconByRepositoryUrl],
+    //[getIconByRepositoryUrl],
+    [],
   );
 
   useEffect(() => {
