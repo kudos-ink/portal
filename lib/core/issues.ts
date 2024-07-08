@@ -5,7 +5,7 @@ import {
   PaginationQueryParams,
   PaginatedCustomResponse,
 } from "@/types/pagination";
-import { DEFAULT_QUERY } from "@/data/fetch";
+import { DEFAULT_PAGINATED_RESPONSE, DEFAULT_QUERY } from "@/data/fetch";
 
 const ISSUES_PATH = sanitizeUrl(process.env.API_URL || "") + "/issues";
 
@@ -14,9 +14,13 @@ export async function getIssues(
 ) {
   const queryString = serializeQueryParams(query);
   const url = `${ISSUES_PATH}${queryString ? `?${queryString}` : ""}`;
-  return fetchData<PaginatedCustomResponse<IssueWithProject>>(url, {
-    noStoreCache: true,
-  });
+  return fetchData<PaginatedCustomResponse<IssueWithProject>>(
+    url,
+    {
+      noStoreCache: true,
+    },
+    DEFAULT_PAGINATED_RESPONSE,
+  );
 }
 
 export async function getIssuesByProject(
@@ -26,7 +30,11 @@ export async function getIssuesByProject(
 ) {
   const queryString = serializeQueryParams(query);
   const url = `${ISSUES_PATH}/${slug}/${queryString ? `?${queryString}` : ""}`;
-  return fetchData<PaginatedCustomResponse<Issue>>(url, {
-    noStoreCache: true,
-  });
+  return fetchData<PaginatedCustomResponse<Issue>>(
+    url,
+    {
+      noStoreCache: true,
+    },
+    DEFAULT_PAGINATED_RESPONSE,
+  );
 }

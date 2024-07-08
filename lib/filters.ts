@@ -1,5 +1,5 @@
 import { IFilterOption, FilterOptions } from "@/types/filters";
-import { getLanguages } from "./core/languages";
+import { getAllLanguages } from "./core/languages";
 import {
   FProjectTypes,
   FPurposes,
@@ -21,9 +21,9 @@ import { getAllProjectOptions } from "./core/projects";
 export async function getFilterOptions(): Promise<FilterOptions> {
   let languageValues: string[];
   try {
-    languageValues = await getLanguages();
+    languageValues = await getAllLanguages();
   } catch (error) {
-    console.error("Error fetching languages values:", error);
+    console.error("Error fetching languages values - ", error);
     languageValues = [];
   }
 

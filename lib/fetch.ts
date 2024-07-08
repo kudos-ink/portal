@@ -6,6 +6,7 @@ type Options = {
 export async function fetchData<T>(
   url: string,
   options: Options = {},
+  defaultValue: T,
 ): Promise<T> {
   try {
     const { tag, noStoreCache } = options;
@@ -21,6 +22,6 @@ export async function fetchData<T>(
     return (await response.json()) as T;
   } catch (error: any) {
     console.error("Error fetching data:", error);
-    throw error;
+    return defaultValue;
   }
 }

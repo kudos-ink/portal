@@ -48,7 +48,7 @@ export const SelectFilter = ({
       color="default"
       variant="faded"
       size="sm"
-      placeholder={placeholder}
+      placeholder={placeholder.replace("-", " ")}
       selectionMode="multiple"
       endContent={
         selectKeys.length > 0 && (

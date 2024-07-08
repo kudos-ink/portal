@@ -1,7 +1,7 @@
 export const PURPOSE_KEY = "purposes";
-export const PROJECT_TYPE_KEY = "project-types";
+export const PROJECT_TYPE_KEY = "types";
 export const TECHNOLOGY_KEY = "technologies";
-export const STACK_LEVEL_KEY = "stack-levels";
+export const STACK_LEVEL_KEY = "stack-level";
 export const PROJECTS_KEY = "projects";
 export const GOOD_FIRST_ISSUE_KEY = "good-first-issue";
 export const KUDOS_ISSUE_KEY = "certified";

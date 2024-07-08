@@ -7,7 +7,11 @@ import tags from "@/utils/tags";
 import { sanitizeUrl, serializeQueryParams } from "@/utils/url";
 import { fetchData } from "../fetch";
 import { IFilterOption } from "@/types/filters";
-import { DEFAULT_BIG_PAGE_SIZE, DEFAULT_QUERY } from "@/data/fetch";
+import {
+  DEFAULT_BIG_PAGE_SIZE,
+  DEFAULT_PAGINATED_RESPONSE,
+  DEFAULT_QUERY,
+} from "@/data/fetch";
 
 type QueryParams = {
   slugs?: string[];
@@ -25,7 +29,11 @@ export async function getProjects(
   const queryString = serializeQueryParams(query);
   const url = `${PROJECTS_PATH}${queryString ? `?${queryString}` : ""}`;
   const nextTag = tag ?? tags.projects(query.slugs?.join("-") || "");
-  return fetchData<PaginatedCustomResponse<Project>>(url, { tag: nextTag });
+  return fetchData<PaginatedCustomResponse<Project>>(
+    url,
+    { tag: nextTag },
+    DEFAULT_PAGINATED_RESPONSE,
+  );
 }
 
 export async function getAllProjectOptions() {
