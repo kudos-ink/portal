@@ -1,6 +1,7 @@
 import { Link } from "@nextui-org/link";
-import MyImage from "@/components/ui/image";
-import { getProjects } from "@/lib/core/projects";
+// import MyImage from "@/components/ui/image";
+import ProjectApi from "@/api/core/projects";
+import { DEFAULT_PAGINATED_RESPONSE } from "@/data/fetch";
 import { Project } from "@/types/project";
 
 interface IProjectCarouselProps {}
@@ -39,7 +40,11 @@ function createCarousel(projects: Project[], keyPrefix: string) {
 }
 
 export default async function ProjectCarousel({}: IProjectCarouselProps) {
-  const { data } = await getProjects();
+  const { data } = await ProjectApi.getProjects().catch((error) => {
+    console.error("Error fetching issues:", error);
+    return DEFAULT_PAGINATED_RESPONSE;
+  });
+
   const projectRowLogos = createCarousel(data, "1");
   const dupeRowLogos = createCarousel(data, "2");
 

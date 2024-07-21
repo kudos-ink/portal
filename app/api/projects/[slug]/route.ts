@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getProjectInfos } from "@/lib/config/projects";
+import ConfigApi from "@/api/config/api";
 import { errorHandler } from "@/middlewares/error";
 
 const handleGet = async (
@@ -7,7 +7,7 @@ const handleGet = async (
   { params }: { params: { slug: string } },
 ) => {
   const slug = params.slug;
-  const project = await getProjectInfos(slug);
+  const project = await ConfigApi.getProjectInfos(slug);
   return NextResponse.json({ data: project });
 };
 

@@ -4,7 +4,7 @@ import {
   QueryKey,
 } from "@tanstack/react-query";
 import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
-import { getIssues, getIssuesByProject } from "@/lib/core/issues";
+import IssuesApi from "@/api/core/issues";
 import { Issue, IssueWithProject, IssueQueryParams } from "@/types/issue";
 import {
   PaginatedCustomResponse,
@@ -18,11 +18,12 @@ export const useIssues = <T extends IssueWithProject | Issue>(
 ) => {
   const fetchIssues = ({ pageParam }: { pageParam: PaginationQueryParams }) => {
     if (slug) {
-      return getIssuesByProject(slug, { ...query, ...pageParam }) as Promise<
-        PaginatedCustomResponse<T>
-      >;
+      return IssuesApi.getIssuesByProject(slug, {
+        ...query,
+        ...pageParam,
+      }) as Promise<PaginatedCustomResponse<T>>;
     } else {
-      return getIssues({ ...query, ...pageParam }) as Promise<
+      return IssuesApi.getIssues({ ...query, ...pageParam }) as Promise<
         PaginatedCustomResponse<T>
       >;
     }

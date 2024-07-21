@@ -1,17 +1,13 @@
+import { DEFAULT_BIG_PAGE_SIZE, DEFAULT_QUERY } from "@/data/fetch";
 import {
   PaginatedCustomResponse,
   PaginationQueryParams,
 } from "@/types/pagination";
+import { IFilterOption } from "@/types/filters";
 import { Project } from "@/types/project";
 import tags from "@/utils/tags";
-import { sanitizeUrl, serializeQueryParams } from "@/utils/url";
-import { fetchData } from "../fetch";
-import { IFilterOption } from "@/types/filters";
-import {
-  DEFAULT_BIG_PAGE_SIZE,
-  DEFAULT_PAGINATED_RESPONSE,
-  DEFAULT_QUERY,
-} from "@/data/fetch";
+import { prepareUrl } from "@/utils/url";
+import { coreApiClient } from "./_client";
 
 type QueryParams = {
   slugs?: string[];
@@ -20,23 +16,21 @@ type QueryParams = {
   technologies?: string[];
 };
 
-const PROJECTS_PATH = sanitizeUrl(process.env.API_URL || "") + "/projects";
+const PROJECTS_PATH = "/projects";
 
-export async function getProjects(
+async function getProjects(
   query: QueryParams & PaginationQueryParams = DEFAULT_QUERY,
   tag?: string,
 ) {
-  const queryString = serializeQueryParams(query);
-  const url = `${PROJECTS_PATH}${queryString ? `?${queryString}` : ""}`;
+  const url = prepareUrl(PROJECTS_PATH, query);
   const nextTag = tag ?? tags.projects(query.slugs?.join("-") || "");
-  return fetchData<PaginatedCustomResponse<Project>>(
-    url,
-    { tag: nextTag },
-    DEFAULT_PAGINATED_RESPONSE,
-  );
+
+  return coreApiClient.get<PaginatedCustomResponse<Project>>(url, {
+    tag: nextTag,
+  });
 }
 
-export async function getAllProjectOptions() {
+async function getAllProjectOptions() {
   let offset = 0;
   let hasMore = true;
   let projects: IFilterOption[] = [];
@@ -62,3 +56,5 @@ export async function getAllProjectOptions() {
 
   return projects;
 }
+
+export default { getProjects, getAllProjectOptions };

@@ -160,3 +160,8 @@ export function serializeQueryParams(params: Record<string, any>): string {
     })
     .join("&");
 }
+
+export function prepareUrl(url: string, query: Record<string, any>) {
+  const queryString = serializeQueryParams(query);
+  return `${url}${queryString ? `?${queryString}` : ""}`;
+}

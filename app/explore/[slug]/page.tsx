@@ -1,8 +1,8 @@
 import { Metadata } from "next";
+import IssuesApi from "@/api/core/issues";
 import InfiniteTable from "@/components/table/infinite-table";
-import { decodingSlug } from "@/utils/url";
 import { getFilterOptions } from "@/lib/filters";
-import { getIssues } from "@/lib/core/issues";
+import { decodingSlug } from "@/utils/url";
 
 interface IProps {
   params: { slug: string };
@@ -28,7 +28,7 @@ export default async function ExplorePage({ params }: IProps) {
   const filterOptions = await getFilterOptions();
   const filters = decodingSlug(params.slug, filterOptions);
   // const queryFilter = todo();
-  const issues = await getIssues();
+  const issues = await IssuesApi.getIssues();
 
   return <InfiniteTable items={issues} query={{}} />;
 }

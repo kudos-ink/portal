@@ -1,5 +1,5 @@
-import { IFilterOption, FilterOptions } from "@/types/filters";
-import { getAllLanguages } from "./core/languages";
+import LanguagesApi from "@/api/core/languages";
+import ProjectsApi from "@/api/core/projects";
 import {
   FProjectTypes,
   FPurposes,
@@ -15,13 +15,13 @@ import {
   STACK_LEVEL_KEY,
   PROJECTS_KEY,
 } from "@/data/filters";
+import { IFilterOption, FilterOptions } from "@/types/filters";
 import { createFilterOptions } from "@/utils/filters";
-import { getAllProjectOptions } from "./core/projects";
 
 export async function getFilterOptions(): Promise<FilterOptions> {
   let languageValues: string[];
   try {
-    languageValues = await getAllLanguages();
+    languageValues = await LanguagesApi.getAllLanguages();
   } catch (error) {
     console.error("Error fetching languages values - ", error);
     languageValues = [];
@@ -29,7 +29,7 @@ export async function getFilterOptions(): Promise<FilterOptions> {
 
   let projects: IFilterOption[] = [];
   try {
-    projects = await getAllProjectOptions();
+    projects = await ProjectsApi.getAllProjectOptions();
   } catch (error) {
     console.error("Error fetching projects options:", error);
   }
