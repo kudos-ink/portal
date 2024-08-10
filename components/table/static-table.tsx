@@ -120,7 +120,7 @@ const StaticTable = <T extends Issue | IssueWithProject>({
             <Content
               title={title}
               projectName={projectName}
-              repositoryName={repository.name}
+              repositoryName={repository?.name}
               url={url}
               isCertified={isCertified}
             />

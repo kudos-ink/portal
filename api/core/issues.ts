@@ -23,7 +23,7 @@ export async function getIssuesByProject(
   query: Omit<IssueQueryParams, "projectIds"> &
     PaginationQueryParams = DEFAULT_QUERY,
 ) {
-  const url = prepareUrl(`${ISSUES_PATH}/${slug}/`, query);
+  const url = prepareUrl(`${ISSUES_PATH}`, { slug, ...query });
   return coreApiClient.get<PaginatedCustomResponse<Issue>>(url, {
     noStoreCache: true,
   });

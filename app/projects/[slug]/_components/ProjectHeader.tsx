@@ -20,7 +20,7 @@ const ProjectHeader = ({
   slug,
 }: IProjectHeaderProps) => (
   <div className="flex flex-col space-y-unit-1">
-    <div className="flex md:gap-4 items-center mb-2">
+    <div className="flex gap-4 items-center mb-2">
       <MyImage
         className="bg-foreground border"
         src={`/project-icons/${slug}.png`}

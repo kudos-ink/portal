@@ -7,12 +7,7 @@ import {
   STACK_LEVEL_KEY,
   TECHNOLOGY_KEY,
 } from "@/data/filters";
-import {
-  FilterKeys,
-  IFilterOption,
-  FilterOptions,
-  Filters,
-} from "@/types/filters";
+import { FilterKeys, IFilterOption, Filters } from "@/types/filters";
 
 // Fisher-Yates (or Knuth) shuffle algorithm
 export const shuffleArray = <T>(array: T[]): T[] => {
@@ -76,8 +71,8 @@ export function createFilterOptions(
   return sortedItems.map((item) => ({
     value: item,
     label: item
-      .replace("-", " ")
-      .replace(/(^|\s)\S/g, (letter) => letter.toUpperCase()),
+      ?.replace("-", " ")
+      .replace(/(^|\s)\S/g, (letter: string) => letter.toUpperCase()),
     emoji: emojiMap ? emojiMap[item] : undefined,
   }));
 }
