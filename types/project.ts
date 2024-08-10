@@ -29,11 +29,13 @@ export type ProjectInfos = {
   slug: string;
   description: string;
   links: ProjectLinks;
-  networks: string[];
-  purposes: ProjectPurpose[];
-  stackLevels: ProjectStackLevel[];
-  technologies: ProjectTechnologies[];
-  types: ProjectType[];
+  attributes: {
+    networks: string[];
+    purposes: ProjectPurpose[];
+    stackLevels: ProjectStackLevel[];
+    technologies: ProjectTechnologies[];
+    types: ProjectType[];
+  };
 };
 
 export type Project = {

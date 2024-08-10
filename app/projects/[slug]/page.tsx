@@ -4,6 +4,8 @@ import { container } from "@/components/primitives";
 import PaginatedTable from "@/components/table/paginated-table";
 import { DEFAULT_PAGINATED_RESPONSE } from "@/data/fetch";
 import ProjectHeader from "./_components/ProjectHeader";
+import ProjectInfos from "./_components/ProjectInfos";
+import ProjectMetrics from "./_components/ProjectMetrics";
 
 interface IProps {
   params: { slug: string };
@@ -30,6 +32,23 @@ export default async function SingleProjectPage({ params }: IProps) {
           description={infos.description}
           links={infos.links}
         />
+      </section>
+      <section className={container() + " pt-4"}>
+        <div className="flex flex-col md:flex-row gap-2">
+          <ProjectMetrics />
+          <ProjectInfos
+            labels={["Good First Issues", "Rewards", "Kudos Pick"]}
+            infos={[
+              { title: "Networks", items: infos.attributes.networks ?? [] },
+              {
+                title: "Technologies",
+                items: infos.attributes.technologies ?? [],
+              },
+              { title: "Purposes", items: infos.attributes.purposes ?? [] },
+              { title: "Layers", items: infos.attributes.stackLevels ?? [] },
+            ]}
+          />
+        </div>
       </section>
       <section className={container() + " pt-16"}>
         <div className="py-4 px-3 bg-default-100 border-small rounded-t-md">
