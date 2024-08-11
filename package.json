@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write \"**/*.{js,cjs,mjs,ts,tsx,md,json}\" --ignore-path .gitignore",
-    "depcheck": "npx depcheck --ignores 'sharp,autoprefixer'"
+    "depcheck": "npx depcheck --ignores 'sharp,autoprefixer,@types/node'"
   },
   "dependencies": {
     "@next/third-parties": "^14.2.3",
