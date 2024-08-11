@@ -13,9 +13,7 @@ export async function getIssues(
   query: IssueQueryParams & PaginationQueryParams = DEFAULT_QUERY,
 ) {
   const url = prepareUrl(ISSUES_PATH, query);
-  return coreApiClient.get<PaginatedCustomResponse<IssueWithProject>>(url, {
-    noStoreCache: true,
-  });
+  return coreApiClient.get<PaginatedCustomResponse<IssueWithProject>>(url);
 }
 
 export async function getIssuesByProject(
@@ -24,9 +22,7 @@ export async function getIssuesByProject(
     PaginationQueryParams = DEFAULT_QUERY,
 ) {
   const url = prepareUrl(`${ISSUES_PATH}`, { slug, ...query });
-  return coreApiClient.get<PaginatedCustomResponse<Issue>>(url, {
-    noStoreCache: true,
-  });
+  return coreApiClient.get<PaginatedCustomResponse<Issue>>(url);
 }
 
 export default { getIssues, getIssuesByProject };
