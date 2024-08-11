@@ -5,6 +5,7 @@ export const STACK_LEVEL_KEY = "stack-level";
 export const PROJECTS_KEY = "projects";
 export const GOOD_FIRST_ISSUE_KEY = "good-first-issue";
 export const KUDOS_ISSUE_KEY = "certified";
+export const REWARDS_KEY = "rewards";
 
 export const GOOD_FIRST_ISSUE_LABELS = [
   "good first issue",

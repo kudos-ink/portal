@@ -77,6 +77,10 @@ module.exports = {
               DEFAULT: "#E50045",
               foreground: "#FCFCFC",
             },
+            success: {
+              DEFAULT: "#ffcd2a",
+              foreground: "#041E43",
+            },
           },
         },
       },

@@ -6,6 +6,11 @@ import { DEFAULT_PAGINATED_RESPONSE } from "@/data/fetch";
 import ProjectHeader from "./_components/ProjectHeader";
 import ProjectInfos from "./_components/ProjectInfos";
 import ProjectMetrics from "./_components/ProjectMetrics";
+import {
+  GOOD_FIRST_ISSUE_KEY,
+  KUDOS_ISSUE_KEY,
+  REWARDS_KEY,
+} from "@/data/filters";
 
 interface IProps {
   params: { slug: string };
@@ -33,24 +38,46 @@ export default async function SingleProjectPage({ params }: IProps) {
           links={infos.links}
         />
       </section>
-      <section className={container() + " pt-4"}>
-        <div className="flex flex-col md:flex-row gap-2">
-          <ProjectMetrics />
-          <ProjectInfos
-            labels={["Good First Issues", "Rewards", "Kudos Pick"]}
-            infos={[
-              { title: "Networks", items: infos.attributes.networks ?? [] },
-              {
-                title: "Technologies",
-                items: infos.attributes.technologies ?? [],
-              },
-              { title: "Purposes", items: infos.attributes.purposes ?? [] },
-              { title: "Layers", items: infos.attributes.stackLevels ?? [] },
-            ]}
-          />
+      <section className={container() + " mt-6"}>
+        <div className="flex flex-col md:flex-row gap-6 w-full">
+          <div className="flex-grow md:basis-0">
+            <ProjectMetrics />
+          </div>
+          <div className="md:basis-2/3">
+            <ProjectInfos
+              labels={[
+                {
+                  color: "danger",
+                  emoji: "🌟",
+                  label: "Good First Issue",
+                  type: GOOD_FIRST_ISSUE_KEY,
+                },
+                {
+                  color: "success",
+                  emoji: "💰",
+                  label: "Rewards",
+                  type: REWARDS_KEY,
+                },
+                {
+                  color: "default",
+                  label: "Kudos Pick",
+                  type: KUDOS_ISSUE_KEY,
+                },
+              ]}
+              infos={[
+                { title: "Networks", items: infos.attributes.networks ?? [] },
+                {
+                  title: "Technologies",
+                  items: infos.attributes.technologies ?? [],
+                },
+                { title: "Purposes", items: infos.attributes.purposes ?? [] },
+                { title: "Layers", items: infos.attributes.stackLevels ?? [] },
+              ]}
+            />
+          </div>
         </div>
       </section>
-      <section className={container() + " pt-16"}>
+      <section className={container() + " mt-16"}>
         <div className="py-4 px-3 bg-default-100 border-small rounded-t-md">
           <span className="text-lg font-bold">{`${infos.name} contributions`}</span>
         </div>

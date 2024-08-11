@@ -54,27 +54,6 @@ interface ILinksProps {
 const Links = ({ icon, items, placeholder }: ILinksProps) => {
   if (items.length === 0) {
     return null;
-  } else if (items.length === 1) {
-    const { label, url } = items[0];
-    return (
-      <Button
-        size="sm"
-        aria-label={placeholder}
-        color="default"
-        variant="faded"
-        startContent={icon}
-      >
-        <NuiLink
-          isExternal
-          showAnchorIcon
-          href={url}
-          color="foreground"
-          title={`${label}'s link`}
-        >
-          <p className="text-sm">{label}</p>
-        </NuiLink>
-      </Button>
-    );
   }
 
   return <DropdownLinks icon={icon} items={items} placeholder={placeholder} />;
