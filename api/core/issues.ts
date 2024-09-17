@@ -1,28 +1,29 @@
 import { DEFAULT_QUERY } from "@/data/fetch";
-import { Issue, IssueWithProject, IssueQueryParams } from "@/types/issue";
+import { IssueQueryParams, IssueDto, Issue } from "@/types/issue";
 import {
   PaginationQueryParams,
   PaginatedCustomResponse,
+  PaginatedCustomResponseDto,
 } from "@/types/pagination";
 import { prepareUrl } from "@/utils/url";
 import { coreApiClient } from "./_client";
+import { dtoToIssue } from "./_transformers";
 
 const ISSUES_PATH = "/issues";
 
 export async function getIssues(
-  query: IssueQueryParams & PaginationQueryParams = DEFAULT_QUERY,
-) {
-  const url = prepareUrl(ISSUES_PATH, query);
-  return coreApiClient.get<PaginatedCustomResponse<IssueWithProject>>(url);
-}
-
-export async function getIssuesByProject(
-  slug: string,
   query: Omit<IssueQueryParams, "projectIds"> &
     PaginationQueryParams = DEFAULT_QUERY,
-) {
-  const url = prepareUrl(`${ISSUES_PATH}`, { slug, ...query });
-  return coreApiClient.get<PaginatedCustomResponse<Issue>>(url);
+): Promise<PaginatedCustomResponse<Issue>> {
+  const url = prepareUrl(`${ISSUES_PATH}`, query);
+  const res =
+    await coreApiClient.get<PaginatedCustomResponseDto<IssueDto>>(url);
+  return {
+    totalCount: res.total_count ?? 0,
+    hasNextPage: res.has_next_page,
+    hasPreviousPage: res.has_previous_page,
+    data: res.data.map(dtoToIssue),
+  };
 }
 
-export default { getIssues, getIssuesByProject };
+export default { getIssues };

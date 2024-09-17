@@ -8,6 +8,7 @@ import { Analytics } from "@vercel/analytics/react";
 import Footer from "@/components/footer";
 import Navbar from "@/components/nav/navbar";
 import TopBar from "@/components/nav/top-bar";
+import { container } from "@/components/primitives";
 import { SITE_CONFIG } from "@/data/config";
 import { Providers } from "./providers";
 
@@ -101,7 +102,7 @@ export default function RootLayout({
             <main className="py-16 flex-grow">
               <div>{children}</div>
             </main>
-            <footer className="py-6 px-6 md:px-8 md:py-0">
+            <footer className={container() + " py-6 md:px-8 md:py-0"}>
               <Footer />
             </footer>
           </div>

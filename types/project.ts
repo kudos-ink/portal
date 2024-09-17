@@ -29,6 +29,7 @@ export type ProjectInfos = {
   slug: string;
   description: string;
   links: ProjectLinks;
+  curators: string[];
   attributes: {
     networks: string[];
     purposes: ProjectPurpose[];
@@ -38,10 +39,37 @@ export type ProjectInfos = {
   };
 };
 
+export type ProjectInfosLabelFlags = {
+  hasGoodFirstIssue: boolean;
+  hasKudosCertified: boolean;
+  hasRewards: boolean;
+};
+
+export type ProjectInfosLabel = {
+  color: "default" | "success" | "danger";
+  emoji?: string;
+  label: string;
+  type: string;
+};
+
+export type ProjectDto = {
+  id: number;
+  name: string;
+  slug: string;
+  avatar: string;
+  categories: string[];
+  purposes: string[];
+  stack_levels: string[];
+  technologies: string[];
+  created_at: string;
+  updated_at: string | null;
+};
+
 export type Project = {
   id: number;
   name: string;
   slug: string;
+  avatar: string;
   categories: string[];
   purposes: string[];
   stack_levels: string[];

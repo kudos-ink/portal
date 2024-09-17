@@ -1,39 +1,37 @@
 import { KudosCertifiedIcon } from "@/assets/icons";
 import Emoji from "@/components/emoji";
 import { KUDOS_ISSUE_KEY } from "@/data/filters";
+import { ProjectInfosLabel } from "@/types/project";
 import { Chip } from "@nextui-org/chip";
 
 interface IProjectInfosProps {
   infos: { title: string; items: string[] }[];
-  labels: {
-    color: "default" | "success" | "danger";
-    emoji?: string;
-    label: string;
-    type: string;
-  }[];
+  labels: ProjectInfosLabel[];
 }
 
 const ProjectInfos = ({ infos, labels }: IProjectInfosProps) => (
   <div className="bg-gradient-to-r md:bg-gradient-to-l from-background to-background-200 to-80% p-4 border-small rounded-md flex flex-col gap-4 h-full">
-    <div className="flex gap-3">
-      {labels.map(({ color, emoji, label, type }, idx) => (
-        <Chip key={idx} color={color} className="cursor-pointer rounded-md">
-          <div className="flex items-center font-semibold gap-2">
-            {emoji && (
-              <>
-                <Emoji emoji={emoji} className="text-xl" />
-                &nbsp;
-              </>
-            )}
-            {type === KUDOS_ISSUE_KEY ? (
-              <KudosCertifiedIcon className="w-5 h-5" size={16} />
-            ) : null}
-            {label}
-          </div>
-        </Chip>
-      ))}
-    </div>
-    <div className="border-t-small pt-4 flex justify-between gap-8">
+    {labels.length > 0 && (
+      <div className="flex gap-3 border-b-small pb-4">
+        {labels.map(({ color, emoji, label, type }, idx) => (
+          <Chip key={idx} color={color} className="cursor-pointer rounded-md">
+            <div className="flex items-center font-semibold gap-2">
+              {emoji && (
+                <>
+                  <Emoji emoji={emoji} className="text-xl" />
+                  &nbsp;
+                </>
+              )}
+              {type === KUDOS_ISSUE_KEY ? (
+                <KudosCertifiedIcon className="w-5 h-5" size={16} />
+              ) : null}
+              {label}
+            </div>
+          </Chip>
+        ))}
+      </div>
+    )}
+    <div className="flex justify-between gap-8">
       <div className="flex flex-wrap gap-4">
         {infos.map(({ title, items }, idx) => (
           <InfoItem key={idx} title={title} items={items} />
@@ -82,4 +80,5 @@ const LayersMap = ({
     <div className="bg-[#bda6e1] border-2 border-[#5f31b5] w-full h-[24px]" />
   </div>
 );
+
 export default ProjectInfos;

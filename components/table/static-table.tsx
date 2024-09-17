@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import {
   Table as NextUITable,
@@ -15,7 +15,7 @@ import { ExternalLink, Content, Time, Project } from "./row";
 import dynamic from "next/dynamic";
 import { useFilters } from "@/contexts/filters";
 import { KUDOS_ISSUE_KEY } from "@/data/filters";
-import { Issue, IssueWithProject } from "@/types/issue";
+import { Issue } from "@/types/issue";
 
 const KUDOS_HIGHLIGHT_STYLES = `before:absolute before:content-['']
   before:bg-[conic-gradient(transparent_270deg,_#BABABC,_transparent)]
@@ -38,132 +38,86 @@ interface IColumn {
   uid: string;
 }
 
-interface RepositoryMap {
-  [key: string]: string;
+interface IStaticTableProps {
+  data: Issue[];
+  withProjectData?: boolean;
 }
 
-interface IStaticTableProps<T extends Issue | IssueWithProject> {
-  data: T[];
-}
-
-const StaticTable = <T extends Issue | IssueWithProject>({
-  data,
-}: IStaticTableProps<T>) => {
+const StaticTable = ({ data, withProjectData = true }: IStaticTableProps) => {
   const { filters } = useFilters();
   const isMobile = useMediaQuery({ maxWidth: 639 }); // tailwind lg default: 640px
   const isLaptop = useMediaQuery({ minWidth: 1024 }); // tailwind lg default: 1024px
 
-  const isIssueWithProject = (
-    item: Issue | IssueWithProject,
-  ): item is IssueWithProject => {
-    return "project" in item;
-  };
-
   const [columns, setColumns] = useState<IColumn[]>([
-    { name: "PROJECT", uid: "project" },
+    ...(withProjectData ? [{ name: "PROJECT", uid: "project" }] : []),
     { name: "CONTENT", uid: "content" },
     { name: "LABELS", uid: "labels" },
     { name: "DATE", uid: "date" },
     { name: "ACTIONS", uid: "actions" },
   ]);
 
-  // TODO used static tinyfied images for project logos
-  //
-  // const repositoryIconMap: RepositoryMap = useMemo(() => {
-  //   const map: RepositoryMap = {};
-  //   filterOptions.repositories.forEach((repository) => {
-  //     map[repository.repository_url] =
-  //       repository.project?.toLowerCase() == "polkadot"
-  //         ? "/images/polkadot-logo.png"
-  //         : repository.icon;
-  //   });
-  //   return map;
-  // }, [filterOptions.repositories]);
-
-  // const useGetIconByRepositoryUrl = (repositoryIconMap: RepositoryMap) => {
-  //   const getIconByRepositoryUrl = useCallback(
-  //     (repositoryUrl: string): string | null => {
-  //       return repositoryIconMap[repositoryUrl];
-  //     },
-  //     [repositoryIconMap],
-  //   );
-
-  //   return getIconByRepositoryUrl;
-  // };
-
-  // const getIconByRepositoryUrl = useGetIconByRepositoryUrl(repositoryIconMap);
-
-  const renderCell = React.useCallback(
-    (item: T, columnKey: React.Key) => {
-      const hasProject = isIssueWithProject(item);
-      switch (columnKey) {
-        case "project": {
-          if (hasProject) {
-            const { project, repository } = item;
-            // const avatar = !!repository ? getIconByRepositoryUrl(repository) : null;
-            const avatar = null;
-            return (
-              <Project
-                avatarSrc={avatar}
-                slug={project.slug}
-                name={project.name}
-                repository={repository}
-              />
-            );
-          }
-          return null;
-        }
-        case "content": {
-          const { isCertified, title, repository, url } = item;
-          const projectName = hasProject ? item.project.name : undefined;
-          return (
-            <Content
-              title={title}
-              projectName={projectName}
-              repositoryName={repository?.name}
-              url={url}
-              isCertified={isCertified}
-            />
-          );
-        }
-        case "labels":
-          return (
-            <Labels
-              gitLabels={item.labels}
-              technologies={hasProject ? item.project.technologies : []}
-              purposes={hasProject ? item.project.purposes : []}
-            />
-          );
-        case "date":
-          return (
-            <div className="flex flex-col items-center gap-2">
-              <div className="block sm:hidden">
-                <ExternalLink
-                  href={item.url}
-                  title={`Open "${item.title}" on Github`}
-                />
-              </div>
-              <Time timestamp={item.timestamp_create} />
-            </div>
-          );
-        case "actions":
-          return (
-            <ExternalLink
-              href={item.url}
-              title={`Open "${item.title}" on Github`}
-            />
-          );
-        default:
-          return null;
+  const renderCell = React.useCallback((item: Issue, columnKey: React.Key) => {
+    switch (columnKey) {
+      case "project": {
+        const { project, repository } = item;
+        return (
+          <Project
+            avatarSrc={project.avatar}
+            slug={project.slug}
+            name={project.name}
+            repository={repository}
+          />
+        );
       }
-    },
-    //[getIconByRepositoryUrl],
-    [],
-  );
+      case "content": {
+        const { isCertified, title, repository, project, url } = item;
+        return (
+          <Content
+            title={title}
+            projectName={withProjectData ? project.name : undefined}
+            repositoryName={repository?.name}
+            url={url}
+            isCertified={isCertified}
+          />
+        );
+      }
+      case "labels": {
+        const { labels, project } = item;
+        return (
+          <Labels
+            gitLabels={labels}
+            technologies={withProjectData ? project.technologies : []}
+            purposes={withProjectData ? project.purposes : []}
+          />
+        );
+      }
+      case "date":
+        return (
+          <div className="flex flex-col items-center gap-2">
+            <div className="block sm:hidden">
+              <ExternalLink
+                href={item.url}
+                title={`Open "${item.title}" on Github`}
+              />
+            </div>
+            <Time timestamp={item.createdAt} />
+          </div>
+        );
+      case "actions":
+        return (
+          <ExternalLink
+            href={item.url}
+            title={`Open "${item.title}" on Github`}
+          />
+        );
+      default:
+        return null;
+    }
+  }, []);
 
   useEffect(() => {
     setColumns([
-      { name: "PROJECT", uid: "project" },
+      ...(withProjectData ? [{ name: "PROJECT", uid: "project" }] : []),
       { name: "CONTENT", uid: "content" },
       ...(isLaptop ? [{ name: "LABELS", uid: "labels" }] : []),
       { name: "DATE", uid: "date" },

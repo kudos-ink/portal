@@ -1,11 +1,11 @@
 import { useQuery, QueryFunctionContext } from "@tanstack/react-query";
 import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
 import IssuesApi from "@/api/core/issues";
-import { Issue, IssueWithProject, IssueQueryParams } from "@/types/issue";
+import { Issue, IssueQueryParams } from "@/types/issue";
 import { PaginatedCustomResponse } from "@/types/pagination";
 
-export const usePaginatedIssues = <T extends IssueWithProject | Issue>(
-  initialItems: PaginatedCustomResponse<T>,
+export const usePaginatedIssues = (
+  initialItems: PaginatedCustomResponse<Issue>,
   query: IssueQueryParams = {},
   slug?: string,
   offset: number = 0,
@@ -17,23 +17,16 @@ export const usePaginatedIssues = <T extends IssueWithProject | Issue>(
     [string, IssueQueryParams, { offset: number; limit: number }]
   >) => {
     const [, query, pagination] = queryKey;
-    if (slug) {
-      return IssuesApi.getIssuesByProject(slug, {
-        ...query,
-        ...pagination,
-      }) as Promise<PaginatedCustomResponse<T>>;
-    } else {
-      return IssuesApi.getIssues({
-        ...query,
-        ...pagination,
-      }) as Promise<PaginatedCustomResponse<T>>;
-    }
+    return IssuesApi.getIssues({
+      ...query,
+      ...pagination,
+    }) as Promise<PaginatedCustomResponse<Issue>>;
   };
 
   return useQuery<
-    PaginatedCustomResponse<T>,
+    PaginatedCustomResponse<Issue>,
     Error,
-    PaginatedCustomResponse<T>,
+    PaginatedCustomResponse<Issue>,
     [string, IssueQueryParams, { offset: number; limit: number }]
   >({
     queryKey: ["contributions", query, { offset, limit }],

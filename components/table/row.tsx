@@ -18,6 +18,7 @@ import {
 } from "@/data/filters";
 import { FilterKeys, IFilterOption, Filters } from "@/types/filters";
 import { Repository } from "@/types/repository";
+import { IconRepo } from "@/assets/icons";
 
 const MAX_LABEL_WIDTH = 192;
 
@@ -110,6 +111,18 @@ export const Content = ({
 }: IContentProps) => {
   return (
     <div className="flex flex-col space-y-unit-1 md:space-y-0 lg:w-[270px] xl:w-[500px]">
+      <span className="text-small text-default-500 max-w-48 truncate md:hidden">
+        <div className="flex items-center gap-2">
+          {projectName ? (
+            `${projectName} / ${repositoryName}`
+          ) : (
+            <>
+              <IconRepo size={12} />
+              {repositoryName}
+            </>
+          )}
+        </div>
+      </span>
       <NuiLink
         className="w-fit flex gap-1 flex-grow relative"
         isExternal
@@ -135,9 +148,6 @@ export const Content = ({
           </Tooltip>
         )}
       </NuiLink>
-      <span className="text-small text-default-500 max-w-48 truncate md:hidden">
-        {(projectName ? `${projectName} / ` : "") + repositoryName}
-      </span>
     </div>
   );
 };
@@ -160,12 +170,13 @@ export const Labels = ({ gitLabels, technologies, purposes }: ILabelsProps) => {
   const isGoodFirstIssue = GOOD_FIRST_ISSUE_LABELS.some((name) =>
     gitLabels.includes(name),
   );
-  const restTechnologies = filterOptions.technologies.filter(({ value }) =>
-    technologies.includes(value),
-  );
-  const restPurposes = filterOptions.purposes.filter(({ value }) =>
-    purposes.includes(value),
-  );
+  const restTechnologies =
+    filterOptions?.technologies?.filter(({ value }) =>
+      technologies.includes(value),
+    ) ?? [];
+  const restPurposes =
+    filterOptions?.purposes?.filter(({ value }) => purposes.includes(value)) ??
+    [];
 
   const labels = useMemo(() => {
     const goodFirstIssueLabels = getGoodFirstIssueLabel(isGoodFirstIssue);

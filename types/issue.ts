@@ -1,5 +1,19 @@
 import { Project } from "./project";
-import { Repository } from "./repository";
+import { Repository, RepositoryDto } from "./repository";
+
+export type IssueDto = {
+  id: number;
+  issue_id: number;
+  labels: string[];
+  open: boolean;
+  assignee_id: string | null;
+  certified: boolean;
+  repository: RepositoryDto;
+  title: string;
+  timestamp_created_at: string;
+  created_at: string;
+  updated_at: string | null;
+};
 
 export type Issue = {
   id: number;
@@ -7,16 +21,16 @@ export type Issue = {
   isCertified: boolean;
   labels: string[];
   repository: Repository;
-  title: string;
-  timestamp_create: string;
-  url: string;
-};
-
-export type IssueWithProject = Issue & {
   project: Project;
+  title: string;
+  url: string;
+  createdAt: string;
 };
 
 export type IssueQueryParams = Partial<{
+  slug: string;
+  isCertified: boolean;
+  labels: string[];
   languageIds: string[];
   projectIds: string[];
 }>;

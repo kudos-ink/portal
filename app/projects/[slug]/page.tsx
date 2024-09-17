@@ -2,15 +2,15 @@ import ConfigApi from "@/api/config/api";
 import IssuesApi from "@/api/core/issues";
 import { container } from "@/components/primitives";
 import PaginatedTable from "@/components/table/paginated-table";
-import { DEFAULT_PAGINATED_RESPONSE } from "@/data/fetch";
+import { DEFAULT_PAGINATED_RESPONSE, DEFAULT_QUERY } from "@/data/fetch";
+import { fetchProjectLabelFlags } from "@/lib/api/issues";
+import { Issue } from "@/types/issue";
+import { PaginatedCustomResponse } from "@/types/pagination";
 import ProjectHeader from "./_components/ProjectHeader";
 import ProjectInfos from "./_components/ProjectInfos";
 import ProjectMetrics from "./_components/ProjectMetrics";
-import {
-  GOOD_FIRST_ISSUE_KEY,
-  KUDOS_ISSUE_KEY,
-  REWARDS_KEY,
-} from "@/data/filters";
+import { constructProjectMetrics } from "./_helpers/metrics";
+import { constructLabels } from "./_helpers/infos";
 
 interface IProps {
   params: { slug: string };
@@ -18,14 +18,19 @@ interface IProps {
 
 export default async function SingleProjectPage({ params }: IProps) {
   const infos = await ConfigApi.getProjectInfos(params.slug);
-  const issues = await IssuesApi.getIssuesByProject(params.slug).catch(
-    (error) => {
-      console.error(
-        `Error fetching issues for project "${params.slug}":`,
-        error,
-      );
-      return DEFAULT_PAGINATED_RESPONSE;
-    },
+  const issues = (await IssuesApi.getIssues({
+    ...DEFAULT_QUERY,
+    slug: params.slug,
+  }).catch((error) => {
+    console.error(`Error fetching issues for project "${params.slug}":`, error);
+    return DEFAULT_PAGINATED_RESPONSE;
+  })) as PaginatedCustomResponse<Issue>;
+
+  const labelFlags = await fetchProjectLabelFlags(params.slug);
+  const labels = constructLabels(labelFlags);
+  const { metrics, stats } = await constructProjectMetrics(
+    infos,
+    issues.totalCount,
   );
 
   return (
@@ -41,29 +46,11 @@ export default async function SingleProjectPage({ params }: IProps) {
       <section className={container() + " mt-6"}>
         <div className="flex flex-col md:flex-row gap-6 w-full">
           <div className="flex-grow md:basis-0">
-            <ProjectMetrics />
+            <ProjectMetrics metrics={metrics} stats={stats} />
           </div>
           <div className="md:basis-2/3">
             <ProjectInfos
-              labels={[
-                {
-                  color: "danger",
-                  emoji: "🌟",
-                  label: "Good First Issue",
-                  type: GOOD_FIRST_ISSUE_KEY,
-                },
-                {
-                  color: "success",
-                  emoji: "💰",
-                  label: "Rewards",
-                  type: REWARDS_KEY,
-                },
-                {
-                  color: "default",
-                  label: "Kudos Pick",
-                  type: KUDOS_ISSUE_KEY,
-                },
-              ]}
+              labels={labels}
               infos={[
                 { title: "Networks", items: infos.attributes.networks ?? [] },
                 {
