@@ -20,7 +20,7 @@ export default async function SingleProjectPage({ params }: IProps) {
   const infos = await ConfigApi.getProjectInfos(params.slug);
   const issues = (await IssuesApi.getIssues({
     ...DEFAULT_QUERY,
-    slug: params.slug,
+    projects: [params.slug],
   }).catch((error) => {
     console.error(`Error fetching issues for project "${params.slug}":`, error);
     return DEFAULT_PAGINATED_RESPONSE;

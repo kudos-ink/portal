@@ -5,26 +5,17 @@ import { Spinner } from "@nextui-org/spinner";
 import { useIssues } from "@/hooks/useIssues";
 import { PaginatedCustomResponse } from "@/types/pagination";
 import StaticTable from "./static-table";
-import { Issue, IssueWithProject, IssueQueryParams } from "@/types/issue";
+import { Issue, IssueQueryParams } from "@/types/issue";
 
-interface IInfiniteTableProps<I extends Issue | IssueWithProject> {
-  items: PaginatedCustomResponse<I>;
+interface IInfiniteTableProps {
+  items: PaginatedCustomResponse<Issue>;
   query?: IssueQueryParams;
-  slug?: string;
 }
 
-const InfiniteTable = <I extends Issue | IssueWithProject>({
-  items,
-  query = {},
-  slug,
-}: IInfiniteTableProps<I>) => {
+const InfiniteTable = ({ items, query = {} }: IInfiniteTableProps) => {
   const loaderRef = useRef<HTMLDivElement>(null);
   const isFetchingRef = useRef(false);
-  const {
-    data: results,
-    fetchNextPage,
-    hasNextPage,
-  } = useIssues<I>(items, query, slug);
+  const { data: results, fetchNextPage, hasNextPage } = useIssues(items, query);
 
   const contributions = React.useMemo(() => {
     return results?.pages.flatMap((page) => page.data);

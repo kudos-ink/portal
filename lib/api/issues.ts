@@ -8,7 +8,7 @@ export async function fetchProjectLabelFlags(
 ): Promise<ProjectInfosLabelFlags> {
   const goodFirstIssuesResponse = await IssuesApi.getIssues({
     ...DEFAULT_QUERY,
-    slug,
+    projects: [slug],
     labels: GOOD_FIRST_ISSUE_LABELS,
   }).catch((error) => {
     console.error(
@@ -20,8 +20,8 @@ export async function fetchProjectLabelFlags(
 
   const kudosCertificationResponse = await IssuesApi.getIssues({
     ...DEFAULT_QUERY,
-    slug,
-    isCertified: true,
+    projects: [slug],
+    certified: true,
   }).catch((error) => {
     console.error(
       `Error fetching 'Kudos Certified' issues for project "${slug}":`,

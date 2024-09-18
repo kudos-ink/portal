@@ -12,10 +12,10 @@ import { dtoToIssue } from "./_transformers";
 const ISSUES_PATH = "/issues";
 
 export async function getIssues(
-  query: Omit<IssueQueryParams, "projectIds"> &
-    PaginationQueryParams = DEFAULT_QUERY,
+  query: IssueQueryParams & PaginationQueryParams = DEFAULT_QUERY,
 ): Promise<PaginatedCustomResponse<Issue>> {
   const url = prepareUrl(`${ISSUES_PATH}`, query);
+  // TODO: Small transformation needed to separate languages from technologies in query params
   const res =
     await coreApiClient.get<PaginatedCustomResponseDto<IssueDto>>(url);
   return {

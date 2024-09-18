@@ -28,9 +28,12 @@ export type Issue = {
 };
 
 export type IssueQueryParams = Partial<{
-  slug: string;
-  isCertified: boolean;
+  certified: boolean;
+  open: boolean;
   labels: string[];
-  languageIds: string[];
-  projectIds: string[];
+  projects: string[];
+  purposes: string[];
+  stackLevels: string[];
+  technologies: string[];
+  types: string[];
 }>;

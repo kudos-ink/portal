@@ -4,7 +4,14 @@ import {
   FilterOptions,
   Filters,
 } from "@/types/filters";
-import { GOOD_FIRST_ISSUE_KEY, KUDOS_ISSUE_KEY } from "@/data/filters";
+import {
+  GOOD_FIRST_ISSUE_KEY,
+  KUDOS_ISSUE_KEY,
+  PROJECTS_KEY,
+  PROJECT_TYPE_KEY,
+  PURPOSE_KEY,
+  STACK_LEVEL_KEY,
+} from "@/data/filters";
 import { initFilters } from "./filters";
 
 type Keys = FilterKeys;
@@ -16,7 +23,7 @@ export const createUrl = (
   filterOptions: FilterOptions,
 ) => {
   const slugParts = pathname.split("/");
-  const currentSlug = slugParts.pop() || "";
+  const currentSlug = slugParts[slugParts.length - 1];
 
   // Decode existing filters from the slug
   let filters = decodingSlug(currentSlug, filterOptions);
@@ -64,8 +71,8 @@ export const encodingSlug = (filters: Filters): string => {
   };
 
   const technologiesSegment = createSegment(technologies);
-  // const projectTypesSegment = createSegment(filters["project-types"], "for-");
-  // const stackLevelsSegment = createSegment(filters["stack-levels"], "level-");
+  const projectTypesSegment = createSegment(filters[PROJECT_TYPE_KEY], "for-");
+  const stackLevelsSegment = createSegment(filters[STACK_LEVEL_KEY], "level-");
   const purposesSegment = createSegment(purposes, "in-");
   const projectsSegment = createSegment(projects, "at-");
   const goodFirstSegment = filters[GOOD_FIRST_ISSUE_KEY] ? "good-first" : "";
@@ -76,8 +83,8 @@ export const encodingSlug = (filters: Filters): string => {
     certifiedSegment,
     goodFirstSegment,
     "open-contributions",
-    // projectTypesSegment,
-    // stackLevelsSegment,
+    projectTypesSegment,
+    stackLevelsSegment,
     purposesSegment,
     projectsSegment,
   ];
@@ -107,19 +114,44 @@ export const decodingSlug = (
   );
 
   // Check for 'in', "at-", "level-" and 'for' and extract queries
+  const hasProjectTypes = slug.includes("-for-");
+  const hasStackLevel = slug.includes("-level-");
   const hasPurposes = slug.includes("-in-");
-  const hasProjects = slug.includes("-for-");
-  filters.purposes = extractValuesFromOptions(
+  const hasProjects = slug.includes("-at-");
+
+  filters[PROJECT_TYPE_KEY] = extractValuesFromOptions(
+    hasProjectTypes
+      ? hasStackLevel
+        ? slug.split("-for-")[1].split("-level-")[0]
+        : hasPurposes
+          ? slug.split("-for-")[1].split("-in-")[0]
+          : hasProjects
+            ? slug.split("-for-")[1].split("-at-")[0]
+            : slug.split("-for-")[1]
+      : "",
+    filterOptions[PROJECT_TYPE_KEY],
+  );
+  filters[STACK_LEVEL_KEY] = extractValuesFromOptions(
+    hasStackLevel
+      ? hasPurposes
+        ? slug.split("-level-")[1].split("-in-")[0]
+        : hasProjects
+          ? slug.split("-level-")[1].split("-at-")[0]
+          : slug.split("-level-")[1]
+      : "",
+    filterOptions[STACK_LEVEL_KEY],
+  );
+  filters[PURPOSE_KEY] = extractValuesFromOptions(
     hasPurposes
       ? hasProjects
-        ? slug.split("-in-")[1].split("-for-")[0]
+        ? slug.split("-in-")[1].split("-at-")[0]
         : slug.split("-in-")[1]
       : "",
-    filterOptions.purposes,
+    filterOptions[PURPOSE_KEY],
   );
-  filters.projects = extractValuesFromOptions(
-    hasProjects ? slug.split("-for-")[1] : "",
-    filterOptions.projects,
+  filters[PROJECTS_KEY] = extractValuesFromOptions(
+    hasProjects ? slug.split("-at-")[1] : "",
+    filterOptions[PROJECTS_KEY],
   );
 
   return filters;
@@ -152,7 +184,10 @@ export const sanitizeUrl = (url: string): string => {
 
 export function serializeQueryParams(params: Record<string, any>): string {
   return Object.keys(params)
-    .filter((key) => params[key] != null)
+    .filter((key) => {
+      const value = params[key];
+      return value != null && (!Array.isArray(value) || value.length > 0);
+    })
     .map((key) => {
       const value = params[key];
       const formattedValue = Array.isArray(value) ? value.join(",") : value;
