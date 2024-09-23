@@ -2,9 +2,15 @@ import Link from "next/link";
 import { Button } from "@nextui-org/button";
 import { TwitterIcon, GithubIcon } from "@/assets/icons";
 import { SITE_CONFIG } from "@/data/config";
+import { container } from "./primitives";
 
 const Footer = () => (
-  <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+  <div
+    className={
+      "flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row " +
+      container()
+    }
+  >
     <p className="text-balance text-center text-sm leading-loose text-muted-foreground md:text-left">
       Built by{" "}
       <a

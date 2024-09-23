@@ -7,11 +7,11 @@ export function dtoToIssue(dto: IssueDto): Issue {
     id: dto.id,
     issueId: dto.issue_id,
     isCertified: dto.certified,
-    labels: dto.labels,
+    labels: dto.labels ?? [],
     repository: dtoToRepository(dto.repository),
     project: dtoToProject(dto.repository.project),
     title: dto.title,
-    createdAt: dto.timestamp_created_at,
+    createdAt: dto.issue_created_at,
     url: dto.repository.url + `/issues/${dto.issue_id}`,
   };
 }
@@ -32,10 +32,10 @@ export function dtoToProject(dto: ProjectDto): Project {
     id: dto.id,
     name: dto.name,
     slug: dto.slug,
-    avatar: dto.avatar,
-    categories: dto.categories,
-    purposes: dto.purposes,
-    stack_levels: dto.stack_levels,
-    technologies: dto.technologies,
+    avatar: dto.avatar ?? null,
+    categories: dto.categories ?? [],
+    purposes: dto.purposes ?? [],
+    stack_levels: dto.stack_levels ?? [],
+    technologies: dto.technologies ?? [],
   };
 }

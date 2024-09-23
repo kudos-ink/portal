@@ -19,6 +19,7 @@ import { KudosIssueTooltipContent } from "../table/row";
 interface SelectFilterConfig {
   key: SelectFilterKeys;
   options: IFilterOption[];
+  isAdvanced?: boolean;
 }
 
 interface CheckboxFilterConfig {
@@ -26,14 +27,15 @@ interface CheckboxFilterConfig {
   placeholder: string;
   content: JSX.Element;
   icon: JSX.Element;
+  isAdvanced?: boolean;
 }
 
 const selectFilters: SelectFilterConfig[] = [
   { key: TECHNOLOGY_KEY, options: [] },
   { key: PURPOSE_KEY, options: [] },
-  { key: PROJECTS_KEY, options: [] },
-  { key: STACK_LEVEL_KEY, options: [] },
-  { key: PROJECT_TYPE_KEY, options: [] },
+  { key: PROJECTS_KEY, options: [], isAdvanced: true },
+  { key: STACK_LEVEL_KEY, options: [], isAdvanced: true },
+  { key: PROJECT_TYPE_KEY, options: [], isAdvanced: true },
 ];
 
 const checkboxFilters: CheckboxFilterConfig[] = [
@@ -59,6 +61,7 @@ const checkboxFilters: CheckboxFilterConfig[] = [
     placeholder: "Kudos Issues Only",
     content: <KudosIssueTooltipContent />,
     icon: <KudosCertifiedIcon className="w-5 h-5" size={16} />,
+    isAdvanced: true,
   },
 ];
 

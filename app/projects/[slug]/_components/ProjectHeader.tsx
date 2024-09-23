@@ -1,34 +1,34 @@
 import { ReactNode } from "react";
-import { Button } from "@nextui-org/button";
-import { Link as NuiLink } from "@nextui-org/link";
 import { IconWeb, IconDocs, IconRepo, IconSocial } from "@/assets/icons";
 import DropdownLinks from "@/components/dropdown-links";
 import MyImage from "@/components/ui/image";
 import { LinkItem, ProjectLinks } from "@/types/project";
 
 interface IProjectHeaderProps {
+  avatar: string | null;
   name: string;
-  slug: string;
   description: string;
   links: ProjectLinks;
 }
 
 const ProjectHeader = ({
+  avatar,
   description,
   links,
   name,
-  slug,
 }: IProjectHeaderProps) => (
   <div className="flex flex-col space-y-unit-1">
     <div className="flex gap-4 items-center mb-2">
-      <MyImage
-        className="bg-foreground border"
-        src={`/project-icons/${slug}.png`}
-        alt={`${name}'s Logo`}
-        radius="sm"
-        height={45}
-        width={45}
-      />
+      {avatar && (
+        <MyImage
+          className="bg-foreground border"
+          src={avatar}
+          alt={`${name}'s Logo`}
+          radius="sm"
+          height={45}
+          width={45}
+        />
+      )}
       <span className="text-3xl font-semibold">{name}</span>
     </div>
     <span className="leading-tight line-clamp-2 capitalize">{description}</span>

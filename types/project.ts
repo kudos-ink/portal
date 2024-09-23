@@ -56,11 +56,11 @@ export type ProjectDto = {
   id: number;
   name: string;
   slug: string;
-  avatar: string;
-  categories: string[];
-  purposes: string[];
-  stack_levels: string[];
-  technologies: string[];
+  avatar: string | null;
+  categories: string[] | null;
+  purposes: string[] | null;
+  stack_levels: string[] | null;
+  technologies: string[] | null;
   created_at: string;
   updated_at: string | null;
 };
@@ -69,7 +69,7 @@ export type Project = {
   id: number;
   name: string;
   slug: string;
-  avatar: string;
+  avatar: string | null;
   categories: string[];
   purposes: string[];
   stack_levels: string[];

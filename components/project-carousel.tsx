@@ -1,5 +1,5 @@
 import { Link } from "@nextui-org/link";
-// import MyImage from "@/components/ui/image";
+import MyImage from "@/components/ui/image";
 import ProjectApi from "@/api/core/projects";
 import { DEFAULT_PAGINATED_RESPONSE } from "@/data/fetch";
 import { Project } from "@/types/project";
@@ -10,7 +10,7 @@ function createCarousel(projects: Project[], keyPrefix: string) {
   if (projects.length % 2 !== 0) {
     projects.pop();
   }
-  return projects.map(({ id, name, slug }, index) => {
+  return projects.map(({ avatar, id, name, slug }, index) => {
     return (
       <Link
         aria-hidden="true"
@@ -22,16 +22,17 @@ function createCarousel(projects: Project[], keyPrefix: string) {
         key={`${keyPrefix}-${id}`}
       >
         <div className="flex items-center space-x-2 justify-evenly">
-          {/* TODO: use tinified static logo */}
-          {/* <MyImage
-            className="rounded-md min-w-[45px] min-h-[45px] shrink-0 bg-foreground border"
-            src={repo.repoIcon}
-            alt={`${name} logo`}
-            radius="sm"
-            width={45}
-            height={45}
-            loading="eager"
-          /> */}
+          {avatar && (
+            <MyImage
+              className="rounded-md min-w-[45px] min-h-[45px] shrink-0 bg-foreground border"
+              src={avatar}
+              alt={`${name} logo`}
+              radius="sm"
+              width={45}
+              height={45}
+              loading="eager"
+            />
+          )}
           <div>{name}</div>
         </div>
       </Link>

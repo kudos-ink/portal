@@ -9,6 +9,7 @@ import { CircledCross } from "@/assets/icons";
 
 interface ISelectFilterProps {
   placeholder: string;
+  className?: string;
   options: IFilterOption[];
   selectKeys: string[];
   filterOptions: FilterOptions;
@@ -16,6 +17,7 @@ interface ISelectFilterProps {
 }
 export const SelectFilter = ({
   placeholder,
+  className,
   options,
   selectKeys,
   filterOptions,
@@ -43,11 +45,11 @@ export const SelectFilter = ({
   return (
     <Select
       aria-label={`Select Filter ${placeholder}`}
-      className="w-48 shrink-0"
+      className={`w-48 shrink-0 ${className}`}
       classNames={{ value: "capitalize" }}
       color="default"
       variant="faded"
-      size="sm"
+      size="md"
       placeholder={placeholder.replace("-", " ")}
       selectionMode="multiple"
       endContent={

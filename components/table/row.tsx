@@ -110,7 +110,9 @@ export const Content = ({
   isCertified,
 }: IContentProps) => {
   return (
-    <div className="flex flex-col space-y-unit-1 md:space-y-0 lg:w-[270px] xl:w-[500px]">
+    <div
+      className={`flex flex-col space-y-unit-1 md:space-y-0 ${projectName ? "lg:w-[270px] xl:w-[500px]" : "pl-2"}`}
+    >
       <span className="text-small text-default-500 max-w-48 truncate md:hidden">
         <div className="flex items-center gap-2">
           {projectName ? (
@@ -124,7 +126,7 @@ export const Content = ({
         </div>
       </span>
       <NuiLink
-        className="w-fit flex gap-1 flex-grow relative"
+        className={`w-fit flex gap-1 flex-grow relative${projectName ? "" : " min-h-10"}`}
         isExternal
         href={url}
         color="foreground"
@@ -283,6 +285,7 @@ interface ITimeProps {
 }
 export const Time = ({ timestamp }: ITimeProps) => {
   const [date, setDate] = useState<Date>();
+
   useEffect(() => {
     setDate(new Date(timestamp));
   }, [timestamp]);

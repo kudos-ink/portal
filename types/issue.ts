@@ -4,13 +4,15 @@ import { Repository, RepositoryDto } from "./repository";
 export type IssueDto = {
   id: number;
   issue_id: number;
-  labels: string[];
+  labels: string[] | null;
   open: boolean;
   assignee_id: string | null;
+  assignee_username: string | null;
   certified: boolean;
   repository: RepositoryDto;
   title: string;
-  timestamp_created_at: string;
+  issue_created_at: string;
+  issue_closed_at: string | null;
   created_at: string;
   updated_at: string | null;
 };

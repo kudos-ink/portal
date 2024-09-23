@@ -7,7 +7,6 @@ import { PaginatedCustomResponse } from "@/types/pagination";
 export const usePaginatedIssues = (
   initialItems: PaginatedCustomResponse<Issue>,
   query: IssueQueryParams = {},
-  slug?: string,
   offset: number = 0,
   limit: number = DEFAULT_PAGE_SIZE,
 ) => {
@@ -31,6 +30,6 @@ export const usePaginatedIssues = (
   >({
     queryKey: ["contributions", query, { offset, limit }],
     queryFn: fetchIssues,
-    initialData: initialItems,
+    placeholderData: (previousData) => previousData ?? initialItems,
   });
 };
