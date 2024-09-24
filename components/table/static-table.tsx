@@ -49,7 +49,7 @@ const StaticTable = ({ data, withProjectData = true }: IStaticTableProps) => {
   const isLaptop = useMediaQuery({ minWidth: 1024 }); // tailwind lg default: 1024px
 
   const [columns, setColumns] = useState<IColumn[]>([
-    ...(withProjectData ? [{ name: "PROJECT", uid: "project" }] : []),
+    { name: "PROJECT", uid: "project" },
     { name: "CONTENT", uid: "content" },
     { name: "LABELS", uid: "labels" },
     { name: "DATE", uid: "date" },
@@ -66,6 +66,7 @@ const StaticTable = ({ data, withProjectData = true }: IStaticTableProps) => {
             slug={project.slug}
             name={project.name}
             repository={repository}
+            withProjectData={withProjectData}
           />
         );
       }
@@ -76,7 +77,6 @@ const StaticTable = ({ data, withProjectData = true }: IStaticTableProps) => {
             title={title}
             projectName={withProjectData ? project.name : undefined}
             repositoryName={repository?.name}
-            url={url}
             isCertified={isCertified}
           />
         );
@@ -117,7 +117,7 @@ const StaticTable = ({ data, withProjectData = true }: IStaticTableProps) => {
 
   useEffect(() => {
     setColumns([
-      ...(withProjectData ? [{ name: "PROJECT", uid: "project" }] : []),
+      { name: "PROJECT", uid: "project" },
       { name: "CONTENT", uid: "content" },
       ...(isLaptop ? [{ name: "LABELS", uid: "labels" }] : []),
       { name: "DATE", uid: "date" },
@@ -148,9 +148,12 @@ const StaticTable = ({ data, withProjectData = true }: IStaticTableProps) => {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody items={data} emptyContent="No contributions to display.">
+      <TableBody
+        items={data}
+        emptyContent="No contributions to display.. Try another query (:"
+      >
         {(item) => {
-          const isHighlighted = item.isCertified && !filters[KUDOS_ISSUE_KEY];
+          const isHighlighted = item.isCertified && !filters?.[KUDOS_ISSUE_KEY];
           return (
             <TableRow
               key={item.id}

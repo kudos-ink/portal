@@ -39,3 +39,8 @@ export type IssueQueryParams = Partial<{
   technologies: string[];
   types: string[];
 }>;
+
+export type IssueQueryParamsDto = IssueQueryParams &
+  Partial<{
+    languages: string[];
+  }>;

@@ -1,6 +1,7 @@
 import { PaginatedCustomResponse } from "@/types/pagination";
 
-export const DEFAULT_PAGE_SIZE = 25;
+export const DEFAULT_PAGE_SIZE = 12;
+export const DEFAULT_HOMEPAGE_PAGE_SIZE = 25;
 export const DEFAULT_BIG_PAGE_SIZE = 100;
 
 export const DEFAULT_PAGINATED_RESPONSE: PaginatedCustomResponse<never> = {
@@ -12,7 +13,7 @@ export const DEFAULT_PAGINATED_RESPONSE: PaginatedCustomResponse<never> = {
 
 export const DEFAULT_QUERY = {
   offset: 0,
-  limit: DEFAULT_BIG_PAGE_SIZE,
+  limit: DEFAULT_PAGE_SIZE,
 };
 
 export const UNASSIGNED_CONTRIBUTION_FILTER = {

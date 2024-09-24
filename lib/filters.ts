@@ -1,6 +1,6 @@
 import LanguagesApi from "@/api/core/languages";
 import ProjectsApi from "@/api/core/projects";
-import { DEFAULT_QUERY } from "@/data/fetch";
+import { DEFAULT_BIG_PAGE_SIZE } from "@/data/fetch";
 import {
   FProjectTypes,
   FPurposes,
@@ -42,7 +42,10 @@ export async function getFilterOptions(): Promise<FilterOptions> {
 
   const purposes = createFilterOptions(FPurposes, emojiMapForPurposes);
   const technologies = createFilterOptions(
-    [...languageValues, ...FTechnologies],
+    [
+      ...languageValues.map((v) => v.toLocaleLowerCase().replaceAll('"', "")),
+      ...FTechnologies,
+    ],
     emojiMapForTechnologies,
   );
   const stackLevels = createFilterOptions(FStackLevels, emojiMapForStackLevels);
@@ -64,7 +67,8 @@ export function filtersToIssuesQuery(
   filters: Filters,
 ): IssueQueryParams & PaginationQueryParams {
   const query: IssueQueryParams & PaginationQueryParams = {
-    ...DEFAULT_QUERY,
+    offset: 0,
+    limit: DEFAULT_BIG_PAGE_SIZE,
     open: true,
   };
 

@@ -13,7 +13,10 @@ import { FiltersProvider } from "@/contexts/filters";
 import { SITE_CONFIG } from "@/data/config";
 import { getFilterOptions } from "@/lib/filters";
 import { initFilters } from "@/utils/filters";
-import { DEFAULT_PAGE_SIZE, DEFAULT_PAGINATED_RESPONSE } from "@/data/fetch";
+import {
+  DEFAULT_HOMEPAGE_PAGE_SIZE,
+  DEFAULT_PAGINATED_RESPONSE,
+} from "@/data/fetch";
 import { FilterOptions } from "@/types/filters";
 
 const EXPLORE_LABEL = "Explore Open Contributions";
@@ -27,7 +30,7 @@ export default async function Home() {
 
   const issues = await IssuesApi.getIssues({
     offset: 0,
-    limit: DEFAULT_PAGE_SIZE,
+    limit: DEFAULT_HOMEPAGE_PAGE_SIZE,
   }).catch((error) => {
     console.error("Error fetching issues:", error);
     return DEFAULT_PAGINATED_RESPONSE;

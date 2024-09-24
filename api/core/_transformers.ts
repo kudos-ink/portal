@@ -1,4 +1,9 @@
-import { Issue, IssueDto } from "@/types/issue";
+import {
+  Issue,
+  IssueDto,
+  IssueQueryParams,
+  IssueQueryParamsDto,
+} from "@/types/issue";
 import { Project, ProjectDto } from "@/types/project";
 import { Repository, RepositoryDto } from "@/types/repository";
 
@@ -37,5 +42,23 @@ export function dtoToProject(dto: ProjectDto): Project {
     purposes: dto.purposes ?? [],
     stack_levels: dto.stack_levels ?? [],
     technologies: dto.technologies ?? [],
+  };
+}
+
+export function issueQueryParamsToDto(
+  query: IssueQueryParams,
+  allLanguages: string[],
+): IssueQueryParamsDto {
+  const technologies = query.technologies ?? [];
+  const languages = technologies.filter((tech) => allLanguages.includes(tech));
+  const remainingTechnologies = technologies.filter(
+    (tech) => !allLanguages.includes(tech),
+  );
+
+  return {
+    ...query,
+    technologies:
+      remainingTechnologies.length > 0 ? remainingTechnologies : undefined,
+    languages: languages.length > 0 ? languages : undefined,
   };
 }

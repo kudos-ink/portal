@@ -31,29 +31,34 @@ interface IProjectProps {
   slug: string;
   name: string;
   repository: Repository;
+  withProjectData?: boolean;
 }
 export const Project = ({
   avatarSrc,
   slug,
   name,
   repository,
-}: IProjectProps) => (
-  <NuiLink
-    className="flex md:gap-4"
-    href={`/projects/${slug}`}
-    color="foreground"
-    title={`${name}'s project page`}
-    as={Link}
-  >
-    <Project.Avatar alt={`${name} logo`} src={avatarSrc} />
-    <div className="hidden md:flex flex-col justify-start items-start w-36">
-      <h2 className="w-fit text-small font-semibold truncate">{name}</h2>
-      <p className="w-fit text-small text-default-500 truncate">
-        {repository.name}
-      </p>
-    </div>
-  </NuiLink>
-);
+  withProjectData,
+}: IProjectProps) => {
+  if (!withProjectData) return <div />;
+  return (
+    <NuiLink
+      className="flex md:gap-4"
+      href={`/projects/${slug}`}
+      color="foreground"
+      title={`${name}'s project page`}
+      as={Link}
+    >
+      <Project.Avatar alt={`${name} logo`} src={avatarSrc} />
+      <div className="hidden md:flex flex-col justify-start items-start w-36">
+        <h2 className="w-fit text-small font-semibold truncate">{name}</h2>
+        <p className="w-fit text-small text-default-500 truncate">
+          {repository.name}
+        </p>
+      </div>
+    </NuiLink>
+  );
+};
 
 interface IAvatarProps {
   alt: string;
@@ -83,21 +88,21 @@ interface IContentProps {
   title: string;
   projectName?: string;
   repositoryName: string;
-  url: string;
   isCertified: boolean;
 }
 export const Content = ({
   title,
   projectName,
   repositoryName,
-  url,
   isCertified,
 }: IContentProps) => {
   return (
     <div
-      className={`flex flex-col space-y-unit-1 md:space-y-0 ${projectName ? "lg:w-[270px] xl:w-[500px]" : "pl-2"}`}
+      className={`flex flex-col ${projectName ? "lg:w-[270px] xl:w-[500px]" : "pl-2 gap-1"}`}
     >
-      <span className="text-small text-default-500 max-w-48 truncate md:hidden">
+      <span
+        className={`text-small text-default-500 max-w-48 truncate ${projectName ? "md:hidden" : ""}`}
+      >
         <div className="flex items-center gap-2">
           {projectName ? (
             `${projectName} / ${repositoryName}`
@@ -109,9 +114,7 @@ export const Content = ({
           )}
         </div>
       </span>
-      <div
-        className={`w-fit text-base flex gap-1 flex-grow relative${projectName ? "" : " min-h-10"}`}
-      >
+      <div className="w-fit text-base flex gap-1 flex-grow relative">
         <h3 className="font-semibold leading-tight line-clamp-2 capitalize">
           {title}
         </h3>
