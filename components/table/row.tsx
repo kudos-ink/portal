@@ -38,37 +38,21 @@ export const Project = ({
   name,
   repository,
 }: IProjectProps) => (
-  <div className="flex md:gap-4">
-    <Link
-      className="w-fit"
-      href={`/projects/${slug}`}
-      color="foreground"
-      title={`${name}'s project page`}
-    >
-      <Project.Avatar alt={`${name} logo`} src={avatarSrc} />
-    </Link>
-    <div className="hidden md:flex flex-col w-36">
-      <Link
-        className="w-fit"
-        href={`/projects/${slug}`}
-        color="foreground"
-        title={`${name}'s project page`}
-      >
-        <h2 className="font-semibold truncate">{name}</h2>
-      </Link>
-      <NuiLink
-        className="w-fit"
-        isExternal
-        href={repository.url}
-        color="foreground"
-        title={`${name}'s repository on Github`}
-      >
-        <p className="text-small text-default-500 truncate">
-          {repository.name}
-        </p>
-      </NuiLink>
+  <NuiLink
+    className="flex md:gap-4"
+    href={`/projects/${slug}`}
+    color="foreground"
+    title={`${name}'s project page`}
+    as={Link}
+  >
+    <Project.Avatar alt={`${name} logo`} src={avatarSrc} />
+    <div className="hidden md:flex flex-col justify-start items-start w-36">
+      <h2 className="w-fit text-small font-semibold truncate">{name}</h2>
+      <p className="w-fit text-small text-default-500 truncate">
+        {repository.name}
+      </p>
     </div>
-  </div>
+  </NuiLink>
 );
 
 interface IAvatarProps {
@@ -125,12 +109,8 @@ export const Content = ({
           )}
         </div>
       </span>
-      <NuiLink
-        className={`w-fit flex gap-1 flex-grow relative${projectName ? "" : " min-h-10"}`}
-        isExternal
-        href={url}
-        color="foreground"
-        title="Open task on Github"
+      <div
+        className={`w-fit text-base flex gap-1 flex-grow relative${projectName ? "" : " min-h-10"}`}
       >
         <h3 className="font-semibold leading-tight line-clamp-2 capitalize">
           {title}
@@ -149,7 +129,7 @@ export const Content = ({
             </div>
           </Tooltip>
         )}
-      </NuiLink>
+      </div>
     </div>
   );
 };
