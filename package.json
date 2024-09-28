@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@next/third-parties": "^14.2.13",
-    "@nextui-org/accordion": "^2.0.40",
     "@nextui-org/button": "2.0.38",
     "@nextui-org/card": "^2.0.34",
     "@nextui-org/checkbox": "^2.1.5",

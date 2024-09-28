@@ -152,18 +152,19 @@ export const Labels = ({ gitLabels, technologies, purposes }: ILabelsProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const indicatorRef = useRef<HTMLDivElement>(null);
 
-  const isGoodFirstIssue = GOOD_FIRST_ISSUE_LABELS.some((name) =>
-    gitLabels.includes(name),
-  );
-  const restTechnologies =
-    filterOptions?.technologies?.filter(({ value }) =>
-      technologies.includes(value),
-    ) ?? [];
-  const restPurposes =
-    filterOptions?.purposes?.filter(({ value }) => purposes.includes(value)) ??
-    [];
-
   const labels = useMemo(() => {
+    const isGoodFirstIssue = GOOD_FIRST_ISSUE_LABELS.some((name) =>
+      gitLabels.includes(name),
+    );
+    const restTechnologies =
+      filterOptions?.technologies?.filter(({ value }) =>
+        technologies.includes(value),
+      ) ?? [];
+    const restPurposes =
+      filterOptions?.purposes?.filter(({ value }) =>
+        purposes.includes(value),
+      ) ?? [];
+
     const goodFirstIssueLabels = getGoodFirstIssueLabel(isGoodFirstIssue);
     const technologyAndPurposeLabels = getTechnologyAndPurposeLabels(
       restTechnologies,
@@ -172,7 +173,7 @@ export const Labels = ({ gitLabels, technologies, purposes }: ILabelsProps) => {
     return [...goodFirstIssueLabels, ...technologyAndPurposeLabels].filter(
       (option) => !isLabelFilteredOut(option, filters),
     );
-  }, [filters, restTechnologies, restPurposes, isGoodFirstIssue]);
+  }, [filters, filterOptions, gitLabels, technologies, purposes]);
 
   const handleClick = (key: FilterKeys, values: string[]) => {
     updateFilter(key, values);
@@ -336,6 +337,7 @@ const getTechnologyAndPurposeLabels = (
 };
 
 const isLabelFilteredOut = (option: IFilterOption, filters: Filters) => {
+  if (!filters) return false;
   return (
     (filters[GOOD_FIRST_ISSUE_KEY] && option.value === "true") ||
     filters[PURPOSE_KEY].some(({ value }) => value === option.value) ||

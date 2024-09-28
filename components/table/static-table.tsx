@@ -56,64 +56,67 @@ const StaticTable = ({ data, withProjectData = true }: IStaticTableProps) => {
     { name: "ACTIONS", uid: "actions" },
   ]);
 
-  const renderCell = React.useCallback((item: Issue, columnKey: React.Key) => {
-    switch (columnKey) {
-      case "project": {
-        const { project, repository } = item;
-        return (
-          <Project
-            avatarSrc={project.avatar}
-            slug={project.slug}
-            name={project.name}
-            repository={repository}
-            withProjectData={withProjectData}
-          />
-        );
-      }
-      case "content": {
-        const { isCertified, title, repository, project, url } = item;
-        return (
-          <Content
-            title={title}
-            projectName={withProjectData ? project.name : undefined}
-            repositoryName={repository?.name}
-            isCertified={isCertified}
-          />
-        );
-      }
-      case "labels": {
-        const { labels, project } = item;
-        return (
-          <Labels
-            gitLabels={labels}
-            technologies={withProjectData ? project.technologies : []}
-            purposes={withProjectData ? project.purposes : []}
-          />
-        );
-      }
-      case "date":
-        return (
-          <div className="flex flex-col items-center gap-2">
-            <div className="block sm:hidden">
-              <ExternalLink
-                href={item.url}
-                title={`Open "${item.title}" on Github`}
-              />
+  const renderCell = React.useCallback(
+    (item: Issue, columnKey: React.Key) => {
+      switch (columnKey) {
+        case "project": {
+          const { project, repository } = item;
+          return (
+            <Project
+              avatarSrc={project.avatar}
+              slug={project.slug}
+              name={project.name}
+              repository={repository}
+              withProjectData={withProjectData}
+            />
+          );
+        }
+        case "content": {
+          const { isCertified, title, repository, project, url } = item;
+          return (
+            <Content
+              title={title}
+              projectName={withProjectData ? project.name : undefined}
+              repositoryName={repository?.name}
+              isCertified={isCertified}
+            />
+          );
+        }
+        case "labels": {
+          const { labels, project } = item;
+          return (
+            <Labels
+              gitLabels={labels}
+              technologies={withProjectData ? project.technologies : []}
+              purposes={withProjectData ? project.purposes : []}
+            />
+          );
+        }
+        case "date":
+          return (
+            <div className="flex flex-col items-center gap-2">
+              <div className="block sm:hidden">
+                <ExternalLink
+                  href={item.url}
+                  title={`Open "${item.title}" on Github`}
+                />
+              </div>
+              <Time timestamp={item.createdAt} />
             </div>
-            <Time timestamp={item.createdAt} />
-          </div>
-        );
-      case "actions":
-        return (
-          <ExternalLink
-            href={item.url}
-            title={`Open "${item.title}" on Github`}
-          />
-        );
-      default:
-        return null;
-    }
-  }, []);
+          );
+        case "actions":
+          return (
+            <ExternalLink
+              href={item.url}
+              title={`Open "${item.title}" on Github`}
+            />
+          );
+        default:
+          return null;
+      }
+    },
+    [withProjectData],
+  );
 
   useEffect(() => {
     setColumns([
