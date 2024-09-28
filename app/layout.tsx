@@ -93,13 +93,7 @@ export default function RootLayout({
     >
       <head />
       <body className="min-h-screen bg-background font-sans antialiased">
-        <Providers
-          themeProps={{
-            attribute: "class",
-            defaultTheme: "kudos",
-            children: null,
-          }}
-        >
+        <Providers>
           <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-default from-0% to-background to-50% relative flex flex-col">
             <header>
               <TopBar />
