@@ -82,6 +82,7 @@ export default async function SingleProjectPage({ params }: IProps) {
           initialItems={issues}
           query={query}
           pagination={DEFAULT_QUERY}
+          withProjectData={false}
         />
       </section>
     </>

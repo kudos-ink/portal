@@ -25,7 +25,7 @@ function createCarousel(projects: Project[], keyPrefix: string) {
           {avatar && (
             <MyImage
               className="rounded-md min-w-[45px] min-h-[45px] shrink-0 bg-foreground border"
-              src={avatar}
+              src={slug == "polkadot" ? "/images/polkadot-logo.png" : avatar}
               alt={`${name} logo`}
               radius="sm"
               width={45}

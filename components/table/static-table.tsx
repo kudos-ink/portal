@@ -63,7 +63,11 @@ const StaticTable = ({ data, withProjectData = true }: IStaticTableProps) => {
           const { project, repository } = item;
           return (
             <Project
-              avatarSrc={project.avatar}
+              avatarSrc={
+                project.slug == "polkadot"
+                  ? "/images/polkadot-logo.png"
+                  : project.avatar
+              }
               slug={project.slug}
               name={project.name}
               repository={repository}

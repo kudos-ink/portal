@@ -21,12 +21,16 @@ const ProjectHeader = ({
     <div className="flex gap-4 items-center mb-2">
       {avatar && (
         <MyImage
-          className="bg-foreground border"
-          src={avatar}
+          className="bg-foreground border min-w-[45px] min-h-[45px] shrink-0 flex items-center justify-center"
+          src={
+            name.toLocaleLowerCase() == "polkadot"
+              ? "/images/polkadot-logo.png"
+              : avatar
+          }
           alt={`${name}'s Logo`}
           radius="sm"
-          height={45}
-          width={45}
+          height={40}
+          width={40}
         />
       )}
       <span className="text-3xl font-semibold">{name}</span>

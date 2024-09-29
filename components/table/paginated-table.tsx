@@ -15,12 +15,14 @@ interface IPaginatedTableProps {
   initialItems: PaginatedCustomResponse<Issue>;
   query: IssueQueryParams;
   pagination: PaginationQueryParams;
+  withProjectData?: boolean;
 }
 
 const PaginatedTable = ({
   initialItems,
   query,
   pagination,
+  withProjectData,
 }: IPaginatedTableProps) => {
   const [page, setPage] = useState(1);
   const limit = pagination.limit;
@@ -45,7 +47,10 @@ const PaginatedTable = ({
 
   return (
     <>
-      <StaticTable data={results?.data || []} withProjectData={false} />
+      <StaticTable
+        data={results?.data || []}
+        withProjectData={withProjectData}
+      />
       {totalPages > 1 && (
         <div className="flex w-full justify-end items-center pt-8">
           <Pagination

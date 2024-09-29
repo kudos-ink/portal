@@ -67,15 +67,15 @@ interface IAvatarProps {
 
 const Avatar = ({ alt, src }: IAvatarProps) => {
   return (
-    <div className="bg-foreground rounded-md min-w-[45px] shrink-0">
+    <div className="bg-foreground rounded-md min-w-[45px] min-h-[45px] shrink-0 flex items-center justify-center">
       {src !== null && (
         <MyImage
           className="border"
           src={src}
           alt={alt}
           radius="sm"
-          height={45}
-          width={45}
+          height={40}
+          width={40}
         />
       )}
     </div>
