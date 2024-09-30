@@ -9,25 +9,16 @@ import Toolbar from "@/components/filters/toolbar";
 import ProjectCarousel from "@/components/project-carousel";
 import { container, subtitle, title } from "@/components/primitives";
 import StaticTable from "@/components/table/static-table";
-import { FiltersProvider } from "@/contexts/filters";
+import { DefaultFiltersProvider } from "@/components/providers/filters";
 import { SITE_CONFIG } from "@/data/config";
-import { getFilterOptions } from "@/lib/filters";
-import { initFilters } from "@/utils/filters";
 import {
   DEFAULT_HOMEPAGE_PAGE_SIZE,
   DEFAULT_PAGINATED_RESPONSE,
 } from "@/data/fetch";
-import { FilterOptions } from "@/types/filters";
 
 const EXPLORE_LABEL = "Explore Open Contributions";
 
 export default async function Home() {
-  const filters = initFilters();
-  const filterOptions = await getFilterOptions().catch((error) => {
-    console.error("Error fetching filter options:", error);
-    return {} as FilterOptions;
-  });
-
   const issues = await IssuesApi.getIssues({
     offset: 0,
     limit: DEFAULT_HOMEPAGE_PAGE_SIZE,
@@ -53,17 +44,14 @@ export default async function Home() {
         </h2>
       </section>
 
-      <FiltersProvider
-        initialFilters={filters}
-        initialFilterOptions={filterOptions}
-      >
+      <DefaultFiltersProvider>
         <div className="flex flex-col">
           <Toolbar label="Latest Contributions" />
           <section className={container()}>
             <StaticTable data={issues.data} />
           </section>
         </div>
-      </FiltersProvider>
+      </DefaultFiltersProvider>
 
       <section className={"flex flex-col items-center " + container()}>
         <Link

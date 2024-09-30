@@ -4,6 +4,7 @@ import { IconSocial, IconWeb } from "@/assets/icons";
 import IssuesApi from "@/api/core/issues";
 import LeaderboardTable from "@/components/leaderboard/table";
 import { container } from "@/components/primitives";
+import { DefaultFiltersProvider } from "@/components/providers/filters";
 import PaginatedTable from "@/components/table/paginated-table";
 import { DEFAULT_PAGINATED_RESPONSE, DEFAULT_QUERY } from "@/data/fetch";
 import { Issue, IssueQueryParams } from "@/types/issue";
@@ -202,16 +203,22 @@ export default async function SingleEventPage() {
           </p>
         </div>
       </section>
-      <section className={container() + " mt-16"}>
-        <div className="py-4 px-3 bg-default-100 border-small rounded-t-md">
-          <span className="text-lg font-bold">Kudos Weeks Issues Backlog</span>
-        </div>
-        <PaginatedTable
-          initialItems={issues}
-          query={query}
-          pagination={DEFAULT_QUERY}
-        />
-      </section>
+
+      <DefaultFiltersProvider>
+        <section className={container() + " mt-16"}>
+          <div className="py-4 px-3 bg-default-100 border-small rounded-t-md">
+            <span className="text-lg font-bold">
+              Kudos Weeks Issues Backlog
+            </span>
+          </div>
+          <PaginatedTable
+            initialItems={issues}
+            query={query}
+            pagination={DEFAULT_QUERY}
+          />
+        </section>
+      </DefaultFiltersProvider>
+
       <section className={container() + " mt-16"}>
         <h2 id="leaderboard" className="text-foreground text-5xl font-bentoga">
           Leaderboard

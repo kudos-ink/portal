@@ -91,7 +91,7 @@ const StaticTable = ({ data, withProjectData = true }: IStaticTableProps) => {
           return (
             <Labels
               gitLabels={labels}
-              technologies={withProjectData ? project.technologies : []}
+              technologies={project.technologies}
               purposes={withProjectData ? project.purposes : []}
             />
           );

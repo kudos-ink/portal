@@ -2,6 +2,7 @@ import ConfigApi from "@/api/config/api";
 import IssuesApi from "@/api/core/issues";
 import { container } from "@/components/primitives";
 import PaginatedTable from "@/components/table/paginated-table";
+import { DefaultFiltersProvider } from "@/components/providers/filters";
 import { DEFAULT_PAGINATED_RESPONSE, DEFAULT_QUERY } from "@/data/fetch";
 import { fetchProjectLabelFlags } from "@/lib/api/issues";
 import { Issue, IssueQueryParams } from "@/types/issue";
@@ -72,19 +73,22 @@ export default async function SingleProjectPage({ params }: IProps) {
           </div>
         </div>
       </section>
-      <section className={container() + " mt-16"}>
-        <div className="py-4 px-3 bg-default-100 border-small rounded-t-md">
-          {infos && (
-            <span className="text-lg font-bold">{`${infos.name} contributions`}</span>
-          )}
-        </div>
-        <PaginatedTable
-          initialItems={issues}
-          query={query}
-          pagination={DEFAULT_QUERY}
-          withProjectData={false}
-        />
-      </section>
+
+      <DefaultFiltersProvider>
+        <section className={container() + " mt-16"}>
+          <div className="py-4 px-3 bg-default-100 border-small rounded-t-md">
+            {infos && (
+              <span className="text-lg font-bold">{`${infos.name} contributions`}</span>
+            )}
+          </div>
+          <PaginatedTable
+            initialItems={issues}
+            query={query}
+            pagination={DEFAULT_QUERY}
+            withProjectData={false}
+          />
+        </section>
+      </DefaultFiltersProvider>
     </>
   );
 }
