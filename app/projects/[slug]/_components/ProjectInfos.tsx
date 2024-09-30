@@ -32,7 +32,7 @@ const ProjectInfos = ({ infos, labels }: IProjectInfosProps) => (
       </div>
     )}
     <div className="flex justify-between gap-8">
-      <div className="flex flex-wrap gap-4">
+      <div className="flex flex-wrap gap-6">
         {infos.map(({ title, items }, idx) => (
           <InfoItem key={idx} title={title} items={items} />
         ))}

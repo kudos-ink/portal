@@ -6,7 +6,7 @@ interface IProjectMetricsProps {
 }
 
 const ProjectMetrics = ({ metrics, stats }: IProjectMetricsProps) => (
-  <div className="bg-gradient-to-r from-background to-background-200 to-80% p-4 border-small rounded-md flex flex-col gap-4 h-full">
+  <div className="bg-gradient-to-r from-background to-background-200 to-80% p-4 border-small rounded-md flex flex-col gap-6 h-full">
     <div className="font-semibold">Metrics</div>
     <div className="text-small flex flex-col gap-2">
       {metrics.map(({ label, value }, index) => (

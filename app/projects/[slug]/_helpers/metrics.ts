@@ -7,10 +7,10 @@ export async function constructProjectMetrics(
   const repositories = infos?.links?.repository || [];
 
   const metrics = [
-    { label: "Repositories", value: repositories.length },
+    { label: "Unified Repositories", value: repositories.length },
     { label: "Active Issues", value: issuesCount },
-    { label: "Curators", value: infos?.curators?.length ?? 0 },
-    { label: "Contributors", value: 0 }, // TODO once leaderboard is ready
+    // { label: "Curators", value: infos?.curators?.length ?? 0 },
+    // { label: "Contributors", value: 0 }, // TODO once leaderboard is ready
   ];
 
   return { metrics, stats: [] };
