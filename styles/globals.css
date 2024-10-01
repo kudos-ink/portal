@@ -4,6 +4,8 @@
 
 :root {
   --light-overlay: hsl(var(--nextui-foreground) / 0.1);
+  --light-primarlay: hsl(var(--nextui-primary) / 0.2);
+  --light-dangerlay: hsl(var(--nextui-danger) / 0.2);
 }
 
 tr > :nth-child(2) {
