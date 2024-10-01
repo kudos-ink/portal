@@ -14,6 +14,7 @@ export default async function ExploreLayout({
 }) {
   const filterOptions = await getFilterOptions();
   const filters = decodingSlug(params.slug, filterOptions);
+
   return (
     <FiltersProvider
       initialFilters={filters}

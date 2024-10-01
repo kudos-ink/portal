@@ -1,5 +1,6 @@
 import NextImage from "next/image";
 import { IconRepo, IconSocial, IconWeb } from "@/assets/icons";
+import Countdown from "@/components/countdown";
 
 const EventBanner = () => (
   <article className="rounded-xl p-6 bg-container-1 border-container-stroke-separator relative overflow-hidden h-[675px]">
@@ -21,7 +22,13 @@ const EventBanner = () => (
         </span>
       </div>
 
-      <div className="gap-3 flex flex-col sm:flex-row mt-8">
+      <Countdown date="2024-11-01T12:00:00.536328Z" />
+
+      <h3 className="text-xl text-default-600 mt-4">
+        Want to level up your contributions? Make an impact on Polkadot, solve
+        key issues, and rise up the Kudos leaderboard!
+      </h3>
+      <div className="gap-3 flex flex-col sm:flex-row">
         <div className="flex min-w-40 flex-col gap-2 rounded-xl bg-default text-default-foreground p-3">
           <div className="flex items-center gap-1">
             <span className="text-xs font-medium text-text-1 flex items-center gap-2">

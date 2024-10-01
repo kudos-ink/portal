@@ -2,7 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { Pagination } from "@nextui-org/pagination";
+import { useFilters } from "@/contexts/filters";
 import { usePaginatedIssues } from "@/hooks/usePaginatedIssues";
+import { filtersToIssuesQuery } from "@/lib/filters";
 import { Issue, IssueQueryParams } from "@/types/issue";
 import {
   PaginatedCustomResponse,
@@ -24,13 +26,20 @@ const PaginatedTable = ({
   pagination,
   withProjectData,
 }: IPaginatedTableProps) => {
+  const { filters } = useFilters();
   const [page, setPage] = useState(1);
   const limit = pagination.limit;
   const offset = (page - 1) * limit;
 
+  const filteredQuery = filtersToIssuesQuery(filters);
+  const combinedQuery = {
+    ...query,
+    ...filteredQuery,
+  };
+
   const { data: results, isPlaceholderData } = usePaginatedIssues(
     initialItems,
-    query,
+    combinedQuery,
     offset,
     limit,
   );
@@ -41,6 +50,10 @@ const PaginatedTable = ({
   const handleChange = (newPage: number) => {
     setPage(newPage);
   };
+
+  useEffect(() => {
+    setPage(1);
+  }, [filters]);
 
   return (
     <>

@@ -3,6 +3,7 @@ import IssuesApi from "@/api/core/issues";
 import { container } from "@/components/primitives";
 import PaginatedTable from "@/components/table/paginated-table";
 import { DefaultFiltersProvider } from "@/components/providers/filters";
+import Toolbar from "@/components/filters/toolbar";
 import { DEFAULT_PAGINATED_RESPONSE, DEFAULT_QUERY } from "@/data/fetch";
 import { fetchProjectLabelFlags } from "@/lib/api/issues";
 import { Issue, IssueQueryParams } from "@/types/issue";
@@ -52,7 +53,7 @@ export default async function SingleProjectPage({ params }: IProps) {
           />
         </section>
       )}
-      <section className={container() + " mt-6"}>
+      <section className={container() + " mt-6 !mb-16"}>
         <div className="flex flex-col md:flex-row gap-6 w-full">
           <div className="flex-grow md:basis-0">
             <ProjectMetrics metrics={metrics} stats={stats} />
@@ -75,12 +76,12 @@ export default async function SingleProjectPage({ params }: IProps) {
       </section>
 
       <DefaultFiltersProvider>
-        <section className={container() + " mt-16"}>
-          <div className="py-4 px-3 bg-default-100 border-small rounded-t-md">
-            {infos && (
-              <span className="text-lg font-bold">{`${infos.name} contributions`}</span>
-            )}
-          </div>
+        {/* TODO: Add advance filters but make sure to only have the correct filters options from the query above (add props to DefaultFiltersProvider to support query) */}
+        <Toolbar
+          label={`${infos?.name ?? "Open"} contributions`}
+          shouldUpdateRouter={false}
+        />
+        <section className={container()}>
           <PaginatedTable
             initialItems={issues}
             query={query}

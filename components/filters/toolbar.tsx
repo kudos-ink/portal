@@ -1,4 +1,5 @@
 "use client";
+import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useRef } from "react";
 import { Button } from "@nextui-org/button";
 import { Divider } from "@nextui-org/divider";
@@ -14,6 +15,7 @@ import { useFilters } from "@/contexts/filters";
 import useSticky from "@/hooks/useSticky";
 import { FilterKeys } from "@/types/filters";
 import { countNonEmptyFilters } from "@/utils/filters";
+import { createUrl } from "@/utils/url";
 import { selectFilters, checkboxFilters } from "./config";
 import CheckboxFilter from "./checkbox-filter";
 import ClearFilters from "./clear-filters";
@@ -22,9 +24,16 @@ import SelectFilter from "./select-filter";
 interface IToolbarProps {
   label: string;
   withAdvanceFilters?: boolean;
+  shouldUpdateRouter?: boolean;
 }
 
-const Toolbar = ({ label, withAdvanceFilters = false }: IToolbarProps) => {
+const Toolbar = ({
+  label,
+  withAdvanceFilters = false,
+  shouldUpdateRouter = true, // Default to true for URL-based filter updates
+}: IToolbarProps) => {
+  const router = useRouter();
+  const pathname = usePathname();
   const toolbarRef = useRef<HTMLDivElement>(null);
   const isToolbarSticky = useSticky(toolbarRef);
 
@@ -35,12 +44,46 @@ const Toolbar = ({ label, withAdvanceFilters = false }: IToolbarProps) => {
     (filter) => (filter.options = filterOptions[filter.key]),
   );
 
-  const handleSelect = useCallback(
-    (key: FilterKeys) => (values: string[]) => {
-      values.length > 0 ? updateFilter(key, values) : clearFilter(key);
+  const handleSelectChange = useCallback(
+    (key: FilterKeys) => (newValues: Set<string>) => {
+      if (newValues.size > 0) {
+        updateFilter(key, Array.from(newValues));
+      } else {
+        clearFilter(key);
+      }
+
+      if (shouldUpdateRouter) {
+        const currentPath = pathname === "/" ? "/explore/" : pathname;
+        const newUrl = createUrl(
+          key,
+          Array.from(newValues),
+          currentPath,
+          filterOptions,
+        );
+        router.replace(newUrl, { scroll: true });
+      }
     },
-    [updateFilter, clearFilter],
+    [updateFilter, clearFilter, shouldUpdateRouter],
   );
+
+  const handleCheckboxChange = useCallback(
+    (key: FilterKeys) => (isChecked: boolean) => {
+      updateFilter(key, isChecked ? ["true"] : []);
+
+      if (shouldUpdateRouter) {
+        const currentPath = pathname === "/" ? "/explore/" : pathname;
+        const newValue = isChecked ? [isChecked.toString()] : [];
+        const newUrl = createUrl(key, newValue, currentPath, filterOptions);
+        router.replace(newUrl, { scroll: true });
+      }
+    },
+    [updateFilter, shouldUpdateRouter],
+  );
+
+  const handleClear = () => {
+    router.replace(pathname);
+    clearAllFilters();
+  };
 
   const numberOfFilters = countNonEmptyFilters(filters);
 
@@ -64,9 +107,8 @@ const Toolbar = ({ label, withAdvanceFilters = false }: IToolbarProps) => {
                 key={key}
                 placeholder={key}
                 options={options}
-                selectKeys={filters[key].map(({ value }) => value)}
-                onSelect={handleSelect(key)}
-                filterOptions={filterOptions}
+                selectedKeys={new Set(filters[key].map((item) => item.value))}
+                onSelect={handleSelectChange(key)}
               />
             ))}
             <div className="flex gap-8">
@@ -74,13 +116,11 @@ const Toolbar = ({ label, withAdvanceFilters = false }: IToolbarProps) => {
                 ({ key, placeholder, content, icon }) => (
                   <CheckboxFilter
                     key={key}
-                    paramKey={key}
                     placeholder={placeholder}
                     content={content}
                     icon={icon}
                     isSelected={filters[key]}
-                    onSelect={handleSelect(key)}
-                    filterOptions={filterOptions}
+                    onSelect={handleCheckboxChange(key)}
                   />
                 ),
               )}
@@ -132,11 +172,12 @@ const Toolbar = ({ label, withAdvanceFilters = false }: IToolbarProps) => {
                             className="w-full"
                             placeholder={key}
                             options={options}
-                            selectKeys={
-                              filters[key]?.map(({ value }) => value) || []
+                            selectedKeys={
+                              new Set(
+                                filters[key]?.map((item) => item.value) || [],
+                              )
                             }
-                            onSelect={handleSelect(key)}
-                            filterOptions={filterOptions}
+                            onSelect={handleSelectChange(key)}
                           />
                         }
                       />
@@ -147,13 +188,11 @@ const Toolbar = ({ label, withAdvanceFilters = false }: IToolbarProps) => {
                       ({ key, placeholder, content, icon }) => (
                         <DropdownItem key={key}>
                           <CheckboxFilter
-                            paramKey={key}
                             placeholder={placeholder}
                             content={content}
                             icon={icon}
                             isSelected={filters[key] || false}
-                            onSelect={handleSelect(key)}
-                            filterOptions={filterOptions}
+                            onSelect={handleCheckboxChange(key)}
                           />
                         </DropdownItem>
                       ),
@@ -171,11 +210,7 @@ const Toolbar = ({ label, withAdvanceFilters = false }: IToolbarProps) => {
           )}
 
           {numberOfFilters > 1 && (
-            <ClearFilters
-              onClear={clearAllFilters}
-              value="Clear all filters"
-              filterOptions={filterOptions}
-            />
+            <ClearFilters onClear={handleClear} value="Clear all filters" />
           )}
         </div>
         <div className="py-4 px-3 bg-default-100 border-small rounded-t-md">

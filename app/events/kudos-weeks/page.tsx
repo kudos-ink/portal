@@ -2,6 +2,7 @@ import { Button } from "@nextui-org/button";
 import { Link } from "@nextui-org/link";
 import { IconSocial, IconWeb } from "@/assets/icons";
 import IssuesApi from "@/api/core/issues";
+import Toolbar from "@/components/filters/toolbar";
 import LeaderboardTable from "@/components/leaderboard/table";
 import { container } from "@/components/primitives";
 import { DefaultFiltersProvider } from "@/components/providers/filters";
@@ -151,7 +152,7 @@ export default async function SingleEventPage() {
       <section className={container()}>
         <EventBanner />
       </section>
-      <section className={container() + " mt-16"}>
+      <section className={container() + " my-16"}>
         <h2 id="guidelines" className="text-foreground text-5xl font-bentoga">
           Guidelines
         </h2>
@@ -205,12 +206,12 @@ export default async function SingleEventPage() {
       </section>
 
       <DefaultFiltersProvider>
-        <section className={container() + " mt-16"}>
-          <div className="py-4 px-3 bg-default-100 border-small rounded-t-md">
-            <span className="text-lg font-bold">
-              Kudos Weeks Issues Backlog
-            </span>
-          </div>
+        {/* TODO: Add advance filters but make sure to only have the correct filters options from the query above (add props to DefaultFiltersProvider to support query) */}
+        <Toolbar
+          label="Kudos Weeks Issues Backlog"
+          shouldUpdateRouter={false}
+        />
+        <section className={container()}>
           <PaginatedTable
             initialItems={issues}
             query={query}
