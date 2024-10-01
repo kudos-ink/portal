@@ -8,14 +8,18 @@ import StaticTable from "./static-table";
 import { Issue, IssueQueryParams } from "@/types/issue";
 
 interface IInfiniteTableProps {
-  items: PaginatedCustomResponse<Issue>;
+  initialItems: PaginatedCustomResponse<Issue>;
   query?: IssueQueryParams;
 }
 
-const InfiniteTable = ({ items, query = {} }: IInfiniteTableProps) => {
+const InfiniteTable = ({ initialItems, query = {} }: IInfiniteTableProps) => {
   const loaderRef = useRef<HTMLDivElement>(null);
   const isFetchingRef = useRef(false);
-  const { data: results, fetchNextPage, hasNextPage } = useIssues(items, query);
+  const {
+    data: results,
+    fetchNextPage,
+    hasNextPage,
+  } = useIssues(initialItems, query);
 
   const contributions = React.useMemo(() => {
     return results?.pages.flatMap((page) => page.data);

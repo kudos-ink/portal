@@ -34,5 +34,5 @@ export default async function ExplorePage({ params }: IProps) {
     return DEFAULT_PAGINATED_RESPONSE;
   });
 
-  return <InfiniteTable items={issues} query={query} />;
+  return <InfiniteTable initialItems={issues} query={query} />;
 }

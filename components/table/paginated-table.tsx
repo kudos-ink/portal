@@ -28,11 +28,12 @@ const PaginatedTable = ({
   const limit = pagination.limit;
   const offset = (page - 1) * limit;
 
-  const {
-    data: results,
-    refetch,
-    isPlaceholderData,
-  } = usePaginatedIssues(initialItems, query, offset, limit);
+  const { data: results, isPlaceholderData } = usePaginatedIssues(
+    initialItems,
+    query,
+    offset,
+    limit,
+  );
 
   const totalCount = results?.totalCount ?? 0;
   const totalPages = Math.ceil(totalCount / limit);
@@ -40,10 +41,6 @@ const PaginatedTable = ({
   const handleChange = (newPage: number) => {
     setPage(newPage);
   };
-
-  useEffect(() => {
-    refetch();
-  }, [page, refetch]);
 
   return (
     <>

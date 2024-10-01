@@ -3,7 +3,7 @@ import {
   InfiniteData,
   QueryKey,
 } from "@tanstack/react-query";
-import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
+import { DEFAULT_BIG_PAGE_SIZE } from "@/data/fetch";
 import IssuesApi from "@/api/core/issues";
 import { Issue, IssueQueryParams } from "@/types/issue";
 import {
@@ -31,15 +31,15 @@ export const useIssues = (
     queryFn: fetchIssues,
     initialData: {
       pages: [initialItems],
-      pageParams: [{ offset: 0, limit: DEFAULT_PAGE_SIZE }],
+      pageParams: [{ offset: 0, limit: DEFAULT_BIG_PAGE_SIZE }],
     },
-    initialPageParam: { offset: 0, limit: DEFAULT_PAGE_SIZE },
+    initialPageParam: { offset: 0, limit: DEFAULT_BIG_PAGE_SIZE },
     getNextPageParam: (lastPageResponse, _, lastPageParam) => {
       const { hasNextPage } = lastPageResponse;
       if (!hasNextPage) return null;
       return {
         ...lastPageParam,
-        offset: lastPageParam.offset + DEFAULT_PAGE_SIZE,
+        offset: lastPageParam.offset + DEFAULT_BIG_PAGE_SIZE,
       };
     },
   });

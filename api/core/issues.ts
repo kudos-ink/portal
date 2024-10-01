@@ -1,10 +1,5 @@
 import { DEFAULT_QUERY } from "@/data/fetch";
-import {
-  IssueQueryParams,
-  IssueDto,
-  Issue,
-  IssueQueryParamsDto,
-} from "@/types/issue";
+import { IssueQueryParams, IssueDto, Issue } from "@/types/issue";
 import {
   PaginationQueryParams,
   PaginatedCustomResponse,
@@ -20,12 +15,12 @@ const ISSUES_PATH = "/issues";
 export async function getIssues(
   query: IssueQueryParams & PaginationQueryParams = DEFAULT_QUERY,
 ): Promise<PaginatedCustomResponse<Issue>> {
-  let queryDto: IssueQueryParamsDto = query;
+  let allLanguages: string[] = [];
   if (query?.technologies?.length) {
-    const allLanguages = await getAllLanguages();
-    queryDto = issueQueryParamsToDto(query, allLanguages);
+    allLanguages = await getAllLanguages();
   }
 
+  const queryDto = issueQueryParamsToDto(query, allLanguages);
   const url = prepareUrl(`${ISSUES_PATH}`, queryDto);
   const res =
     await coreApiClient.get<PaginatedCustomResponseDto<IssueDto>>(url);

@@ -1,7 +1,7 @@
 import {
   Issue,
   IssueDto,
-  IssueQueryParams,
+  IssueQueryParamsWithPagination,
   IssueQueryParamsDto,
 } from "@/types/issue";
 import { Project, ProjectDto } from "@/types/project";
@@ -46,7 +46,7 @@ export function dtoToProject(dto: ProjectDto): Project {
 }
 
 export function issueQueryParamsToDto(
-  query: IssueQueryParams,
+  query: IssueQueryParamsWithPagination,
   allLanguages: string[],
 ): IssueQueryParamsDto {
   const technologies = query.technologies ?? [];
@@ -56,9 +56,16 @@ export function issueQueryParamsToDto(
   );
 
   return {
-    ...query,
+    slugs: query.projects,
+    certified: query.certified,
+    purposes: query.purposes,
+    stack_levels: query.stackLevels,
+    labels: query.labels,
+    open: query.open,
     technologies:
       remainingTechnologies.length > 0 ? remainingTechnologies : undefined,
-    languages: languages.length > 0 ? languages : undefined,
+    language_slugs: languages.length > 0 ? languages : undefined,
+    offset: query.offset,
+    limit: query.limit,
   };
 }

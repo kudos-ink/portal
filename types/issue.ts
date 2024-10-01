@@ -1,3 +1,4 @@
+import { PaginationQueryParams } from "./pagination";
 import { Project } from "./project";
 import { Repository, RepositoryDto } from "./repository";
 
@@ -40,7 +41,22 @@ export type IssueQueryParams = Partial<{
   types: string[];
 }>;
 
-export type IssueQueryParamsDto = IssueQueryParams &
-  Partial<{
-    languages: string[];
-  }>;
+export type IssueQueryParamsWithPagination = IssueQueryParams &
+  Partial<PaginationQueryParams>;
+
+export type IssueQueryParamsDto = Partial<{
+  slugs: string[];
+  certified: boolean;
+  purposes: string[];
+  stack_levels: string[];
+  technologies: string[];
+  labels: string[];
+  language_slugs: string[];
+  repository_id: number;
+  assignee_id: number;
+  open: boolean;
+  has_assignee: boolean;
+  issue_closed_at_min: string;
+  issue_closed_at_max: string;
+}> &
+  Partial<PaginationQueryParams>;
