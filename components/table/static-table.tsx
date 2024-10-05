@@ -140,7 +140,7 @@ const StaticTable = ({ data, withProjectData = true }: IStaticTableProps) => {
         table:
           "w-full bg-gradient-to-r from-background to-background-200 to-80% max-w-7xl border-spacing-0 rounded-b-md overflow-hidden",
         wrapper:
-          "bg-background overflow-visible p-0 rounded-none border-small rounded-b-md",
+          "bg-background overflow-visible p-0 rounded-none border-[1px] rounded-b-md",
         tr: "flex items-center relative border-y-small border-y-overlay hover:bg-hover-overlay",
         td: "px-2 sm:px-inherit z-10",
       }}

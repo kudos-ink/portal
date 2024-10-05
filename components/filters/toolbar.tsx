@@ -213,7 +213,7 @@ const Toolbar = ({
             <ClearFilters onClear={handleClear} value="Clear all filters" />
           )}
         </div>
-        <div className="py-4 px-3 bg-default-100 border-small rounded-t-md">
+        <div className="py-4 px-3 bg-default-100 border-[1px] border-b-0 rounded-t-md">
           <span className="text-lg font-bold">{label}</span>
         </div>
       </div>

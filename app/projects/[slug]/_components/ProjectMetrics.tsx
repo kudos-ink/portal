@@ -6,7 +6,7 @@ interface IProjectMetricsProps {
 }
 
 const ProjectMetrics = ({ metrics, stats }: IProjectMetricsProps) => (
-  <div className="bg-gradient-to-r from-background to-background-200 to-80% p-4 border-small rounded-md flex flex-col gap-6 h-full">
+  <div className="bg-gradient-to-r from-background to-background-200 to-80% py-4 px-6 border-[1px] rounded-md flex flex-col gap-6 h-full">
     <div className="font-semibold">Metrics</div>
     <div className="text-small flex flex-col gap-2">
       {metrics.map(({ label, value }, index) => (
@@ -16,7 +16,9 @@ const ProjectMetrics = ({ metrics, stats }: IProjectMetricsProps) => (
         >
           <span>{label}</span>
           <span className="flex-grow mx-2 border-dotted border-b-2 border-default-500 mt-[6px]" />
-          <span className="text-white font-semibold">{value}</span>
+          <span className="text-white font-semibold whitespace-nowrap text-base leading-none">
+            {value}
+          </span>
         </div>
       ))}
     </div>

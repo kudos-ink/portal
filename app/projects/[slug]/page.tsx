@@ -9,7 +9,7 @@ import { fetchProjectLabelFlags } from "@/lib/api/issues";
 import { Issue, IssueQueryParams } from "@/types/issue";
 import { PaginatedCustomResponse } from "@/types/pagination";
 import ProjectHeader from "./_components/ProjectHeader";
-import ProjectInfos from "./_components/ProjectInfos";
+import ProjectInfos, { LayersMap } from "./_components/ProjectInfos";
 import ProjectMetrics from "./_components/ProjectMetrics";
 import { constructProjectMetrics } from "./_helpers/metrics";
 import { constructLabels } from "./_helpers/infos";
@@ -43,35 +43,57 @@ export default async function SingleProjectPage({ params }: IProps) {
 
   return (
     <>
-      {infos && (
-        <section className={container()}>
-          <ProjectHeader
-            avatar={issues.data[0]?.project.avatar}
-            name={infos.name}
-            description={infos.description}
-            links={infos.links}
-          />
-        </section>
-      )}
-      <section className={container() + " mt-6 !mb-16"}>
-        <div className="flex flex-col md:flex-row gap-6 w-full">
-          <div className="flex-grow md:basis-0">
-            <ProjectMetrics metrics={metrics} stats={stats} />
-          </div>
-          <div className="md:basis-2/3">
-            <ProjectInfos
-              labels={labels}
-              infos={[
-                { title: "Networks", items: infos?.attributes.networks ?? [] },
-                {
-                  title: "Technologies",
-                  items: infos?.attributes.technologies ?? [],
-                },
-                { title: "Purposes", items: infos?.attributes.purposes ?? [] },
-                { title: "Layers", items: infos?.attributes.stackLevels ?? [] },
-              ]}
+      <section
+        className={container() + " sm:gap-4 md:flex md:justify-between !mb-16"}
+      >
+        <div>
+          {infos && (
+            <ProjectHeader
+              avatar={issues.data[0]?.project.avatar}
+              name={infos.name}
+              description={infos.description}
+              links={infos.links}
             />
+          )}
+          <div className="flex flex-col md:flex-row gap-6 w-full mt-6">
+            <div className="flex-grow lg:basis-1/4">
+              <ProjectMetrics metrics={metrics} stats={stats} />
+            </div>
+            <div className="lg:basis-2/3">
+              <ProjectInfos
+                labels={labels}
+                infos={[
+                  {
+                    title: "Networks",
+                    items: infos?.attributes.networks ?? [],
+                  },
+                  {
+                    title: "Technologies",
+                    items: infos?.attributes.technologies ?? [],
+                  },
+                  {
+                    title: "Purposes",
+                    items: infos?.attributes.purposes ?? [],
+                  },
+                  {
+                    title: "Types",
+                    items: infos?.attributes.types ?? [],
+                  },
+                ]}
+              />
+            </div>
           </div>
+        </div>
+        <div className="mt-8 md:mt-0 md:basis-1/2 lg:basis-1/4">
+          <LayersMap
+            isPlatform={infos?.attributes.stackLevels.includes("protocol")}
+            isRuntime={infos?.attributes.stackLevels.includes("runtime")}
+            isMessaging={infos?.attributes.stackLevels.includes("messaging")}
+            isOffchain={infos?.attributes.stackLevels.includes("offchain")}
+            isSmartContract={infos?.attributes.stackLevels.includes(
+              "smart-contract",
+            )}
+          />
         </div>
       </section>
 

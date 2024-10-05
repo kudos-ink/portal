@@ -29,7 +29,7 @@ const DropdownLinks = ({ icon, items, placeholder }: IDropdownLinksProps) => {
       placement="bottom-start"
       className="min-w-0 w-fit"
       classNames={{
-        content: "p-0 border-small border-divider",
+        content: "p-0 border-divider",
       }}
     >
       <DropdownTrigger>

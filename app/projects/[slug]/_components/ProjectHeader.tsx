@@ -33,7 +33,7 @@ const ProjectHeader = ({
           width={40}
         />
       )}
-      <span className="text-3xl font-semibold">{name}</span>
+      <span className="text-3xl font-bold md:text-4xl">{name}</span>
     </div>
     <span className="leading-tight line-clamp-2 capitalize">{description}</span>
     <div className="flex flex-wrap gap-3 mt-6">
