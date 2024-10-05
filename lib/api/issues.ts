@@ -30,8 +30,8 @@ export async function fetchProjectLabelFlags(
     return DEFAULT_PAGINATED_RESPONSE;
   });
 
-  const hasGoodFirstIssue = (goodFirstIssuesResponse.totalCount ?? 0) > 0;
-  const hasKudosCertified = (kudosCertificationResponse.totalCount ?? 0) > 0;
+  const hasGoodFirstIssue = goodFirstIssuesResponse.totalCount > 0;
+  const hasKudosCertified = kudosCertificationResponse.totalCount > 0;
 
   // TODO: handle rewards flag
 

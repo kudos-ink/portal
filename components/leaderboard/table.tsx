@@ -53,6 +53,7 @@ const LeaderboardTable = ({ data }: IStaticTableProps) => {
 
   return (
     <NextUITable
+      hideHeader
       aria-label="Leaderboard"
       classNames={{
         table:
