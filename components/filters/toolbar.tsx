@@ -16,19 +16,24 @@ import useSticky from "@/hooks/useSticky";
 import { FilterKeys } from "@/types/filters";
 import { countNonEmptyFilters } from "@/utils/filters";
 import { createUrl } from "@/utils/url";
-import { selectFilters, checkboxFilters } from "./config";
+import type { CheckboxFilterConfig, SelectFilterConfig } from "./config";
+import { DEFAULT_CHECKBOX_FILTERS, DEFAULT_SELECT_FILTERS } from "./config";
 import CheckboxFilter from "./checkbox-filter";
 import ClearFilters from "./clear-filters";
 import SelectFilter from "./select-filter";
 
 interface IToolbarProps {
   label: string;
+  checkboxFilters?: CheckboxFilterConfig[];
+  selectFilters?: SelectFilterConfig[];
   withAdvanceFilters?: boolean;
   shouldUpdateRouter?: boolean;
 }
 
 const Toolbar = ({
   label,
+  checkboxFilters = DEFAULT_CHECKBOX_FILTERS,
+  selectFilters = DEFAULT_SELECT_FILTERS,
   withAdvanceFilters = false,
   shouldUpdateRouter = true, // Default to true for URL-based filter updates
 }: IToolbarProps) => {

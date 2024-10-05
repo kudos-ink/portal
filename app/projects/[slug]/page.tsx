@@ -3,8 +3,14 @@ import IssuesApi from "@/api/core/issues";
 import { container } from "@/components/primitives";
 import PaginatedTable from "@/components/table/paginated-table";
 import { DefaultFiltersProvider } from "@/components/providers/filters";
+import {
+  CheckboxFilterConfig,
+  DEFAULT_CHECKBOX_FILTERS,
+  SelectFilterConfig,
+} from "@/components/filters/config";
 import Toolbar from "@/components/filters/toolbar";
 import { DEFAULT_PAGINATED_RESPONSE, DEFAULT_QUERY } from "@/data/fetch";
+import { KUDOS_ISSUE_KEY, TECHNOLOGY_KEY } from "@/data/filters";
 import { fetchProjectLabelFlags } from "@/lib/api/issues";
 import { Issue, IssueQueryParams } from "@/types/issue";
 import { PaginatedCustomResponse } from "@/types/pagination";
@@ -13,6 +19,22 @@ import ProjectInfos, { LayersMap } from "./_components/ProjectInfos";
 import ProjectMetrics from "./_components/ProjectMetrics";
 import { constructProjectMetrics } from "./_helpers/metrics";
 import { constructLabels } from "./_helpers/infos";
+import { KudosCertifiedIcon } from "@/assets/icons";
+import { KudosIssueTooltipContent } from "@/components/table/row";
+
+const SELECT_FILTERS: SelectFilterConfig[] = [
+  { key: TECHNOLOGY_KEY, options: [] },
+];
+
+const CHECKBOX_FILTERS: CheckboxFilterConfig[] = [
+  ...DEFAULT_CHECKBOX_FILTERS,
+  {
+    key: KUDOS_ISSUE_KEY,
+    placeholder: "Kudos Issues Only",
+    content: <KudosIssueTooltipContent />,
+    icon: <KudosCertifiedIcon className="w-5 h-5" size={16} />,
+  },
+];
 
 interface IProps {
   params: { slug: string };
@@ -101,6 +123,8 @@ export default async function SingleProjectPage({ params }: IProps) {
         {/* TODO: Add advance filters but make sure to only have the correct filters options from the query above (add props to DefaultFiltersProvider to support query) */}
         <Toolbar
           label={`${infos?.name ?? "Open"} contributions`}
+          selectFilters={SELECT_FILTERS}
+          checkboxFilters={CHECKBOX_FILTERS}
           shouldUpdateRouter={false}
         />
         <section className={container()}>

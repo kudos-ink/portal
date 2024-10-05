@@ -16,13 +16,13 @@ import {
 } from "@/types/filters";
 import { KudosIssueTooltipContent } from "../table/row";
 
-interface SelectFilterConfig {
+export interface SelectFilterConfig {
   key: SelectFilterKeys;
   options: IFilterOption[];
   isAdvanced?: boolean;
 }
 
-interface CheckboxFilterConfig {
+export interface CheckboxFilterConfig {
   key: BooleanFilterKeys;
   placeholder: string;
   content: JSX.Element;
@@ -30,7 +30,7 @@ interface CheckboxFilterConfig {
   isAdvanced?: boolean;
 }
 
-const selectFilters: SelectFilterConfig[] = [
+const DEFAULT_SELECT_FILTERS: SelectFilterConfig[] = [
   { key: TECHNOLOGY_KEY, options: [] },
   { key: PURPOSE_KEY, options: [] },
   { key: PROJECTS_KEY, options: [], isAdvanced: true },
@@ -38,7 +38,7 @@ const selectFilters: SelectFilterConfig[] = [
   { key: PROJECT_TYPE_KEY, options: [], isAdvanced: true },
 ];
 
-const checkboxFilters: CheckboxFilterConfig[] = [
+const DEFAULT_CHECKBOX_FILTERS: CheckboxFilterConfig[] = [
   {
     key: GOOD_FIRST_ISSUE_KEY,
     placeholder: "Good first issues Only",
@@ -65,4 +65,4 @@ const checkboxFilters: CheckboxFilterConfig[] = [
   },
 ];
 
-export { selectFilters, checkboxFilters };
+export { DEFAULT_SELECT_FILTERS, DEFAULT_CHECKBOX_FILTERS };
