@@ -22,7 +22,10 @@ export const SelectFilter = ({
   <Select
     aria-label={`Select Filter ${placeholder}`}
     className={`w-48 shrink-0 ${className}`}
-    classNames={{ value: "capitalize" }}
+    classNames={{
+      value: "capitalize",
+      trigger: "data-[hover=true]:bg-opacity-hover",
+    }}
     color="default"
     variant="faded"
     size="md"

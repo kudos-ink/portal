@@ -16,6 +16,6 @@ export type Repository = {
   slug: string;
   name: string;
   language: string;
-  project: Project;
+  // project: Project;
   url: string;
 };

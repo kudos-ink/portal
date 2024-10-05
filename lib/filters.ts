@@ -1,5 +1,6 @@
 import LanguagesApi from "@/api/core/languages";
 import ProjectsApi from "@/api/core/projects";
+import RepositoriesApi from "@/api/core/repositories";
 import { DEFAULT_BIG_PAGE_SIZE } from "@/data/fetch";
 import {
   FProjectTypes,
@@ -23,6 +24,36 @@ import { IFilterOption, FilterOptions, Filters } from "@/types/filters";
 import { IssueQueryParams } from "@/types/issue";
 import { PaginationQueryParams } from "@/types/pagination";
 import { createFilterOptions } from "@/utils/filters";
+
+export async function getProjectFilterOptions(
+  repositoryIds: number[],
+): Promise<FilterOptions> {
+  let languageValues: string[] = [];
+
+  try {
+    const languagePromises = repositoryIds.map((id) =>
+      RepositoriesApi.getRepositoryById(id).then((repo) => repo.language),
+    );
+
+    languageValues = await Promise.all(languagePromises);
+  } catch (error) {
+    console.error("Error fetching language values - ", error);
+    languageValues = [];
+  }
+
+  const technologies = createFilterOptions(
+    languageValues.map((v) => v.toLocaleLowerCase().replaceAll('"', "")),
+    emojiMapForTechnologies,
+  );
+
+  return {
+    [PROJECT_TYPE_KEY]: [],
+    [PURPOSE_KEY]: [],
+    [STACK_LEVEL_KEY]: [],
+    [TECHNOLOGY_KEY]: technologies,
+    [PROJECTS_KEY]: [],
+  };
+}
 
 export async function getFilterOptions(): Promise<FilterOptions> {
   let languageValues: string[];

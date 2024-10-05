@@ -1,15 +1,19 @@
 import { FiltersProvider } from "@/contexts/filters";
-import { getFilterOptions } from "@/lib/filters";
+import { getFilterOptions, getProjectFilterOptions } from "@/lib/filters";
 import { FilterOptions } from "@/types/filters";
 import { initFilters } from "@/utils/filters";
 
 export async function DefaultFiltersProvider({
   children,
+  repositoryIds,
 }: {
   children: React.ReactNode;
+  repositoryIds?: number[];
 }) {
   const filters = initFilters();
-  const filterOptions = await getFilterOptions().catch((error) => {
+  const filterOptions = await (
+    repositoryIds ? getProjectFilterOptions(repositoryIds) : getFilterOptions()
+  ).catch((error) => {
     console.error("Error fetching filter options:", error);
     return {} as FilterOptions;
   });

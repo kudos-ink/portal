@@ -26,7 +26,7 @@ export function dtoToRepository(dto: RepositoryDto): Repository {
     id: dto.id,
     slug: dto.slug,
     language: dto.language_slug,
-    project: dtoToProject(dto.project),
+    // project: dtoToProject(dto.project),
     name: dto.name,
     url: dto.url,
   };

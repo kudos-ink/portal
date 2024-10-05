@@ -55,6 +55,9 @@ export default async function SingleProjectPage({ params }: IProps) {
     console.error(`Error fetching issues for project "${params.slug}":`, error);
     return DEFAULT_PAGINATED_RESPONSE;
   })) as PaginatedCustomResponse<Issue>;
+  const repositoryIds = Array.from(
+    new Set(issues.data.map(({ repository }) => repository.id)),
+  );
 
   const labelFlags = await fetchProjectLabelFlags(params.slug);
   const labels = constructLabels(labelFlags);
@@ -119,8 +122,7 @@ export default async function SingleProjectPage({ params }: IProps) {
         </div>
       </section>
 
-      <DefaultFiltersProvider>
-        {/* TODO: Add advance filters but make sure to only have the correct filters options from the query above (add props to DefaultFiltersProvider to support query) */}
+      <DefaultFiltersProvider repositoryIds={repositoryIds}>
         <Toolbar
           label={`${infos?.name ?? "Open"} contributions`}
           selectFilters={SELECT_FILTERS}
