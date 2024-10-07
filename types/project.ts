@@ -39,10 +39,12 @@ export type ProjectInfos = {
   };
 };
 
-export type ProjectInfosLabelFlags = {
-  hasGoodFirstIssue: boolean;
-  hasKudosCertified: boolean;
-  hasRewards: boolean;
+export type ProjectMetrics = {
+  repositoriesTotal: number;
+  suggestedTotal: number;
+  certifiedTotal: number;
+  kudosWeeksTotal: number;
+  rewardsTotal: number;
 };
 
 export type ProjectInfosLabel = {

@@ -37,7 +37,7 @@ export const initFilters = (): Filters => {
     [TECHNOLOGY_KEY]: [],
     [STACK_LEVEL_KEY]: [],
     [PROJECTS_KEY]: [],
-    [GOOD_FIRST_ISSUE_KEY]: false,
+    [GOOD_FIRST_ISSUE_KEY]: true,
     [KUDOS_ISSUE_KEY]: false,
   };
 };

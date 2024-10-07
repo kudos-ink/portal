@@ -1,17 +1,26 @@
-import { ProjectInfos } from "@/types/project";
+import { KUDOS_ISSUE_LABELS } from "@/data/filters";
+import { fetchProjectIssues } from "@/lib/api/issues";
+import { Issue } from "@/types/issue";
+import { PaginatedCustomResponse } from "@/types/pagination";
+import { ProjectMetrics, ProjectInfos } from "@/types/project";
 
 export async function constructProjectMetrics(
-  infos: ProjectInfos | null,
-  issuesCount: number,
-): Promise<{ metrics: { label: string; value: number }[]; stats: any }> {
-  const repositories = infos?.links?.repository || [];
+  infos: ProjectInfos,
+  suggestedIssues: PaginatedCustomResponse<Issue>,
+): Promise<ProjectMetrics> {
+  const certifiedIssues = await fetchProjectIssues(infos.slug, {
+    certified: false,
+  });
 
-  const metrics = [
-    { label: "Unified Repositories", value: repositories.length },
-    { label: "Active Issues", value: issuesCount },
-    // { label: "Curators", value: infos?.curators?.length ?? 0 },
-    // { label: "Contributors", value: 0 }, // TODO once leaderboard is ready
-  ];
+  const kudosWeeksIssues = await fetchProjectIssues(infos.slug, {
+    labels: KUDOS_ISSUE_LABELS,
+  });
 
-  return { metrics, stats: [] };
+  return {
+    repositoriesTotal: infos.links.repository.length,
+    certifiedTotal: certifiedIssues.totalCount,
+    kudosWeeksTotal: kudosWeeksIssues.totalCount,
+    rewardsTotal: 0,
+    suggestedTotal: suggestedIssues.totalCount,
+  };
 }

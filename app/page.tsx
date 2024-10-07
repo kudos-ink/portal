@@ -1,5 +1,4 @@
 import { Button } from "@nextui-org/button";
-import Link from "next/link";
 import { Link as NuiLink } from "@nextui-org/link";
 import IssuesApi from "@/api/core/issues";
 import { GithubIcon, TwitterIcon } from "@/assets/icons";
@@ -21,6 +20,7 @@ const EXPLORE_LABEL = "Explore Open Contributions";
 
 export default async function Home() {
   const issues = await IssuesApi.getIssues({
+    goodFirst: true,
     offset: 0,
     limit: DEFAULT_HOMEPAGE_PAGE_SIZE,
   }).catch((error) => {
@@ -45,32 +45,9 @@ export default async function Home() {
         </h2>
       </section>
 
-      <section className={"mb-8 " + container()}>
-        <NuiLink
-          className="w-full"
-          href="/events/kudos-weeks"
-          color="foreground"
-          title="Kudos Weeks event page"
-          as={Link}
-        >
-          <blockquote className="relative w-full flex justify-between items-center text-lg border px-4 py-3 rounded-xl [&amp;>p]:m-0 border-primary bg-primarlay my-2 cursor-pointer hover:bg-primary transition-colors">
-            <span>
-              ♨️ <strong>Kudos Weeks</strong> are about to start! -{" "}
-              <strong>From Nov 1 to Dec 15</strong>: Level up your
-              contributions, solve key issues, and rise up the Kudos
-              leaderboard!
-            </span>
-            <span className="font-bold absolute right-6 transform -translate-x-1/2 text-2xl animate-bounce-right">
-              {" "}
-              &gt;{" "}
-            </span>
-          </blockquote>
-        </NuiLink>
-      </section>
-
       <DefaultFiltersProvider>
         <div className="flex flex-col">
-          <Toolbar label="Latest Contributions" />
+          <Toolbar label="Suggested Contributions" checkboxFilters={[]} />
           <section className={container()}>
             <StaticTable data={issues.data} />
           </section>
@@ -79,7 +56,7 @@ export default async function Home() {
 
       <section className={"flex flex-col items-center " + container()}>
         <NuiLink
-          href="/explore/open-contributions"
+          href="/explore/good-first-open-contributions"
           aria-label={EXPLORE_LABEL}
           title={EXPLORE_LABEL}
         >

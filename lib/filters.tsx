@@ -26,7 +26,7 @@ import {
 import { IFilterOption, FilterOptions, Filters } from "@/types/filters";
 import { IssueQueryParams } from "@/types/issue";
 import { PaginationQueryParams } from "@/types/pagination";
-import { ProjectInfosLabelFlags } from "@/types/project";
+import { ProjectMetrics } from "@/types/project";
 import { createFilterOptions } from "@/utils/filters";
 
 export async function getProjectFilterOptions(
@@ -128,7 +128,7 @@ export function filtersToIssuesQuery(
   }
 
   if (filters[GOOD_FIRST_ISSUE_KEY]) {
-    query.labels = GOOD_FIRST_ISSUE_LABELS;
+    query.goodFirst = true;
   }
 
   if (filters[KUDOS_ISSUE_KEY]) {
@@ -139,11 +139,11 @@ export function filtersToIssuesQuery(
 }
 
 export function buildCheckboxFilters(
-  labelFlags: ProjectInfosLabelFlags,
+  metrics: ProjectMetrics,
 ): CheckboxFilterConfig[] {
   const filters: CheckboxFilterConfig[] = [];
 
-  if (labelFlags.hasGoodFirstIssue) {
+  if (metrics.suggestedTotal > 0) {
     filters.push({
       key: GOOD_FIRST_ISSUE_KEY,
       placeholder: "Good first issues Only",
@@ -163,7 +163,7 @@ export function buildCheckboxFilters(
     });
   }
 
-  if (labelFlags.hasKudosCertified) {
+  if (metrics.certifiedTotal > 0) {
     filters.push({
       key: KUDOS_ISSUE_KEY,
       placeholder: "Kudos Issues Only",

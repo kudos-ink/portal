@@ -1,13 +1,13 @@
-import ConfigApi from "@/api/config/api";
-import IssuesApi from "@/api/core/issues";
 import { container } from "@/components/primitives";
 import PaginatedTable from "@/components/table/paginated-table";
 import { DefaultFiltersProvider } from "@/components/providers/filters";
 import { SelectFilterConfig } from "@/components/filters/config";
 import Toolbar from "@/components/filters/toolbar";
-import { DEFAULT_PAGINATED_RESPONSE, DEFAULT_QUERY } from "@/data/fetch";
+import KudosWeeksBanner from "@/components/kudos-weeks-banner";
+import { DEFAULT_QUERY } from "@/data/fetch";
 import { TECHNOLOGY_KEY } from "@/data/filters";
-import { fetchProjectLabelFlags } from "@/lib/api/issues";
+import { fetchProjectIssues } from "@/lib/api/issues";
+import { fetchProjectInfo } from "@/lib/api/projects";
 import { buildCheckboxFilters } from "@/lib/filters";
 import { Issue, IssueQueryParams } from "@/types/issue";
 import { PaginatedCustomResponse } from "@/types/pagination";
@@ -21,36 +21,32 @@ const SELECT_FILTERS: SelectFilterConfig[] = [
   { key: TECHNOLOGY_KEY, options: [] },
 ];
 
+function getUniqueRepositoryIds(issues: PaginatedCustomResponse<Issue>) {
+  return Array.from(
+    new Set(issues.data.map(({ repository }) => repository.id)),
+  );
+}
+
 interface IProps {
   params: { slug: string };
 }
 
 export default async function SingleProjectPage({ params }: IProps) {
-  const infos = await ConfigApi.getProjectInfos(params.slug).catch((error) => {
-    console.error(`Error fetching project infos for "${params.slug}":`, error);
-    return null;
-  });
-  const query: IssueQueryParams = {
-    projects: [params.slug],
-  };
-  const issues = (await IssuesApi.getIssues({
-    ...DEFAULT_QUERY,
-    ...query,
-  }).catch((error) => {
-    console.error(`Error fetching issues for project "${params.slug}":`, error);
-    return DEFAULT_PAGINATED_RESPONSE;
-  })) as PaginatedCustomResponse<Issue>;
-  const repositoryIds = Array.from(
-    new Set(issues.data.map(({ repository }) => repository.id)),
-  );
+  const { slug } = params;
+  const infos = await fetchProjectInfo(slug);
 
-  const labelFlags = await fetchProjectLabelFlags(params.slug);
-  const labels = constructLabels(labelFlags);
-  const checkboxFilters = buildCheckboxFilters(labelFlags);
-  const { metrics, stats } = await constructProjectMetrics(
-    infos,
-    issues.totalCount,
-  );
+  if (infos == null) return "Project not found";
+
+  const query: IssueQueryParams = {
+    projects: [slug],
+    goodFirst: true,
+  };
+  const issues = await fetchProjectIssues(slug, query);
+  const metrics = await constructProjectMetrics(infos, issues);
+
+  const labels = constructLabels(metrics);
+  const repositoryIds = getUniqueRepositoryIds(issues);
+  const checkboxFilters = buildCheckboxFilters(metrics);
 
   return (
     <>
@@ -58,17 +54,15 @@ export default async function SingleProjectPage({ params }: IProps) {
         className={container() + " sm:gap-4 md:flex md:justify-between !mb-16"}
       >
         <div>
-          {infos && (
-            <ProjectHeader
-              avatar={issues.data[0]?.project.avatar}
-              name={infos.name}
-              description={infos.description}
-              links={infos.links}
-            />
-          )}
+          <ProjectHeader
+            avatar={issues.data[0]?.project.avatar}
+            name={infos.name}
+            description={infos.description}
+            links={infos.links}
+          />
           <div className="flex flex-col md:flex-row gap-6 w-full mt-6">
             <div className="flex-grow lg:basis-1/4">
-              <ProjectMetrics metrics={metrics} stats={stats} />
+              <ProjectMetrics metrics={metrics} />
             </div>
             <div className="lg:basis-2/3">
               <ProjectInfos
@@ -107,6 +101,17 @@ export default async function SingleProjectPage({ params }: IProps) {
           />
         </div>
       </section>
+
+      {metrics.kudosWeeksTotal > 0 && (
+        <section className={"mt-20 mb-4 " + container()}>
+          <KudosWeeksBanner>
+            ♨️ <strong className="capitalize">{infos.name}</strong> participates
+            to <strong>Kudos Weeks</strong>! -{" "}
+            <strong>From Nov 1 to Dec 15</strong>: Level up your contributions,
+            solve key issues, and rise up the leaderboard!
+          </KudosWeeksBanner>
+        </section>
+      )}
 
       <DefaultFiltersProvider repositoryIds={repositoryIds}>
         <Toolbar

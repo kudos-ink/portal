@@ -1,39 +1,18 @@
 import IssuesApi from "@/api/core/issues";
 import { DEFAULT_QUERY, DEFAULT_PAGINATED_RESPONSE } from "@/data/fetch";
-import { GOOD_FIRST_ISSUE_LABELS } from "@/data/filters";
-import { ProjectInfosLabelFlags } from "@/types/project";
+import { Issue, IssueQueryParams } from "@/types/issue";
+import { PaginatedCustomResponse } from "@/types/pagination";
 
-export async function fetchProjectLabelFlags(
+export async function fetchProjectIssues(
   slug: string,
-): Promise<ProjectInfosLabelFlags> {
-  const goodFirstIssuesResponse = await IssuesApi.getIssues({
-    ...DEFAULT_QUERY,
+  query: IssueQueryParams,
+): Promise<PaginatedCustomResponse<Issue>> {
+  return IssuesApi.getIssues({
     projects: [slug],
-    labels: GOOD_FIRST_ISSUE_LABELS,
+    ...DEFAULT_QUERY,
+    ...query,
   }).catch((error) => {
-    console.error(
-      `Error fetching 'GOOD FIRST' issues for project "${slug}":`,
-      error,
-    );
+    console.error(`Error fetching issues for project "${slug}":`, error);
     return DEFAULT_PAGINATED_RESPONSE;
   });
-
-  const kudosCertificationResponse = await IssuesApi.getIssues({
-    ...DEFAULT_QUERY,
-    projects: [slug],
-    certified: true,
-  }).catch((error) => {
-    console.error(
-      `Error fetching 'Kudos Certified' issues for project "${slug}":`,
-      error,
-    );
-    return DEFAULT_PAGINATED_RESPONSE;
-  });
-
-  const hasGoodFirstIssue = goodFirstIssuesResponse.totalCount > 0;
-  const hasKudosCertified = kudosCertificationResponse.totalCount > 0;
-
-  // TODO: handle rewards flag
-
-  return { hasGoodFirstIssue, hasKudosCertified, hasRewards: false };
 }

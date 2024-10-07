@@ -14,7 +14,7 @@ const ProjectInfos = ({ infos, labels }: IProjectInfosProps) => (
     {labels.length > 0 && (
       <div className="flex gap-3 border-b-small pb-4">
         {labels.map(({ color, emoji, label, type }, idx) => (
-          <Chip key={idx} color={color} className="cursor-pointer rounded-md">
+          <Chip key={idx} color={color} className="rounded-md">
             <div className="flex items-center font-semibold gap-2 !leading-none py-0.5 text-base">
               {emoji && (
                 <>

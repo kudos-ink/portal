@@ -15,7 +15,7 @@ export const GOOD_FIRST_ISSUE_LABELS = [
   "D0-easy",
 ];
 
-export const KUDOS_ISSUE_LABELS = ["kudos", "kudos-milestone"];
+export const KUDOS_ISSUE_LABELS = ["kudos", "kudos-milestone", "kudos-weeks"];
 
 export const FPurposes = [
   "ai",

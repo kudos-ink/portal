@@ -1,3 +1,4 @@
+import { GOOD_FIRST_ISSUE_LABELS, KUDOS_ISSUE_LABELS } from "@/data/filters";
 import {
   Issue,
   IssueDto,
@@ -49,22 +50,29 @@ export function issueQueryParamsToDto(
   query: IssueQueryParamsWithPagination,
   allLanguages: string[],
 ): IssueQueryParamsDto {
-  const technologies = query.technologies ?? [];
-  const languages = technologies.filter((tech) => allLanguages.includes(tech));
+  const { technologies = [], labels = [], goodFirst } = query;
+
+  const languageSlugs = technologies.filter((tech) =>
+    allLanguages.includes(tech),
+  );
   const remainingTechnologies = technologies.filter(
     (tech) => !allLanguages.includes(tech),
   );
+
+  const combinedLabels = goodFirst
+    ? [...labels, ...GOOD_FIRST_ISSUE_LABELS, ...KUDOS_ISSUE_LABELS]
+    : labels;
 
   return {
     slugs: query.projects,
     certified: query.certified,
     purposes: query.purposes,
     stack_levels: query.stackLevels,
-    labels: query.labels,
+    labels: combinedLabels.length > 0 ? combinedLabels : undefined,
     open: query.open,
     technologies:
       remainingTechnologies.length > 0 ? remainingTechnologies : undefined,
-    language_slugs: languages.length > 0 ? languages : undefined,
+    language_slugs: languageSlugs.length > 0 ? languageSlugs : undefined,
     offset: query.offset,
     limit: query.limit,
   };

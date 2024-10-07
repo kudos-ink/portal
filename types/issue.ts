@@ -31,6 +31,7 @@ export type Issue = {
 };
 
 export type IssueQueryParams = Partial<{
+  goodFirst: boolean;
   certified: boolean;
   open: boolean;
   labels: string[];
