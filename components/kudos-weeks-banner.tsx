@@ -5,7 +5,7 @@ function KudosWeeksBanner({ children }: { children: React.ReactNode }) {
   return (
     <NuiLink
       className="w-full"
-      href="/events/kudos-weeks"
+      href="/carnival"
       color="foreground"
       title="Kudos Weeks event page"
       as={Link}

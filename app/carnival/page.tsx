@@ -213,7 +213,7 @@ export default async function SingleEventPage() {
                 </p>
                 <p className="font-normal text-base text-default-500">
                   2. Label your issues with{" "}
-                  <strong className="text-foreground">"kudos"</strong>
+                  <strong className="text-foreground">&quot;kudos&quot;</strong>
                 </p>
               </div>
             </div>
