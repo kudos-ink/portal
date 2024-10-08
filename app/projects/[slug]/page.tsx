@@ -114,20 +114,22 @@ export default async function SingleProjectPage({ params }: IProps) {
       )}
 
       <DefaultFiltersProvider repositoryIds={repositoryIds}>
-        <Toolbar
-          label={`${infos?.name ?? "Open"} contributions`}
-          selectFilters={SELECT_FILTERS}
-          checkboxFilters={checkboxFilters}
-          shouldUpdateRouter={false}
-        />
-        <section className={container()}>
-          <PaginatedTable
-            initialItems={issues}
-            query={query}
-            pagination={DEFAULT_QUERY}
-            withProjectData={false}
+        <div className="flex flex-col">
+          <Toolbar
+            label={`${infos?.name ?? "Open"} contributions`}
+            selectFilters={SELECT_FILTERS}
+            checkboxFilters={checkboxFilters}
+            shouldUpdateRouter={false}
           />
-        </section>
+          <section className={container()}>
+            <PaginatedTable
+              initialItems={issues}
+              query={query}
+              pagination={DEFAULT_QUERY}
+              withProjectData={false}
+            />
+          </section>
+        </div>
       </DefaultFiltersProvider>
     </>
   );

@@ -316,20 +316,22 @@ export default async function SingleEventPage() {
         initialFilters={filters}
         initialFilterOptions={filterOptions}
       >
-        {/* TODO: Add advance filters but make sure to only have the correct filters options from the query above (add props to DefaultFiltersProvider to support query) */}
-        <Toolbar
-          label="Kudos Carnival Issues Backlog"
-          checkboxFilters={[]}
-          shouldUpdateRouter={false}
-        />
-        <section className={container()}>
-          <PaginatedTable
-            initialItems={issues}
-            query={query}
-            pagination={DEFAULT_QUERY}
-            emptyContent="Label your issues with 'kudos' to have them featured in the backlog"
+        <div className="flex flex-col">
+          {/* TODO: Add advance filters but make sure to only have the correct filters options from the query above (add props to DefaultFiltersProvider to support query) */}
+          <Toolbar
+            label="Kudos Carnival Issues Backlog"
+            checkboxFilters={[]}
+            shouldUpdateRouter={false}
           />
-        </section>
+          <section className={container()}>
+            <PaginatedTable
+              initialItems={issues}
+              query={query}
+              pagination={DEFAULT_QUERY}
+              emptyContent="Label your issues with 'kudos' to have them featured in the backlog"
+            />
+          </section>
+        </div>
       </FiltersProvider>
 
       <section className={container() + " mt-32"}>
