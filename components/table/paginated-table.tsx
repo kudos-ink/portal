@@ -17,6 +17,7 @@ interface IPaginatedTableProps {
   initialItems: PaginatedCustomResponse<Issue>;
   query: IssueQueryParams;
   pagination: PaginationQueryParams;
+  emptyContent?: string;
   withProjectData?: boolean;
 }
 
@@ -24,6 +25,7 @@ const PaginatedTable = ({
   initialItems,
   query,
   pagination,
+  emptyContent,
   withProjectData,
 }: IPaginatedTableProps) => {
   const { filters } = useFilters();
@@ -59,6 +61,7 @@ const PaginatedTable = ({
     <>
       <StaticTable
         data={results?.data || []}
+        emptyContent={emptyContent}
         withProjectData={withProjectData}
       />
       {totalPages > 1 && (

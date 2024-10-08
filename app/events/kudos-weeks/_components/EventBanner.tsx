@@ -16,7 +16,9 @@ const EventBanner = () => (
         <span className="text-xl text-primary italic">
           {"kudos < > PBA host"}
         </span>
-        <span className="tracking-tight text-6xl font-bold">Kudos Weeks</span>
+        <span className="tracking-tight text-6xl font-bold">
+          Kudos Carnival
+        </span>
         <span className="text-xl text-default-600">
           November 1, 2024 - December 15, 2024
         </span>
@@ -35,7 +37,7 @@ const EventBanner = () => (
               <IconSocial size={16} /> Participants
             </span>
           </div>
-          <span className="text-2xl font-bold text-text-1">221</span>
+          <span className="text-2xl font-bold text-text-1">TBA</span>
         </div>
         <div className="flex min-w-40 flex-col gap-2 rounded-xl bg-default text-default-foreground p-3">
           <div className="flex items-center gap-1">
@@ -44,7 +46,8 @@ const EventBanner = () => (
             </span>
           </div>
           <span className="text-2xl font-bold text-text-1">
-            87 <span className="text-default-600 font-medium">/ 134</span>
+            TBA
+            {/* 87 <span className="text-default-600 font-medium">/ 134</span> */}
           </span>
         </div>
         <div className="flex min-w-40 flex-col gap-2 rounded-xl bg-default text-default-foreground p-3">
@@ -53,7 +56,7 @@ const EventBanner = () => (
               <IconWeb size={16} /> Projects
             </span>
           </div>
-          <span className="text-2xl font-bold text-text-1">17</span>
+          <span className="text-2xl font-bold text-text-1">TBA</span>
         </div>
       </div>
     </div>

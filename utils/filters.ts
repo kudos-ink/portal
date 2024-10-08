@@ -1,12 +1,4 @@
-import {
-  GOOD_FIRST_ISSUE_KEY,
-  KUDOS_ISSUE_KEY,
-  PROJECTS_KEY,
-  PROJECT_TYPE_KEY,
-  PURPOSE_KEY,
-  STACK_LEVEL_KEY,
-  TECHNOLOGY_KEY,
-} from "@/data/filters";
+import { DEFAULT_INIT_FILTERS, GOOD_FIRST_ISSUE_KEY } from "@/data/filters";
 import { FilterKeys, IFilterOption, Filters } from "@/types/filters";
 
 // Fisher-Yates (or Knuth) shuffle algorithm
@@ -31,15 +23,7 @@ export const shuffleArray = <T>(array: T[]): T[] => {
 };
 
 export const initFilters = (): Filters => {
-  return {
-    [PURPOSE_KEY]: [],
-    [PROJECT_TYPE_KEY]: [],
-    [TECHNOLOGY_KEY]: [],
-    [STACK_LEVEL_KEY]: [],
-    [PROJECTS_KEY]: [],
-    [GOOD_FIRST_ISSUE_KEY]: true,
-    [KUDOS_ISSUE_KEY]: false,
-  };
+  return DEFAULT_INIT_FILTERS;
 };
 
 export const countNonEmptyFilters = (filters: Filters): number => {

@@ -106,7 +106,7 @@ export default async function SingleProjectPage({ params }: IProps) {
         <section className={"mt-20 mb-4 " + container()}>
           <KudosWeeksBanner>
             ♨️ <strong className="capitalize">{infos.name}</strong> participates
-            to <strong>Kudos Weeks</strong>! -{" "}
+            to <strong>Kudos Carnival</strong>! -{" "}
             <strong>From Nov 1 to Dec 15</strong>: Level up your contributions,
             solve key issues, and rise up the leaderboard!
           </KudosWeeksBanner>

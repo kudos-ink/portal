@@ -7,6 +7,16 @@ export const GOOD_FIRST_ISSUE_KEY = "good-first-issue";
 export const KUDOS_ISSUE_KEY = "certified";
 export const REWARDS_KEY = "rewards";
 
+export const DEFAULT_INIT_FILTERS = {
+  [PURPOSE_KEY]: [],
+  [PROJECT_TYPE_KEY]: [],
+  [TECHNOLOGY_KEY]: [],
+  [STACK_LEVEL_KEY]: [],
+  [PROJECTS_KEY]: [],
+  [GOOD_FIRST_ISSUE_KEY]: true,
+  [KUDOS_ISSUE_KEY]: false,
+};
+
 export const GOOD_FIRST_ISSUE_LABELS = [
   "good first issue",
   "C-good-first-issue",

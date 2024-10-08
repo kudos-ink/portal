@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { useMediaQuery } from "react-responsive";
 import {
   Table as NextUITable,
@@ -13,9 +14,9 @@ import {
 import { ExternalLink, Content, Time, Project } from "./row";
 
 import dynamic from "next/dynamic";
-import { useFilters } from "@/contexts/filters";
-import { KUDOS_ISSUE_KEY } from "@/data/filters";
 import { Issue } from "@/types/issue";
+
+const DEFAULT_EMPTY = "No contributions to display.. Try another query (:";
 
 const KUDOS_HIGHLIGHT_STYLES = `before:absolute before:content-['']
   before:bg-[conic-gradient(transparent_270deg,_#BABABC,_transparent)]
@@ -40,11 +41,16 @@ interface IColumn {
 
 interface IStaticTableProps {
   data: Issue[];
+  emptyContent?: string;
   withProjectData?: boolean;
 }
 
-const StaticTable = ({ data, withProjectData = true }: IStaticTableProps) => {
-  const { filters } = useFilters();
+const StaticTable = ({
+  data,
+  emptyContent,
+  withProjectData = true,
+}: IStaticTableProps) => {
+  const pathname = usePathname();
   const isMobile = useMediaQuery({ maxWidth: 639 }); // tailwind lg default: 640px
   const isLaptop = useMediaQuery({ minWidth: 1024 }); // tailwind lg default: 1024px
 
@@ -76,13 +82,16 @@ const StaticTable = ({ data, withProjectData = true }: IStaticTableProps) => {
           );
         }
         case "content": {
-          const { isCertified, title, repository, project, url } = item;
+          const { title, repository, project } = item;
           return (
             <Content
               title={title}
               projectName={withProjectData ? project.name : undefined}
               repositoryName={repository?.name}
-              isCertified={isCertified}
+              isCertified={
+                item.labels.includes("kudos") &&
+                pathname !== "/events/kudos-weeks"
+              }
             />
           );
         }
@@ -155,12 +164,10 @@ const StaticTable = ({ data, withProjectData = true }: IStaticTableProps) => {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody
-        items={data}
-        emptyContent="No contributions to display.. Try another query (:"
-      >
+      <TableBody items={data} emptyContent={emptyContent ?? DEFAULT_EMPTY}>
         {(item) => {
-          const isHighlighted = item.isCertified && !filters?.[KUDOS_ISSUE_KEY];
+          const isHighlighted =
+            item.labels.includes("kudos") && pathname !== "/events/kudos-weeks";
           return (
             <TableRow
               key={item.id}
