@@ -341,15 +341,17 @@ export default async function SingleEventPage() {
         <h3 className="text-xl text-default-600 mt-4">
           Earn 1 point for every assigned issue you complete during the event.
         </h3>
-        <div className="flex flex-col gap-4 sm:flex-row mt-6">
+        <div className="flex flex-col gap-4 sm:flex-row mt-16">
           <div className="flex flex-col gap-2 basis-1/2">
             <div className="text-lg font-bold leading-normal">This week</div>
-            <LeaderboardTable data={MOCKED_WEEKLY_LEADERBOARD} />
+            <strong>TBA</strong>
+            {/* <LeaderboardTable data={MOCKED_WEEKLY_LEADERBOARD} /> */}
           </div>
 
           <div className="flex flex-col gap-2 basis-1/2">
             <div className="text-lg font-bold leading-normal">All time</div>
-            <LeaderboardTable data={MOCKED_TOTAL_LEADERBOARD} />
+            <strong>TBA</strong>
+            {/* <LeaderboardTable data={MOCKED_TOTAL_LEADERBOARD} /> */}
           </div>
         </div>
       </section>
