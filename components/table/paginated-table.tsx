@@ -12,6 +12,8 @@ import {
 } from "@/types/pagination";
 
 import StaticTable from "./static-table";
+import TableSkeleton from "./skeleton";
+import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
 
 interface IPaginatedTableProps {
   initialItems: PaginatedCustomResponse<Issue>;
@@ -39,12 +41,11 @@ const PaginatedTable = ({
     ...filteredQuery,
   };
 
-  const { data: results, isPlaceholderData } = usePaginatedIssues(
-    initialItems,
-    combinedQuery,
-    offset,
-    limit,
-  );
+  const {
+    data: results,
+    isPlaceholderData,
+    isFetching,
+  } = usePaginatedIssues(combinedQuery, offset, limit);
 
   const totalCount = results?.totalCount ?? 0;
   const totalPages = Math.ceil(totalCount / limit);
@@ -56,6 +57,10 @@ const PaginatedTable = ({
   useEffect(() => {
     setPage(1);
   }, [filters]);
+
+  if (isFetching && results === undefined) {
+    return <TableSkeleton pageSize={DEFAULT_PAGE_SIZE} />;
+  }
 
   return (
     <>

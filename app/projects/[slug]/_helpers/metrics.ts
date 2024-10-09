@@ -9,7 +9,7 @@ export async function constructProjectMetrics(
   suggestedIssues: PaginatedCustomResponse<Issue>,
 ): Promise<ProjectMetrics> {
   const certifiedIssues = await fetchProjectIssues(infos.slug, {
-    certified: false,
+    certified: true,
   });
 
   const kudosWeeksIssues = await fetchProjectIssues(infos.slug, {

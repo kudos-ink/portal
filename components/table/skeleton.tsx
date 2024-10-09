@@ -10,8 +10,12 @@ import {
   TableCell,
 } from "@nextui-org/table";
 
-export const TableSkeleton = () => {
-  const placeholderItems = Array.from({ length: 25 }, (_, index) => ({
+interface ITableSkeletonProps {
+  pageSize: number;
+}
+
+export const TableSkeleton = ({ pageSize }: ITableSkeletonProps) => {
+  const placeholderItems = Array.from({ length: pageSize }, (_, index) => ({
     id: index + 1,
   }));
 

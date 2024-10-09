@@ -7,7 +7,7 @@ interface IProjectMetricsProps {
 }
 
 const ProjectMetrics = ({ metrics }: IProjectMetricsProps) => {
-  const { certifiedTotal, repositoriesTotal, suggestedTotal } = metrics;
+  const { repositoriesTotal, suggestedTotal } = metrics;
 
   return (
     <div className="bg-gradient-to-r from-background to-background-200 to-80% py-4 px-6 border-[1px] rounded-md flex flex-col gap-6 h-full">
