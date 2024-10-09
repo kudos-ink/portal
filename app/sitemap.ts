@@ -1,16 +1,11 @@
 import { MetadataRoute } from "next";
 import { SITE_CONFIG } from "@/data/config";
-import { fetchFilterOptions } from "@/lib/repository-metadata";
+import { getFilterOptions } from "@/lib/filters";
 import { createUrl, encodingSlug } from "@/utils/url";
-import {
-  LANGUAGES_KEY,
-  INTEREST_KEY,
-  PROJECTS_KEY,
-  GOOD_FIRST_ISSUE_KEY,
-} from "@/data/filters";
+import { TECHNOLOGY_KEY, PURPOSE_KEY, PROJECTS_KEY } from "@/data/filters";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const filterOptions = await fetchFilterOptions();
+  const filterOptions = await getFilterOptions();
 
   const defaultSites: MetadataRoute.Sitemap = [
     {
@@ -32,10 +27,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
     },
   ];
-  const languagesSites: MetadataRoute.Sitemap = filterOptions.languages.map(
+  const languagesSites: MetadataRoute.Sitemap = filterOptions.technologies.map(
     (lang) => {
       const path = createUrl(
-        LANGUAGES_KEY,
+        TECHNOLOGY_KEY,
         [lang.value],
         "/explore/",
         filterOptions,
@@ -48,11 +43,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       };
     },
   );
-  const interestsSites: MetadataRoute.Sitemap = filterOptions.interests.map(
-    (interest) => {
+  const interestsSites: MetadataRoute.Sitemap = filterOptions.purposes.map(
+    (purpose) => {
       const path = createUrl(
-        INTEREST_KEY,
-        [interest.value],
+        PURPOSE_KEY,
+        [purpose.value],
         "/explore/",
         filterOptions,
       );
@@ -64,11 +59,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       };
     },
   );
-  const repositoriesSites: MetadataRoute.Sitemap =
-    filterOptions.repositories.map((repo) => {
+  const repositoriesSites: MetadataRoute.Sitemap = filterOptions.projects.map(
+    (project) => {
       const path = createUrl(
         PROJECTS_KEY,
-        [repo.value],
+        [project.value],
         "/explore/",
         filterOptions,
       );
@@ -78,7 +73,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: "hourly",
         priority: 0.9,
       };
-    });
+    },
+  );
   const sites = defaultSites.concat(
     languagesSites.concat(interestsSites.concat(repositoriesSites)),
   );

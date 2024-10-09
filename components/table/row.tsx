@@ -1,73 +1,63 @@
+"use client";
 import { useState, useRef, useEffect, useMemo } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
+import { Link as NuiLink } from "@nextui-org/link";
 import { Chip } from "@nextui-org/chip";
-import { Link } from "@nextui-org/link";
 import { Tooltip } from "@nextui-org/tooltip";
 import Emoji from "@/components/emoji";
 import MyImage from "@/components/ui/image";
 import { useFilters } from "@/contexts/filters";
 import { formatDate } from "@/utils/date";
-import { getProjectUrls } from "@/utils/github";
-import { findInterestsByProject, shuffleArray } from "@/utils/filters";
+import { shuffleArray } from "@/utils/filters";
 import { createUrl } from "@/utils/url";
 import {
   GOOD_FIRST_ISSUE_KEY,
   GOOD_FIRST_ISSUE_LABELS,
-  INTEREST_KEY,
-  LANGUAGES_KEY,
+  TECHNOLOGY_KEY,
+  PURPOSE_KEY,
 } from "@/data/filters";
-import { FilterKeys, FilterOption, Filters } from "@/types/filters";
+import { FilterKeys, IFilterOption, Filters } from "@/types/filters";
+import { Repository } from "@/types/repository";
+import { IconRepo } from "@/assets/icons";
 
 const MAX_LABEL_WIDTH = 192;
 
+interface ILabelOption extends IFilterOption {
+  type: FilterKeys;
+}
+
 interface IProjectProps {
   avatarSrc: string | null;
+  slug: string;
   name: string;
-  organization: string;
-  repository: string;
+  repository: Repository;
+  withProjectData?: boolean;
 }
 export const Project = ({
   avatarSrc,
+  slug,
   name,
-  organization,
   repository,
+  withProjectData,
 }: IProjectProps) => {
-  const { organizationUrl, repositoryUrl } = getProjectUrls(
-    organization,
-    repository,
-  );
+  if (!withProjectData) return <div />;
   return (
-    <div className="flex md:gap-4">
-      <Link
-        className="w-fit"
-        isExternal
-        href={organizationUrl}
-        color="foreground"
-        title={`${name}'s organization on Github`}
-      >
-        <Project.Avatar alt={`${name} logo`} src={avatarSrc} />
-      </Link>
-      <div className="hidden md:flex flex-col w-36">
-        <Link
-          className="w-fit"
-          isExternal
-          href={organizationUrl}
-          color="foreground"
-          title={`${name}'s organization on Github`}
-        >
-          <h2 className="font-semibold truncate">{name}</h2>
-        </Link>
-        <Link
-          className="w-fit"
-          isExternal
-          href={repositoryUrl}
-          color="foreground"
-          title={`${name}'s repository on Github`}
-        >
-          <p className="text-small text-default-500 truncate">{repository}</p>
-        </Link>
+    <NuiLink
+      className="flex md:gap-4"
+      href={`/projects/${slug}`}
+      color="foreground"
+      title={`${name}'s project page`}
+      as={Link}
+    >
+      <Project.Avatar alt={`${name} logo`} src={avatarSrc} />
+      <div className="hidden md:flex flex-col justify-start items-start w-36">
+        <h2 className="w-fit text-small font-semibold truncate">{name}</h2>
+        <p className="w-fit text-small text-default-500 truncate">
+          {repository.name}
+        </p>
       </div>
-    </div>
+    </NuiLink>
   );
 };
 
@@ -78,15 +68,15 @@ interface IAvatarProps {
 
 const Avatar = ({ alt, src }: IAvatarProps) => {
   return (
-    <div className="bg-foreground rounded-md min-w-[45px] shrink-0">
+    <div className="bg-foreground rounded-md min-w-[45px] min-h-[45px] shrink-0 flex items-center justify-center">
       {src !== null && (
         <MyImage
           className="border"
           src={src}
           alt={alt}
           radius="sm"
-          height={45}
-          width={45}
+          height={40}
+          width={40}
         />
       )}
     </div>
@@ -97,27 +87,35 @@ Project.Avatar = Avatar;
 
 interface IContentProps {
   title: string;
-  project: string;
-  repository: string;
-  url: string;
+  projectName?: string;
+  repositoryName: string;
   isCertified: boolean;
 }
 export const Content = ({
   title,
-  project,
-  repository,
-  url,
+  projectName,
+  repositoryName,
   isCertified,
 }: IContentProps) => {
   return (
-    <div className="flex flex-col space-y-unit-1 md:space-y-0 lg:w-[270px] xl:w-[500px]">
-      <Link
-        className="w-fit flex gap-1 flex-grow relative"
-        isExternal
-        href={url}
-        color="foreground"
-        title="Open task on Github"
+    <div
+      className={`flex flex-col ${projectName ? "lg:w-[270px] xl:w-[500px]" : "pl-2 gap-1"}`}
+    >
+      <span
+        className={`text-small text-default-500 max-w-48 truncate ${projectName ? "md:hidden" : ""}`}
       >
+        <div className="flex items-center gap-2">
+          {projectName ? (
+            `${projectName} / ${repositoryName}`
+          ) : (
+            <>
+              <IconRepo size={12} />
+              {repositoryName}
+            </>
+          )}
+        </div>
+      </span>
+      <div className="w-fit text-base flex gap-1 flex-grow relative">
         <h3 className="font-semibold leading-tight line-clamp-2 capitalize">
           {title}
         </h3>
@@ -135,24 +133,17 @@ export const Content = ({
             </div>
           </Tooltip>
         )}
-      </Link>
-      <span className="text-small text-default-500 max-w-48 truncate md:hidden">{`${project} / ${repository}`}</span>
+      </div>
     </div>
   );
 };
 
 interface ILabelsProps {
   gitLabels: string[];
-  languages: string[];
-  organization: string;
-  repository: string;
+  technologies: string[];
+  purposes: string[];
 }
-export const Labels = ({
-  gitLabels,
-  languages,
-  organization,
-  repository,
-}: ILabelsProps) => {
+export const Labels = ({ gitLabels, technologies, purposes }: ILabelsProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -162,28 +153,28 @@ export const Labels = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const indicatorRef = useRef<HTMLDivElement>(null);
 
-  const isGoodFirstIssue = GOOD_FIRST_ISSUE_LABELS.some((name) =>
-    gitLabels.includes(name),
-  );
-  const interests = findInterestsByProject(
-    `${organization}/${repository}`,
-    filterOptions.interests,
-    filterOptions.repositories,
-  );
-  const fullLanguages = filterOptions.languages.filter(({ value }) =>
-    languages.includes(value),
-  );
-
   const labels = useMemo(() => {
+    const isGoodFirstIssue = GOOD_FIRST_ISSUE_LABELS.some((name) =>
+      gitLabels.includes(name),
+    );
+    const restTechnologies =
+      filterOptions?.technologies?.filter(({ value }) =>
+        technologies.includes(value),
+      ) ?? [];
+    const restPurposes =
+      filterOptions?.purposes?.filter(({ value }) =>
+        purposes.includes(value),
+      ) ?? [];
+
     const goodFirstIssueLabels = getGoodFirstIssueLabel(isGoodFirstIssue);
-    const languageAndInterestLabels = getLanguageAndInterestLabels(
-      fullLanguages,
-      interests,
+    const technologyAndPurposeLabels = getTechnologyAndPurposeLabels(
+      restTechnologies,
+      restPurposes,
     );
-    return [...goodFirstIssueLabels, ...languageAndInterestLabels].filter(
-      (name) => !isLabelFilteredOut(name, filters),
+    return [...goodFirstIssueLabels, ...technologyAndPurposeLabels].filter(
+      (option) => !isLabelFilteredOut(option, filters),
     );
-  }, [filters, fullLanguages, interests, isGoodFirstIssue]);
+  }, [filters, filterOptions, gitLabels, technologies, purposes]);
 
   const handleClick = (key: FilterKeys, values: string[]) => {
     updateFilter(key, values);
@@ -239,7 +230,7 @@ export const Labels = ({
     >
       {labels
         .slice(0, visibleLabelCount)
-        .map(({ emoji, name, type, value }, index) => (
+        .map(({ emoji, label, type, value }, index) => (
           <Tooltip content="Add to filters" key={index}>
             <Chip
               color={type === GOOD_FIRST_ISSUE_KEY ? "danger" : "default"}
@@ -247,9 +238,13 @@ export const Labels = ({
               onClick={() => handleClick(type, [value])}
             >
               <div className="flex items-center gap-2">
-                <Emoji emoji={emoji} className="text-xl" />
-                &nbsp;
-                {name}
+                {emoji && (
+                  <>
+                    <Emoji emoji={emoji} className="text-xl" />
+                    &nbsp;
+                  </>
+                )}
+                {label}
               </div>
             </Chip>
           </Tooltip>
@@ -258,7 +253,7 @@ export const Labels = ({
         <Tooltip
           content={labels
             .slice(visibleLabelCount)
-            .map(({ emoji, name }) => `${emoji} ${name}`)
+            .map(({ emoji, label }) => `${emoji} ${label}`)
             .join("  -  ")}
         >
           <div ref={indicatorRef} className="flex items-center ml-1 text-xs">
@@ -275,6 +270,7 @@ interface ITimeProps {
 }
 export const Time = ({ timestamp }: ITimeProps) => {
   const [date, setDate] = useState<Date>();
+
   useEffect(() => {
     setDate(new Date(timestamp));
   }, [timestamp]);
@@ -290,7 +286,7 @@ interface IExternalLinkProps {
 }
 export const ExternalLink = ({ href, title }: IExternalLinkProps) => {
   return (
-    <Link
+    <NuiLink
       className="w-fit"
       isBlock
       isExternal
@@ -312,12 +308,12 @@ export const KudosIssueTooltipContent = () => (
   </div>
 );
 
-const getGoodFirstIssueLabel = (isGoodFirstIssue: boolean) => {
+const getGoodFirstIssueLabel = (isGoodFirstIssue: boolean): ILabelOption[] => {
   return isGoodFirstIssue
     ? [
         {
           emoji: "🌟",
-          name: "Good First Issue",
+          label: "Good First Issue",
           type: GOOD_FIRST_ISSUE_KEY as FilterKeys,
           value: "true",
         },
@@ -325,26 +321,27 @@ const getGoodFirstIssueLabel = (isGoodFirstIssue: boolean) => {
     : [];
 };
 
-const getLanguageAndInterestLabels = (
-  fullLanguages: FilterOption[],
-  interests: FilterOption[],
-) => {
+const getTechnologyAndPurposeLabels = (
+  fullTechnologies: IFilterOption[],
+  purposes: IFilterOption[],
+): ILabelOption[] => {
   return shuffleArray([
-    ...fullLanguages.map((name) => ({
-      ...name,
-      type: LANGUAGES_KEY as FilterKeys,
+    ...fullTechnologies.map((tech) => ({
+      ...tech,
+      type: TECHNOLOGY_KEY as FilterKeys,
     })),
-    ...interests.map((interest) => ({
-      ...interest,
-      type: INTEREST_KEY as FilterKeys,
+    ...purposes.map((purpose) => ({
+      ...purpose,
+      type: PURPOSE_KEY as FilterKeys,
     })),
   ]);
 };
 
-const isLabelFilteredOut = (name: FilterOption, filters: Filters) => {
+const isLabelFilteredOut = (option: IFilterOption, filters: Filters) => {
+  if (!filters) return false;
   return (
-    (filters[GOOD_FIRST_ISSUE_KEY] && name.value === "true") ||
-    filters[INTEREST_KEY].some((option) => option.value === name.value) ||
-    filters[LANGUAGES_KEY].some((option) => option.value === name.value)
+    (filters[GOOD_FIRST_ISSUE_KEY] && option.value === "true") ||
+    filters[PURPOSE_KEY].some(({ value }) => value === option.value) ||
+    filters[TECHNOLOGY_KEY].some(({ value }) => value === option.value)
   );
 };

@@ -11,16 +11,17 @@ import { queryClient } from "@/lib/react-query-client";
 
 export interface ProvidersProps {
   children: React.ReactNode;
-  themeProps?: ThemeProviderProps;
 }
 
-export function Providers({ children, themeProps }: ProvidersProps) {
+export function Providers({ children }: ProvidersProps) {
   const router = useRouter();
 
   return (
     <QueryClientProvider client={queryClient}>
       <NextUIProvider navigate={router.push}>
-        <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
+        <NextThemesProvider attribute="class" defaultTheme="kudos">
+          {children}
+        </NextThemesProvider>
       </NextUIProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

@@ -1,14 +1,9 @@
 import { Metadata } from "next";
+import IssuesApi from "@/api/core/issues";
 import InfiniteTable from "@/components/table/infinite-table";
-import { queryDatabase } from "@/lib/notion";
-import { PaginatedCustomDataResponse } from "@/types";
-import { Contribution } from "@/types/contribution";
-import {
-  processNotionFilters,
-  transformNotionDataToContributions,
-} from "@/utils/notion";
+import { filtersToIssuesQuery, getFilterOptions } from "@/lib/filters";
 import { decodingSlug } from "@/utils/url";
-import { fetchFilterOptions } from "@/lib/repository-metadata";
+import { DEFAULT_PAGINATED_RESPONSE } from "@/data/fetch";
 
 interface IProps {
   params: { slug: string };
@@ -31,25 +26,13 @@ export async function generateMetadata({ params }: IProps): Promise<Metadata> {
 }
 
 export default async function ExplorePage({ params }: IProps) {
-  const filterOptions = await fetchFilterOptions();
+  const filterOptions = await getFilterOptions();
   const filters = decodingSlug(params.slug, filterOptions);
-  const queryFilter = processNotionFilters(filters, filterOptions.repositories);
-  const data = await queryDatabase({
-    filter: queryFilter,
+  const query = filtersToIssuesQuery(filters);
+  const issues = await IssuesApi.getIssues(query).catch((error) => {
+    console.error("Error fetching issues:", error);
+    return DEFAULT_PAGINATED_RESPONSE;
   });
-  const contributions = transformNotionDataToContributions(data);
-  const items: PaginatedCustomDataResponse<Contribution> = {
-    data: contributions,
-    hasMore: data.has_more,
-    nextCursor: data.next_cursor ?? undefined,
-  };
 
-  return (
-    <InfiniteTable
-      items={items}
-      queries={{
-        filter: queryFilter,
-      }}
-    />
-  );
+  return <InfiniteTable initialItems={issues} query={query} />;
 }

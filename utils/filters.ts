@@ -1,34 +1,5 @@
-import {
-  GOOD_FIRST_ISSUE_KEY,
-  INTEREST_KEY,
-  KUDOS_ISSUE_KEY,
-  LANGUAGES_KEY,
-  PROJECTS_KEY,
-} from "@/data/filters";
-import {
-  FilterKeys,
-  FilterOption,
-  FilterOptions,
-  Filters,
-} from "@/types/filters";
-
-export const findInterestsByProject = (
-  project: string,
-  interests: FilterOption[],
-  repositories: FilterOption[],
-) => {
-  const matchingInterests = [];
-  const repository = repositories.find(({ value }) => value == project);
-  if (repository && !!repository.interests) {
-    for (const interest of repository.interests) {
-      const interestObject = interests.find(({ value }) => value === interest);
-      if (interestObject) {
-        matchingInterests.push(interestObject);
-      }
-    }
-  }
-  return matchingInterests;
-};
+import { DEFAULT_INIT_FILTERS, GOOD_FIRST_ISSUE_KEY } from "@/data/filters";
+import { FilterKeys, IFilterOption, Filters } from "@/types/filters";
 
 // Fisher-Yates (or Knuth) shuffle algorithm
 export const shuffleArray = <T>(array: T[]): T[] => {
@@ -52,13 +23,7 @@ export const shuffleArray = <T>(array: T[]): T[] => {
 };
 
 export const initFilters = (): Filters => {
-  return {
-    [INTEREST_KEY]: [],
-    [LANGUAGES_KEY]: [],
-    [PROJECTS_KEY]: [],
-    [GOOD_FIRST_ISSUE_KEY]: false,
-    [KUDOS_ISSUE_KEY]: false,
-  };
+  return DEFAULT_INIT_FILTERS;
 };
 
 export const countNonEmptyFilters = (filters: Filters): number => {
@@ -82,26 +47,16 @@ export const countNonEmptyFilters = (filters: Filters): number => {
   return nonEmptyCount;
 };
 
-export function getNewFilterOption(
-  key: FilterKeys,
-  value: string,
-  filterOptions: FilterOptions,
-): FilterOption | undefined {
-  let optionsArray;
-
-  switch (key) {
-    case LANGUAGES_KEY:
-      optionsArray = filterOptions.languages;
-      break;
-    case INTEREST_KEY:
-      optionsArray = filterOptions.interests;
-      break;
-    case PROJECTS_KEY:
-      optionsArray = filterOptions.repositories;
-      break;
-    default:
-      return undefined;
-  }
-
-  return optionsArray.find((option) => option.value === value);
+export function createFilterOptions(
+  items: readonly string[],
+  emojiMap?: Record<string, string>,
+): IFilterOption[] {
+  const sortedItems = [...items].sort();
+  return sortedItems.map((item) => ({
+    value: item,
+    label: item
+      ?.replace("-", " ")
+      .replace(/(^|\s)\S/g, (letter: string) => letter.toUpperCase()),
+    emoji: emojiMap ? emojiMap[item] : undefined,
+  }));
 }

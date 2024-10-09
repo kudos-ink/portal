@@ -1,12 +1,7 @@
 import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  FilterKeys,
-  FilterOption,
-  FilterOptions,
-  Filters,
-} from "@/types/filters";
-import { getNewFilterOption, initFilters } from "@/utils/filters";
+import { FilterKeys, FilterOptions, Filters } from "@/types/filters";
+import { initFilters } from "@/utils/filters";
 import { GOOD_FIRST_ISSUE_KEY, KUDOS_ISSUE_KEY } from "@/data/filters";
 
 export interface IConfigProps {
@@ -33,20 +28,17 @@ export const useFilters = ({
   const updateFilter = useCallback(
     (key: FilterKeys, values: string[]) => {
       setFilters((prev) => {
-        // Handle the boolean value for GOOD_FIRST_ISSUE_KEY & KUDOS_ISSUE_KEY
-        if (key === GOOD_FIRST_ISSUE_KEY) {
-          return { ...prev, [GOOD_FIRST_ISSUE_KEY]: values.includes("true") };
-        } else if (key === KUDOS_ISSUE_KEY) {
-          return { ...prev, [KUDOS_ISSUE_KEY]: values.includes("true") };
+        // Boolean keys
+        if (key === GOOD_FIRST_ISSUE_KEY || key === KUDOS_ISSUE_KEY) {
+          return { ...prev, [key]: values.includes("true") };
         }
 
-        const newOptions: FilterOption[] = [];
-        values.forEach((value) => {
-          const newOption = getNewFilterOption(key, value, filterOptions);
-          if (newOption) {
-            newOptions.push(newOption);
-          }
-        });
+        // Select filter options
+        const newOptions = values
+          .map((value) =>
+            filterOptions[key].find((option) => option.value === value),
+          )
+          .filter((option) => option !== undefined);
 
         return { ...prev, [key]: newOptions };
       });

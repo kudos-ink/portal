@@ -12,6 +12,8 @@ module.exports = {
     extend: {
       backgroundColor: {
         "hover-overlay": "var(--light-overlay)",
+        primarlay: "var(--light-primarlay)",
+        dangerlay: "var(--light-dangerlay)",
       },
       borderColor: {
         overlay: "var(--light-overlay)",
@@ -25,6 +27,7 @@ module.exports = {
       animation: {
         "infinite-scroll": "infinite-scroll 160s linear infinite",
         "kudos-highlight": "kudos-highlight 2.5s linear infinite",
+        "bounce-right": "bounce-right 1.2s ease-in-out infinite",
       },
       keyframes: {
         "infinite-scroll": {
@@ -34,6 +37,10 @@ module.exports = {
         "kudos-highlight": {
           from: { transform: "translate(-50%, -50%) scale(1.4) rotate(0turn)" },
           to: { transform: "translate(-50%, -50%) scale(1.4) rotate(1turn)" },
+        },
+        "bounce-right": {
+          "0%, 100%": { transform: "translateX(0)", easing: "ease-in-out" },
+          "50%": { transform: "translateX(-6px)", easing: "ease-in-out" },
         },
       },
     },
@@ -76,6 +83,10 @@ module.exports = {
             secondary: {
               DEFAULT: "#E50045",
               foreground: "#FCFCFC",
+            },
+            success: {
+              DEFAULT: "#ffcd2a",
+              foreground: "#041E43",
             },
           },
         },

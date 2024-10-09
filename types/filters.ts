@@ -1,54 +1,43 @@
 import {
-  LANGUAGES_KEY,
-  INTEREST_KEY,
   PROJECTS_KEY,
   GOOD_FIRST_ISSUE_KEY,
   KUDOS_ISSUE_KEY,
+  PURPOSE_KEY,
+  PROJECT_TYPE_KEY,
+  TECHNOLOGY_KEY,
+  STACK_LEVEL_KEY,
 } from "@/data/filters";
 
-export type FilterOption = {
-  name: string;
-  emoji: string;
+export interface IFilterOption {
   value: string;
-  interests?: string[];
-  id?: string;
-  icon?: string;
-  repository_url?: string;
-};
-
-export type FilterOptions = {
-  interests: FilterOption[];
-  languages: FilterOption[];
-  repositories: Repository[];
-};
-
-export type SearchParams = {
-  [key: string]: string | undefined;
-};
+  label: string;
+  emoji?: string;
+}
 
 export type FilterKeys =
-  | typeof LANGUAGES_KEY
-  | typeof INTEREST_KEY
+  | typeof PURPOSE_KEY
+  | typeof PROJECT_TYPE_KEY
+  | typeof TECHNOLOGY_KEY
+  | typeof STACK_LEVEL_KEY
   | typeof PROJECTS_KEY
   | typeof GOOD_FIRST_ISSUE_KEY
   | typeof KUDOS_ISSUE_KEY;
 
-type ExcludedFilterKeys = Exclude<
-  FilterKeys,
-  typeof GOOD_FIRST_ISSUE_KEY | typeof KUDOS_ISSUE_KEY
->;
+export type SelectFilterKeys =
+  | typeof PURPOSE_KEY
+  | typeof PROJECT_TYPE_KEY
+  | typeof TECHNOLOGY_KEY
+  | typeof STACK_LEVEL_KEY
+  | typeof PROJECTS_KEY;
 
-export type Filters = {
-  [key in ExcludedFilterKeys]: FilterOption[];
-} & {
-  [GOOD_FIRST_ISSUE_KEY]: boolean;
-  [KUDOS_ISSUE_KEY]: boolean;
+export type BooleanFilterKeys =
+  | typeof GOOD_FIRST_ISSUE_KEY
+  | typeof KUDOS_ISSUE_KEY;
+
+export type FilterOptions = {
+  [key in SelectFilterKeys]: IFilterOption[];
 };
 
-export interface Repository extends FilterOption {
-  repository_url: string;
-  topics: string[];
-  about: string;
-  icon: string;
-  project: string;
-}
+export type Filters = FilterOptions & {
+  [key in BooleanFilterKeys]: boolean;
+};

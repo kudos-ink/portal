@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const cspHeader = `
     default-src 'self';
-    connect-src 'self' https://www.google-analytics.com/;
+    connect-src 'self' https://api.morekudos.com/ https://www.google-analytics.com/;
     script-src 'self' 'unsafe-eval' 'unsafe-inline' https://va.vercel-scripts.com/ https://www.google-analytics.com/ https://tagmanager.google.com/ https://www.googletagmanager.com/;
     style-src 'self' 'unsafe-inline';
-    img-src 'self' https://avatars.githubusercontent.com/ blob: data:;
+    img-src 'self' https://cryptologos.cc/ https://avatars.githubusercontent.com/ blob: data:;
     font-src 'self';
     object-src 'none';
     base-uri 'self';
@@ -21,6 +21,10 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "avatars.githubusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "cryptologos.cc",
       },
     ],
   },

@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { useMediaQuery } from "react-responsive";
 import {
   Table as NextUITable,
@@ -10,13 +11,12 @@ import {
   TableRow,
   TableCell,
 } from "@nextui-org/table";
-import { Contribution } from "@/types/contribution";
 import { ExternalLink, Content, Time, Project } from "./row";
 
 import dynamic from "next/dynamic";
-import { useFilters } from "@/contexts/filters";
-import { extractRepositoryUrlFromIssue } from "@/utils/github";
-import { KUDOS_ISSUE_KEY } from "@/data/filters";
+import { Issue } from "@/types/issue";
+
+const DEFAULT_EMPTY = "No contributions to display.. Try another query (:";
 
 const KUDOS_HIGHLIGHT_STYLES = `before:absolute before:content-['']
   before:bg-[conic-gradient(transparent_270deg,_#BABABC,_transparent)]
@@ -39,16 +39,18 @@ interface IColumn {
   uid: string;
 }
 
-interface RepositoryMap {
-  [key: string]: string;
-}
-
 interface IStaticTableProps {
-  data: Contribution[];
+  data: Issue[];
+  emptyContent?: string;
+  withProjectData?: boolean;
 }
 
-const StaticTable = ({ data }: IStaticTableProps) => {
-  const { filters, filterOptions } = useFilters();
+const StaticTable = ({
+  data,
+  emptyContent,
+  withProjectData = true,
+}: IStaticTableProps) => {
+  const pathname = usePathname();
   const isMobile = useMediaQuery({ maxWidth: 639 }); // tailwind lg default: 640px
   const isLaptop = useMediaQuery({ minWidth: 1024 }); // tailwind lg default: 1024px
 
@@ -60,64 +62,48 @@ const StaticTable = ({ data }: IStaticTableProps) => {
     { name: "ACTIONS", uid: "actions" },
   ]);
 
-  const repositoryIconMap: RepositoryMap = useMemo(() => {
-    const map: RepositoryMap = {};
-    filterOptions.repositories.forEach((repository) => {
-      map[repository.repository_url] =
-        repository.project?.toLowerCase() == "polkadot"
-          ? "/images/polkadot-logo.png"
-          : repository.icon;
-    });
-    return map;
-  }, [filterOptions.repositories]);
-
-  const useGetIconByRepositoryUrl = (repositoryIconMap: RepositoryMap) => {
-    const getIconByRepositoryUrl = useCallback(
-      (repositoryUrl: string): string | null => {
-        return repositoryIconMap[repositoryUrl];
-      },
-      [repositoryIconMap],
-    );
-
-    return getIconByRepositoryUrl;
-  };
-
-  const getIconByRepositoryUrl = useGetIconByRepositoryUrl(repositoryIconMap);
-
   const renderCell = React.useCallback(
-    (item: Contribution, columnKey: React.Key) => {
-      const cellValue = item[columnKey as keyof Contribution];
-      const repository = extractRepositoryUrlFromIssue(item.url);
-      const avatar = !!repository ? getIconByRepositoryUrl(repository) : null;
+    (item: Issue, columnKey: React.Key) => {
       switch (columnKey) {
-        case "project":
+        case "project": {
+          const { project, repository } = item;
           return (
             <Project
-              avatarSrc={avatar}
-              name={item.project}
-              organization={item.organization}
-              repository={item.repository}
+              avatarSrc={
+                project.slug == "polkadot"
+                  ? "/images/polkadot-logo.png"
+                  : project.avatar
+              }
+              slug={project.slug}
+              name={project.name}
+              repository={repository}
+              withProjectData={withProjectData}
             />
           );
-        case "content":
+        }
+        case "content": {
+          const { title, repository, project } = item;
           return (
             <Content
-              title={item.title}
-              project={item.project}
-              repository={item.repository}
-              url={item.url}
-              isCertified={item.isCertified}
+              title={title}
+              projectName={withProjectData ? project.name : undefined}
+              repositoryName={repository?.name}
+              isCertified={
+                item.labels.includes("kudos") && pathname !== "/carnival"
+              }
             />
           );
-        case "labels":
+        }
+        case "labels": {
+          const { labels, project } = item;
           return (
             <Labels
-              gitLabels={item.labels}
-              languages={item.languages}
-              organization={item.organization}
-              repository={item.repository}
+              gitLabels={labels}
+              technologies={project.technologies}
+              purposes={withProjectData ? project.purposes : []}
             />
           );
+        }
         case "date":
           return (
             <div className="flex flex-col items-center gap-2">
@@ -127,7 +113,7 @@ const StaticTable = ({ data }: IStaticTableProps) => {
                   title={`Open "${item.title}" on Github`}
                 />
               </div>
-              <Time timestamp={item.timestamp} />
+              <Time timestamp={item.createdAt} />
             </div>
           );
         case "actions":
@@ -138,10 +124,10 @@ const StaticTable = ({ data }: IStaticTableProps) => {
             />
           );
         default:
-          return cellValue;
+          return null;
       }
     },
-    [getIconByRepositoryUrl],
+    [withProjectData],
   );
 
   useEffect(() => {
@@ -162,7 +148,7 @@ const StaticTable = ({ data }: IStaticTableProps) => {
         table:
           "w-full bg-gradient-to-r from-background to-background-200 to-80% max-w-7xl border-spacing-0 rounded-b-md overflow-hidden",
         wrapper:
-          "bg-background overflow-visible p-0 rounded-none border-small rounded-b-md",
+          "bg-background overflow-visible p-0 rounded-none border-[1px] rounded-b-md",
         tr: "flex items-center relative border-y-small border-y-overlay hover:bg-hover-overlay",
         td: "px-2 sm:px-inherit z-10",
       }}
@@ -177,9 +163,10 @@ const StaticTable = ({ data }: IStaticTableProps) => {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody items={data} emptyContent="No contributions to display.">
+      <TableBody items={data} emptyContent={emptyContent ?? DEFAULT_EMPTY}>
         {(item) => {
-          const isHighlighted = item.isCertified && !filters[KUDOS_ISSUE_KEY];
+          const isHighlighted =
+            item.labels.includes("kudos") && pathname !== "/carnival";
           return (
             <TableRow
               key={item.id}

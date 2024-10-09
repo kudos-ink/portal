@@ -1,5 +1,6 @@
 import { Button } from "@nextui-org/button";
-import { Link } from "@nextui-org/link";
+import { Link as NuiLink } from "@nextui-org/link";
+import IssuesApi from "@/api/core/issues";
 import { GithubIcon, TwitterIcon } from "@/assets/icons";
 import About from "@/components/about";
 import Community from "@/components/community";
@@ -8,20 +9,24 @@ import Toolbar from "@/components/filters/toolbar";
 import ProjectCarousel from "@/components/project-carousel";
 import { container, subtitle, title } from "@/components/primitives";
 import StaticTable from "@/components/table/static-table";
-import { FiltersProvider } from "@/contexts/filters";
+import { DefaultFiltersProvider } from "@/components/providers/filters";
 import { SITE_CONFIG } from "@/data/config";
-import { queryDatabase } from "@/lib/notion";
-import { fetchFilterOptions } from "@/lib/repository-metadata";
-import { initFilters } from "@/utils/filters";
-import { transformNotionDataToContributions } from "@/utils/notion";
+import {
+  DEFAULT_HOMEPAGE_PAGE_SIZE,
+  DEFAULT_PAGINATED_RESPONSE,
+} from "@/data/fetch";
 
 const EXPLORE_LABEL = "Explore Open Contributions";
 
 export default async function Home() {
-  const filterOptions = await fetchFilterOptions();
-  const filters = initFilters();
-  const data = await queryDatabase();
-  const contributions = transformNotionDataToContributions(data);
+  const issues = await IssuesApi.getIssues({
+    goodFirst: true,
+    offset: 0,
+    limit: DEFAULT_HOMEPAGE_PAGE_SIZE,
+  }).catch((error) => {
+    console.error("Error fetching issues:", error);
+    return DEFAULT_PAGINATED_RESPONSE;
+  });
 
   return (
     <>
@@ -40,21 +45,18 @@ export default async function Home() {
         </h2>
       </section>
 
-      <FiltersProvider
-        initialFilters={filters}
-        initialFilterOptions={filterOptions}
-      >
+      <DefaultFiltersProvider>
         <div className="flex flex-col">
-          <Toolbar label="Latest Contributions" />
+          <Toolbar label="Suggested Contributions" checkboxFilters={[]} />
           <section className={container()}>
-            <StaticTable data={contributions} />
+            <StaticTable data={issues.data} />
           </section>
         </div>
-      </FiltersProvider>
+      </DefaultFiltersProvider>
 
       <section className={"flex flex-col items-center " + container()}>
-        <Link
-          href="/explore/open-contributions"
+        <NuiLink
+          href="/explore/good-first-open-contributions"
           aria-label={EXPLORE_LABEL}
           title={EXPLORE_LABEL}
         >
@@ -65,7 +67,7 @@ export default async function Home() {
           >
             {EXPLORE_LABEL}
           </Button>
-        </Link>
+        </NuiLink>
       </section>
       <section className={container() + " pt-32"}>
         <ProjectCarousel />
