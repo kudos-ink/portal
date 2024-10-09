@@ -68,7 +68,14 @@ const Toolbar = ({
         router.replace(newUrl, { scroll: true });
       }
     },
-    [updateFilter, clearFilter, shouldUpdateRouter],
+    [
+      updateFilter,
+      clearFilter,
+      shouldUpdateRouter,
+      pathname,
+      router,
+      filterOptions,
+    ],
   );
 
   const handleCheckboxChange = useCallback(
@@ -82,7 +89,7 @@ const Toolbar = ({
         router.replace(newUrl, { scroll: true });
       }
     },
-    [updateFilter, shouldUpdateRouter],
+    [updateFilter, shouldUpdateRouter, pathname, router, filterOptions],
   );
 
   const handleClear = () => {

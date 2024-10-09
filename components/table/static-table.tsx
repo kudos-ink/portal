@@ -127,7 +127,7 @@ const StaticTable = ({
           return null;
       }
     },
-    [withProjectData],
+    [withProjectData, pathname],
   );
 
   useEffect(() => {

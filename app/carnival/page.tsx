@@ -180,10 +180,10 @@ export default async function SingleEventPage() {
                     className="text-pink-500"
                   >
                     <g
-                      clip-path="url(#a)"
-                      clip-rule="evenodd"
+                      clipPath="url(#a)"
+                      clipRule="evenodd"
                       fill="currentColor"
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                     >
                       <path d="M21.865 5.166A11.945 11.945 0 0 1 24 12.001c0 2.54-.789 4.895-2.135 6.834l-3.109-3.109A7.679 7.679 0 0 0 19.714 12a7.679 7.679 0 0 0-.958-3.725l3.109-3.109Z"></path>
                       <path d="m18.834 2.135-3.108 3.109a7.714 7.714 0 1 0 0 13.513l3.108 3.108A11.946 11.946 0 0 1 12 24C5.373 24 0 18.627 0 12S5.373 0 12 0c2.54 0 4.895.789 6.834 2.135Z"></path>
@@ -229,10 +229,10 @@ export default async function SingleEventPage() {
                     className="text-pink-500 rotate-180"
                   >
                     <g
-                      clip-path="url(#a)"
-                      clip-rule="evenodd"
+                      clipPath="url(#a)"
+                      clipRule="evenodd"
                       fill="currentColor"
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                     >
                       <path d="M21.865 5.166A11.945 11.945 0 0 1 24 12.001c0 2.54-.789 4.895-2.135 6.834l-3.109-3.109A7.679 7.679 0 0 0 19.714 12a7.679 7.679 0 0 0-.958-3.725l3.109-3.109Z"></path>
                       <path d="m18.834 2.135-3.108 3.109a7.714 7.714 0 1 0 0 13.513l3.108 3.108A11.946 11.946 0 0 1 12 24C5.373 24 0 18.627 0 12S5.373 0 12 0c2.54 0 4.895.789 6.834 2.135Z"></path>
