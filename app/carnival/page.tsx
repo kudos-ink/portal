@@ -148,6 +148,7 @@ export default async function SingleEventPage() {
 
   const query: IssueQueryParams = {
     labels: ["kudos"],
+    open: true,
   };
   const issues = (await IssuesApi.getIssues({
     ...DEFAULT_QUERY,
@@ -195,7 +196,7 @@ export default async function SingleEventPage() {
                     </defs>
                   </svg>
                 </div>
-                <p className="text-base font-semibold">As a Project</p>
+                <p className="text-base font-semibold">For Projects</p>
               </div>
               <div className="relative flex w-full p-3 flex-auto flex-col place-content-inherit align-items-inherit h-auto break-words text-left overflow-y-auto subpixel-antialiased">
                 <p className="font-normal text-base text-default-500">
@@ -244,7 +245,7 @@ export default async function SingleEventPage() {
                     </defs>
                   </svg>
                 </div>
-                <p className="text-base font-semibold">As a PBA Alumni</p>
+                <p className="text-base font-semibold">For PBA Alumni</p>
               </div>
               <div className="relative flex w-full p-3 flex-auto flex-col place-content-inherit align-items-inherit h-auto break-words text-left overflow-y-auto subpixel-antialiased">
                 <p className="font-normal text-base text-default-500">
@@ -320,6 +321,7 @@ export default async function SingleEventPage() {
           {/* TODO: Add advance filters but make sure to only have the correct filters options from the query above (add props to DefaultFiltersProvider to support query) */}
           <Toolbar
             label="Kudos Carnival Issues Backlog"
+            selectFilters={[]}
             checkboxFilters={[]}
             shouldUpdateRouter={false}
           />

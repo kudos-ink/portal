@@ -114,15 +114,17 @@ const Toolbar = ({
       <div className={`pt-6 flex flex-col gap-4 ${container()}`}>
         <div className="flex flex-col gap-4 items-start overflow-hidden lg:flex-row lg:items-center">
           <div className="flex flex-nowrap overflow-x-auto overflow-y-hidden gap-8 w-full sm:w-auto xl:overflow-visible">
-            {normalSelectFilters.map(({ key, options }) => (
-              <SelectFilter
-                key={key}
-                placeholder={key}
-                options={options}
-                selectedKeys={new Set(filters[key].map((item) => item.value))}
-                onSelect={handleSelectChange(key)}
-              />
-            ))}
+            {normalSelectFilters
+              .filter(({ options }) => options.length > 1)
+              .map(({ key, options }) => (
+                <SelectFilter
+                  key={key}
+                  placeholder={key}
+                  options={options}
+                  selectedKeys={new Set(filters[key].map((item) => item.value))}
+                  onSelect={handleSelectChange(key)}
+                />
+              ))}
             <div className="flex gap-8">
               {normalCheckboxFilters.map(
                 ({ key, placeholder, content, icon }) => (
@@ -174,26 +176,28 @@ const Toolbar = ({
                     aria-label="Advance select filters"
                     showDivider
                   >
-                    {advancedSelectFilters.map(({ key, options }) => (
-                      <DropdownItem
-                        key={key}
-                        className="justify-end"
-                        isReadOnly
-                        endContent={
-                          <SelectFilter
-                            className="w-full"
-                            placeholder={key}
-                            options={options}
-                            selectedKeys={
-                              new Set(
-                                filters[key]?.map((item) => item.value) || [],
-                              )
-                            }
-                            onSelect={handleSelectChange(key)}
-                          />
-                        }
-                      />
-                    ))}
+                    {advancedSelectFilters
+                      .filter(({ options }) => options.length > 1)
+                      .map(({ key, options }) => (
+                        <DropdownItem
+                          key={key}
+                          className="justify-end"
+                          isReadOnly
+                          endContent={
+                            <SelectFilter
+                              className="w-full"
+                              placeholder={key}
+                              options={options}
+                              selectedKeys={
+                                new Set(
+                                  filters[key]?.map((item) => item.value) || [],
+                                )
+                              }
+                              onSelect={handleSelectChange(key)}
+                            />
+                          }
+                        />
+                      ))}
                   </DropdownSection>
                   <DropdownSection aria-label="Advance checkbox filters">
                     {advancedCheckboxFilters.map(

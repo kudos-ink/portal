@@ -43,12 +43,14 @@ interface IStaticTableProps {
   data: Issue[];
   emptyContent?: string;
   withProjectData?: boolean;
+  clickableLabels?: boolean;
 }
 
 const StaticTable = ({
   data,
   emptyContent,
   withProjectData = true,
+  clickableLabels = false,
 }: IStaticTableProps) => {
   const pathname = usePathname();
   const isMobile = useMediaQuery({ maxWidth: 639 }); // tailwind lg default: 640px
@@ -101,6 +103,7 @@ const StaticTable = ({
               gitLabels={labels}
               technologies={project.technologies}
               purposes={withProjectData ? project.purposes : []}
+              clickable={clickableLabels}
             />
           );
         }

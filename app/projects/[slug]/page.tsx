@@ -107,8 +107,10 @@ export default async function SingleProjectPage({ params }: IProps) {
           <KudosWeeksBanner>
             ♨️ <strong className="capitalize">{infos.name}</strong> participates
             to <strong>Kudos Carnival</strong>! -{" "}
-            <strong>From Nov 1 to Dec 15</strong>: Level up your contributions,
-            solve key issues, and rise up the leaderboard!
+            <strong>From Nov 1 to Dec 15</strong>:
+            <br />
+            Level up your contributions, solve key issues, and rise up the
+            leaderboard!
           </KudosWeeksBanner>
         </section>
       )}

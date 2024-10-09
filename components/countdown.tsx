@@ -17,7 +17,7 @@ const CountdownRenderer = (data: {
     <div>
       <div className="grid auto-cols-max grid-flow-col gap-5 text-center">
         {days > 0 && (
-          <div className="bg-neutral flex flex-col rounded-xl border border-[#ffffff4d] bg-transparent bg-card p-2 text-card-foreground shadow-sm">
+          <div className="bg-neutral flex flex-col rounded-xl border-[1px] border-[#ffffff4d] bg-transparent bg-card p-2 text-card-foreground shadow-sm">
             <span className="text-xl sm:text-5xl">
               <span>{`${days > 9 ? "" : "0"}${days}`}</span>
             </span>
@@ -25,7 +25,7 @@ const CountdownRenderer = (data: {
           </div>
         )}
         {(days > 0 || hours > 0) && (
-          <div className="bg-neutral flex flex-col rounded-xl border border-[#ffffff4d] bg-transparent bg-card p-2 text-card-foreground shadow-sm">
+          <div className="bg-neutral flex flex-col rounded-xl border-[1px] border-[#ffffff4d] bg-transparent bg-card p-2 text-card-foreground shadow-sm">
             <span className="text-xl sm:text-5xl">
               <span>{`${hours > 9 ? "" : "0"}${hours}`}</span>
             </span>
@@ -33,14 +33,14 @@ const CountdownRenderer = (data: {
           </div>
         )}
         {(days > 0 || hours > 0 || minutes > 0) && (
-          <div className="bg-neutral flex flex-col rounded-xl border border-[#ffffff4d] bg-transparent bg-card p-2 text-card-foreground shadow-sm">
+          <div className="bg-neutral flex flex-col rounded-xl border-[1px] border-[#ffffff4d] bg-transparent bg-card p-2 text-card-foreground shadow-sm">
             <span className="text-xl sm:text-5xl">
               <span>{`${minutes > 9 ? "" : "0"}${minutes}`}</span>
             </span>
             min
           </div>
         )}
-        <div className="bg-neutral flex flex-col rounded-xl border border-[#ffffff4d] bg-transparent bg-card p-2 text-card-foreground shadow-sm">
+        <div className="bg-neutral flex flex-col rounded-xl border-[1px] border-[#ffffff4d] bg-transparent bg-card p-2 text-card-foreground shadow-sm">
           <span className="text-xl sm:text-5xl">
             <span>{`${seconds > 9 ? "" : "0"}${seconds}`}</span>
           </span>

@@ -68,15 +68,15 @@ interface IAvatarProps {
 
 const Avatar = ({ alt, src }: IAvatarProps) => {
   return (
-    <div className="bg-foreground rounded-md min-w-[45px] min-h-[45px] shrink-0 flex items-center justify-center">
+    <div className="bg-foreground rounded-md min-w-[40px] min-h-[40px] sm:min-w-[45px] sm:min-h-[45px] shrink-0 flex items-center justify-center">
       {src !== null && (
         <MyImage
           className="border"
           src={src}
           alt={alt}
           radius="sm"
-          height={40}
-          width={40}
+          height={38}
+          width={38}
         />
       )}
     </div>
@@ -116,7 +116,7 @@ export const Content = ({
         </div>
       </span>
       <div className="w-fit text-base flex gap-1 flex-grow relative">
-        <h3 className="font-semibold leading-tight line-clamp-2 capitalize">
+        <h3 className="font-semibold max-w-48 sm:max-w-none leading-tight line-clamp-2 capitalize">
           {title}
         </h3>
         {isCertified && (
@@ -142,8 +142,14 @@ interface ILabelsProps {
   gitLabels: string[];
   technologies: string[];
   purposes: string[];
+  clickable: boolean;
 }
-export const Labels = ({ gitLabels, technologies, purposes }: ILabelsProps) => {
+export const Labels = ({
+  gitLabels,
+  technologies,
+  purposes,
+  clickable,
+}: ILabelsProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -177,6 +183,8 @@ export const Labels = ({ gitLabels, technologies, purposes }: ILabelsProps) => {
   }, [filters, filterOptions, gitLabels, technologies, purposes]);
 
   const handleClick = (key: FilterKeys, values: string[]) => {
+    if (!clickable) return;
+
     updateFilter(key, values);
     const currentPath = pathname === "/" ? "/explore/" : pathname;
     const newUrl = createUrl(key, values, currentPath, filterOptions);
@@ -231,10 +239,10 @@ export const Labels = ({ gitLabels, technologies, purposes }: ILabelsProps) => {
       {labels
         .slice(0, visibleLabelCount)
         .map(({ emoji, label, type, value }, index) => (
-          <Tooltip content="Add to filters" key={index}>
+          <Tooltip content="Add to filters" key={index} isDisabled={!clickable}>
             <Chip
               color={type === GOOD_FIRST_ISSUE_KEY ? "danger" : "default"}
-              className="mx-1 cursor-pointer"
+              className={`mx-1${clickable ? " cursor-pointer" : ""}`}
               onClick={() => handleClick(type, [value])}
             >
               <div className="flex items-center gap-2">

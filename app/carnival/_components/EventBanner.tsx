@@ -5,13 +5,20 @@ import Countdown from "@/components/countdown";
 const EventBanner = () => (
   <article className="rounded-xl p-6 bg-container-1 border-container-stroke-separator relative overflow-hidden h-[675px]">
     <NextImage
-      className="pointer-events-none absolute -left-[5px] -top-[30px] h-[calc(100%_+_60px)] w-[calc(100%_+_10px)] max-w-[initial] object-cover object-top"
+      className="hidden md:block pointer-events-none absolute -left-[5px] -top-[30px] h-[calc(100%_+_60px)] w-[calc(100%_+_10px)] max-w-[initial] object-cover object-top"
       src="/images/kudos-weeks.png"
       alt="Event banner"
       height={983}
       width={1200}
     />
-    <div className="relative flex flex-col gap-6 w-6/12">
+    <NextImage
+      className="md:hidden pointer-events-none absolute -left-[5px] -top-[30px] h-[calc(100%_+_60px)] w-[calc(100%_+_10px)] max-w-[initial] object-cover object-top"
+      src="/images/kudos-carnival-mobile.png"
+      alt="Event banner"
+      height={662}
+      width={775}
+    />
+    <div className="relative flex flex-col gap-6 md:w-6/12">
       <div className="flex flex-col gap-1">
         <span className="text-xl text-primary italic">
           {"kudos < > PBA host"}
@@ -20,13 +27,13 @@ const EventBanner = () => (
           Kudos Carnival
         </span>
         <span className="text-xl text-default-600">
-          November 1, 2024 - December 15, 2024
+          November 1 - December 15, 2024
         </span>
       </div>
 
       <Countdown date="2024-11-01T12:00:00.536328Z" />
 
-      <h3 className="text-xl text-default-600 mt-4">
+      <h3 className="hidden md:block text-xl text-default-600 mt-4">
         Want to level up your contributions? Make an impact on Polkadot, solve
         key issues, and rise up the Kudos leaderboard!
       </h3>

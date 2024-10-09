@@ -49,7 +49,7 @@ const InfiniteTable = ({ initialItems, query = {} }: IInfiniteTableProps) => {
 
   return (
     <>
-      <StaticTable data={contributions} />
+      <StaticTable data={contributions} clickableLabels />
       {hasNextPage && (
         <div className="flex w-full justify-center pt-8">
           <Spinner ref={loaderRef} color="white" />

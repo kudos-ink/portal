@@ -143,25 +143,25 @@ export function buildCheckboxFilters(
 ): CheckboxFilterConfig[] {
   const filters: CheckboxFilterConfig[] = [];
 
-  if (metrics.suggestedTotal > 0) {
-    filters.push({
-      key: GOOD_FIRST_ISSUE_KEY,
-      placeholder: "Good first issues Only",
-      content: (
-        <div className="px-1 py-2">
-          <div className="text-small font-bold">
-            Based on the following GitHub labels
-          </div>
-          {GOOD_FIRST_ISSUE_LABELS.map((label, idx) => (
-            <div className="text-tiny" key={idx}>
-              • {label}
-            </div>
-          ))}
-        </div>
-      ),
-      icon: <InfoIcon className="text-default-500" size={16} />,
-    });
-  }
+  // if (metrics.suggestedTotal > 0) {
+  //   filters.push({
+  //     key: GOOD_FIRST_ISSUE_KEY,
+  //     placeholder: "Good first issues Only",
+  //     content: (
+  //       <div className="px-1 py-2">
+  //         <div className="text-small font-bold">
+  //           Based on the following GitHub labels
+  //         </div>
+  //         {GOOD_FIRST_ISSUE_LABELS.map((label, idx) => (
+  //           <div className="text-tiny" key={idx}>
+  //             • {label}
+  //           </div>
+  //         ))}
+  //       </div>
+  //     ),
+  //     icon: <InfoIcon className="text-default-500" size={16} />,
+  //   });
+  // }
 
   if (metrics.certifiedTotal > 0) {
     filters.push({

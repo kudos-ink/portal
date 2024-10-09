@@ -32,7 +32,7 @@ const Navbar = () => {
 
       <NavbarContent as="div" justify="end">
         <div>
-          <Chip variant="bordered">alpha</Chip>
+          <Chip variant="bordered">beta</Chip>
         </div>
         <div className="hidden sm:flex gap-4 items-center">
           <BugReport />

@@ -12,7 +12,7 @@ interface IProjectInfosProps {
 const ProjectInfos = ({ infos, labels }: IProjectInfosProps) => (
   <div className="bg-gradient-to-r md:bg-gradient-to-l from-background to-background-200 to-80% py-5 px-6 border-[1px] rounded-md flex flex-col gap-4 h-full">
     {labels.length > 0 && (
-      <div className="flex gap-3 border-b-small pb-4">
+      <div className="flex flex-col sm:flex-row gap-3 border-b-small pb-4">
         {labels.map(({ color, emoji, label, type }, idx) => (
           <Chip key={idx} color={color} className="rounded-md">
             <div className="flex items-center font-semibold gap-2 !leading-none py-0.5 text-base">

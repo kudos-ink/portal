@@ -39,7 +39,6 @@ async function getAllProjectOptions() {
     const paginationParams = {
       offset,
       limit: DEFAULT_BIG_PAGE_SIZE,
-      tag: "all-projects",
     };
     const response = await getProjects(paginationParams, tags.projectOptions);
 
