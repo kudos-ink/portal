@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import { useRouter } from "next/navigation";
 import { FilterKeys, FilterOptions, Filters } from "@/types/filters";
 import { initFilters } from "@/utils/filters";
 import { GOOD_FIRST_ISSUE_KEY, KUDOS_ISSUE_KEY } from "@/data/filters";
@@ -21,7 +20,6 @@ export const useFilters = ({
   initialFilters,
   initialFilterOptions,
 }: IConfigProps): IFiltersContext => {
-  const router = useRouter();
   const [filters, setFilters] = useState(initialFilters);
   const [filterOptions, _] = useState(initialFilterOptions);
 
@@ -54,8 +52,7 @@ export const useFilters = ({
   const clearAllFilters = useCallback(() => {
     const emptyFilters = initFilters();
     setFilters(emptyFilters);
-    router.replace("/explore/open-contributions", { scroll: true });
-  }, [router]);
+  }, []);
 
   return {
     filters,

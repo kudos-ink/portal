@@ -20,7 +20,6 @@ import {
   STACK_LEVEL_KEY,
   PROJECTS_KEY,
   GOOD_FIRST_ISSUE_KEY,
-  GOOD_FIRST_ISSUE_LABELS,
   KUDOS_ISSUE_KEY,
 } from "@/data/filters";
 import { IFilterOption, FilterOptions, Filters } from "@/types/filters";

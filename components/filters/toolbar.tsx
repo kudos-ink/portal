@@ -93,7 +93,10 @@ const Toolbar = ({
   );
 
   const handleClear = () => {
-    router.replace(pathname);
+    const newPathname = pathname.includes("explore")
+      ? "/explore/open-contributions"
+      : pathname;
+    router.replace(newPathname, { scroll: true });
     clearAllFilters();
   };
 
@@ -143,19 +146,19 @@ const Toolbar = ({
 
           {withAdvanceFilters && (
             <>
-              <div className="flex h-5 items-center space-x-4 text-small">
+              <div className="hidden sm:flex h-5 items-center space-x-4 text-small">
                 <Divider orientation="vertical" />
               </div>
 
               <Dropdown
                 radius="sm"
                 placement="bottom-start"
-                className="min-w-0 w-fit"
+                className="hidden sm:block min-w-0 w-fit"
                 classNames={{
-                  content: "p-0 border-small border-divider",
+                  content: "hidden sm:block p-0 border-small border-divider",
                 }}
               >
-                <DropdownTrigger>
+                <DropdownTrigger className="hidden sm:block">
                   <Button
                     size="sm"
                     aria-label="Advance Filters"
@@ -218,7 +221,7 @@ const Toolbar = ({
               </Dropdown>
 
               {numberOfFilters > 1 && (
-                <div className="flex h-5 items-center space-x-4 text-small">
+                <div className="hidden sm:flex h-5 items-center space-x-4 text-small">
                   <Divider orientation="vertical" />
                 </div>
               )}
@@ -226,7 +229,9 @@ const Toolbar = ({
           )}
 
           {numberOfFilters > 1 && (
-            <ClearFilters onClear={handleClear} value="Clear all filters" />
+            <div className="hidden sm:block">
+              <ClearFilters onClear={handleClear} value="Clear all filters" />
+            </div>
           )}
         </div>
         <div className="py-4 px-3 bg-default-100 border-[1px] border-b-0 rounded-t-md">

@@ -12,7 +12,9 @@ export async function DefaultFiltersProvider({
 }) {
   const filters = initFilters();
   const filterOptions = await (
-    repositoryIds ? getProjectFilterOptions(repositoryIds) : getFilterOptions()
+    repositoryIds && repositoryIds.length > 0
+      ? getProjectFilterOptions(repositoryIds)
+      : getFilterOptions()
   ).catch((error) => {
     console.error("Error fetching filter options:", error);
     return {} as FilterOptions;

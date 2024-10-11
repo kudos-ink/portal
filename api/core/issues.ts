@@ -22,8 +22,10 @@ export async function getIssues(
 
   const queryDto = issueQueryParamsToDto(query, allLanguages);
   const url = prepareUrl(`${ISSUES_PATH}`, queryDto);
-  const res =
-    await coreApiClient.get<PaginatedCustomResponseDto<IssueDto>>(url);
+  const res = await coreApiClient.get<PaginatedCustomResponseDto<IssueDto>>(
+    url,
+    { noStoreCache: true },
+  );
 
   return {
     totalCount: res.total_count ?? 0,
