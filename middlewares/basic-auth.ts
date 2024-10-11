@@ -19,7 +19,7 @@ export const withBasicAuthorization: MiddlewareFactory = (next) => {
 
 function isAuthenticated(req: NextRequest) {
   const authheader =
-    req.headers.get("kudos-authorization") || req.headers.get("Kudos-Authorization");
+    req.headers.get("x-authorization") || req.headers.get("X-Authorization");
 
   if (!authheader) {
     return false;
