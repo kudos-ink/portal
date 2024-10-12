@@ -85,14 +85,16 @@ const StaticTable = ({
         }
         case "content": {
           const { title, repository, project } = item;
+          const isCertified =
+            item.labels.includes("kudos") &&
+            pathname !== "/carnival" &&
+            !pathname.includes("certified");
           return (
             <Content
               title={title}
               projectName={withProjectData ? project.name : undefined}
               repositoryName={repository?.name}
-              isCertified={
-                item.labels.includes("kudos") && pathname !== "/carnival"
-              }
+              isCertified={isCertified}
             />
           );
         }
@@ -169,7 +171,9 @@ const StaticTable = ({
       <TableBody items={data} emptyContent={emptyContent ?? DEFAULT_EMPTY}>
         {(item) => {
           const isHighlighted =
-            item.labels.includes("kudos") && pathname !== "/carnival";
+            item.labels.includes("kudos") &&
+            pathname !== "/carnival" &&
+            !pathname.includes("certified");
           return (
             <TableRow
               key={item.id}

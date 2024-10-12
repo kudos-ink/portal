@@ -31,9 +31,9 @@ export interface CheckboxFilterConfig {
 const DEFAULT_SELECT_FILTERS: SelectFilterConfig[] = [
   { key: TECHNOLOGY_KEY, options: [] },
   { key: PURPOSE_KEY, options: [] },
-  { key: PROJECTS_KEY, options: [], isAdvanced: true },
-  { key: STACK_LEVEL_KEY, options: [], isAdvanced: true },
-  { key: PROJECT_TYPE_KEY, options: [], isAdvanced: true },
+  { key: PROJECT_TYPE_KEY, options: [] },
+  { key: STACK_LEVEL_KEY, options: [] },
+  // { key: PROJECTS_KEY, options: [], isAdvanced: true },
 ];
 
 const DEFAULT_CHECKBOX_FILTERS: CheckboxFilterConfig[] = [
@@ -42,7 +42,6 @@ const DEFAULT_CHECKBOX_FILTERS: CheckboxFilterConfig[] = [
     placeholder: "Kudos Issues Only",
     content: <KudosIssueTooltipContent />,
     icon: <KudosCertifiedIcon className="w-5 h-5" size={16} />,
-    isAdvanced: true,
   },
 ];
 

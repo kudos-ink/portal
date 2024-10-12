@@ -46,7 +46,7 @@ export default async function Home() {
 
       <DefaultFiltersProvider>
         <div className="flex flex-col">
-          <Toolbar label="Suggested Contributions" checkboxFilters={[]} />
+          <Toolbar label="Suggested Contributions" />
           <section className={container()}>
             <StaticTable data={issues.data} clickableLabels />
           </section>

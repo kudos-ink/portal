@@ -21,7 +21,7 @@ export default async function ExploreLayout({
       initialFilterOptions={filterOptions}
     >
       <div className="flex flex-col">
-        <Toolbar label="Open Contributions" withAdvanceFilters />
+        <Toolbar label="Open Contributions" />
         <section className={container()}>{children}</section>
       </div>
     </FiltersProvider>

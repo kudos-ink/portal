@@ -49,6 +49,12 @@ const Toolbar = ({
     (filter) => (filter.options = filterOptions[filter.key]),
   );
 
+  const updateRouterWithFilters = (key: FilterKeys, newValue: string[]) => {
+    const currentPath = pathname === "/" ? "/explore/" : pathname;
+    const newUrl = createUrl(key, newValue, currentPath, filterOptions);
+    router.replace(newUrl, { scroll: true });
+  };
+
   const handleSelectChange = useCallback(
     (key: FilterKeys) => (newValues: Set<string>) => {
       if (newValues.size > 0) {
@@ -58,14 +64,7 @@ const Toolbar = ({
       }
 
       if (shouldUpdateRouter) {
-        const currentPath = pathname === "/" ? "/explore/" : pathname;
-        const newUrl = createUrl(
-          key,
-          Array.from(newValues),
-          currentPath,
-          filterOptions,
-        );
-        router.replace(newUrl, { scroll: true });
+        updateRouterWithFilters(key, Array.from(newValues));
       }
     },
     [
@@ -83,10 +82,8 @@ const Toolbar = ({
       updateFilter(key, isChecked ? ["true"] : []);
 
       if (shouldUpdateRouter) {
-        const currentPath = pathname === "/" ? "/explore/" : pathname;
         const newValue = isChecked ? [isChecked.toString()] : [];
-        const newUrl = createUrl(key, newValue, currentPath, filterOptions);
-        router.replace(newUrl, { scroll: true });
+        updateRouterWithFilters(key, newValue);
       }
     },
     [updateFilter, shouldUpdateRouter, pathname, router, filterOptions],
@@ -96,8 +93,8 @@ const Toolbar = ({
     const newPathname = pathname.includes("explore")
       ? "/explore/open-contributions"
       : pathname;
-    router.replace(newPathname, { scroll: true });
     clearAllFilters();
+    router.replace(newPathname, { scroll: true });
   };
 
   const numberOfFilters = countNonEmptyFilters(filters);
@@ -116,7 +113,7 @@ const Toolbar = ({
     >
       <div className={`pt-6 flex flex-col gap-4 ${container()}`}>
         <div className="flex flex-col gap-4 items-start overflow-hidden lg:flex-row lg:items-center">
-          <div className="flex flex-nowrap overflow-x-auto overflow-y-hidden gap-8 w-full sm:w-auto xl:overflow-visible">
+          <div className="flex flex-nowrap overflow-x-auto overflow-y-hidden gap-6 w-full sm:w-auto xl:overflow-visible">
             {normalSelectFilters
               .filter(({ options }) => options.length > 1)
               .map(({ key, options }) => (
@@ -128,7 +125,7 @@ const Toolbar = ({
                   onSelect={handleSelectChange(key)}
                 />
               ))}
-            <div className="flex gap-8">
+            <div className="flex gap-6">
               {normalCheckboxFilters.map(
                 ({ key, placeholder, content, icon }) => (
                   <CheckboxFilter
