@@ -11,12 +11,7 @@ import { useFilters } from "@/contexts/filters";
 import { formatDate } from "@/utils/date";
 import { shuffleArray } from "@/utils/filters";
 import { createUrl } from "@/utils/url";
-import {
-  GOOD_FIRST_ISSUE_KEY,
-  GOOD_FIRST_ISSUE_LABELS,
-  TECHNOLOGY_KEY,
-  PURPOSE_KEY,
-} from "@/data/filters";
+import { TECHNOLOGY_KEY, PURPOSE_KEY } from "@/data/filters";
 import { FilterKeys, IFilterOption, Filters } from "@/types/filters";
 import { Repository } from "@/types/repository";
 import { IconRepo } from "@/assets/icons";
@@ -160,9 +155,6 @@ export const Labels = ({
   const indicatorRef = useRef<HTMLDivElement>(null);
 
   const labels = useMemo(() => {
-    const isGoodFirstIssue = GOOD_FIRST_ISSUE_LABELS.some((name) =>
-      gitLabels.includes(name),
-    );
     const restTechnologies =
       filterOptions?.technologies?.filter(({ value }) =>
         technologies.includes(value),
@@ -172,12 +164,11 @@ export const Labels = ({
         purposes.includes(value),
       ) ?? [];
 
-    const goodFirstIssueLabels = getGoodFirstIssueLabel(isGoodFirstIssue);
     const technologyAndPurposeLabels = getTechnologyAndPurposeLabels(
       restTechnologies,
       restPurposes,
     );
-    return [...goodFirstIssueLabels, ...technologyAndPurposeLabels].filter(
+    return technologyAndPurposeLabels.filter(
       (option) => !isLabelFilteredOut(option, filters),
     );
   }, [filters, filterOptions, gitLabels, technologies, purposes]);
@@ -241,7 +232,7 @@ export const Labels = ({
         .map(({ emoji, label, type, value }, index) => (
           <Tooltip content="Add to filters" key={index} isDisabled={!clickable}>
             <Chip
-              color={type === GOOD_FIRST_ISSUE_KEY ? "danger" : "default"}
+              color="default"
               className={`mx-1${clickable ? " cursor-pointer" : ""}`}
               onClick={() => handleClick(type, [value])}
             >
@@ -316,19 +307,6 @@ export const KudosIssueTooltipContent = () => (
   </div>
 );
 
-const getGoodFirstIssueLabel = (isGoodFirstIssue: boolean): ILabelOption[] => {
-  return isGoodFirstIssue
-    ? [
-        {
-          emoji: "🌟",
-          label: "Good First Issue",
-          type: GOOD_FIRST_ISSUE_KEY as FilterKeys,
-          value: "true",
-        },
-      ]
-    : [];
-};
-
 const getTechnologyAndPurposeLabels = (
   fullTechnologies: IFilterOption[],
   purposes: IFilterOption[],
@@ -348,7 +326,6 @@ const getTechnologyAndPurposeLabels = (
 const isLabelFilteredOut = (option: IFilterOption, filters: Filters) => {
   if (!filters) return false;
   return (
-    (filters[GOOD_FIRST_ISSUE_KEY] && option.value === "true") ||
     filters[PURPOSE_KEY].some(({ value }) => value === option.value) ||
     filters[TECHNOLOGY_KEY].some(({ value }) => value === option.value)
   );

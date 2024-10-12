@@ -39,7 +39,6 @@ export default async function SingleProjectPage({ params }: IProps) {
 
   const query: IssueQueryParams = {
     projects: [slug],
-    goodFirst: true,
   };
   const issues = await fetchProjectIssues(slug, query);
   const metrics = await constructProjectMetrics(infos, issues);
@@ -102,7 +101,7 @@ export default async function SingleProjectPage({ params }: IProps) {
         </div>
       </section>
 
-      {metrics.kudosWeeksTotal > 0 && (
+      {metrics.kudosTotal > 0 && (
         <section className={"mt-20 mb-4 " + container()}>
           <KudosWeeksBanner>
             ♨️ <strong className="capitalize">{infos.name}</strong> participates

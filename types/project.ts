@@ -43,7 +43,7 @@ export type ProjectMetrics = {
   repositoriesTotal: number;
   suggestedTotal: number;
   certifiedTotal: number;
-  kudosWeeksTotal: number;
+  kudosTotal: number;
   rewardsTotal: number;
 };
 

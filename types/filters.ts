@@ -1,6 +1,5 @@
 import {
   PROJECTS_KEY,
-  GOOD_FIRST_ISSUE_KEY,
   KUDOS_ISSUE_KEY,
   PURPOSE_KEY,
   PROJECT_TYPE_KEY,
@@ -20,7 +19,6 @@ export type FilterKeys =
   | typeof TECHNOLOGY_KEY
   | typeof STACK_LEVEL_KEY
   | typeof PROJECTS_KEY
-  | typeof GOOD_FIRST_ISSUE_KEY
   | typeof KUDOS_ISSUE_KEY;
 
 export type SelectFilterKeys =
@@ -30,9 +28,7 @@ export type SelectFilterKeys =
   | typeof STACK_LEVEL_KEY
   | typeof PROJECTS_KEY;
 
-export type BooleanFilterKeys =
-  | typeof GOOD_FIRST_ISSUE_KEY
-  | typeof KUDOS_ISSUE_KEY;
+export type BooleanFilterKeys = typeof KUDOS_ISSUE_KEY;
 
 export type FilterOptions = {
   [key in SelectFilterKeys]: IFilterOption[];

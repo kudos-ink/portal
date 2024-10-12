@@ -1,4 +1,4 @@
-import { DEFAULT_INIT_FILTERS, GOOD_FIRST_ISSUE_KEY } from "@/data/filters";
+import { DEFAULT_INIT_FILTERS, KUDOS_ISSUE_KEY } from "@/data/filters";
 import { FilterKeys, IFilterOption, Filters } from "@/types/filters";
 
 // Fisher-Yates (or Knuth) shuffle algorithm
@@ -32,7 +32,7 @@ export const countNonEmptyFilters = (filters: Filters): number => {
   (Object.keys(filters) as FilterKeys[]).forEach((key) => {
     const value = filters[key];
 
-    if (key === GOOD_FIRST_ISSUE_KEY) {
+    if (key === KUDOS_ISSUE_KEY) {
       // Count as non-empty if the value is 'true'
       if (value === true) {
         nonEmptyCount++;

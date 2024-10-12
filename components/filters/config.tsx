@@ -1,12 +1,10 @@
-import { InfoIcon, KudosCertifiedIcon } from "@/assets/icons";
+import { KudosCertifiedIcon } from "@/assets/icons";
 import {
   TECHNOLOGY_KEY,
   PURPOSE_KEY,
   PROJECTS_KEY,
   STACK_LEVEL_KEY,
   PROJECT_TYPE_KEY,
-  GOOD_FIRST_ISSUE_KEY,
-  GOOD_FIRST_ISSUE_LABELS,
   KUDOS_ISSUE_KEY,
 } from "@/data/filters";
 import {
@@ -39,23 +37,6 @@ const DEFAULT_SELECT_FILTERS: SelectFilterConfig[] = [
 ];
 
 const DEFAULT_CHECKBOX_FILTERS: CheckboxFilterConfig[] = [
-  {
-    key: GOOD_FIRST_ISSUE_KEY,
-    placeholder: "Good first issues Only",
-    content: (
-      <div className="px-1 py-2">
-        <div className="text-small font-bold">
-          Based on the following GitHub labels
-        </div>
-        {GOOD_FIRST_ISSUE_LABELS.map((label, idx) => (
-          <div className="text-tiny" key={idx}>
-            • {label}
-          </div>
-        ))}
-      </div>
-    ),
-    icon: <InfoIcon className="text-default-500" size={16} />,
-  },
   {
     key: KUDOS_ISSUE_KEY,
     placeholder: "Kudos Issues Only",

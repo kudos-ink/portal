@@ -20,7 +20,6 @@ const EXPLORE_LABEL = "Explore Open Contributions";
 
 export default async function Home() {
   const issues = await IssuesApi.getIssues({
-    goodFirst: true,
     offset: 0,
     limit: DEFAULT_HOMEPAGE_PAGE_SIZE,
   }).catch((error) => {
@@ -56,7 +55,7 @@ export default async function Home() {
 
       <section className={"flex flex-col items-center " + container()}>
         <NuiLink
-          href="/explore/good-first-open-contributions"
+          href="/explore/open-contributions"
           aria-label={EXPLORE_LABEL}
           title={EXPLORE_LABEL}
         >

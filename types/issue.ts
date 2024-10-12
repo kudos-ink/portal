@@ -31,8 +31,8 @@ export type Issue = {
 };
 
 export type IssueQueryParams = Partial<{
-  goodFirst: boolean;
   certified: boolean;
+  kudos: boolean; // 'kudos' labelled issues
   open: boolean;
   labels: string[];
   projects: string[];

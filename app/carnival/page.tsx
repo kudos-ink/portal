@@ -9,8 +9,8 @@ import PaginatedTable from "@/components/table/paginated-table";
 import { FiltersProvider } from "@/contexts/filters";
 import { SITE_CONFIG } from "@/data/config";
 import { DEFAULT_PAGINATED_RESPONSE, DEFAULT_QUERY } from "@/data/fetch";
-import { DEFAULT_INIT_FILTERS, GOOD_FIRST_ISSUE_KEY } from "@/data/filters";
 import { getFilterOptions } from "@/lib/filters";
+import { initFilters } from "@/utils/filters";
 import { FilterOptions } from "@/types/filters";
 import { Issue, IssueQueryParams } from "@/types/issue";
 import { Leaderboard } from "@/types/leaderboard";
@@ -140,14 +140,14 @@ const MOCKED_TOTAL_LEADERBOARD: Leaderboard[] = [
 ].map((item, idx) => ({ id: idx + 1, ...item }));
 
 export default async function SingleEventPage() {
-  const filters = { ...DEFAULT_INIT_FILTERS, [GOOD_FIRST_ISSUE_KEY]: false };
+  const filters = initFilters();
   const filterOptions = await getFilterOptions().catch((error) => {
     console.error("Error fetching filter options:", error);
     return {} as FilterOptions;
   });
 
   const query: IssueQueryParams = {
-    labels: ["kudos"],
+    kudos: true,
     open: true,
   };
   const issues = (await IssuesApi.getIssues({

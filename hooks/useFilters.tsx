@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { FilterKeys, FilterOptions, Filters } from "@/types/filters";
 import { initFilters } from "@/utils/filters";
-import { GOOD_FIRST_ISSUE_KEY, KUDOS_ISSUE_KEY } from "@/data/filters";
+import { KUDOS_ISSUE_KEY } from "@/data/filters";
 
 export interface IConfigProps {
   initialFilters: Filters;
@@ -27,7 +27,7 @@ export const useFilters = ({
     (key: FilterKeys, values: string[]) => {
       setFilters((prev) => {
         // Boolean keys
-        if (key === GOOD_FIRST_ISSUE_KEY || key === KUDOS_ISSUE_KEY) {
+        if (key === KUDOS_ISSUE_KEY) {
           return { ...prev, [key]: values.includes("true") };
         }
 

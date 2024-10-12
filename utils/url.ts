@@ -5,7 +5,6 @@ import {
   Filters,
 } from "@/types/filters";
 import {
-  GOOD_FIRST_ISSUE_KEY,
   KUDOS_ISSUE_KEY,
   PROJECTS_KEY,
   PROJECT_TYPE_KEY,
@@ -32,10 +31,7 @@ export const createUrl = (
   const keyLowerCase = key.toLowerCase() as Keys;
 
   // Boolean keys
-  if (
-    keyLowerCase === GOOD_FIRST_ISSUE_KEY ||
-    keyLowerCase === KUDOS_ISSUE_KEY
-  ) {
+  if (keyLowerCase === KUDOS_ISSUE_KEY) {
     filters[keyLowerCase] = values.includes("true");
   } else {
     // Select filter options, avoid duplicates
@@ -75,13 +71,11 @@ export const encodingSlug = (filters: Filters): string => {
   const stackLevelsSegment = createSegment(filters[STACK_LEVEL_KEY], "level-");
   const purposesSegment = createSegment(purposes, "in-");
   const projectsSegment = createSegment(projects, "at-");
-  const goodFirstSegment = filters[GOOD_FIRST_ISSUE_KEY] ? "good-first" : "";
   const certifiedSegment = filters[KUDOS_ISSUE_KEY] ? "certified" : "";
 
   let urlParts = [
     technologiesSegment,
     certifiedSegment,
-    goodFirstSegment,
     "open-contributions",
     projectTypesSegment,
     stackLevelsSegment,
@@ -97,17 +91,13 @@ export const decodingSlug = (
 ): Filters => {
   const filters = initFilters();
 
-  // Check for 'good-first', 'certified' and extract languages
+  // Check for 'certified' and extract languages
   const isCertified = slug.includes("certified-");
-  const isGoodFirstIssue = slug.includes("good-first-");
   filters[KUDOS_ISSUE_KEY] = isCertified;
-  filters[GOOD_FIRST_ISSUE_KEY] = isGoodFirstIssue;
 
   const technologiesPart = isCertified
     ? slug.split("certified")[0]
-    : isGoodFirstIssue
-      ? slug.split("good-first-open-contributions")[0]
-      : slug.split("open-contributions")[0];
+    : slug.split("open-contributions")[0];
   filters.technologies = extractValuesFromOptions(
     technologiesPart,
     filterOptions.technologies,

@@ -1,7 +1,7 @@
 import LanguagesApi from "@/api/core/languages";
 import ProjectsApi from "@/api/core/projects";
 import RepositoriesApi from "@/api/core/repositories";
-import { InfoIcon, KudosCertifiedIcon } from "@/assets/icons";
+import { KudosCertifiedIcon } from "@/assets/icons";
 import { CheckboxFilterConfig } from "@/components/filters/config";
 import { KudosIssueTooltipContent } from "@/components/table/row";
 import { DEFAULT_BIG_PAGE_SIZE } from "@/data/fetch";
@@ -19,7 +19,6 @@ import {
   TECHNOLOGY_KEY,
   STACK_LEVEL_KEY,
   PROJECTS_KEY,
-  GOOD_FIRST_ISSUE_KEY,
   KUDOS_ISSUE_KEY,
 } from "@/data/filters";
 import { IFilterOption, FilterOptions, Filters } from "@/types/filters";
@@ -126,12 +125,8 @@ export function filtersToIssuesQuery(
     query.stackLevels = filters[STACK_LEVEL_KEY].map((tech) => tech.value);
   }
 
-  if (filters[GOOD_FIRST_ISSUE_KEY]) {
-    query.goodFirst = true;
-  }
-
   if (filters[KUDOS_ISSUE_KEY]) {
-    query.certified = true;
+    query.kudos = true;
   }
 
   return query;
@@ -141,26 +136,6 @@ export function buildCheckboxFilters(
   metrics: ProjectMetrics,
 ): CheckboxFilterConfig[] {
   const filters: CheckboxFilterConfig[] = [];
-
-  // if (metrics.suggestedTotal > 0) {
-  //   filters.push({
-  //     key: GOOD_FIRST_ISSUE_KEY,
-  //     placeholder: "Good first issues Only",
-  //     content: (
-  //       <div className="px-1 py-2">
-  //         <div className="text-small font-bold">
-  //           Based on the following GitHub labels
-  //         </div>
-  //         {GOOD_FIRST_ISSUE_LABELS.map((label, idx) => (
-  //           <div className="text-tiny" key={idx}>
-  //             • {label}
-  //           </div>
-  //         ))}
-  //       </div>
-  //     ),
-  //     icon: <InfoIcon className="text-default-500" size={16} />,
-  //   });
-  // }
 
   if (metrics.certifiedTotal > 0) {
     filters.push({

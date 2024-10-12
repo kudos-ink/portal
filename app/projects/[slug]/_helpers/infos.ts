@@ -1,20 +1,10 @@
-import {
-  GOOD_FIRST_ISSUE_KEY,
-  REWARDS_KEY,
-  KUDOS_ISSUE_KEY,
-} from "@/data/filters";
+import { REWARDS_KEY, KUDOS_ISSUE_KEY } from "@/data/filters";
 import { ProjectInfosLabel, ProjectMetrics } from "@/types/project";
 
 export function constructLabels(metrics: ProjectMetrics): ProjectInfosLabel[] {
-  const { certifiedTotal, suggestedTotal, rewardsTotal } = metrics;
+  const { certifiedTotal, rewardsTotal } = metrics;
 
   return [
-    suggestedTotal > 0 && {
-      color: "danger",
-      emoji: "🌟",
-      label: "Good First Issues",
-      type: GOOD_FIRST_ISSUE_KEY,
-    },
     rewardsTotal > 0 && {
       color: "success",
       emoji: "💰",

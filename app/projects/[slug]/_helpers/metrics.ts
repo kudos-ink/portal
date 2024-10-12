@@ -1,4 +1,3 @@
-import { KUDOS_ISSUE_LABELS } from "@/data/filters";
 import { fetchProjectIssues } from "@/lib/api/issues";
 import { Issue } from "@/types/issue";
 import { PaginatedCustomResponse } from "@/types/pagination";
@@ -12,14 +11,14 @@ export async function constructProjectMetrics(
     certified: true,
   });
 
-  const kudosWeeksIssues = await fetchProjectIssues(infos.slug, {
-    labels: KUDOS_ISSUE_LABELS,
+  const kudosIssues = await fetchProjectIssues(infos.slug, {
+    kudos: true,
   });
 
   return {
     repositoriesTotal: infos.links.repository.length,
     certifiedTotal: certifiedIssues.totalCount,
-    kudosWeeksTotal: kudosWeeksIssues.totalCount,
+    kudosTotal: kudosIssues.totalCount,
     rewardsTotal: 0,
     suggestedTotal: suggestedIssues.totalCount,
   };

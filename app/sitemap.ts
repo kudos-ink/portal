@@ -21,7 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
     },
     {
-      url: `${SITE_CONFIG.url}/explore/good-first-open-contributions`,
+      url: `${SITE_CONFIG.url}/explore/open-contributions`,
       lastModified: new Date(),
       changeFrequency: "hourly",
       priority: 1,
