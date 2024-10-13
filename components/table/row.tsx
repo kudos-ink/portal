@@ -39,7 +39,7 @@ export const Project = ({
   if (!withProjectData) return <div />;
   return (
     <NuiLink
-      className="flex md:gap-4"
+      className="flex md:gap-4 hover:text-primary"
       href={`/projects/${slug}`}
       color="foreground"
       title={`${name}'s project page`}
@@ -47,8 +47,10 @@ export const Project = ({
     >
       <Project.Avatar alt={`${name} logo`} src={avatarSrc} />
       <div className="hidden md:flex flex-col justify-start items-start w-36">
-        <h2 className="w-fit text-small font-semibold truncate">{name}</h2>
-        <p className="w-fit text-small text-default-500 truncate">
+        <h2 className="w-fit text-small font-semibold truncate hover:underline">
+          {name}
+        </h2>
+        <p className="w-fit text-small !text-default-500 truncate">
           {repository.name}
         </p>
       </div>

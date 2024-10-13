@@ -1,9 +1,8 @@
-import { DEFAULT_BIG_PAGE_SIZE, DEFAULT_QUERY } from "@/data/fetch";
+import { DEFAULT_QUERY } from "@/data/fetch";
 import {
   PaginatedCustomResponse,
   PaginationQueryParams,
 } from "@/types/pagination";
-import { IFilterOption } from "@/types/filters";
 import { Project } from "@/types/project";
 import tags from "@/utils/tags";
 import { prepareUrl } from "@/utils/url";
@@ -30,30 +29,4 @@ async function getProjects(
   });
 }
 
-async function getAllProjectOptions() {
-  let offset = 0;
-  let hasMore = true;
-  let projects: IFilterOption[] = [];
-
-  while (hasMore) {
-    const paginationParams = {
-      offset,
-      limit: DEFAULT_BIG_PAGE_SIZE,
-    };
-    const response = await getProjects(paginationParams, tags.projectOptions);
-
-    projects = projects.concat(
-      response.data.map((project) => ({
-        value: project.slug,
-        label: project.name,
-      })),
-    );
-
-    hasMore = response.hasNextPage;
-    offset += DEFAULT_BIG_PAGE_SIZE;
-  }
-
-  return projects;
-}
-
-export default { getProjects, getAllProjectOptions };
+export default { getProjects };

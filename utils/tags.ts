@@ -1,5 +1,6 @@
 const tags = {
   languages: "languages",
+  allProjects: "all-projects",
   projectOptions: "project-options",
   projects(slug: string) {
     return `projects${slug ? `_${slug}` : ""}`;

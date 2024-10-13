@@ -1,5 +1,3 @@
-"use client";
-
 import NextLink from "next/link";
 import {
   Navbar as NextUINavbar,
@@ -9,11 +7,17 @@ import {
 import { Chip } from "@nextui-org/chip";
 import { MyImage } from "@/components/ui/image";
 
-import { BugReport, CtaButton, FeedbackForms } from "./items";
+import { BugReport, CtaButton, FeedbackForms, ProjectDropDown } from "./items";
 import Separator from "./separator";
 import SocialLinks from "./social-links";
+import { getAllProjects } from "@/lib/api/projects";
 
-const Navbar = () => {
+export default async function Navbar() {
+  const projects = await getAllProjects().catch((error) => {
+    console.error("Error fetching all projects:", error);
+    return null;
+  });
+
   return (
     <NextUINavbar maxWidth="xl" position="static" isBordered>
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -44,11 +48,10 @@ const Navbar = () => {
           <Separator />
         </div>
         <div className="hidden sm:flex gap-4 items-center">
+          {projects && <ProjectDropDown projects={projects} />}
           <CtaButton />
         </div>
       </NavbarContent>
     </NextUINavbar>
   );
-};
-
-export default Navbar;
+}

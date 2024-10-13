@@ -1,5 +1,4 @@
 import LanguagesApi from "@/api/core/languages";
-import ProjectsApi from "@/api/core/projects";
 import RepositoriesApi from "@/api/core/repositories";
 import { KudosCertifiedIcon } from "@/assets/icons";
 import { CheckboxFilterConfig } from "@/components/filters/config";
@@ -26,6 +25,7 @@ import { IssueQueryParams } from "@/types/issue";
 import { PaginationQueryParams } from "@/types/pagination";
 import { ProjectMetrics } from "@/types/project";
 import { createFilterOptions } from "@/utils/filters";
+import { getAllProjectOptions } from "./api/projects";
 
 export async function getProjectFilterOptions(
   repositoryIds: number[],
@@ -68,7 +68,7 @@ export async function getFilterOptions(): Promise<FilterOptions> {
 
   let projects: IFilterOption[] = [];
   try {
-    projects = await ProjectsApi.getAllProjectOptions();
+    projects = await getAllProjectOptions();
   } catch (error) {
     console.error("Error fetching projects options:", error);
   }
