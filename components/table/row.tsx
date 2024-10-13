@@ -1,5 +1,7 @@
 "use client";
 import { useState, useRef, useEffect, useMemo } from "react";
+import { marked } from "marked";
+import DOMPurify from "dompurify";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Link as NuiLink } from "@nextui-org/link";
@@ -94,6 +96,8 @@ export const Content = ({
   repositoryName,
   isCertified,
 }: IContentProps) => {
+  const parsedTitle = DOMPurify.sanitize(marked.parseInline(title) as string);
+
   return (
     <div
       className={`flex flex-col ${projectName ? "lg:w-[270px] xl:w-[500px]" : "pl-2 gap-1"}`}
@@ -113,9 +117,10 @@ export const Content = ({
         </div>
       </span>
       <div className="w-fit text-base flex gap-1 flex-grow relative">
-        <h3 className="font-semibold max-w-48 sm:max-w-none leading-tight line-clamp-2 capitalize">
-          {title}
-        </h3>
+        <h3
+          className="font-semibold max-w-48 sm:max-w-none leading-tight line-clamp-2 capitalize"
+          dangerouslySetInnerHTML={{ __html: parsedTitle }} // Safely render sanitized HTML
+        />
         {isCertified && (
           <Tooltip content={<KudosIssueTooltipContent />}>
             <div className="hidden absolute -top-1 -left-6 md:block">
