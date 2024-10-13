@@ -8,5 +8,5 @@ export async function POST(
   const tag = params.tag;
   revalidateTag(tag);
 
-  return NextResponse.json({ revalidated: tag });
+  // return NextResponse.json({ revalidated: tag });
 }
