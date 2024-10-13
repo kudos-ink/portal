@@ -12,10 +12,8 @@ tr > :nth-child(2) {
   flex-grow: 1;
 }
 
-code {
-  padding: 2px 0.25rem;
-  font-size: 0.9em;
-  line-height: 1;
-  background-color: #1d3153;
-  border-radius: 0.375rem;
+@layer base {
+  code {
+    @apply px-1 py-0.5 text-sm leading-tight bg-[#1d3153] rounded-md;
+  }
 }

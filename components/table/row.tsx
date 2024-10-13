@@ -4,19 +4,20 @@ import { marked } from "marked";
 import DOMPurify from "dompurify";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Link as NuiLink } from "@nextui-org/link";
+import { Button } from "@nextui-org/button";
 import { Chip } from "@nextui-org/chip";
+import { Link as NuiLink } from "@nextui-org/link";
 import { Tooltip } from "@nextui-org/tooltip";
+import { IconRepo } from "@/assets/icons";
 import Emoji from "@/components/emoji";
 import MyImage from "@/components/ui/image";
 import { useFilters } from "@/contexts/filters";
-import { formatDate } from "@/utils/date";
-import { shuffleArray } from "@/utils/filters";
-import { createUrl } from "@/utils/url";
 import { TECHNOLOGY_KEY, PURPOSE_KEY } from "@/data/filters";
 import { FilterKeys, IFilterOption, Filters } from "@/types/filters";
 import { Repository } from "@/types/repository";
-import { IconRepo } from "@/assets/icons";
+import { formatDate } from "@/utils/date";
+import { shuffleArray } from "@/utils/filters";
+import { createUrl } from "@/utils/url";
 
 const MAX_LABEL_WIDTH = 192;
 
@@ -118,7 +119,7 @@ export const Content = ({
       </span>
       <div className="w-fit text-base flex gap-1 flex-grow relative">
         <h3
-          className="font-semibold max-w-48 sm:max-w-none leading-tight line-clamp-2 capitalize"
+          className="font-semibold max-w-48 sm:max-w-none leading-tight line-clamp-2 capitalize hover:text-primary hover:underline"
           dangerouslySetInnerHTML={{ __html: parsedTitle }} // Safely render sanitized HTML
         />
         {isCertified && (
@@ -241,7 +242,11 @@ export const Labels = ({
             <Chip
               color="default"
               className={`mx-1${clickable ? " cursor-pointer" : ""}`}
-              onClick={() => handleClick(type, [value])}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleClick(type, [value]);
+              }}
             >
               <div className="flex items-center gap-2">
                 {emoji && (
@@ -301,6 +306,26 @@ export const ExternalLink = ({ href, title }: IExternalLinkProps) => {
       color="foreground"
       title={title}
     />
+  );
+};
+
+interface IApplyButtonProps {
+  onOpen: () => void;
+}
+export const ApplyButton = ({ onOpen }: IApplyButtonProps) => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation();
+    onOpen();
+  };
+
+  return (
+    <Button
+      className="invisible group-hover:visible"
+      color="primary"
+      onClick={handleClick}
+    >
+      Apply
+    </Button>
   );
 };
 

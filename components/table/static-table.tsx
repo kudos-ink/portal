@@ -1,8 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useMediaQuery } from "react-responsive";
+import { Modal } from "@nextui-org/modal";
 import {
   Table as NextUITable,
   TableHeader,
@@ -11,10 +13,11 @@ import {
   TableRow,
   TableCell,
 } from "@nextui-org/table";
-import { ExternalLink, Content, Time, Project } from "./row";
-
-import dynamic from "next/dynamic";
+import { KUDOS_ISSUE_LABELS } from "@/data/filters";
 import { Issue } from "@/types/issue";
+
+import IssueModal from "./issue-modal";
+import { ExternalLink, Content, Time, Project, ApplyButton } from "./row";
 
 const DEFAULT_EMPTY = "No contributions to display.. Try another query (:";
 
@@ -52,9 +55,13 @@ const StaticTable = ({
   withProjectData = true,
   clickableLabels = false,
 }: IStaticTableProps) => {
+  const [selectedIssue, setSelectedIssue] = useState<Issue | null>(null);
   const pathname = usePathname();
   const isMobile = useMediaQuery({ maxWidth: 639 }); // tailwind lg default: 640px
   const isLaptop = useMediaQuery({ minWidth: 1024 }); // tailwind lg default: 1024px
+  const isKudosIssue = KUDOS_ISSUE_LABELS.some((label) =>
+    selectedIssue?.labels.includes(label),
+  );
 
   const [columns, setColumns] = useState<IColumn[]>([
     { name: "PROJECT", uid: "project" },
@@ -121,13 +128,9 @@ const StaticTable = ({
               <Time timestamp={item.createdAt} />
             </div>
           );
-        case "actions":
-          return (
-            <ExternalLink
-              href={item.url}
-              title={`Open "${item.title}" on Github`}
-            />
-          );
+        case "actions": {
+          return <ApplyButton onOpen={() => setSelectedIssue(item)} />;
+        }
         default:
           return null;
       }
@@ -146,51 +149,66 @@ const StaticTable = ({
   }, [isMobile, isLaptop]);
 
   return (
-    <NextUITable
-      hideHeader
-      aria-label="Open contributions list"
-      classNames={{
-        table:
-          "w-full bg-gradient-to-r from-background to-background-200 to-80% max-w-7xl border-spacing-0 rounded-b-md overflow-hidden",
-        wrapper:
-          "bg-background overflow-visible p-0 rounded-none border-[1px] rounded-b-md",
-        tr: "flex items-center relative border-y-small border-y-overlay hover:bg-hover-overlay",
-        td: "px-2 sm:px-inherit z-10",
-      }}
-    >
-      <TableHeader columns={columns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody items={data} emptyContent={emptyContent ?? DEFAULT_EMPTY}>
-        {(item) => {
-          const isHighlighted =
-            item.labels.includes("kudos") &&
-            pathname !== "/carnival" &&
-            !pathname.includes("certified");
-          return (
-            <TableRow
-              key={item.id}
-              className={
-                isHighlighted
-                  ? `bg-[#1e3054] hover:bg-[#284070] relative overflow-hidden whitespace-nowrap ${KUDOS_HIGHLIGHT_STYLES}`
-                  : ""
-              }
-            >
-              {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
-              )}
-            </TableRow>
-          );
+    <>
+      <NextUITable
+        hideHeader
+        aria-label="Open contributions list"
+        classNames={{
+          table:
+            "w-full bg-gradient-to-r from-background to-background-200 to-80% max-w-7xl border-spacing-0 rounded-b-md overflow-hidden",
+          wrapper:
+            "bg-background overflow-visible p-0 rounded-none border-[1px] rounded-b-md",
+          tr: "flex items-center relative border-y-small border-y-overlay hover:bg-hover-overlay",
+          td: "px-2 sm:px-inherit z-10",
         }}
-      </TableBody>
-    </NextUITable>
+      >
+        <TableHeader columns={columns}>
+          {(column) => (
+            <TableColumn
+              key={column.uid}
+              align={column.uid === "actions" ? "center" : "start"}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody items={data} emptyContent={emptyContent ?? DEFAULT_EMPTY}>
+          {(item) => {
+            const isHighlighted =
+              item.labels.includes("kudos") &&
+              pathname !== "/carnival" &&
+              !pathname.includes("certified");
+            return (
+              <TableRow
+                key={item.id}
+                className={`cursor-pointer group
+                ${
+                  isHighlighted
+                    ? ` bg-[#1e3054] hover:bg-[#284070] relative overflow-hidden whitespace-nowrap ${KUDOS_HIGHLIGHT_STYLES}`
+                    : ""
+                }`}
+                onClick={() => setSelectedIssue(item)}
+              >
+                {(columnKey) => (
+                  <TableCell>{renderCell(item, columnKey)}</TableCell>
+                )}
+              </TableRow>
+            );
+          }}
+        </TableBody>
+      </NextUITable>
+      <Modal
+        isOpen={selectedIssue !== null}
+        onOpenChange={() => setSelectedIssue(null)}
+        classNames={{
+          closeButton: isKudosIssue ? "z-1000 mt-20 md:mt-16" : "",
+        }}
+        size="lg"
+        placement={isMobile ? "bottom" : "auto"}
+      >
+        {selectedIssue && <IssueModal issue={selectedIssue} />}
+      </Modal>
+    </>
   );
 };
 
