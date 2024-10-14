@@ -67,14 +67,7 @@ const Toolbar = ({
         updateRouterWithFilters(key, Array.from(newValues));
       }
     },
-    [
-      updateFilter,
-      clearFilter,
-      shouldUpdateRouter,
-      pathname,
-      router,
-      filterOptions,
-    ],
+    [updateFilter, clearFilter, shouldUpdateRouter, updateRouterWithFilters],
   );
 
   const handleCheckboxChange = useCallback(
@@ -86,7 +79,7 @@ const Toolbar = ({
         updateRouterWithFilters(key, newValue);
       }
     },
-    [updateFilter, shouldUpdateRouter, pathname, router, filterOptions],
+    [updateFilter, shouldUpdateRouter, updateRouterWithFilters],
   );
 
   const handleClear = () => {

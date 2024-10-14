@@ -179,7 +179,7 @@ export const Labels = ({
     return technologyAndPurposeLabels.filter(
       (option) => !isLabelFilteredOut(option, filters),
     );
-  }, [filters, filterOptions, gitLabels, technologies, purposes]);
+  }, [filters, filterOptions, technologies, purposes]);
 
   const handleClick = (key: FilterKeys, values: string[]) => {
     if (!clickable) return;

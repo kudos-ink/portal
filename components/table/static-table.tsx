@@ -138,7 +138,7 @@ const StaticTable = ({
           return null;
       }
     },
-    [withProjectData, pathname],
+    [withProjectData, clickableLabels, pathname],
   );
 
   useEffect(() => {
