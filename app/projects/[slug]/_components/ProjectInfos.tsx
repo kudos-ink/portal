@@ -1,8 +1,9 @@
+import { Tooltip } from "@nextui-org/tooltip";
+import { Chip } from "@nextui-org/chip";
 import { KudosCertifiedIcon } from "@/assets/icons";
 import Emoji from "@/components/emoji";
 import { KUDOS_ISSUE_KEY } from "@/data/filters";
 import { ProjectInfosLabel } from "@/types/project";
-import { Chip } from "@nextui-org/chip";
 
 interface IProjectInfosProps {
   infos: { title: string; items: string[] }[];
@@ -13,21 +14,23 @@ const ProjectInfos = ({ infos, labels }: IProjectInfosProps) => (
   <div className="bg-gradient-to-r md:bg-gradient-to-l from-background to-background-200 to-80% py-5 px-6 border-[1px] rounded-md flex flex-col gap-4 h-full">
     {labels.length > 0 && (
       <div className="flex flex-col sm:flex-row gap-3 border-b-small pb-4">
-        {labels.map(({ color, emoji, label, type }, idx) => (
-          <Chip key={idx} color={color} className="rounded-md">
-            <div className="flex items-center font-semibold gap-2 !leading-none py-0.5 text-base">
-              {emoji && (
-                <>
-                  <Emoji emoji={emoji} className="text-xl" />
-                  &nbsp;
-                </>
-              )}
-              {type === KUDOS_ISSUE_KEY ? (
-                <KudosCertifiedIcon className="w-5 h-5" size={16} />
-              ) : null}
-              {label}
-            </div>
-          </Chip>
+        {labels.map(({ color, emoji, label, tooltip, type }, idx) => (
+          <Tooltip key={idx} content={tooltip}>
+            <Chip color={color} className="rounded-md">
+              <div className="flex items-center font-semibold gap-2 !leading-none py-0.5 text-base">
+                {emoji && (
+                  <>
+                    <Emoji emoji={emoji} className="text-xl" />
+                    &nbsp;
+                  </>
+                )}
+                {type === KUDOS_ISSUE_KEY ? (
+                  <KudosCertifiedIcon className="w-5 h-5" size={16} />
+                ) : null}
+                {label}
+              </div>
+            </Chip>
+          </Tooltip>
         ))}
       </div>
     )}

@@ -43,7 +43,7 @@ export default async function SingleProjectPage({ params }: IProps) {
   const issues = await fetchProjectIssues(slug, query);
   const metrics = await constructProjectMetrics(infos, issues);
 
-  const labels = constructLabels(metrics);
+  const labels = constructLabels(infos, metrics);
   const repositoryIds = getUniqueRepositoryIds(issues);
   const checkboxFilters = buildCheckboxFilters(metrics);
 

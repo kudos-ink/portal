@@ -36,6 +36,7 @@ export type ProjectInfos = {
     stackLevels: ProjectStackLevel[];
     technologies: ProjectTechnologies[];
     types: ProjectType[];
+    rewards: boolean;
   };
 };
 
@@ -51,6 +52,7 @@ export type ProjectInfosLabel = {
   color: "default" | "success" | "danger";
   emoji?: string;
   label: string;
+  tooltip: string;
   type: string;
 };
 

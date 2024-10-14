@@ -1,20 +1,29 @@
 import { REWARDS_KEY, KUDOS_ISSUE_KEY } from "@/data/filters";
-import { ProjectInfosLabel, ProjectMetrics } from "@/types/project";
+import {
+  ProjectInfos,
+  ProjectInfosLabel,
+  ProjectMetrics,
+} from "@/types/project";
 
-export function constructLabels(metrics: ProjectMetrics): ProjectInfosLabel[] {
+export function constructLabels(
+  infos: ProjectInfos,
+  metrics: ProjectMetrics,
+): ProjectInfosLabel[] {
   const { certifiedTotal, rewardsTotal } = metrics;
 
   return [
-    rewardsTotal > 0 && {
+    infos.attributes.rewards && {
       color: "success",
       emoji: "💰",
       label: "Rewards",
       type: REWARDS_KEY,
+      tooltip: "This project is willing to distributed rewards (e.g. tipping)",
     },
     certifiedTotal > 0 && {
       color: "default",
       label: "Kudos Pick",
       type: KUDOS_ISSUE_KEY,
+      tooltip: "This project participates to the Kudos Carnival",
     },
   ].filter((label): label is ProjectInfosLabel => Boolean(label)); // Type-safe filtering
 }
