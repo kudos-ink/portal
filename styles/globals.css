@@ -16,4 +16,21 @@ tr > :nth-child(2) {
   code {
     @apply px-1 py-0.5 text-sm leading-tight bg-[#1d3153] rounded-md;
   }
+
+  #issue-description a {
+    @apply text-primary underline;
+  }
+
+  #issue-description ol,
+  #issue-description ul {
+    @apply list-decimal pl-6;
+  }
+
+  #issue-description li {
+    @apply mb-2;
+  }
+
+  #issue-description strong {
+    @apply font-bold;
+  }
 }

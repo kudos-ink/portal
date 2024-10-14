@@ -19,8 +19,12 @@ interface IIssueModalProps {
 }
 
 export const IssueModal = ({ issue }: IIssueModalProps) => {
-  const { labels, project, repository, title, url } = issue;
-  const parsedTitle = DOMPurify.sanitize(marked.parseInline(title) as string);
+  const { description, labels, project, repository, title, url } = issue;
+  const parsedTitle =
+    title && DOMPurify.sanitize(marked.parseInline(title) as string);
+  const parsedDescription =
+    description &&
+    DOMPurify.sanitize(marked.parse(description, { breaks: true }) as string);
   const isKudosIssue = KUDOS_ISSUE_LABELS.some((label) =>
     labels.includes(label),
   );
@@ -69,48 +73,27 @@ export const IssueModal = ({ issue }: IIssueModalProps) => {
                 </p>
               </div>
             </NuiLink>
-            <h3
-              className="font-semibold leading-tight capitalize mt-4"
-              dangerouslySetInnerHTML={{ __html: parsedTitle }} // Safely render sanitized HTML
-            />
+            {parsedTitle && (
+              <h3
+                className="font-semibold leading-tight capitalize mt-4"
+                dangerouslySetInnerHTML={{ __html: parsedTitle }} // Safely render sanitized HTML
+              />
+            )}
           </div>
         </ModalHeader>
-        <ModalBody>
-          <ScrollShadow
-            hideScrollBar
-            className="w-full h-[200px] md:h-[400px] p-4 border border-gray-300 rounded-lg mb-4 shadow-sm"
-          >
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-              pulvinar risus non risus hendrerit venenatis. Pellentesque sit
-              amet hendrerit risus, sed porttitor quam.
-            </p>
-            <br />
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-              pulvinar risus non risus hendrerit venenatis. Pellentesque sit
-              amet hendrerit risus, sed porttitor quam.
-            </p>
-            <br />
-            <p>
-              Magna exercitation reprehenderit magna aute tempor cupidatat
-              consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
-              incididunt cillum quis. Velit duis sit officia eiusmod Lorem
-              aliqua enim laboris do dolor eiusmod. Et mollit incididunt nisi
-              consectetur esse laborum eiusmod pariatur proident Lorem eiusmod
-              et. Culpa deserunt nostrud ad veniam.
-            </p>
-            <br />
-            <p>
-              Magna exercitation reprehenderit magna aute tempor cupidatat
-              consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
-              incididunt cillum quis. Velit duis sit officia eiusmod Lorem
-              aliqua enim laboris do dolor eiusmod. Et mollit incididunt nisi
-              consectetur esse laborum eiusmod pariatur proident Lorem eiusmod
-              et. Culpa deserunt nostrud ad veniam.
-            </p>
-          </ScrollShadow>
-        </ModalBody>
+        {parsedDescription && (
+          <ModalBody>
+            <ScrollShadow
+              hideScrollBar
+              className="w-full h-[200px] md:h-[320px] p-4 border border-gray-300 rounded-lg mb-4 shadow-sm"
+            >
+              <div
+                id="issue-description"
+                dangerouslySetInnerHTML={{ __html: parsedDescription }}
+              />
+            </ScrollShadow>
+          </ModalBody>
+        )}
         <ModalFooter>
           <div className="flex flex-col items-center gap-8 text-center border-t-2 border-default">
             <div className="flex flex-col">

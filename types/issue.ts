@@ -11,7 +11,8 @@ export type IssueDto = {
   assignee_username: string | null;
   certified: boolean;
   repository: RepositoryDto;
-  title: string;
+  title: string | null;
+  description: string | null;
   issue_created_at: string;
   issue_closed_at: string | null;
   created_at: string;
@@ -25,7 +26,8 @@ export type Issue = {
   labels: string[];
   repository: Repository;
   project: Project;
-  title: string;
+  title: string | null;
+  description: string | null;
   url: string;
   createdAt: string;
 };

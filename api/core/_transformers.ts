@@ -17,6 +17,7 @@ export function dtoToIssue(dto: IssueDto): Issue {
     repository: dtoToRepository(dto.repository),
     project: dtoToProject(dto.repository.project),
     title: dto.title,
+    description: dto.description,
     createdAt: dto.issue_created_at,
     url: dto.repository.url + `/issues/${dto.issue_id}`,
   };

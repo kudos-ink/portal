@@ -96,13 +96,16 @@ const StaticTable = ({
             item.labels.includes("kudos") &&
             pathname !== "/carnival" &&
             !pathname.includes("certified");
+
           return (
-            <Content
-              title={title}
-              projectName={withProjectData ? project.name : undefined}
-              repositoryName={repository?.name}
-              isCertified={isCertified}
-            />
+            title && (
+              <Content
+                title={title}
+                projectName={withProjectData ? project.name : undefined}
+                repositoryName={repository?.name}
+                isCertified={isCertified}
+              />
+            )
           );
         }
         case "labels": {
@@ -178,6 +181,7 @@ const StaticTable = ({
               item.labels.includes("kudos") &&
               pathname !== "/carnival" &&
               !pathname.includes("certified");
+
             return (
               <TableRow
                 key={item.id}
