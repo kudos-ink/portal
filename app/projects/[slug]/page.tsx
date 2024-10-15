@@ -58,6 +58,7 @@ export default async function SingleProjectPage({ params }: IProps) {
             name={infos.name}
             description={infos.description}
             links={infos.links}
+            slug={infos.slug}
           />
           <div className="flex flex-col md:flex-row gap-6 w-full mt-6">
             <div className="flex-grow lg:basis-1/4">

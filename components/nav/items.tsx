@@ -13,6 +13,7 @@ import { BugIcon, ChevronDownIcon, FeedbackIcon } from "@/assets/icons";
 import MyImage from "@/components/ui/image";
 import { SITE_CONFIG } from "@/data/config";
 import { Project } from "@/types/project";
+import { getIconSrc } from "@/utils/icons";
 
 export const FeedbackForms = () => {
   return (
@@ -112,11 +113,7 @@ export const ProjectDropDown = ({ projects }: { projects: Project[] }) => (
               {avatar !== null && (
                 <MyImage
                   className="border"
-                  src={
-                    name.toLocaleLowerCase() == "polkadot"
-                      ? "/images/polkadot-logo.png"
-                      : avatar
-                  }
+                  src={getIconSrc(slug, avatar)}
                   alt={`${name}'s avatar`}
                   radius="sm"
                   height={40}

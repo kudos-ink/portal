@@ -4,6 +4,7 @@ import MyImage from "@/components/ui/image";
 import ProjectApi from "@/api/core/projects";
 import { DEFAULT_PAGINATED_RESPONSE } from "@/data/fetch";
 import { Project } from "@/types/project";
+import { getIconSrc } from "@/utils/icons";
 
 interface IProjectCarouselProps {}
 
@@ -26,7 +27,7 @@ function createCarousel(projects: Project[], keyPrefix: string) {
           {avatar && (
             <MyImage
               className="rounded-md min-w-[45px] min-h-[45px] shrink-0 bg-foreground border"
-              src={slug == "polkadot" ? "/images/polkadot-logo.png" : avatar}
+              src={getIconSrc(slug, avatar)}
               alt={`${name} logo`}
               radius="sm"
               width={45}

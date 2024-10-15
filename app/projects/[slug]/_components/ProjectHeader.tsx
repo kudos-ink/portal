@@ -3,10 +3,12 @@ import { IconWeb, IconDocs, IconRepo, IconSocial } from "@/assets/icons";
 import DropdownLinks from "@/components/dropdown-links";
 import MyImage from "@/components/ui/image";
 import { LinkItem, ProjectLinks } from "@/types/project";
+import { getIconSrc } from "@/utils/icons";
 
 interface IProjectHeaderProps {
   avatar: string | null;
   name: string;
+  slug: string;
   description: string;
   links: ProjectLinks;
 }
@@ -16,17 +18,14 @@ const ProjectHeader = ({
   description,
   links,
   name,
+  slug,
 }: IProjectHeaderProps) => (
   <div className="flex flex-col space-y-unit-1">
     <div className="flex gap-4 items-center mb-2">
       {avatar && (
         <MyImage
           className="bg-foreground border min-w-[45px] min-h-[45px] shrink-0 flex items-center justify-center"
-          src={
-            name.toLocaleLowerCase() == "polkadot"
-              ? "/images/polkadot-logo.png"
-              : avatar
-          }
+          src={getIconSrc(slug, avatar)}
           alt={`${name}'s Logo`}
           radius="sm"
           height={40}

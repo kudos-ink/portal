@@ -18,6 +18,7 @@ import { Issue } from "@/types/issue";
 
 import IssueModal from "./issue-modal";
 import { ExternalLink, Content, Time, Project, ApplyButton } from "./row";
+import { getIconSrc } from "@/utils/icons";
 
 const DEFAULT_EMPTY = "No contributions to display.. Try another query (:";
 
@@ -79,9 +80,7 @@ const StaticTable = ({
           return (
             <Project
               avatarSrc={
-                project.slug == "polkadot"
-                  ? "/images/polkadot-logo.png"
-                  : project.avatar
+                project.avatar && getIconSrc(project.slug, project.avatar)
               }
               slug={project.slug}
               name={project.name}

@@ -13,6 +13,7 @@ import { ScrollShadow } from "@nextui-org/scroll-shadow";
 import { KUDOS_ISSUE_LABELS } from "@/data/filters";
 import { Issue } from "@/types/issue";
 import { Project } from "./row";
+import { getIconSrc } from "@/utils/icons";
 
 interface IIssueModalProps {
   issue: Issue;
@@ -58,11 +59,7 @@ export const IssueModal = ({ issue }: IIssueModalProps) => {
             >
               <Project.Avatar
                 alt={`${project.name} logo`}
-                src={
-                  project.slug == "polkadot"
-                    ? "/images/polkadot-logo.png"
-                    : project.avatar
-                }
+                src={project.avatar && getIconSrc(project.slug, project.avatar)}
               />
               <div className="flex flex-col justify-start items-start w-36">
                 <h2 className="w-fit text-small font-semibold truncate hover:underline">
