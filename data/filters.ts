@@ -12,6 +12,8 @@ export const GOOD_FIRST_ISSUE_LABELS = [
   "good first issue :baby:",
   "C1-mentor",
   "D0-easy",
+  "Q1 - Easy",
+  "C-simple",
 ];
 
 export const KUDOS_ISSUE_LABELS = ["kudos"];

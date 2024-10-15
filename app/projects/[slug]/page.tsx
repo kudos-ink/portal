@@ -11,6 +11,7 @@ import { fetchProjectInfo } from "@/lib/api/projects";
 import { buildCheckboxFilters } from "@/lib/filters";
 import { Issue, IssueQueryParams } from "@/types/issue";
 import { PaginatedCustomResponse } from "@/types/pagination";
+import ProjectAbout from "./_components/ProjectAbout";
 import ProjectHeader from "./_components/ProjectHeader";
 import ProjectInfos, { LayersMap } from "./_components/ProjectInfos";
 import ProjectMetrics from "./_components/ProjectMetrics";
@@ -68,10 +69,10 @@ export default async function SingleProjectPage({ params }: IProps) {
               <ProjectInfos
                 labels={labels}
                 infos={[
-                  {
-                    title: "Networks",
-                    items: infos?.attributes.networks ?? [],
-                  },
+                  // {
+                  //   title: "Networks",
+                  //   items: infos?.attributes.networks ?? [],
+                  // },
                   {
                     title: "Technologies",
                     items: infos?.attributes.technologies ?? [],
@@ -103,7 +104,7 @@ export default async function SingleProjectPage({ params }: IProps) {
       </section>
 
       {metrics.kudosTotal > 0 && (
-        <section className={"mt-20 mb-4 " + container()}>
+        <section className={"mt-20 " + container()}>
           <KudosWeeksBanner>
             ♨️ <strong className="capitalize">{infos.name}</strong> participates
             to <strong>Kudos Carnival</strong>! -{" "}
@@ -114,6 +115,10 @@ export default async function SingleProjectPage({ params }: IProps) {
           </KudosWeeksBanner>
         </section>
       )}
+
+      <section className={"mt-12 mb-4 " + container()}>
+        <ProjectAbout richText={infos.richText} />
+      </section>
 
       <DefaultFiltersProvider repositoryIds={repositoryIds}>
         <div className="flex flex-col">

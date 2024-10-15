@@ -28,6 +28,7 @@ export type ProjectInfos = {
   name: string;
   slug: string;
   description: string;
+  richText: string;
   links: ProjectLinks;
   curators: string[];
   attributes: {

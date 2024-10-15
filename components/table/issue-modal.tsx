@@ -1,4 +1,4 @@
-import DOMPurify from "dompurify";
+import DOMPurify from "isomorphic-dompurify";
 import { marked } from "marked";
 import Link from "next/link";
 import { Button } from "@nextui-org/button";
@@ -72,7 +72,7 @@ export const IssueModal = ({ issue }: IIssueModalProps) => {
             </NuiLink>
             {parsedTitle && (
               <h3
-                className="font-semibold leading-tight capitalize mt-4"
+                className="mdc font-semibold leading-tight capitalize mt-4"
                 dangerouslySetInnerHTML={{ __html: parsedTitle }} // Safely render sanitized HTML
               />
             )}
@@ -85,7 +85,7 @@ export const IssueModal = ({ issue }: IIssueModalProps) => {
               className="w-full h-[200px] md:h-[320px] p-4 border border-gray-300 rounded-lg mb-4 shadow-sm"
             >
               <div
-                id="issue-description"
+                className="mdc"
                 dangerouslySetInnerHTML={{ __html: parsedDescription }}
               />
             </ScrollShadow>

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef, useEffect, useMemo } from "react";
 import { marked } from "marked";
-import DOMPurify from "dompurify";
+import DOMPurify from "isomorphic-dompurify";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@nextui-org/button";
@@ -119,7 +119,7 @@ export const Content = ({
       </span>
       <div className="w-fit text-base flex gap-1 flex-grow relative">
         <h3
-          className="font-semibold max-w-48 sm:max-w-none leading-tight line-clamp-2 capitalize hover:text-primary hover:underline"
+          className="mdc font-semibold max-w-48 sm:max-w-none leading-tight line-clamp-2 capitalize hover:text-primary hover:underline"
           dangerouslySetInnerHTML={{ __html: parsedTitle }} // Safely render sanitized HTML
         />
         {isCertified && (
