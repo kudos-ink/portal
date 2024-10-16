@@ -18,6 +18,7 @@ const EventBanner = () => (
       height={662}
       width={775}
     />
+    <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-background/50 to-transparent"></div>
     <div className="relative flex flex-col gap-6 md:w-6/12">
       <div className="flex flex-col gap-1">
         <span className="text-xl text-primary italic">

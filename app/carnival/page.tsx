@@ -264,10 +264,10 @@ export default async function SingleEventPage() {
             </div>
             <p>
               Kudos Carnival is a 6-week event (November 1st - December 15th)
-              exclusively for PBA Alumni, designed to enhance Alumni
-              contributions to the Polkadot ecosystem. Participants will solve
-              curated open issues from the Kudos platform, provided by ecosystem
-              partners, earning points for each issue they complete.
+              exclusively for PBA Alumni, designed to enhance contributions to
+              the Polkadot ecosystem. Participants will solve curated open
+              issues from the Kudos platform, provided by ecosystem partners,
+              earning points for each issue they complete.
             </p>
             <p>
               Throughout the event, weekly winners will be announced during
@@ -341,7 +341,7 @@ export default async function SingleEventPage() {
           Top Contributors
         </h2>
         <h3 className="text-xl text-default-600 mt-4">
-          Earn 1 point for every assigned issue you complete during the event.
+          Earn points for every assigned issue you complete during the event.
         </h3>
         <div className="flex flex-col gap-4 sm:flex-row mt-16">
           <div className="flex flex-col gap-2 basis-1/2">
