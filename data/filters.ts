@@ -77,6 +77,7 @@ export const emojiMapForPurposes: Record<string, string> = {
 };
 
 export const emojiMapForTechnologies: Record<string, string> = {
+  "c++": "🔷",
   go: "🏃‍♂️",
   ink: "🐙",
   javascript: "☕️",
