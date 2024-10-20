@@ -5,6 +5,8 @@ export const getIconSrc = (name: string, avatar: string) => {
     polkadot: "/images/polkadot-logo.png",
     "substrate-tooling": "/images/substrate-logo.png",
     "substrate-libraries": "/images/substrate-logo.png",
+    "substrate-testing": "/images/substrate-logo.png",
+    "substrate-clients": "/images/substrate-logo.png",
   };
 
   return iconMappings[lowerCaseName] || avatar;
