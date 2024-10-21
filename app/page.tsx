@@ -16,14 +16,18 @@ import {
   DEFAULT_PAGINATED_RESPONSE,
 } from "@/data/fetch";
 import EventBanner from "@/components/event-banner";
+import tags from "@/utils/tags";
 
 const EXPLORE_LABEL = "Explore Open Contributions";
 
 export default async function Home() {
-  const issues = await IssuesApi.getIssues({
-    offset: 0,
-    limit: DEFAULT_HOMEPAGE_PAGE_SIZE,
-  }).catch((error) => {
+  const issues = await IssuesApi.getIssues(
+    {
+      offset: 0,
+      limit: DEFAULT_HOMEPAGE_PAGE_SIZE,
+    },
+    tags.latestIssues,
+  ).catch((error) => {
     console.error("Error fetching issues:", error);
     return DEFAULT_PAGINATED_RESPONSE;
   });

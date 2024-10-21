@@ -14,6 +14,7 @@ const ISSUES_PATH = "/issues";
 
 export async function getIssues(
   query: IssueQueryParams & PaginationQueryParams = DEFAULT_QUERY,
+  tag?: string,
 ): Promise<PaginatedCustomResponse<Issue>> {
   let allLanguages: string[] = [];
   if (query?.technologies?.length) {
@@ -24,7 +25,7 @@ export async function getIssues(
   const url = prepareUrl(`${ISSUES_PATH}`, queryDto);
   const res = await coreApiClient.get<PaginatedCustomResponseDto<IssueDto>>(
     url,
-    { noStoreCache: true },
+    tag ? { tag } : { noStoreCache: true },
   );
 
   return {
