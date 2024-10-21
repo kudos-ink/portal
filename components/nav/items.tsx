@@ -100,31 +100,34 @@ export const ProjectDropDown = ({ projects }: { projects: Project[] }) => (
       className="max-h-[50vh] overflow-y-auto"
       items={projects}
     >
-      {({ avatar, id, name, slug }) => (
-        <DropdownItem key={`${slug}-${id}`}>
-          <NuiLink
-            className="flex items-center gap-2"
-            href={`/projects/${slug}`}
-            color="foreground"
-            title={`${name}'s project page`}
-            as={Link}
-          >
-            <div className="bg-foreground rounded-md min-w-[40px] min-h-[40px] sm:min-w-[45px] sm:min-h-[45px] shrink-0 flex items-center justify-center">
-              {avatar !== null && (
-                <MyImage
-                  className="border"
-                  src={getIconSrc(slug, avatar)}
-                  alt={`${name}'s avatar`}
-                  radius="sm"
-                  height={40}
-                  width={40}
-                />
-              )}
-            </div>
-            <div className="capitalize">{name}</div>
-          </NuiLink>
-        </DropdownItem>
-      )}
+      {({ avatar, id, name, slug }) => {
+        const avatarSrc = getIconSrc(slug, avatar);
+        return (
+          <DropdownItem key={`${slug}-${id}`}>
+            <NuiLink
+              className="flex items-center gap-2"
+              href={`/projects/${slug}`}
+              color="foreground"
+              title={`${name}'s project page`}
+              as={Link}
+            >
+              <div className="bg-foreground rounded-md p-0.5 min-w-[40px] min-h-[40px] sm:min-w-[45px] sm:min-h-[45px] shrink-0 flex items-center justify-center">
+                {avatarSrc !== null && (
+                  <MyImage
+                    className="border"
+                    src={avatarSrc}
+                    alt={`${name}'s avatar`}
+                    radius="sm"
+                    height={40}
+                    width={40}
+                  />
+                )}
+              </div>
+              <div className="capitalize">{name}</div>
+            </NuiLink>
+          </DropdownItem>
+        );
+      }}
     </DropdownMenu>
   </Dropdown>
 );

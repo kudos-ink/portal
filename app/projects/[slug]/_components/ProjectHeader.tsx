@@ -19,34 +19,40 @@ const ProjectHeader = ({
   links,
   name,
   slug,
-}: IProjectHeaderProps) => (
-  <div className="flex flex-col space-y-unit-1">
-    <div className="flex gap-4 items-center mb-2">
-      {avatar && (
-        <MyImage
-          className="bg-foreground border min-w-[45px] min-h-[45px] shrink-0 flex items-center justify-center"
-          src={getIconSrc(slug, avatar)}
-          alt={`${name}'s Logo`}
-          radius="sm"
-          height={40}
-          width={40}
-        />
-      )}
-      <span className="text-3xl font-bold md:text-4xl">{name}</span>
+}: IProjectHeaderProps) => {
+  const avatarSrc = getIconSrc(slug, avatar);
+
+  return (
+    <div className="flex flex-col space-y-unit-1">
+      <div className="flex gap-4 items-center mb-2">
+        {avatarSrc && (
+          <MyImage
+            className="bg-foreground p-0.5 border min-w-[45px] min-h-[45px] shrink-0 flex items-center justify-center"
+            src={avatarSrc}
+            alt={`${name}'s Logo`}
+            radius="sm"
+            height={38}
+            width={38}
+          />
+        )}
+        <span className="text-3xl font-bold md:text-4xl">{name}</span>
+      </div>
+      <span className="leading-tight line-clamp-2 capitalize">
+        {description}
+      </span>
+      <div className="flex flex-wrap gap-3 mt-6">
+        {Object.entries(links).map(([key, items]) => (
+          <Links
+            key={key}
+            icon={getIconByKey(key)}
+            items={items}
+            placeholder={key}
+          />
+        ))}
+      </div>
     </div>
-    <span className="leading-tight line-clamp-2 capitalize">{description}</span>
-    <div className="flex flex-wrap gap-3 mt-6">
-      {Object.entries(links).map(([key, items]) => (
-        <Links
-          key={key}
-          icon={getIconByKey(key)}
-          items={items}
-          placeholder={key}
-        />
-      ))}
-    </div>
-  </div>
-);
+  );
+};
 
 interface ILinksProps {
   icon: ReactNode;

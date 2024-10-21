@@ -49,11 +49,14 @@ const Toolbar = ({
     (filter) => (filter.options = filterOptions[filter.key]),
   );
 
-  const updateRouterWithFilters = (key: FilterKeys, newValue: string[]) => {
-    const currentPath = pathname === "/" ? "/explore/" : pathname;
-    const newUrl = createUrl(key, newValue, currentPath, filterOptions);
-    router.replace(newUrl, { scroll: true });
-  };
+  const updateRouterWithFilters = useCallback(
+    (key: FilterKeys, newValue: string[]) => {
+      const currentPath = pathname === "/" ? "/explore/" : pathname;
+      const newUrl = createUrl(key, newValue, currentPath, filterOptions);
+      router.replace(newUrl, { scroll: true });
+    },
+    [filterOptions, pathname, router],
+  );
 
   const handleSelectChange = useCallback(
     (key: FilterKeys) => (newValues: Set<string>) => {

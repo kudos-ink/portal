@@ -20,7 +20,7 @@ import IssueModal from "./issue-modal";
 import { ExternalLink, Content, Time, Project, ApplyButton } from "./row";
 import { getIconSrc } from "@/utils/icons";
 
-const DEFAULT_EMPTY = "No contributions to display.. Try another query (:";
+const DEFAULT_EMPTY = "No contributions to display yet";
 
 const KUDOS_HIGHLIGHT_STYLES = `before:absolute before:content-['']
   before:bg-[conic-gradient(transparent_270deg,_#BABABC,_transparent)]

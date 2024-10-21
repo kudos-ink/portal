@@ -53,7 +53,7 @@ export default async function SingleProjectPage({ params }: IProps) {
       <section
         className={container() + " sm:gap-4 md:flex md:justify-between !mb-16"}
       >
-        <div className="flex-grow">
+        <div className="flex-grow md:basis-1/2 lg:basis-3/4">
           <ProjectHeader
             avatar={issues.data[0]?.project.avatar}
             name={infos.name}

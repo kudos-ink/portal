@@ -13,6 +13,7 @@ function createCarousel(projects: Project[], keyPrefix: string) {
     projects.pop();
   }
   return projects.map(({ avatar, id, name, slug }, index) => {
+    const avatarSrc = getIconSrc(slug, avatar);
     return (
       <NuiLink
         aria-hidden="true"
@@ -24,10 +25,10 @@ function createCarousel(projects: Project[], keyPrefix: string) {
         key={`${keyPrefix}-${id}`}
       >
         <div className="flex items-center space-x-2 justify-evenly">
-          {avatar && (
+          {avatarSrc && (
             <MyImage
-              className="rounded-md min-w-[45px] min-h-[45px] shrink-0 bg-foreground border"
-              src={getIconSrc(slug, avatar)}
+              className="rounded-md p-0.5 min-w-[45px] min-h-[45px] shrink-0 bg-foreground border"
+              src={avatarSrc}
               alt={`${name} logo`}
               radius="sm"
               width={45}
