@@ -147,7 +147,7 @@ export default async function SingleEventPage() {
   });
 
   const query: IssueQueryParams = {
-    kudos: true,
+    certified: true,
     open: true,
   };
   const issues = (await IssuesApi.getIssues({
