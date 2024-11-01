@@ -87,3 +87,11 @@ export interface IProjectFull {
   // TODO: add project page sections - metrics, contributions, milestones, wishes, tips
   repositories: Repository[];
 }
+
+export type ProjectQueryParams = Partial<{
+  slugs?: string[];
+  categories?: string[];
+  stackLevels?: string[];
+  technologies?: string[];
+  certified?: boolean;
+}>;

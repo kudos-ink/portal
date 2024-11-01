@@ -16,3 +16,10 @@ export type PaginatedCustomResponse<TData> = {
   hasPreviousPage: boolean;
   data: TData[];
 };
+
+export type PaginatedCustomResponseSnakeCase<TData> = {
+  "total_count": number;
+  "has_next_page": boolean;
+  "has_previous_page": boolean;
+  data: TData[];
+};

@@ -2,8 +2,9 @@ import { Button } from "@nextui-org/button";
 import { Link } from "@nextui-org/link";
 import { IconSocial, IconWeb } from "@/assets/icons";
 import IssuesApi from "@/api/core/issues";
+import ProjectsApi from "@/api/core/projects";
 import Toolbar from "@/components/filters/toolbar";
-import LeaderboardTable from "@/components/leaderboard/table";
+import { Project, ProjectQueryParams } from "@/types/project";
 import { container } from "@/components/primitives";
 import PaginatedTable from "@/components/table/paginated-table";
 import { FiltersProvider } from "@/contexts/filters";
@@ -14,8 +15,9 @@ import { initFilters } from "@/utils/filters";
 import { FilterOptions } from "@/types/filters";
 import { Issue, IssueQueryParams } from "@/types/issue";
 import { Leaderboard } from "@/types/leaderboard";
-import { PaginatedCustomResponse } from "@/types/pagination";
+import { PaginatedCustomResponse, PaginatedCustomResponseSnakeCase } from "@/types/pagination";
 import EventBanner from "./_components/EventBanner";
+import { BannerProps } from "@/types/banner";
 
 const MOCKED_WEEKLY_LEADERBOARD: Leaderboard[] = [
   {
@@ -151,6 +153,10 @@ export default async function SingleEventPage() {
     open: true,
     labels: [],
   };
+  const projectQuery: ProjectQueryParams = {
+    certified: true,
+    
+  }
   const issues = (await IssuesApi.getIssues({
     ...DEFAULT_QUERY,
     ...query,
@@ -159,10 +165,19 @@ export default async function SingleEventPage() {
     return DEFAULT_PAGINATED_RESPONSE;
   })) as PaginatedCustomResponse<Issue>;
 
+  const projects = (await ProjectsApi.getProjects({
+    ...DEFAULT_QUERY,
+    ...projectQuery,
+  }).catch((error) => {
+    console.error(`Error fetching Kudos Carnival projects:`, error);
+    return DEFAULT_PAGINATED_RESPONSE;
+  })) as PaginatedCustomResponseSnakeCase<Project>;
+  const props : BannerProps = {issues: issues.totalCount, projects: projects.total_count}
+
   return (
     <>
       <section className={container()}>
-        <EventBanner />
+        <EventBanner  {...props}/>
       </section>
       <section className={container() + " my-28"}>
         <h2 id="guidelines" className="text-foreground text-5xl font-bentoga">
