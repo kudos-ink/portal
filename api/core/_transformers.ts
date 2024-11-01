@@ -51,7 +51,7 @@ export function issueQueryParamsToDto(
   query: IssueQueryParamsWithPagination,
   allLanguages: string[],
 ): IssueQueryParamsDto {
-  const { technologies = [], labels = [], kudos } = query;
+  const { technologies = [], labels, kudos } = query;
 
   const languageSlugs = technologies.filter((tech) =>
     allLanguages.includes(tech),
@@ -60,9 +60,12 @@ export function issueQueryParamsToDto(
     (tech) => !allLanguages.includes(tech),
   );
 
-  const combinedLabels = kudos
-    ? [...labels, ...KUDOS_ISSUE_LABELS]
-    : [...labels, ...GOOD_FIRST_ISSUE_LABELS, ...KUDOS_ISSUE_LABELS];
+  const combinedLabels =
+    labels === undefined
+      ? kudos
+        ? KUDOS_ISSUE_LABELS
+        : [...GOOD_FIRST_ISSUE_LABELS, ...KUDOS_ISSUE_LABELS]
+      : labels;
 
   return {
     slugs: query.projects,

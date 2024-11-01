@@ -149,6 +149,7 @@ export default async function SingleEventPage() {
   const query: IssueQueryParams = {
     certified: true,
     open: true,
+    labels: [],
   };
   const issues = (await IssuesApi.getIssues({
     ...DEFAULT_QUERY,
