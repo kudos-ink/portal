@@ -8,6 +8,7 @@ export const getIconSrc = (slug: string, avatar: string | null) => {
     "substrate-libraries": "/images/substrate-logo.png",
     "substrate-testing": "/images/substrate-logo.png",
     "substrate-clients": "/images/substrate-logo.png",
+    pluto: "/project-icons/pluto.png",
   };
 
   return iconMappings[lowerCaseName] || avatar;
