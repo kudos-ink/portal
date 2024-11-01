@@ -25,7 +25,7 @@ async function fetchPaginatedProjects(tag?: string): Promise<Project[]> {
     const response = await ProjectApi.getProjects(paginationParams, tag);
 
     projects = projects.concat(response.data);
-    hasMore = response.has_next_page;
+    hasMore = response.hasNextPage;
     offset += DEFAULT_BIG_PAGE_SIZE;
   }
 

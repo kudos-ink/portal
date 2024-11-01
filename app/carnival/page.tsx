@@ -15,9 +15,8 @@ import { initFilters } from "@/utils/filters";
 import { FilterOptions } from "@/types/filters";
 import { Issue, IssueQueryParams } from "@/types/issue";
 import { Leaderboard } from "@/types/leaderboard";
-import { PaginatedCustomResponse, PaginatedCustomResponseSnakeCase } from "@/types/pagination";
+import { PaginatedCustomResponse } from "@/types/pagination";
 import EventBanner from "./_components/EventBanner";
-import { BannerProps } from "@/types/banner";
 
 const MOCKED_WEEKLY_LEADERBOARD: Leaderboard[] = [
   {
@@ -153,10 +152,11 @@ export default async function SingleEventPage() {
     open: true,
     labels: [],
   };
+
   const projectQuery: ProjectQueryParams = {
     certified: true,
-    
-  }
+  };
+
   const issues = (await IssuesApi.getIssues({
     ...DEFAULT_QUERY,
     ...query,
@@ -171,13 +171,15 @@ export default async function SingleEventPage() {
   }).catch((error) => {
     console.error(`Error fetching Kudos Carnival projects:`, error);
     return DEFAULT_PAGINATED_RESPONSE;
-  })) as PaginatedCustomResponseSnakeCase<Project>;
-  const props : BannerProps = {issues: issues.totalCount, projects: projects.total_count}
+  })) as PaginatedCustomResponse<Project>;
 
   return (
     <>
       <section className={container()}>
-        <EventBanner  {...props}/>
+        <EventBanner
+          issues={issues.totalCount}
+          projects={projects.totalCount}
+        />
       </section>
       <section className={container() + " my-28"}>
         <h2 id="guidelines" className="text-foreground text-5xl font-bentoga">

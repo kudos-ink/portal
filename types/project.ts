@@ -89,9 +89,9 @@ export interface IProjectFull {
 }
 
 export type ProjectQueryParams = Partial<{
-  slugs?: string[];
-  categories?: string[];
-  stackLevels?: string[];
-  technologies?: string[];
-  certified?: boolean;
+  slugs: string[];
+  categories: string[];
+  stackLevels: string[];
+  technologies: string[];
+  certified: boolean;
 }>;
