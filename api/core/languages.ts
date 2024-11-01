@@ -13,7 +13,12 @@ export async function getAllLanguages(query?: LanguageQueryParams) {
   const response = await coreApiClient.get<string[]>(url, {
     tag: tags.languages,
   });
-  return response;
+
+  const uniqueLanguages = Array.from(
+    new Set(response.map((language) => language.toLowerCase())),
+  );
+
+  return uniqueLanguages;
 }
 
 export default { getAllLanguages };

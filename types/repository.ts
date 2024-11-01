@@ -21,11 +21,18 @@ export type Repository = {
 };
 
 export type LanguageQueryParams = Partial<{
+  open: boolean;
+  certified: boolean;
   labels: string[];
+  projects: string[];
   withTechnologies: boolean;
 }>;
 
 export type LanguageQueryParamsDto = Partial<{
+  slugs: string[];
+  open: boolean;
+  certified: boolean;
   labels: string[];
   with_technologies: boolean;
+  certified_or_labels: boolean;
 }>;

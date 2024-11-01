@@ -5,15 +5,15 @@ import { initFilters } from "@/utils/filters";
 
 export async function DefaultFiltersProvider({
   children,
-  repositoryIds,
+  slugs,
 }: {
   children: React.ReactNode;
-  repositoryIds?: number[];
+  slugs?: string[];
 }) {
   const filters = initFilters();
   const filterOptions = await (
-    repositoryIds && repositoryIds.length > 0
-      ? getProjectFilterOptions(repositoryIds)
+    slugs && slugs.length > 0
+      ? getProjectFilterOptions(slugs)
       : getFilterOptions()
   ).catch((error) => {
     console.error("Error fetching filter options:", error);

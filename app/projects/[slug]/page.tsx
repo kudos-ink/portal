@@ -7,7 +7,7 @@ import KudosWeeksBanner from "@/components/kudos-weeks-banner";
 import { DEFAULT_QUERY } from "@/data/fetch";
 import { TECHNOLOGY_KEY } from "@/data/filters";
 import { fetchProjectIssues } from "@/lib/api/issues";
-import { fetchProjectInfo } from "@/lib/api/projects";
+import { fetchProject, fetchProjectInfo } from "@/lib/api/projects";
 import { buildCheckboxFilters } from "@/lib/filters";
 import { Issue, IssueQueryParams } from "@/types/issue";
 import { PaginatedCustomResponse } from "@/types/pagination";
@@ -22,12 +22,6 @@ const SELECT_FILTERS: SelectFilterConfig[] = [
   { key: TECHNOLOGY_KEY, options: [] },
 ];
 
-function getUniqueRepositoryIds(issues: PaginatedCustomResponse<Issue>) {
-  return Array.from(
-    new Set(issues.data.map(({ repository }) => repository.id)),
-  );
-}
-
 interface IProps {
   params: { slug: string };
 }
@@ -41,12 +35,13 @@ export default async function SingleProjectPage({ params }: IProps) {
   const query: IssueQueryParams = {
     projects: [slug],
     certified: true,
+    open: true,
   };
+  const project = await fetchProject(slug);
   const issues = await fetchProjectIssues(slug, query);
   const metrics = await constructProjectMetrics(infos, issues);
 
   const labels = constructLabels(infos, metrics);
-  const repositoryIds = getUniqueRepositoryIds(issues);
   const checkboxFilters = buildCheckboxFilters(metrics);
 
   return (
@@ -56,7 +51,7 @@ export default async function SingleProjectPage({ params }: IProps) {
       >
         <div className="flex-grow md:basis-1/2 lg:basis-3/4">
           <ProjectHeader
-            avatar={issues.data[0]?.project.avatar}
+            avatar={project?.avatar ?? null}
             name={infos.name}
             description={infos.description}
             links={infos.links}
@@ -123,7 +118,7 @@ export default async function SingleProjectPage({ params }: IProps) {
         </section>
       )}
 
-      <DefaultFiltersProvider repositoryIds={repositoryIds}>
+      <DefaultFiltersProvider slugs={[infos.slug]}>
         <div className="flex flex-col">
           <Toolbar
             label={`${infos?.name ?? "Open"} contributions`}

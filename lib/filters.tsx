@@ -1,4 +1,4 @@
-import LanguagesApi from "@/api/core/languages";
+import LanguagesApi, { getAllLanguages } from "@/api/core/languages";
 import RepositoriesApi from "@/api/core/repositories";
 import { KudosCertifiedIcon } from "@/assets/icons";
 import { CheckboxFilterConfig } from "@/components/filters/config";
@@ -27,16 +27,16 @@ import { createFilterOptions } from "@/utils/filters";
 import { getAllProjectOptions } from "./api/projects";
 
 export async function getProjectFilterOptions(
-  repositoryIds: number[],
+  projects: string[],
 ): Promise<FilterOptions> {
   let languageValues: string[] = [];
 
   try {
-    const languagePromises = repositoryIds.map((id) =>
-      RepositoriesApi.getRepositoryById(id).then((repo) => repo.language),
-    );
-
-    languageValues = await Promise.all(languagePromises);
+    languageValues = await getAllLanguages({
+      open: true,
+      certified: true,
+      projects,
+    });
   } catch (error) {
     console.error("Error fetching language values - ", error);
     languageValues = [];
@@ -60,6 +60,8 @@ export async function getFilterOptions(): Promise<FilterOptions> {
   let languageValues: string[];
   try {
     languageValues = await LanguagesApi.getAllLanguages({
+      open: true,
+      certified: true,
       withTechnologies: true,
     });
   } catch (error) {
@@ -101,6 +103,7 @@ export function filtersToIssuesQuery(
     offset: 0,
     limit: DEFAULT_BIG_PAGE_SIZE,
     open: true,
+    certified: true,
   };
 
   if (filters[TECHNOLOGY_KEY].length > 0) {

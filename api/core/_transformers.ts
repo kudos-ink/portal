@@ -100,7 +100,11 @@ export function languageQueryParamsToDto(
   ];
 
   return {
+    open: query?.open,
+    slugs: query?.projects,
+    certified: query?.certified,
     labels: combinedLabels.length > 0 ? combinedLabels : undefined,
     with_technologies: query?.withTechnologies,
+    certified_or_labels: combinedLabels.length > 0 && query?.certified,
   };
 }
