@@ -40,6 +40,7 @@ export default async function SingleProjectPage({ params }: IProps) {
 
   const query: IssueQueryParams = {
     projects: [slug],
+    certified: true,
   };
   const issues = await fetchProjectIssues(slug, query);
   const metrics = await constructProjectMetrics(infos, issues);
