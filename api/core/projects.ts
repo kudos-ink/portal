@@ -1,32 +1,36 @@
 import { DEFAULT_QUERY } from "@/data/fetch";
 import {
-  PaginatedCustomResponse,
+  PaginatedCustomResponseDto,
   PaginationQueryParams,
 } from "@/types/pagination";
-import { Project } from "@/types/project";
+import { ProjectDto, ProjectQueryParams } from "@/types/project";
 import tags from "@/utils/tags";
 import { prepareUrl } from "@/utils/url";
 import { coreApiClient } from "./_client";
-
-type QueryParams = {
-  slugs?: string[];
-  categories?: string[];
-  stackLevels?: string[];
-  technologies?: string[];
-};
+import { dtoToProject } from "./_transformers";
 
 const PROJECTS_PATH = "/projects";
 
-async function getProjects(
-  query: QueryParams & PaginationQueryParams = DEFAULT_QUERY,
+export async function getProjects(
+  query: ProjectQueryParams & PaginationQueryParams = DEFAULT_QUERY,
   tag?: string,
 ) {
   const url = prepareUrl(PROJECTS_PATH, query);
   const nextTag = tag ?? tags.projects(query.slugs?.join("-") || "");
 
-  return coreApiClient.get<PaginatedCustomResponse<Project>>(url, {
-    tag: nextTag,
-  });
+  const res = await coreApiClient.get<PaginatedCustomResponseDto<ProjectDto>>(
+    url,
+    {
+      tag: nextTag,
+    },
+  );
+
+  return {
+    totalCount: res.total_count ?? 0,
+    hasNextPage: res.has_next_page,
+    hasPreviousPage: res.has_previous_page,
+    data: res.data.map(dtoToProject),
+  };
 }
 
 export default { getProjects };

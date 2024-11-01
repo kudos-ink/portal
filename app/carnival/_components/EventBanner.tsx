@@ -2,7 +2,13 @@ import NextImage from "next/image";
 import { IconRepo, IconSocial, IconWeb } from "@/assets/icons";
 import Countdown from "@/components/countdown";
 
-const EventBanner = () => (
+interface IEventBannerProps {
+  issues?: number;
+  participants?: number;
+  projects?: number;
+}
+
+const EventBanner = ({ issues, participants, projects }: IEventBannerProps) => (
   <article className="rounded-xl p-6 bg-container-1 border-container-stroke-separator relative overflow-hidden h-[675px]">
     <NextImage
       className="hidden md:block pointer-events-none absolute -left-[5px] -top-[30px] h-[calc(100%_+_60px)] w-[calc(100%_+_10px)] max-w-[initial] object-cover object-top"
@@ -45,7 +51,9 @@ const EventBanner = () => (
               <IconSocial size={16} /> Participants
             </span>
           </div>
-          <span className="text-2xl font-bold text-text-1">TBA</span>
+          <span className="text-2xl font-bold text-text-1">
+            {participants ?? "TBA"}
+          </span>
         </div>
         <div className="flex min-w-40 flex-col gap-2 rounded-xl bg-default text-default-foreground p-3">
           <div className="flex items-center gap-1">
@@ -54,7 +62,7 @@ const EventBanner = () => (
             </span>
           </div>
           <span className="text-2xl font-bold text-text-1">
-            TBA
+            {issues ?? "TBA"}
             {/* 87 <span className="text-default-600 font-medium">/ 134</span> */}
           </span>
         </div>
@@ -64,7 +72,9 @@ const EventBanner = () => (
               <IconWeb size={16} /> Projects
             </span>
           </div>
-          <span className="text-2xl font-bold text-text-1">TBA</span>
+          <span className="text-2xl font-bold text-text-1">
+            {projects ?? "TBA"}
+          </span>
         </div>
       </div>
     </div>
