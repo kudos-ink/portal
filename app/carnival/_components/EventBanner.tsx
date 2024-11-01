@@ -32,7 +32,7 @@ const EventBanner = () => (
         </span>
       </div>
 
-      <Countdown date="2024-11-01T12:00:00.536328Z" />
+      <Countdown date="2024-11-01T14:00:00.536328Z" />
 
       <h3 className="hidden md:block text-xl text-default-600 mt-4">
         Want to level up your contributions? Make an impact on Polkadot, solve
