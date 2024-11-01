@@ -92,7 +92,7 @@ const StaticTable = ({
         case "content": {
           const { title, repository, project } = item;
           const isCertified =
-            item.labels.includes("kudos") &&
+            (item.labels.includes("kudos") || item.isCertified) &&
             pathname !== "/carnival" &&
             !pathname.includes("certified");
 
@@ -177,7 +177,7 @@ const StaticTable = ({
         <TableBody items={data} emptyContent={emptyContent ?? DEFAULT_EMPTY}>
           {(item) => {
             const isHighlighted =
-              item.labels.includes("kudos") &&
+              (item.labels.includes("kudos") || item.isCertified) &&
               pathname !== "/carnival" &&
               !pathname.includes("certified");
 

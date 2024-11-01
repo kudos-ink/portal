@@ -53,7 +53,7 @@ export const Project = ({
         <h2 className="w-fit text-small font-semibold truncate hover:underline">
           {name}
         </h2>
-        <p className="w-fit text-small !text-default-500 truncate">
+        <p className="w-fit text-small !text-default-500 line-clamp-1">
           {repository.name}
         </p>
       </div>

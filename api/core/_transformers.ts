@@ -6,7 +6,12 @@ import {
   IssueQueryParamsDto,
 } from "@/types/issue";
 import { Project, ProjectDto } from "@/types/project";
-import { Repository, RepositoryDto } from "@/types/repository";
+import {
+  LanguageQueryParams,
+  LanguageQueryParamsDto,
+  Repository,
+  RepositoryDto,
+} from "@/types/repository";
 
 export function dtoToIssue(dto: IssueDto): Issue {
   return {
@@ -80,5 +85,22 @@ export function issueQueryParamsToDto(
     offset: query.offset,
     limit: query.limit,
     certified_or_labels: combinedLabels.length > 0 && query.certified,
+  };
+}
+
+export function languageQueryParamsToDto(
+  query?: LanguageQueryParams,
+): LanguageQueryParamsDto {
+  const labels = query?.labels ?? [];
+
+  const combinedLabels = [
+    ...labels,
+    ...GOOD_FIRST_ISSUE_LABELS,
+    ...KUDOS_ISSUE_LABELS,
+  ];
+
+  return {
+    labels: combinedLabels.length > 0 ? combinedLabels : undefined,
+    with_technologies: query?.withTechnologies,
   };
 }

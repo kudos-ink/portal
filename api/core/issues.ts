@@ -18,7 +18,7 @@ export async function getIssues(
 ): Promise<PaginatedCustomResponse<Issue>> {
   let allLanguages: string[] = [];
   if (query?.technologies?.length) {
-    allLanguages = await getAllLanguages();
+    allLanguages = await getAllLanguages({ labels: query.labels });
   }
 
   const queryDto = issueQueryParamsToDto(query, allLanguages);

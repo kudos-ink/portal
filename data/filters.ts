@@ -77,15 +77,25 @@ export const emojiMapForPurposes: Record<string, string> = {
 };
 
 export const emojiMapForTechnologies: Record<string, string> = {
-  "c++": "🔷",
-  go: "🏃‍♂️",
+  c: "🔷",
+  "c++": "➕",
+  "c#": "#️⃣",
+  css: "🎨",
+  evm: "💻",
+  go: "🐹",
+  haskell: "🔗",
+  kotlin: "🚀",
   ink: "🐙",
   javascript: "☕️",
+  markdown: "📝",
   python: "🐍",
   rust: "🦀",
   substrate: "🟣",
   solidity: "💸",
+  swift: "🦅",
+  tex: "📚",
   typescript: "📜",
+  vue: "💚",
 };
 
 export const emojiMapForStackLevels: Record<string, string> = {

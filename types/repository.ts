@@ -19,3 +19,13 @@ export type Repository = {
   // project: Project;
   url: string;
 };
+
+export type LanguageQueryParams = Partial<{
+  labels: string[];
+  withTechnologies: boolean;
+}>;
+
+export type LanguageQueryParamsDto = Partial<{
+  labels: string[];
+  with_technologies: boolean;
+}>;

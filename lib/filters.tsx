@@ -8,7 +8,6 @@ import {
   FProjectTypes,
   FPurposes,
   FStackLevels,
-  FTechnologies,
   emojiMapForProjectTypes,
   emojiMapForPurposes,
   emojiMapForStackLevels,
@@ -60,7 +59,9 @@ export async function getProjectFilterOptions(
 export async function getFilterOptions(): Promise<FilterOptions> {
   let languageValues: string[];
   try {
-    languageValues = await LanguagesApi.getAllLanguages();
+    languageValues = await LanguagesApi.getAllLanguages({
+      withTechnologies: true,
+    });
   } catch (error) {
     console.error("Error fetching languages values - ", error);
     languageValues = [];
@@ -75,10 +76,7 @@ export async function getFilterOptions(): Promise<FilterOptions> {
 
   const purposes = createFilterOptions(FPurposes, emojiMapForPurposes);
   const technologies = createFilterOptions(
-    [
-      ...languageValues.map((v) => v.toLocaleLowerCase().replaceAll('"', "")),
-      ...FTechnologies,
-    ],
+    [...languageValues.map((v) => v.toLocaleLowerCase().replaceAll('"', ""))],
     emojiMapForTechnologies,
   );
   const stackLevels = createFilterOptions(FStackLevels, emojiMapForStackLevels);
@@ -127,6 +125,7 @@ export function filtersToIssuesQuery(
 
   if (filters[KUDOS_ISSUE_KEY]) {
     query.kudos = true;
+    query.certified = true;
   }
 
   return query;

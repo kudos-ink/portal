@@ -111,7 +111,7 @@ const Toolbar = ({
         <div className="flex flex-col gap-4 items-start overflow-hidden lg:flex-row lg:items-center">
           <div className="flex flex-nowrap overflow-x-auto overflow-y-hidden gap-6 w-full sm:w-auto xl:overflow-visible">
             {normalSelectFilters
-              .filter(({ options }) => options.length > 1)
+              .filter(({ options }) => options?.length > 1)
               .map(({ key, options }) => (
                 <SelectFilter
                   key={key}
@@ -173,7 +173,7 @@ const Toolbar = ({
                     showDivider
                   >
                     {advancedSelectFilters
-                      .filter(({ options }) => options.length > 1)
+                      .filter(({ options }) => options?.length > 1)
                       .map(({ key, options }) => (
                         <DropdownItem
                           key={key}

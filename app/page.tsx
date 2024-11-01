@@ -25,6 +25,7 @@ export default async function Home() {
     {
       offset: 0,
       limit: DEFAULT_HOMEPAGE_PAGE_SIZE,
+      certified: true,
     },
     tags.latestIssues,
   ).catch((error) => {
