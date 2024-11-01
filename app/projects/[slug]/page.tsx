@@ -116,9 +116,11 @@ export default async function SingleProjectPage({ params }: IProps) {
         </section>
       )}
 
-      <section className={"mt-12 mb-4 " + container()}>
-        <ProjectAbout richText={infos.richText} />
-      </section>
+      {infos.richText && (
+        <section className={"mt-12 mb-4 " + container()}>
+          <ProjectAbout richText={infos.richText} />
+        </section>
+      )}
 
       <DefaultFiltersProvider repositoryIds={repositoryIds}>
         <div className="flex flex-col">
