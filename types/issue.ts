@@ -61,5 +61,6 @@ export type IssueQueryParamsDto = Partial<{
   has_assignee: boolean;
   issue_closed_at_min: string;
   issue_closed_at_max: string;
+  certified_or_labels: boolean;
 }> &
   Partial<PaginationQueryParams>;

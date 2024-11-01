@@ -76,5 +76,6 @@ export function issueQueryParamsToDto(
     language_slugs: languageSlugs.length > 0 ? languageSlugs : undefined,
     offset: query.offset,
     limit: query.limit,
+    certified_or_labels: combinedLabels.length > 0 && query.certified,
   };
 }
