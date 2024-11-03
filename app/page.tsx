@@ -1,6 +1,5 @@
 import { Button } from "@nextui-org/button";
 import { Link as NuiLink } from "@nextui-org/link";
-import IssuesApi from "@/api/core/issues";
 import { GithubIcon, TwitterIcon } from "@/assets/icons";
 import About from "@/components/about";
 import Community from "@/components/community";
@@ -11,27 +10,15 @@ import { container, subtitle, title } from "@/components/primitives";
 import StaticTable from "@/components/table/static-table";
 import { DefaultFiltersProvider } from "@/components/providers/filters";
 import { SITE_CONFIG } from "@/data/config";
-import {
-  DEFAULT_HOMEPAGE_PAGE_SIZE,
-  DEFAULT_PAGINATED_RESPONSE,
-} from "@/data/fetch";
+import { DEFAULT_HOMEPAGE_PAGE_SIZE } from "@/data/fetch";
 import EventBanner from "@/components/event-banner";
-import tags from "@/utils/tags";
+import { fetchIssues } from "@/lib/api/issues";
 
 const EXPLORE_LABEL = "Explore Open Contributions";
 
 export default async function Home() {
-  const issues = await IssuesApi.getIssues(
-    {
-      offset: 0,
-      limit: DEFAULT_HOMEPAGE_PAGE_SIZE,
-      certified: true,
-      open: true,
-    },
-    tags.latestIssues,
-  ).catch((error) => {
-    console.error("Error fetching issues:", error);
-    return DEFAULT_PAGINATED_RESPONSE;
+  const issues = await fetchIssues({
+    limit: DEFAULT_HOMEPAGE_PAGE_SIZE,
   });
 
   return (

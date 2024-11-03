@@ -109,7 +109,7 @@ const Toolbar = ({
     >
       <div className={`pt-6 flex flex-col gap-4 ${container()}`}>
         <div className="flex flex-col gap-4 items-start overflow-hidden lg:flex-row lg:items-center">
-          <div className="flex flex-nowrap overflow-x-auto overflow-y-hidden gap-6 w-full sm:w-auto xl:overflow-visible">
+          <div className="flex flex-nowrap overflow-x-auto overflow-y-hidden gap-6 w-full sm:w-auto lg:overflow-visible">
             {normalSelectFilters
               .filter(({ options }) => options?.length > 1)
               .map(({ key, options }) => (

@@ -34,7 +34,6 @@ export type Issue = {
 
 export type IssueQueryParams = Partial<{
   certified: boolean;
-  kudos: boolean; // 'kudos' labelled issues
   open: boolean;
   labels: string[];
   projects: string[];
@@ -51,6 +50,7 @@ export type IssueQueryParamsDto = Partial<{
   slugs: string[];
   certified: boolean;
   purposes: string[];
+  types: string[];
   stack_levels: string[];
   technologies: string[];
   labels: string[];

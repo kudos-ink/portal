@@ -13,7 +13,6 @@ import {
   TableRow,
   TableCell,
 } from "@nextui-org/table";
-import { KUDOS_ISSUE_LABELS } from "@/data/filters";
 import { Issue } from "@/types/issue";
 
 import IssueModal from "./issue-modal";
@@ -60,9 +59,6 @@ const StaticTable = ({
   const pathname = usePathname();
   const isMobile = useMediaQuery({ maxWidth: 639 }); // tailwind lg default: 640px
   const isLaptop = useMediaQuery({ minWidth: 1024 }); // tailwind lg default: 1024px
-  const isKudosIssue = KUDOS_ISSUE_LABELS.some((label) =>
-    selectedIssue?.labels.includes(label),
-  );
 
   const [columns, setColumns] = useState<IColumn[]>([
     { name: "PROJECT", uid: "project" },
@@ -204,7 +200,9 @@ const StaticTable = ({
         isOpen={selectedIssue !== null}
         onOpenChange={() => setSelectedIssue(null)}
         classNames={{
-          closeButton: isKudosIssue ? "z-1000 mt-20 md:mt-16" : "",
+          closeButton: selectedIssue?.isCertified
+            ? "z-1000 mt-20 md:mt-16"
+            : "",
         }}
         size="lg"
         placement={isMobile ? "bottom" : "auto"}

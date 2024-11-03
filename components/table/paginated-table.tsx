@@ -16,7 +16,6 @@ import TableSkeleton from "./skeleton";
 import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
 
 interface IPaginatedTableProps {
-  initialItems: PaginatedCustomResponse<Issue>;
   query: IssueQueryParams;
   pagination: PaginationQueryParams;
   emptyContent?: string;
@@ -24,7 +23,6 @@ interface IPaginatedTableProps {
 }
 
 const PaginatedTable = ({
-  initialItems,
   query,
   pagination,
   emptyContent,
@@ -32,7 +30,7 @@ const PaginatedTable = ({
 }: IPaginatedTableProps) => {
   const { filters } = useFilters();
   const [page, setPage] = useState(1);
-  const limit = pagination.limit;
+  const limit = pagination.limit ?? DEFAULT_PAGE_SIZE;
   const offset = (page - 1) * limit;
 
   const filteredQuery = filtersToIssuesQuery(filters);

@@ -4,13 +4,11 @@ import { DefaultFiltersProvider } from "@/components/providers/filters";
 import { SelectFilterConfig } from "@/components/filters/config";
 import Toolbar from "@/components/filters/toolbar";
 import KudosWeeksBanner from "@/components/kudos-weeks-banner";
-import { DEFAULT_QUERY } from "@/data/fetch";
+import { DEFAULT_PAGINATION } from "@/data/fetch";
 import { TECHNOLOGY_KEY } from "@/data/filters";
 import { fetchProjectIssues } from "@/lib/api/issues";
 import { fetchProject, fetchProjectInfo } from "@/lib/api/projects";
 import { buildCheckboxFilters } from "@/lib/filters";
-import { Issue, IssueQueryParams } from "@/types/issue";
-import { PaginatedCustomResponse } from "@/types/pagination";
 import ProjectAbout from "./_components/ProjectAbout";
 import ProjectHeader from "./_components/ProjectHeader";
 import ProjectInfos, { LayersMap } from "./_components/ProjectInfos";
@@ -32,13 +30,8 @@ export default async function SingleProjectPage({ params }: IProps) {
 
   if (infos == null) return "Project not found";
 
-  const query: IssueQueryParams = {
-    projects: [slug],
-    certified: true,
-    open: true,
-  };
   const project = await fetchProject(slug);
-  const issues = await fetchProjectIssues(slug, query);
+  const issues = await fetchProjectIssues(slug);
   const metrics = await constructProjectMetrics(infos, issues);
 
   const labels = constructLabels(infos, metrics);
@@ -99,7 +92,7 @@ export default async function SingleProjectPage({ params }: IProps) {
         </div>
       </section>
 
-      {metrics.kudosTotal > 0 && (
+      {metrics.certifiedTotal > 0 && (
         <section className={"mt-20 " + container()}>
           <KudosWeeksBanner>
             ♨️ <strong className="capitalize">{infos.name}</strong> participates
@@ -128,9 +121,10 @@ export default async function SingleProjectPage({ params }: IProps) {
           />
           <section className={container()}>
             <PaginatedTable
-              initialItems={issues}
-              query={query}
-              pagination={DEFAULT_QUERY}
+              query={{
+                projects: [slug],
+              }}
+              pagination={DEFAULT_PAGINATION}
               withProjectData={false}
             />
           </section>

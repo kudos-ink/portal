@@ -7,7 +7,7 @@ interface IProjectMetricsProps {
 }
 
 const ProjectMetrics = ({ metrics }: IProjectMetricsProps) => {
-  const { repositoriesTotal, suggestedTotal, kudosTotal } = metrics;
+  const { repositoriesTotal, suggestedTotal, certifiedTotal } = metrics;
 
   return (
     <div className="bg-gradient-to-r from-background to-background-200 to-80% py-4 px-6 border-[1px] rounded-md flex flex-col gap-6 h-full">
@@ -15,7 +15,7 @@ const ProjectMetrics = ({ metrics }: IProjectMetricsProps) => {
       <div className="text-small flex flex-col gap-2">
         <MetricItem label="Unified Repositories" value={repositoriesTotal} />
         <MetricItem label="Suggested Issues" value={suggestedTotal} />
-        <MetricItem label="Kudos Issues" value={kudosTotal} />
+        <MetricItem label="Kudos Issues" value={certifiedTotal} />
         {/* <MetricItem label="Rewards Issues" value={rewardsTotal} /> */}
       </div>
       {/* <div className="flex gap-4 mx-auto">

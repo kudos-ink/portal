@@ -1,4 +1,5 @@
 import { PaginatedCustomResponse } from "@/types/pagination";
+import { TRACKED_LABELS } from "./filters";
 
 export const DEFAULT_PAGE_SIZE = 12;
 export const DEFAULT_HOMEPAGE_PAGE_SIZE = 25;
@@ -11,7 +12,7 @@ export const DEFAULT_PAGINATED_RESPONSE: PaginatedCustomResponse<never> = {
   hasPreviousPage: false,
 };
 
-export const DEFAULT_QUERY = {
+export const DEFAULT_PAGINATION = {
   offset: 0,
   limit: DEFAULT_PAGE_SIZE,
 };
@@ -21,4 +22,17 @@ export const UNASSIGNED_CONTRIBUTION_FILTER = {
   url: {
     is_empty: true as true,
   },
+};
+
+export const DEFAULT_QUERY_FILTERS = {
+  open: true,
+  certified: true,
+  labels: TRACKED_LABELS,
+};
+
+export const DEFAULT_PROJECT_OPTIONS = {
+  types: [],
+  purposes: [],
+  stack_levels: [],
+  technologies: [],
 };

@@ -45,7 +45,6 @@ export type ProjectMetrics = {
   repositoriesTotal: number;
   suggestedTotal: number;
   certifiedTotal: number;
-  kudosTotal: number;
   rewardsTotal: number;
 };
 
@@ -62,7 +61,7 @@ export type ProjectDto = {
   name: string;
   slug: string;
   avatar: string | null;
-  categories: string[] | null;
+  types: string[] | null;
   purposes: string[] | null;
   stack_levels: string[] | null;
   technologies: string[] | null;
@@ -75,7 +74,10 @@ export type Project = {
   name: string;
   slug: string;
   avatar: string | null;
-  categories: string[];
+} & ProjectOptions;
+
+export type ProjectOptions = {
+  types: string[];
   purposes: string[];
   stack_levels: string[];
   technologies: string[];
@@ -90,8 +92,23 @@ export interface IProjectFull {
 
 export type ProjectQueryParams = Partial<{
   slugs: string[];
-  categories: string[];
+  purposes: string[];
   stackLevels: string[];
   technologies: string[];
   certified: boolean;
+  open: boolean;
+  withRewards: boolean;
+  labels: string[];
+}>;
+
+export type ProjectQueryParamsDto = Partial<{
+  slugs: string[];
+  purposes: string[];
+  stack_levels: string[];
+  technologies: string[];
+  certified: boolean;
+  open: boolean;
+  rewards: boolean;
+  labels: string[];
+  certified_or_labels: boolean;
 }>;

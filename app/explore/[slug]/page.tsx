@@ -1,9 +1,8 @@
 import { Metadata } from "next";
-import IssuesApi from "@/api/core/issues";
 import InfiniteTable from "@/components/table/infinite-table";
 import { filtersToIssuesQuery, getFilterOptions } from "@/lib/filters";
 import { decodingSlug } from "@/utils/url";
-import { DEFAULT_PAGINATED_RESPONSE } from "@/data/fetch";
+import { fetchIssues } from "@/lib/api/issues";
 
 interface IProps {
   params: { slug: string };
@@ -29,10 +28,7 @@ export default async function ExplorePage({ params }: IProps) {
   const filterOptions = await getFilterOptions();
   const filters = decodingSlug(params.slug, filterOptions);
   const query = filtersToIssuesQuery(filters);
-  const issues = await IssuesApi.getIssues(query).catch((error) => {
-    console.error("Error fetching issues:", error);
-    return DEFAULT_PAGINATED_RESPONSE;
-  });
+  const issues = await fetchIssues(query);
 
   return <InfiniteTable initialItems={issues} query={query} />;
 }

@@ -1,7 +1,7 @@
-export type PaginationQueryParams = {
+export type PaginationQueryParams = Partial<{
   offset: number;
   limit: number;
-};
+}>;
 
 export type PaginatedCustomResponseDto<TData> = {
   total_count?: number;

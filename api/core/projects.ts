@@ -1,28 +1,34 @@
-import { DEFAULT_QUERY } from "@/data/fetch";
+import { DEFAULT_PAGINATION, DEFAULT_QUERY_FILTERS } from "@/data/fetch";
 import {
+  PaginatedCustomResponse,
   PaginatedCustomResponseDto,
   PaginationQueryParams,
 } from "@/types/pagination";
-import { ProjectDto, ProjectQueryParams } from "@/types/project";
+import {
+  Project,
+  ProjectDto,
+  ProjectOptions,
+  ProjectQueryParams,
+} from "@/types/project";
 import tags from "@/utils/tags";
-import { prepareUrl } from "@/utils/url";
-import { coreApiClient } from "./_client";
-import { dtoToProject } from "./_transformers";
+import { mergeWithDefaultFilters } from "@/utils/url";
+import { fetchFromApi } from "./_client";
+import { dtoToProject, projectQueryParamsToDto } from "./_transformers";
 
 const PROJECTS_PATH = "/projects";
+const PROJECT_OPTIONS_PATH = "/projects/options";
 
 export async function getProjects(
-  query: ProjectQueryParams & PaginationQueryParams = DEFAULT_QUERY,
+  query: ProjectQueryParams & PaginationQueryParams = DEFAULT_PAGINATION,
   tag?: string,
-) {
-  const url = prepareUrl(PROJECTS_PATH, query);
+): Promise<PaginatedCustomResponse<Project>> {
   const nextTag = tag ?? tags.projects(query.slugs?.join("-") || "");
+  const mergedQuery = mergeWithDefaultFilters(query, DEFAULT_PAGINATION);
 
-  const res = await coreApiClient.get<PaginatedCustomResponseDto<ProjectDto>>(
-    url,
-    {
-      tag: nextTag,
-    },
+  const res = await fetchFromApi<PaginatedCustomResponseDto<ProjectDto>>(
+    PROJECTS_PATH,
+    mergedQuery,
+    nextTag,
   );
 
   return {
@@ -33,4 +39,17 @@ export async function getProjects(
   };
 }
 
-export default { getProjects };
+export async function getProjectOptions(
+  query: ProjectQueryParams,
+): Promise<ProjectOptions> {
+  const mergedQuery = mergeWithDefaultFilters(query, DEFAULT_QUERY_FILTERS);
+  const queryDto = projectQueryParamsToDto(mergedQuery);
+
+  return await fetchFromApi<ProjectOptions>(
+    PROJECT_OPTIONS_PATH,
+    queryDto,
+    tags.projectOptions,
+  );
+}
+
+export default { getProjects, getProjectOptions };

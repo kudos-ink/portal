@@ -8,17 +8,13 @@ export async function constructProjectMetrics(
   suggestedIssues: PaginatedCustomResponse<Issue>,
 ): Promise<ProjectMetrics> {
   const certifiedIssues = await fetchProjectIssues(infos.slug, {
+    labels: [],
     certified: true,
-  });
-
-  const kudosIssues = await fetchProjectIssues(infos.slug, {
-    kudos: true,
   });
 
   return {
     repositoriesTotal: infos.links.repository.length,
     certifiedTotal: certifiedIssues.totalCount,
-    kudosTotal: kudosIssues.totalCount,
     rewardsTotal: 0,
     suggestedTotal: suggestedIssues.totalCount,
   };

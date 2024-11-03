@@ -10,7 +10,6 @@ import {
   ModalFooter,
 } from "@nextui-org/modal";
 import { ScrollShadow } from "@nextui-org/scroll-shadow";
-import { KUDOS_ISSUE_LABELS } from "@/data/filters";
 import { Issue } from "@/types/issue";
 import { Project } from "./row";
 import { getIconSrc } from "@/utils/icons";
@@ -20,21 +19,18 @@ interface IIssueModalProps {
 }
 
 export const IssueModal = ({ issue }: IIssueModalProps) => {
-  const { description, labels, project, repository, title, url } = issue;
+  const { description, project, repository, title, url, isCertified } = issue;
   const parsedTitle =
     title && DOMPurify.sanitize(marked.parseInline(title) as string);
   const parsedDescription =
     description &&
     DOMPurify.sanitize(marked.parse(description, { breaks: true }) as string);
-  const isKudosIssue = KUDOS_ISSUE_LABELS.some((label) =>
-    labels.includes(label),
-  );
 
   return (
     <ModalContent className="relative">
       <>
         <ModalHeader className="flex flex-col gap-1">
-          {isKudosIssue && (
+          {isCertified && (
             <div className="absolute w-full top-0 left-0 flex justify-between items-center gap-4 bg-primary px-6 py-2">
               <p className="text-background">
                 ♨️ This issue is part of Kudos Carnival!
@@ -49,7 +45,7 @@ export const IssueModal = ({ issue }: IIssueModalProps) => {
               </NuiLink>
             </div>
           )}
-          <div className={isKudosIssue ? "mt-20 md:mt-16 w-fit" : "w-fit"}>
+          <div className={isCertified ? "mt-20 md:mt-16 w-fit" : "w-fit"}>
             <NuiLink
               className="flex gap-4 hover:text-primary w-fit"
               href={`/projects/${project.slug}`}

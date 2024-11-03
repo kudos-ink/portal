@@ -4,21 +4,19 @@ import {
   QueryKey,
 } from "@tanstack/react-query";
 import { DEFAULT_BIG_PAGE_SIZE } from "@/data/fetch";
-import IssuesApi from "@/api/core/issues";
 import { Issue, IssueQueryParams } from "@/types/issue";
 import {
   PaginatedCustomResponse,
   PaginationQueryParams,
 } from "@/types/pagination";
+import { fetchIssues } from "@/lib/api/issues";
 
 export const useIssues = (
   initialItems: PaginatedCustomResponse<Issue>,
   query: IssueQueryParams = {},
 ) => {
-  const fetchIssues = ({ pageParam }: { pageParam: PaginationQueryParams }) =>
-    IssuesApi.getIssues({ ...query, ...pageParam }) as Promise<
-      PaginatedCustomResponse<Issue>
-    >;
+  const queryFn = ({ pageParam }: { pageParam: PaginationQueryParams }) =>
+    fetchIssues({ ...query, ...pageParam });
 
   return useInfiniteQuery<
     PaginatedCustomResponse<Issue>,
@@ -28,7 +26,7 @@ export const useIssues = (
     PaginationQueryParams
   >({
     queryKey: ["contributions", query],
-    queryFn: fetchIssues,
+    queryFn,
     initialData: {
       pages: [initialItems],
       pageParams: [{ offset: 0, limit: DEFAULT_BIG_PAGE_SIZE }],
@@ -39,7 +37,7 @@ export const useIssues = (
       if (!hasNextPage) return null;
       return {
         ...lastPageParam,
-        offset: lastPageParam.offset + DEFAULT_BIG_PAGE_SIZE,
+        offset: (lastPageParam.offset ?? 0) + DEFAULT_BIG_PAGE_SIZE,
       };
     },
   });

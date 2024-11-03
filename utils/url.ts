@@ -190,3 +190,12 @@ export function prepareUrl(url: string, query: Record<string, any>) {
   const queryString = serializeQueryParams(query);
   return `${url}${queryString ? `?${queryString}` : ""}`;
 }
+
+type QueryParams = Record<string, any>;
+
+export function mergeWithDefaultFilters(
+  query: QueryParams,
+  defaultFilters?: QueryParams,
+): QueryParams {
+  return { ...defaultFilters, ...query };
+}

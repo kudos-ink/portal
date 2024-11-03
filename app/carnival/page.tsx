@@ -1,22 +1,20 @@
 import { Button } from "@nextui-org/button";
 import { Link } from "@nextui-org/link";
 import { IconSocial, IconWeb } from "@/assets/icons";
-import IssuesApi from "@/api/core/issues";
-import ProjectsApi from "@/api/core/projects";
 import Toolbar from "@/components/filters/toolbar";
-import { Project, ProjectQueryParams } from "@/types/project";
 import { container } from "@/components/primitives";
 import PaginatedTable from "@/components/table/paginated-table";
 import { FiltersProvider } from "@/contexts/filters";
 import { SITE_CONFIG } from "@/data/config";
-import { DEFAULT_PAGINATED_RESPONSE, DEFAULT_QUERY } from "@/data/fetch";
+import { DEFAULT_PAGINATION } from "@/data/fetch";
 import { getFilterOptions } from "@/lib/filters";
 import { initFilters } from "@/utils/filters";
 import { FilterOptions } from "@/types/filters";
-import { Issue, IssueQueryParams } from "@/types/issue";
+import { IssueQueryParams } from "@/types/issue";
 import { Leaderboard } from "@/types/leaderboard";
-import { PaginatedCustomResponse } from "@/types/pagination";
 import EventBanner from "./_components/EventBanner";
+import { fetchIssues } from "@/lib/api/issues";
+import { fetchProjects } from "@/lib/api/projects";
 
 const MOCKED_WEEKLY_LEADERBOARD: Leaderboard[] = [
   {
@@ -147,31 +145,14 @@ export default async function SingleEventPage() {
     return {} as FilterOptions;
   });
 
-  const query: IssueQueryParams = {
-    certified: true,
-    open: true,
+  const issuesQuery: IssueQueryParams = {
     labels: [],
   };
 
-  const projectQuery: ProjectQueryParams = {
+  const issues = await fetchIssues(issuesQuery);
+  const projects = await fetchProjects({
     certified: true,
-  };
-
-  const issues = (await IssuesApi.getIssues({
-    ...DEFAULT_QUERY,
-    ...query,
-  }).catch((error) => {
-    console.error(`Error fetching Kudos Carnival issues:`, error);
-    return DEFAULT_PAGINATED_RESPONSE;
-  })) as PaginatedCustomResponse<Issue>;
-
-  const projects = (await ProjectsApi.getProjects({
-    ...DEFAULT_QUERY,
-    ...projectQuery,
-  }).catch((error) => {
-    console.error(`Error fetching Kudos Carnival projects:`, error);
-    return DEFAULT_PAGINATED_RESPONSE;
-  })) as PaginatedCustomResponse<Project>;
+  });
 
   return (
     <>
@@ -345,9 +326,8 @@ export default async function SingleEventPage() {
           />
           <section className={container()}>
             <PaginatedTable
-              initialItems={issues}
-              query={query}
-              pagination={DEFAULT_QUERY}
+              query={issuesQuery}
+              pagination={DEFAULT_PAGINATION}
               emptyContent="Label your issues with 'kudos' to have them featured in the backlog"
             />
           </section>

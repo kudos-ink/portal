@@ -1,13 +1,8 @@
-import LanguagesApi, { getAllLanguages } from "@/api/core/languages";
-import RepositoriesApi from "@/api/core/repositories";
 import { KudosCertifiedIcon } from "@/assets/icons";
 import { CheckboxFilterConfig } from "@/components/filters/config";
 import { KudosIssueTooltipContent } from "@/components/table/row";
 import { DEFAULT_BIG_PAGE_SIZE } from "@/data/fetch";
 import {
-  FProjectTypes,
-  FPurposes,
-  FStackLevels,
   emojiMapForProjectTypes,
   emojiMapForPurposes,
   emojiMapForStackLevels,
@@ -19,31 +14,20 @@ import {
   PROJECTS_KEY,
   KUDOS_ISSUE_KEY,
 } from "@/data/filters";
-import { IFilterOption, FilterOptions, Filters } from "@/types/filters";
+import { FilterOptions, Filters } from "@/types/filters";
 import { IssueQueryParams } from "@/types/issue";
 import { PaginationQueryParams } from "@/types/pagination";
 import { ProjectMetrics } from "@/types/project";
 import { createFilterOptions } from "@/utils/filters";
-import { getAllProjectOptions } from "./api/projects";
+import { fetchProjectOptions, getAllProjectOptions } from "./api/projects";
+import { fetchLanguages } from "./api/languages";
 
 export async function getProjectFilterOptions(
   projects: string[],
 ): Promise<FilterOptions> {
-  let languageValues: string[] = [];
-
-  try {
-    languageValues = await getAllLanguages({
-      open: true,
-      certified: true,
-      projects,
-    });
-  } catch (error) {
-    console.error("Error fetching language values - ", error);
-    languageValues = [];
-  }
-
+  let languages = await fetchLanguages({ projects });
   const technologies = createFilterOptions(
-    languageValues.map((v) => v.toLocaleLowerCase().replaceAll('"', "")),
+    languages.map((v) => v.toLocaleLowerCase().replaceAll('"', "")),
     emojiMapForTechnologies,
   );
 
@@ -57,40 +41,24 @@ export async function getProjectFilterOptions(
 }
 
 export async function getFilterOptions(): Promise<FilterOptions> {
-  let languageValues: string[];
-  try {
-    languageValues = await LanguagesApi.getAllLanguages({
-      open: true,
-      certified: true,
-      withTechnologies: true,
-    });
-  } catch (error) {
-    console.error("Error fetching languages values - ", error);
-    languageValues = [];
-  }
+  const languages = await fetchLanguages({
+    withTechnologies: true,
+  });
 
-  let projects: IFilterOption[] = [];
-  try {
-    projects = await getAllProjectOptions();
-  } catch (error) {
-    console.error("Error fetching projects options:", error);
-  }
-
-  const purposes = createFilterOptions(FPurposes, emojiMapForPurposes);
+  let projects = await getAllProjectOptions();
+  let { purposes, stack_levels, types } = await fetchProjectOptions({});
   const technologies = createFilterOptions(
-    [...languageValues.map((v) => v.toLocaleLowerCase().replaceAll('"', ""))],
+    [...languages.map((v) => v.toLocaleLowerCase().replaceAll('"', ""))],
     emojiMapForTechnologies,
-  );
-  const stackLevels = createFilterOptions(FStackLevels, emojiMapForStackLevels);
-  const projectTypes = createFilterOptions(
-    FProjectTypes,
-    emojiMapForProjectTypes,
   );
 
   return {
-    [PROJECT_TYPE_KEY]: projectTypes,
-    [PURPOSE_KEY]: purposes,
-    [STACK_LEVEL_KEY]: stackLevels,
+    [PROJECT_TYPE_KEY]: createFilterOptions(types, emojiMapForProjectTypes),
+    [PURPOSE_KEY]: createFilterOptions(purposes, emojiMapForPurposes),
+    [STACK_LEVEL_KEY]: createFilterOptions(
+      stack_levels,
+      emojiMapForStackLevels,
+    ),
     [TECHNOLOGY_KEY]: technologies,
     [PROJECTS_KEY]: projects,
   };
@@ -127,7 +95,6 @@ export function filtersToIssuesQuery(
   }
 
   if (filters[KUDOS_ISSUE_KEY]) {
-    query.kudos = true;
     query.certified = true;
   }
 

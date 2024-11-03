@@ -6,7 +6,7 @@ export const PROJECTS_KEY = "projects";
 export const KUDOS_ISSUE_KEY = "certified";
 export const REWARDS_KEY = "rewards";
 
-export const GOOD_FIRST_ISSUE_LABELS = [
+export const TRACKED_LABELS = [
   "good first issue",
   "C-good-first-issue",
   "good first issue :baby:",
@@ -14,9 +14,8 @@ export const GOOD_FIRST_ISSUE_LABELS = [
   "D0-easy",
   "Q1 - Easy",
   "C-simple",
+  "kudos",
 ];
-
-export const KUDOS_ISSUE_LABELS = ["kudos"];
 
 export const FPurposes = [
   "ai",
