@@ -34,6 +34,7 @@ export type Issue = {
 
 export type IssueQueryParams = Partial<{
   certified: boolean;
+  certifiedOnly: boolean;
   open: boolean;
   labels: string[];
   projects: string[];

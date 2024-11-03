@@ -31,7 +31,7 @@ export interface CheckboxFilterConfig {
 const DEFAULT_SELECT_FILTERS: SelectFilterConfig[] = [
   { key: TECHNOLOGY_KEY, options: [] },
   { key: PURPOSE_KEY, options: [] },
-  // { key: PROJECT_TYPE_KEY, options: [] },
+  { key: PROJECT_TYPE_KEY, options: [] },
   { key: STACK_LEVEL_KEY, options: [] },
   // { key: PROJECTS_KEY, options: [], isAdvanced: true },
 ];

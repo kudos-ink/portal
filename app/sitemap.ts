@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 import { SITE_CONFIG } from "@/data/config";
 import { getFilterOptions } from "@/lib/filters";
-import { createUrl, encodingSlug } from "@/utils/url";
+import { createUrl } from "@/utils/url";
 import { TECHNOLOGY_KEY, PURPOSE_KEY, PROJECTS_KEY } from "@/data/filters";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

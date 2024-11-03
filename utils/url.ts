@@ -96,8 +96,8 @@ export const decodingSlug = (
   filters[KUDOS_ISSUE_KEY] = isCertified;
 
   const technologiesPart = isCertified
-    ? slug.split("certified")[0]
-    : slug.split("open-contributions")[0];
+    ? decodeURIComponent(slug.split("certified")[0])
+    : decodeURIComponent(slug.split("open-contributions")[0]);
   filters.technologies = extractValuesFromOptions(
     technologiesPart,
     filterOptions.technologies,
@@ -149,7 +149,9 @@ export const decodingSlug = (
 
 const extractValues = (section: string): string[] => {
   if (!section) return [];
-  return section.split("-and-").map((s) => s.replace(/-$/, ""));
+  return section
+    .split("-and-")
+    .map((s) => decodeURIComponent(s.replace(/-$/, "")));
 };
 
 const extractValuesFromOptions = (

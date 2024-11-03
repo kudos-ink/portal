@@ -95,7 +95,7 @@ export function filtersToIssuesQuery(
   }
 
   if (filters[KUDOS_ISSUE_KEY]) {
-    query.certified = true;
+    query.certifiedOnly = true;
   }
 
   return query;
