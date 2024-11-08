@@ -26,7 +26,8 @@ export async function generateMetadata({ params }: IProps): Promise<Metadata> {
 
 export default async function ExplorePage({ params }: IProps) {
   const filterOptions = await getFilterOptions();
-  const filters = decodingSlug(params.slug, filterOptions);
+  const decodedSlug = decodeURIComponent(params.slug);
+  const filters = decodingSlug(decodedSlug, filterOptions);
   const query = filtersToIssuesQuery(filters);
   const issues = await fetchIssues(query);
 

@@ -36,13 +36,22 @@ const LeaderboardTable = ({ data }: IStaticTableProps) => {
           return item.id;
         }
         case "contributor": {
-          const { avatar, name, username } = item;
+          const { id, avatar, name, username } = item;
           return (
-            <Contributor avatarSrc={avatar} username={username} name={name} />
+            <Contributor
+              id={id}
+              avatarSrc={avatar}
+              username={username}
+              name={name}
+            />
           );
         }
         case "score": {
-          return item.score;
+          return (
+            <div className="text-white text-base font-bold" color="foreground">
+              {item.score}
+            </div>
+          );
         }
         default:
           return null;
@@ -57,10 +66,10 @@ const LeaderboardTable = ({ data }: IStaticTableProps) => {
       aria-label="Leaderboard"
       classNames={{
         table:
-          "w-full bg-gradient-to-r from-background to-background-200 to-80% max-w-7xl border-spacing-0 rounded-b-md overflow-hidden",
+          "w-full max-w-7xl border-spacing-0 rounded-b-md overflow-hidden border-none",
         th: "flex items-center",
         wrapper: "bg-background overflow-visible p-0 rounded-none rounded-b-md",
-        tr: "flex items-center relative border-y-overlay hover:bg-hover-overlay",
+        tr: "flex items-center relative",
       }}
     >
       <TableHeader columns={COLUMNS}>

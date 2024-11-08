@@ -86,7 +86,7 @@ const StaticTable = ({
           );
         }
         case "content": {
-          const { title, repository, project } = item;
+          const { id, title, repository, project } = item;
           const isCertified =
             (item.labels.includes("kudos") || item.isCertified) &&
             pathname !== "/carnival" &&
@@ -95,6 +95,7 @@ const StaticTable = ({
           return (
             title && (
               <Content
+                id={id}
                 title={title}
                 projectName={withProjectData ? project.name : undefined}
                 repositoryName={repository?.name}

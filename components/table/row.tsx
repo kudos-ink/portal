@@ -18,6 +18,10 @@ import { Repository } from "@/types/repository";
 import { formatDate } from "@/utils/date";
 import { shuffleArray } from "@/utils/filters";
 import { createUrl } from "@/utils/url";
+import {
+  CARNIVAL_NEW_LISTED_ISSUES,
+  CARNIVAL_WIP_ISSUES,
+} from "@/app/carnival/page";
 
 const MAX_LABEL_WIDTH = 192;
 
@@ -49,7 +53,7 @@ export const Project = ({
       as={Link}
     >
       <Project.Avatar alt={`${name} logo`} src={avatarSrc} />
-      <div className="hidden md:flex flex-col justify-start items-start w-36">
+      <div className="hidden md:flex flex-col justify-start items-start w-40">
         <h2 className="w-fit text-small font-semibold truncate hover:underline">
           {name}
         </h2>
@@ -86,22 +90,29 @@ const Avatar = ({ alt, src }: IAvatarProps) => {
 Project.Avatar = Avatar;
 
 interface IContentProps {
+  id: number;
   title: string;
   projectName?: string;
   repositoryName: string;
   isCertified: boolean;
 }
 export const Content = ({
+  id,
   title,
   projectName,
   repositoryName,
   isCertified,
 }: IContentProps) => {
+  const pathname = usePathname();
   const parsedTitle = DOMPurify.sanitize(marked.parseInline(title) as string);
+  const isNewListed =
+    pathname.includes("carnival") && CARNIVAL_NEW_LISTED_ISSUES.includes(id);
+  const isWIP =
+    pathname.includes("carnival") && CARNIVAL_WIP_ISSUES.includes(id);
 
   return (
     <div
-      className={`flex flex-col ${projectName ? "lg:w-[270px] xl:w-[500px]" : "pl-2 gap-1"}`}
+      className={`flex flex-col ${projectName ? "lg:w-[270px] xl:w-[500px]" : "pl-2 gap-1"} ${isWIP ? " opacity-50" : " opacity-100"}`}
     >
       <span
         className={`text-small text-default-500 max-w-48 truncate ${projectName ? "md:hidden" : ""}`}
@@ -133,6 +144,29 @@ export const Content = ({
                 height={20}
                 width={20}
               />
+            </div>
+          </Tooltip>
+        )}
+        {isNewListed && (
+          <Tooltip content="New listing">
+            <div className="hidden absolute -top-1 -left-8 md:block">
+              <MyImage
+                className="absolute flex-shrink-0 max-w-8 max-h-5 lg:mb-4"
+                src="/new.gif"
+                alt="New listed issue"
+                radius="sm"
+                height={30}
+                width={40}
+              />
+            </div>
+          </Tooltip>
+        )}
+        {isWIP && (
+          <Tooltip content="A contributor is working on this issue">
+            <div className="hidden absolute top-[1px] -left-10 md:block">
+              <div className="text-xs font-bold bg-primary text-background rounded-sm px-1">
+                WIP
+              </div>
             </div>
           </Tooltip>
         )}
@@ -333,8 +367,7 @@ export const KudosIssueTooltipContent = () => (
   <div className="px-1 py-2">
     <div className="text-small font-bold">Top Certified Contributions</div>
     <div className="text-tiny max-w-64">
-      Creators honour to have a well-detailed problem statement and an assigned
-      mentor available
+      This issue belongs to the Kudos Carnival
     </div>
   </div>
 );

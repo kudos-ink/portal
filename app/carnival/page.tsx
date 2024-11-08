@@ -15,65 +15,26 @@ import { Leaderboard } from "@/types/leaderboard";
 import EventBanner from "./_components/EventBanner";
 import { fetchIssues } from "@/lib/api/issues";
 import { fetchProjects } from "@/lib/api/projects";
+import LeaderboardTable from "@/components/leaderboard/table";
 
 const MOCKED_WEEKLY_LEADERBOARD: Leaderboard[] = [
   {
-    avatar: "https://avatars.githubusercontent.com/u/10196091?v=4",
-    name: "Ankan",
-    username: "Ank4n",
-    score: 11,
+    avatar: "https://avatars.githubusercontent.com/u/76661350?v=4",
+    name: "Parth Mittal",
+    username: "mittal-parth",
+    score: 6, // 1 (ask working on this) + 1 (PR) + 4 (estimation)
   },
   {
-    avatar: "https://avatars.githubusercontent.com/u/1728078?v=4",
-    name: "Michal Kucharczyk",
-    username: "michalkucharczyk",
-    score: 9,
+    avatar: "https://avatars.githubusercontent.com/u/33208377?v=4",
+    name: "Kazunobu Ndong",
+    username: "ndkazu",
+    score: 3, // 1 (ask working on this) + 1 (PR) + 1 (review in progress)
   },
   {
-    avatar: "https://avatars.githubusercontent.com/u/37149322?v=4",
-    name: "Facundo Farall",
-    username: "ffarall",
-    score: 7,
-  },
-  {
-    avatar: "https://avatars.githubusercontent.com/u/4390772?v=4",
-    name: "Francisco Aguirre",
-    username: "franciscoaguirre",
-    score: 7,
-  },
-  {
-    avatar: "https://avatars.githubusercontent.com/u/48095175?v=4",
-    username: "CJ13th",
-    score: 7,
-  },
-  {
-    avatar: "https://avatars.githubusercontent.com/u/5718007?v=4",
-    name: "Bastian Köcher",
-    username: "bkchr",
-    score: 5,
-  },
-  {
-    avatar: "https://avatars.githubusercontent.com/u/85124277?v=4",
-    name: "Benjamin Salon",
-    username: "benjaminsalon",
-    score: 4,
-  },
-  {
-    avatar: "https://avatars.githubusercontent.com/u/26460174?v=4",
-    name: "Igor Papandinas",
-    username: "ipapandinas",
-    score: 2,
-  },
-  {
-    avatar: "https://avatars.githubusercontent.com/u/22482966?v=4",
-    username: "leapalazzolo",
-    score: 2,
-  },
-  {
-    avatar: "https://avatars.githubusercontent.com/u/2580396?v=4",
-    name: "Alexander Theißen",
-    username: "athei",
-    score: 1,
+    avatar: "https://avatars.githubusercontent.com/u/6019499?v=4",
+    name: "Silvereau",
+    username: "sylvaincormier",
+    score: 2, // 1 (ask working on this) + 1 (PR)
   },
 ].map((item, idx) => ({ id: idx + 1, ...item }));
 
@@ -138,6 +99,12 @@ const MOCKED_TOTAL_LEADERBOARD: Leaderboard[] = [
   },
 ].map((item, idx) => ({ id: idx + 1, ...item }));
 
+export const CARNIVAL_WIP_ISSUES = [185756, 182237, 221983];
+export const CARNIVAL_NEW_LISTED_ISSUES = [
+  317266, 181722, 184659, 387329, 340597,
+];
+const CARNIVAL_CLOSED_ISSUES = [221964];
+
 export default async function SingleEventPage() {
   const filters = initFilters();
   const filterOptions = await getFilterOptions().catch((error) => {
@@ -158,7 +125,10 @@ export default async function SingleEventPage() {
     <>
       <section className={container()}>
         <EventBanner
-          issues={issues.totalCount}
+          issues={issues.totalCount - CARNIVAL_WIP_ISSUES.length}
+          issuesCompleted={
+            CARNIVAL_CLOSED_ISSUES.length + CARNIVAL_WIP_ISSUES.length
+          }
           projects={projects.totalCount}
         />
       </section>
@@ -342,16 +312,9 @@ export default async function SingleEventPage() {
           Earn points for every assigned issue you complete during the event.
         </h3>
         <div className="flex flex-col gap-4 sm:flex-row mt-16">
-          <div className="flex flex-col gap-2 basis-1/2">
-            <div className="text-lg font-bold leading-normal">This week</div>
-            <strong>TBA</strong>
-            {/* <LeaderboardTable data={MOCKED_WEEKLY_LEADERBOARD} /> */}
-          </div>
-
-          <div className="flex flex-col gap-2 basis-1/2">
-            <div className="text-lg font-bold leading-normal">All time</div>
-            <strong>TBA</strong>
-            {/* <LeaderboardTable data={MOCKED_TOTAL_LEADERBOARD} /> */}
+          <div className="flex flex-col gap-2 basis-1/3">
+            <div className="text-lg font-bold leading-normal">First week</div>
+            <LeaderboardTable data={MOCKED_WEEKLY_LEADERBOARD} />
           </div>
         </div>
       </section>

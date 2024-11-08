@@ -13,7 +13,8 @@ export default async function ExploreLayout({
   params: { slug: string };
 }) {
   const filterOptions = await getFilterOptions();
-  const filters = decodingSlug(params.slug, filterOptions);
+  const decodedSlug = decodeURIComponent(params.slug);
+  const filters = decodingSlug(decodedSlug, filterOptions);
 
   return (
     <FiltersProvider
