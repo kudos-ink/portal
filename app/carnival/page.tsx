@@ -16,6 +16,7 @@ import EventBanner from "./_components/EventBanner";
 import { fetchIssues } from "@/lib/api/issues";
 import { fetchProjects } from "@/lib/api/projects";
 import LeaderboardTable from "@/components/leaderboard/table";
+import { CARNIVAL_WIP_ISSUES, CARNIVAL_CLOSED_ISSUES } from "@/data/carnival";
 
 const MOCKED_WEEKLY_LEADERBOARD: Leaderboard[] = [
   {
@@ -98,12 +99,6 @@ const MOCKED_TOTAL_LEADERBOARD: Leaderboard[] = [
     score: 4,
   },
 ].map((item, idx) => ({ id: idx + 1, ...item }));
-
-export const CARNIVAL_WIP_ISSUES = [185756, 182237, 221983];
-export const CARNIVAL_NEW_LISTED_ISSUES = [
-  317266, 181722, 184659, 387329, 340597,
-];
-const CARNIVAL_CLOSED_ISSUES = [221964];
 
 export default async function SingleEventPage() {
   const filters = initFilters();

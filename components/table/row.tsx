@@ -21,7 +21,7 @@ import { createUrl } from "@/utils/url";
 import {
   CARNIVAL_NEW_LISTED_ISSUES,
   CARNIVAL_WIP_ISSUES,
-} from "@/app/carnival/page";
+} from "@/data/carnival";
 
 const MAX_LABEL_WIDTH = 192;
 
