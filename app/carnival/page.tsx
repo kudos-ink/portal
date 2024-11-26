@@ -20,83 +20,37 @@ import { CARNIVAL_WIP_ISSUES, CARNIVAL_CLOSED_ISSUES } from "@/data/carnival";
 
 const MOCKED_WEEKLY_LEADERBOARD: Leaderboard[] = [
   {
-    avatar: "https://avatars.githubusercontent.com/u/76661350?v=4",
-    name: "Parth Mittal",
-    username: "mittal-parth",
-    score: 6, // 1 (ask working on this) + 1 (PR) + 4 (estimation)
-  },
-  {
     avatar: "https://avatars.githubusercontent.com/u/33208377?v=4",
     name: "Kazunobu Ndong",
     username: "ndkazu",
-    score: 3, // 1 (ask working on this) + 1 (PR) + 1 (review in progress)
+    score: 17, // 2 (ask working on this) + 4 (PR: https://github.com/paritytech/polkadot-sdk/issues/4859 + https://github.com/paritytech/polkadot-sdk/pull/6624/files + 2PRs: benchmark v2) + 12 (PRs merged: 10 + 2) + 1 review ongoing
+    // https://github.com/paritytech/polkadot-sdk/issues/4859 - Completed - Estimation (6h): 8
+    // https://github.com/paritytech/polkadot-sdk/pull/6509 - Completed - Estimation (6h): 8
+    // https://github.com/paritytech/polkadot-sdk/issues/6194 - In Review: 1
+  },
+  {
+    avatar: "https://avatars.githubusercontent.com/u/76661350?v=4",
+    name: "Parth Mittal",
+    username: "mittal-parth",
+    score: 16,
+    // https://github.com/OpenZeppelin/openzeppelin-pallet-abstractions/pull/47 - Ask to Work - In Review: 2
+    // https://github.com/RostislavLitovkin/PlutoWallet/pull/81 - Ask to Work - In Review: 2
+    // https://github.com/RostislavLitovkin/PlutoWallet/pull/80 - Ask to Work - Completed - Estimation (4h): 7
+    // https://github.com/mittal-parth/polkadot-dev-cli - Idea: 5
   },
   {
     avatar: "https://avatars.githubusercontent.com/u/6019499?v=4",
     name: "Silvereau",
     username: "sylvaincormier",
-    score: 2, // 1 (ask working on this) + 1 (PR)
-  },
-].map((item, idx) => ({ id: idx + 1, ...item }));
-
-const MOCKED_TOTAL_LEADERBOARD: Leaderboard[] = [
-  {
-    avatar: "https://avatars.githubusercontent.com/u/48095175?v=4",
-    username: "CJ13th",
-    score: 34,
+    score: 14,
+    // https://github.com/AstarNetwork/Astar/pull/1382 - Closed - Bonus Effort (6h): 6
+    // https://github.com/AstarNetwork/Astar/pull/1385 - Closed - Bonus Effort (8h): 8
   },
   {
-    avatar: "https://avatars.githubusercontent.com/u/4390772?v=4",
-    name: "Francisco Aguirre",
-    username: "franciscoaguirre",
-    score: 27,
-  },
-  {
-    avatar: "https://avatars.githubusercontent.com/u/10196091?v=4",
-    name: "Ankan",
-    username: "Ank4n",
-    score: 21,
-  },
-  {
-    avatar: "https://avatars.githubusercontent.com/u/1728078?v=4",
-    name: "Michal Kucharczyk",
-    username: "michalkucharczyk",
-    score: 20,
-  },
-  {
-    avatar: "https://avatars.githubusercontent.com/u/22482966?v=4",
-    username: "leapalazzolo",
-    score: 18,
-  },
-  {
-    avatar: "https://avatars.githubusercontent.com/u/37149322?v=4",
-    name: "Facundo Farall",
-    username: "ffarall",
-    score: 15,
-  },
-  {
-    avatar: "https://avatars.githubusercontent.com/u/26460174?v=4",
-    name: "Igor Papandinas",
-    username: "ipapandinas",
-    score: 13,
-  },
-  {
-    avatar: "https://avatars.githubusercontent.com/u/5718007?v=4",
-    name: "Bastian Köcher",
-    username: "bkchr",
-    score: 8,
-  },
-  {
-    avatar: "https://avatars.githubusercontent.com/u/2580396?v=4",
-    name: "Alexander Theißen",
-    username: "athei",
-    score: 7,
-  },
-  {
-    avatar: "https://avatars.githubusercontent.com/u/85124277?v=4",
-    name: "Benjamin Salon",
-    username: "benjaminsalon",
-    score: 4,
+    avatar: "https://avatars.githubusercontent.com/u/25376882?v=4",
+    name: "Ludovic Domingues",
+    username: "Krayt78",
+    score: 12, // Ask to Work - 10 (10 PRs for benchmarking v2) - In Review
   },
 ].map((item, idx) => ({ id: idx + 1, ...item }));
 
@@ -308,7 +262,7 @@ export default async function SingleEventPage() {
         </h3>
         <div className="flex flex-col gap-4 sm:flex-row mt-16">
           <div className="flex flex-col gap-2 basis-1/3">
-            <div className="text-lg font-bold leading-normal">First week</div>
+            <div className="text-lg font-bold leading-normal">Third week</div>
             <LeaderboardTable data={MOCKED_WEEKLY_LEADERBOARD} />
           </div>
         </div>

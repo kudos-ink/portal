@@ -13,7 +13,14 @@ export const Contributor = ({
   username,
   name,
 }: IContributorProps) => {
-  const src = id === 1 ? "/gold.svg" : id === 2 ? "/silver.svg" : "/bronze.svg";
+  const src =
+    id === 1
+      ? "/gold.svg"
+      : id === 2
+        ? "/silver.svg"
+        : id === 3
+          ? "/bronze.svg"
+          : null;
   return (
     <div className="flex gap-3 md:gap-4" color="foreground">
       <Contributor.Avatar alt={`${username} avatar`} src={avatarSrc} />
@@ -28,14 +35,16 @@ export const Contributor = ({
             </p>
           )}
         </div>
-        <MyImage
-          className="flex-shrink-0 max-w-5 max-h-5 lg:mb-4"
-          src={src}
-          alt="Kudos Medal"
-          radius="sm"
-          height={20}
-          width={20}
-        />
+        {src && (
+          <MyImage
+            className="flex-shrink-0 max-w-5 max-h-5 lg:mb-4"
+            src={src}
+            alt="Kudos Medal"
+            radius="sm"
+            height={20}
+            width={20}
+          />
+        )}
       </div>
     </div>
   );
