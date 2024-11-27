@@ -20,37 +20,44 @@ import { CARNIVAL_WIP_ISSUES, CARNIVAL_CLOSED_ISSUES } from "@/data/carnival";
 
 const MOCKED_WEEKLY_LEADERBOARD: Leaderboard[] = [
   {
-    avatar: "https://avatars.githubusercontent.com/u/33208377?v=4",
-    name: "Kazunobu Ndong",
-    username: "ndkazu",
-    score: 17, // 2 (ask working on this) + 4 (PR: https://github.com/paritytech/polkadot-sdk/issues/4859 + https://github.com/paritytech/polkadot-sdk/pull/6624/files + 2PRs: benchmark v2) + 12 (PRs merged: 10 + 2) + 1 review ongoing
-    // https://github.com/paritytech/polkadot-sdk/issues/4859 - Completed - Estimation (6h): 8
-    // https://github.com/paritytech/polkadot-sdk/pull/6509 - Completed - Estimation (6h): 8
-    // https://github.com/paritytech/polkadot-sdk/issues/6194 - In Review: 1
-  },
-  {
     avatar: "https://avatars.githubusercontent.com/u/76661350?v=4",
     name: "Parth Mittal",
     username: "mittal-parth",
-    score: 16,
+    score: 26,
     // https://github.com/OpenZeppelin/openzeppelin-pallet-abstractions/pull/47 - Ask to Work - In Review: 2
     // https://github.com/RostislavLitovkin/PlutoWallet/pull/81 - Ask to Work - In Review: 2
     // https://github.com/RostislavLitovkin/PlutoWallet/pull/80 - Ask to Work - Completed - Estimation (4h): 7
-    // https://github.com/mittal-parth/polkadot-dev-cli - Idea: 5
+    // https://github.com/mittal-parth/polkadot-dev-cli - Idea: 15
+  },
+  {
+    avatar: "https://avatars.githubusercontent.com/u/33208377?v=4",
+    name: "Kazunobu Ndong",
+    username: "ndkazu",
+    score: 18,
+    // https://github.com/paritytech/polkadot-sdk/issues/4859 - Completed - Estimation (6h): 8
+    // https://github.com/paritytech/polkadot-sdk/pull/6509 - Completed - Estimation (6h): 8
+    // https://github.com/paritytech/polkadot-sdk/issues/6194 - In Review: 1
+    // Kudos Support: 1
   },
   {
     avatar: "https://avatars.githubusercontent.com/u/6019499?v=4",
     name: "Silvereau",
     username: "sylvaincormier",
-    score: 14,
+    score: 18,
     // https://github.com/AstarNetwork/Astar/pull/1382 - Closed - Bonus Effort (6h): 6
-    // https://github.com/AstarNetwork/Astar/pull/1385 - Closed - Bonus Effort (8h): 8
+    // https://github.com/AstarNetwork/Astar/pull/1385 - Closed - Bonus Effort (8h): 12
   },
   {
     avatar: "https://avatars.githubusercontent.com/u/25376882?v=4",
     name: "Ludovic Domingues",
     username: "Krayt78",
     score: 12, // Ask to Work - 10 (10 PRs for benchmarking v2) - In Review
+  },
+  {
+    avatar: "https://avatars.githubusercontent.com/u/78631234?v=4",
+    name: "Maheswaran Velmurugan",
+    username: "soloking1412",
+    score: 3, // Ask to Work
   },
 ].map((item, idx) => ({ id: idx + 1, ...item }));
 

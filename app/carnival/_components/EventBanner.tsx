@@ -57,7 +57,7 @@ const EventBanner = ({
               <IconSocial size={16} /> Participants
             </span>
           </div>
-          <span className="text-2xl font-bold text-text-1">22</span>
+          <span className="text-2xl font-bold text-text-1">29</span>
         </div>
         <div className="flex min-w-40 flex-col gap-2 rounded-xl bg-default text-default-foreground p-3">
           <div className="flex items-center gap-1">
