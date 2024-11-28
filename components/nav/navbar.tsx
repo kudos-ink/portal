@@ -11,6 +11,9 @@ import { BugReport, CtaButton, FeedbackForms, ProjectDropDown } from "./items";
 import Separator from "./separator";
 import SocialLinks from "./social-links";
 import { getAllProjects } from "@/lib/api/projects";
+import dynamic from "next/dynamic";
+
+const GitHubLoginButton = dynamic(() => import("@/components/sign-in"), { ssr: false });
 
 export default async function Navbar() {
   const projects = await getAllProjects().catch((error) => {
@@ -51,6 +54,7 @@ export default async function Navbar() {
           {projects && <ProjectDropDown projects={projects} />}
           <CtaButton />
         </div>
+        <div><GitHubLoginButton /></div>
       </NavbarContent>
     </NextUINavbar>
   );
