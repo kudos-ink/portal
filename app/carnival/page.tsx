@@ -33,25 +33,34 @@ const MOCKED_WEEKLY_LEADERBOARD: Leaderboard[] = [
     avatar: "https://avatars.githubusercontent.com/u/33208377?v=4",
     name: "Kazunobu Ndong",
     username: "ndkazu",
-    score: 18,
+    score: 22,
     // https://github.com/paritytech/polkadot-sdk/issues/4859 - Completed - Estimation (6h): 8
     // https://github.com/paritytech/polkadot-sdk/pull/6509 - Completed - Estimation (6h): 8
     // https://github.com/paritytech/polkadot-sdk/issues/6194 - In Review: 1
+    // https://github.com/r0gue-io/pop-cli/issues/350 - In Review: 1
+    // https://github.com/galacticcouncil/hydration-node/issues/951 - In Review: 1
+    // https://github.com/r0gue-io/pop-cli/issues/350 - In Review: 1
+    // https://github.com/paritytech/polkadot-sdk/issues/6476 - Ask to Work: 1
     // Kudos Support: 1
   },
   {
     avatar: "https://avatars.githubusercontent.com/u/6019499?v=4",
     name: "Silvereau",
     username: "sylvaincormier",
-    score: 18,
+    score: 21,
     // https://github.com/AstarNetwork/Astar/pull/1382 - Closed - Bonus Effort (6h): 6
     // https://github.com/AstarNetwork/Astar/pull/1385 - Closed - Bonus Effort (8h): 12
+    // https://github.com/paritytech/polkadot-sdk/issues/5224 - Ask to Work - In Review: 2
+    // https://github.com/galacticcouncil/hydration-node/issues/952 - Ask to Work: 1
   },
   {
     avatar: "https://avatars.githubusercontent.com/u/25376882?v=4",
     name: "Ludovic Domingues",
     username: "Krayt78",
-    score: 12, // Ask to Work - 10 (10 PRs for benchmarking v2) - In Review
+    score: 18, // Ask to Work - 11 (11 PRs for benchmarking v2) - In Review
+    // https://github.com/paritytech/polkadot-sdk/issues/590 - Ask to Work - In Review: 2
+    // https://github.com/paritytech/polkadot-sdk/pull/6618 - benchmarking - Merged +1
+    // https://github.com/paritytech/polkadot-sdk/pull/6617 - benchmarking - Merged +1
   },
   {
     avatar: "https://avatars.githubusercontent.com/u/78631234?v=4",
