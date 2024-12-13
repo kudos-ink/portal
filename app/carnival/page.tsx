@@ -282,7 +282,7 @@ export default async function SingleEventPage() {
         </h3>
         <div className="flex flex-col gap-4 sm:flex-row mt-16">
           <div className="flex flex-col gap-2 basis-1/3">
-            <div className="text-lg font-bold leading-normal">Third week</div>
+            <div className="text-lg font-bold leading-normal">Sixth week</div>
             <LeaderboardTable data={MOCKED_WEEKLY_LEADERBOARD} />
           </div>
         </div>
