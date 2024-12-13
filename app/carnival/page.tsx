@@ -20,47 +20,51 @@ import { CARNIVAL_WIP_ISSUES, CARNIVAL_CLOSED_ISSUES } from "@/data/carnival";
 
 const MOCKED_WEEKLY_LEADERBOARD: Leaderboard[] = [
   {
-    avatar: "https://avatars.githubusercontent.com/u/76661350?v=4",
-    name: "Parth Mittal",
-    username: "mittal-parth",
-    score: 26,
-    // https://github.com/OpenZeppelin/openzeppelin-pallet-abstractions/pull/47 - Ask to Work - In Review: 2
-    // https://github.com/RostislavLitovkin/PlutoWallet/pull/81 - Ask to Work - In Review: 2
-    // https://github.com/RostislavLitovkin/PlutoWallet/pull/80 - Ask to Work - Completed - Estimation (4h): 7
-    // https://github.com/mittal-parth/polkadot-dev-cli - Idea: 15
-  },
-  {
     avatar: "https://avatars.githubusercontent.com/u/33208377?v=4",
     name: "Kazunobu Ndong",
     username: "ndkazu",
-    score: 22,
+    score: 35,
     // https://github.com/paritytech/polkadot-sdk/issues/4859 - Completed - Estimation (6h): 8
     // https://github.com/paritytech/polkadot-sdk/pull/6509 - Completed - Estimation (6h): 8
-    // https://github.com/paritytech/polkadot-sdk/issues/6194 - In Review: 1
-    // https://github.com/r0gue-io/pop-cli/issues/350 - In Review: 1
+    // https://github.com/paritytech/polkadot-sdk/issues/6194 - Completed - Estimation (6h): 8
     // https://github.com/galacticcouncil/hydration-node/issues/951 - In Review: 1
     // https://github.com/r0gue-io/pop-cli/issues/350 - In Review: 1
-    // https://github.com/paritytech/polkadot-sdk/issues/6476 - Ask to Work: 1
+    // https://github.com/paritytech/polkadot-sdk/issues/6476 - Ask to Work: 1 - Completed - Estimation (3h): 4
+    // https://github.com/r0gue-io/pop-node/pull/401 - Effort: 2
+    // https://github.com/r0gue-io/pop-node/issues/337 - Ask to Work - In Review: 2
     // Kudos Support: 1
-  },
-  {
-    avatar: "https://avatars.githubusercontent.com/u/6019499?v=4",
-    name: "Silvereau",
-    username: "sylvaincormier",
-    score: 21,
-    // https://github.com/AstarNetwork/Astar/pull/1382 - Closed - Bonus Effort (6h): 6
-    // https://github.com/AstarNetwork/Astar/pull/1385 - Closed - Bonus Effort (8h): 12
-    // https://github.com/paritytech/polkadot-sdk/issues/5224 - Ask to Work - In Review: 2
-    // https://github.com/galacticcouncil/hydration-node/issues/952 - Ask to Work: 1
   },
   {
     avatar: "https://avatars.githubusercontent.com/u/25376882?v=4",
     name: "Ludovic Domingues",
     username: "Krayt78",
-    score: 18, // Ask to Work - 11 (11 PRs for benchmarking v2) - In Review
-    // https://github.com/paritytech/polkadot-sdk/issues/590 - Ask to Work - In Review: 2
+    score: 29, // Ask to Work - 11 (11 PRs for benchmarking v2) - In Review
+    // https://github.com/paritytech/polkadot-sdk/issues/590 - Ask to Work - In Review (4) - Completed (3)
     // https://github.com/paritytech/polkadot-sdk/pull/6618 - benchmarking - Merged +1
     // https://github.com/paritytech/polkadot-sdk/pull/6617 - benchmarking - Merged +1
+    // https://github.com/polytope-labs/solidity-merkle-trees/issues/32 - Completed - Estimation (4h): 4
+    // https://github.com/paritytech/polkadot-sdk/issues/3600 - Ask to Work - In Review (2)
+  },
+  {
+    avatar: "https://avatars.githubusercontent.com/u/76661350?v=4",
+    name: "Parth Mittal",
+    username: "mittal-parth",
+    score: 28,
+    // https://github.com/OpenZeppelin/openzeppelin-pallet-abstractions/pull/47 - Ask to Work - In Review: 2
+    // https://github.com/RostislavLitovkin/PlutoWallet/pull/81 - Ask to Work - In Review: 2
+    // https://github.com/RostislavLitovkin/PlutoWallet/pull/80 - Ask to Work - Completed - Estimation (4h): 7
+    // https://github.com/mittal-parth/polkadot-dev-cli - Idea: 15
+    // https://github.com/ChainSafe/gossamer/issues/4251 - Ask to Work - In Review: 2
+  },
+  {
+    avatar: "https://avatars.githubusercontent.com/u/6019499?v=4",
+    name: "Silvereau",
+    username: "sylvaincormier",
+    score: 22,
+    // https://github.com/AstarNetwork/Astar/pull/1382 - Closed - Bonus Effort (6h): 6
+    // https://github.com/AstarNetwork/Astar/pull/1385 - Closed - Bonus Effort (8h): 12
+    // https://github.com/paritytech/polkadot-sdk/issues/5224 - Ask to Work - In Review: 2
+    // https://github.com/galacticcouncil/hydration-node/issues/952 - Ask to Work - In Review: 2
   },
   {
     avatar: "https://avatars.githubusercontent.com/u/78631234?v=4",
