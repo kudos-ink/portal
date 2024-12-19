@@ -18,7 +18,7 @@ export const Contributor = ({
       ? "/gold.svg"
       : id === 2
         ? "/silver.svg"
-        : id === 3
+        : id === 3 || id === 4
           ? "/bronze.svg"
           : null;
   return (
