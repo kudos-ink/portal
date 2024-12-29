@@ -11,7 +11,6 @@ import StaticTable from "@/components/table/static-table";
 import { DefaultFiltersProvider } from "@/components/providers/filters";
 import { SITE_CONFIG } from "@/data/config";
 import { DEFAULT_HOMEPAGE_PAGE_SIZE } from "@/data/fetch";
-import EventBanner from "@/components/event-banner";
 import { fetchIssues } from "@/lib/api/issues";
 
 const EXPLORE_LABEL = "Explore Open Contributions";
@@ -36,10 +35,6 @@ export default async function Home() {
           Navigate the Substrate ecosystem like never before - to meet teams and
           start proactively working on your next challenge.
         </h2>
-      </section>
-
-      <section className={`mb-16 ${container()}`}>
-        <EventBanner />
       </section>
 
       <DefaultFiltersProvider>
