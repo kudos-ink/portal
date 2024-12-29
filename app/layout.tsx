@@ -10,8 +10,7 @@ import Navbar from "@/components/nav/navbar";
 import TopBar from "@/components/nav/top-bar";
 import { container } from "@/components/primitives";
 import { SITE_CONFIG } from "@/data/config";
-import { AuthProvider } from "./client-session-provider";
-// import { auth } from "./api/auth/[...nextauth]/options";
+import { Providers } from "./providers";
 
 export const fontSans = Archivo({
   subsets: ["latin"],
@@ -75,13 +74,12 @@ export const viewport: Viewport = {
   themeColor: "#020817",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const isProduction = process.env.VERCEL_ENV === "production";
-  // const session = await auth()
   return (
     <html
       lang="en"
@@ -94,7 +92,7 @@ export default async function RootLayout({
     >
       <head />
       <body className="min-h-screen bg-background font-sans antialiased">
-        <AuthProvider >
+        <Providers>
           <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-default from-0% to-background to-50% relative flex flex-col">
             <header>
               <TopBar />
@@ -107,7 +105,7 @@ export default async function RootLayout({
               <Footer />
             </footer>
           </div>
-        </AuthProvider>
+        </Providers>
         <Analytics />
       </body>
       {isProduction && <GoogleAnalytics gaId={SITE_CONFIG.googleAnalyticsId} />}

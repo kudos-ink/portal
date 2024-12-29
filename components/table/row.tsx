@@ -347,8 +347,7 @@ interface IApplyButtonProps {
   onOpen: () => void;
 }
 export const ApplyButton = ({ onOpen }: IApplyButtonProps) => {
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.stopPropagation();
+  const handleClick = () => {
     onOpen();
   };
 
@@ -356,7 +355,7 @@ export const ApplyButton = ({ onOpen }: IApplyButtonProps) => {
     <Button
       className="invisible group-hover:visible"
       color="primary"
-      onClick={handleClick}
+      onPress={handleClick}
     >
       Apply
     </Button>
