@@ -21,10 +21,11 @@ const SELECT_FILTERS: SelectFilterConfig[] = [
 ];
 
 interface IProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-export default async function SingleProjectPage({ params }: IProps) {
+export default async function SingleProjectPage(props: IProps) {
+  const params = await props.params;
   const { slug } = params;
   const infos = await fetchProjectInfo(slug);
 

@@ -2,7 +2,7 @@ import { useState, useEffect, RefObject } from "react";
 import { useMediaQuery } from "react-responsive";
 import { debounce, throttle } from "@/utils/misc";
 
-const useSticky = (ref: RefObject<HTMLElement>) => {
+const useSticky = (ref: RefObject<HTMLElement | null>) => {
   const [isSticky, setIsSticky] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 639 }); // tailwind lg default: 640px
 

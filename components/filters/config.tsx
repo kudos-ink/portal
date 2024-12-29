@@ -1,3 +1,4 @@
+import type { JSX } from "react";
 import { KudosCertifiedIcon } from "@/assets/icons";
 import {
   TECHNOLOGY_KEY,
