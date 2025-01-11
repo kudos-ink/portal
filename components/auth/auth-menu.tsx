@@ -1,6 +1,8 @@
 "use client";
 
 import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
+import { Link as NuiLink } from "@nextui-org/link";
 import { Avatar } from "@nextui-org/avatar";
 import { Button } from "@nextui-org/button";
 import {
@@ -40,6 +42,16 @@ const AuthMenu: React.FC = () => {
                 <p className="font-semibold">{session.user?.name}</p>
               </DropdownItem>
             }
+            <DropdownItem key="create-task" onPress={() => signOut()}>
+              <NuiLink
+                href="/create/task"
+                color="foreground"
+                title="Create a new task"
+                as={Link}
+              >
+                Create Task
+              </NuiLink>
+            </DropdownItem>
             <DropdownItem key="logout" color="danger" onPress={() => signOut()}>
               Log Out
             </DropdownItem>
