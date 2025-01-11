@@ -4,7 +4,7 @@ import { Repository, RepositoryDto } from "./repository";
 
 export type TaskDto = {
   id: number;
-  task_id: number;
+  issue_id: number;
   labels: string[] | null;
   open: boolean;
   assignee_id: string | null;
@@ -13,8 +13,8 @@ export type TaskDto = {
   repository: RepositoryDto;
   title: string | null;
   description: string | null;
-  task_created_at: string;
-  task_closed_at: string | null;
+  issue_created_at: string;
+  issue_closed_at: string | null;
   created_at: string;
   updated_at: string | null;
 };
