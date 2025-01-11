@@ -3,7 +3,6 @@ import PaginatedTable from "@/components/table/paginated-table";
 import { DefaultFiltersProvider } from "@/components/providers/filters";
 import { SelectFilterConfig } from "@/components/filters/config";
 import Toolbar from "@/components/filters/toolbar";
-import KudosWeeksBanner from "@/components/kudos-weeks-banner";
 import { DEFAULT_PAGINATION } from "@/data/fetch";
 import { TECHNOLOGY_KEY } from "@/data/filters";
 import { fetchProjectTasks } from "@/lib/api/tasks";
@@ -92,19 +91,6 @@ export default async function SingleProjectPage(props: IProps) {
           />
         </div>
       </section>
-
-      {metrics.certifiedTotal > 0 && (
-        <section className={"mt-20 " + container()}>
-          <KudosWeeksBanner>
-            ♨️ <strong className="capitalize">{infos.name}</strong> participates
-            to <strong>Kudos Carnival</strong>! -{" "}
-            <strong>From Nov 1 to Dec 15</strong>:
-            <br />
-            Level up your contributions, solve key tasks, and rise up the
-            leaderboard!
-          </KudosWeeksBanner>
-        </section>
-      )}
 
       {infos.richText && (
         <section className={"mt-12 mb-4 " + container()}>
