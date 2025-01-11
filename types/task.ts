@@ -2,9 +2,9 @@ import { PaginationQueryParams } from "./pagination";
 import { Project } from "./project";
 import { Repository, RepositoryDto } from "./repository";
 
-export type IssueDto = {
+export type TaskDto = {
   id: number;
-  issue_id: number;
+  task_id: number;
   labels: string[] | null;
   open: boolean;
   assignee_id: string | null;
@@ -13,15 +13,15 @@ export type IssueDto = {
   repository: RepositoryDto;
   title: string | null;
   description: string | null;
-  issue_created_at: string;
-  issue_closed_at: string | null;
+  task_created_at: string;
+  task_closed_at: string | null;
   created_at: string;
   updated_at: string | null;
 };
 
-export type Issue = {
+export type Task = {
   id: number;
-  issueId: number;
+  taskId: number;
   isCertified: boolean;
   labels: string[];
   repository: Repository;
@@ -32,7 +32,7 @@ export type Issue = {
   createdAt: string;
 };
 
-export type IssueQueryParams = Partial<{
+export type TaskQueryParams = Partial<{
   certified: boolean;
   certifiedOnly: boolean;
   open: boolean;
@@ -44,10 +44,10 @@ export type IssueQueryParams = Partial<{
   types: string[];
 }>;
 
-export type IssueQueryParamsWithPagination = IssueQueryParams &
+export type TaskQueryParamsWithPagination = TaskQueryParams &
   Partial<PaginationQueryParams>;
 
-export type IssueQueryParamsDto = Partial<{
+export type TaskQueryParamsDto = Partial<{
   slugs: string[];
   certified: boolean;
   purposes: string[];
@@ -60,8 +60,8 @@ export type IssueQueryParamsDto = Partial<{
   assignee_id: number;
   open: boolean;
   has_assignee: boolean;
-  issue_closed_at_min: string;
-  issue_closed_at_max: string;
+  task_closed_at_min: string;
+  task_closed_at_max: string;
   certified_or_labels: boolean;
 }> &
   Partial<PaginationQueryParams>;

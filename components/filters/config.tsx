@@ -6,14 +6,14 @@ import {
   PROJECTS_KEY,
   STACK_LEVEL_KEY,
   PROJECT_TYPE_KEY,
-  KUDOS_ISSUE_KEY,
+  KUDOS_TASK_KEY,
 } from "@/data/filters";
 import {
   SelectFilterKeys,
   IFilterOption,
   BooleanFilterKeys,
 } from "@/types/filters";
-import { KudosIssueTooltipContent } from "../table/row";
+import { KudosTaskTooltipContent } from "../table/row";
 
 export interface SelectFilterConfig {
   key: SelectFilterKeys;
@@ -39,9 +39,9 @@ const DEFAULT_SELECT_FILTERS: SelectFilterConfig[] = [
 
 const DEFAULT_CHECKBOX_FILTERS: CheckboxFilterConfig[] = [
   {
-    key: KUDOS_ISSUE_KEY,
-    placeholder: "Kudos Issues Only",
-    content: <KudosIssueTooltipContent />,
+    key: KUDOS_TASK_KEY,
+    placeholder: "Kudos Tasks Only",
+    content: <KudosTaskTooltipContent />,
     icon: <KudosCertifiedIcon className="w-5 h-5" size={16} />,
   },
 ];

@@ -4,6 +4,6 @@ import { withBasicAuthorization } from "./middlewares/basic-auth";
 
 const middlewares = [
   withBasicAuthorization,
-  //, withCSRF TODO: disable until we fix the issue with the headers
+  //, withCSRF TODO: disable until we fix the task with the headers
 ];
 export default stackMiddlewares(middlewares);

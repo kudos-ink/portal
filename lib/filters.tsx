@@ -1,6 +1,6 @@
 import { KudosCertifiedIcon } from "@/assets/icons";
 import { CheckboxFilterConfig } from "@/components/filters/config";
-import { KudosIssueTooltipContent } from "@/components/table/row";
+import { KudosTaskTooltipContent } from "@/components/table/row";
 import { DEFAULT_BIG_PAGE_SIZE } from "@/data/fetch";
 import {
   emojiMapForProjectTypes,
@@ -12,10 +12,10 @@ import {
   TECHNOLOGY_KEY,
   STACK_LEVEL_KEY,
   PROJECTS_KEY,
-  KUDOS_ISSUE_KEY,
+  KUDOS_TASK_KEY,
 } from "@/data/filters";
 import { FilterOptions, Filters } from "@/types/filters";
-import { IssueQueryParams } from "@/types/issue";
+import { TaskQueryParams } from "@/types/task";
 import { PaginationQueryParams } from "@/types/pagination";
 import { ProjectMetrics } from "@/types/project";
 import { createFilterOptions } from "@/utils/filters";
@@ -64,10 +64,10 @@ export async function getFilterOptions(): Promise<FilterOptions> {
   };
 }
 
-export function filtersToIssuesQuery(
+export function filtersToTasksQuery(
   filters: Filters,
-): IssueQueryParams & PaginationQueryParams {
-  const query: IssueQueryParams & PaginationQueryParams = {
+): TaskQueryParams & PaginationQueryParams {
+  const query: TaskQueryParams & PaginationQueryParams = {
     offset: 0,
     limit: DEFAULT_BIG_PAGE_SIZE,
     open: true,
@@ -94,7 +94,7 @@ export function filtersToIssuesQuery(
     query.stackLevels = filters[STACK_LEVEL_KEY].map((tech) => tech.value);
   }
 
-  if (filters[KUDOS_ISSUE_KEY]) {
+  if (filters[KUDOS_TASK_KEY]) {
     query.certifiedOnly = true;
   }
 
@@ -108,9 +108,9 @@ export function buildCheckboxFilters(
 
   if (metrics.certifiedTotal > 0) {
     filters.push({
-      key: KUDOS_ISSUE_KEY,
-      placeholder: "Kudos Issues Only",
-      content: <KudosIssueTooltipContent />,
+      key: KUDOS_TASK_KEY,
+      placeholder: "Kudos Tasks Only",
+      content: <KudosTaskTooltipContent />,
       icon: <KudosCertifiedIcon className="w-5 h-5" size={16} />,
       isAdvanced: true,
     });

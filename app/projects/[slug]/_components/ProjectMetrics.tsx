@@ -14,9 +14,9 @@ const ProjectMetrics = ({ metrics }: IProjectMetricsProps) => {
       <div className="font-semibold">Metrics</div>
       <div className="text-small flex flex-col gap-2">
         <MetricItem label="Unified Repositories" value={repositoriesTotal} />
-        <MetricItem label="Suggested Issues" value={suggestedTotal} />
-        <MetricItem label="Kudos Issues" value={certifiedTotal} />
-        {/* <MetricItem label="Rewards Issues" value={rewardsTotal} /> */}
+        <MetricItem label="Suggested Tasks" value={suggestedTotal} />
+        <MetricItem label="Kudos Tasks" value={certifiedTotal} />
+        {/* <MetricItem label="Rewards Tasks" value={rewardsTotal} /> */}
       </div>
       {/* <div className="flex gap-4 mx-auto">
         {stats.map(({ icon, value }, index) => (

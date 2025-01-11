@@ -3,15 +3,15 @@ import { IconRepo, IconSocial, IconWeb } from "@/assets/icons";
 import Countdown from "@/components/countdown";
 
 interface IEventBannerProps {
-  issues?: number;
-  issuesCompleted?: number;
+  tasks?: number;
+  tasksCompleted?: number;
   participants?: number;
   projects?: number;
 }
 
 const EventBanner = ({
-  issues,
-  issuesCompleted,
+  tasks,
+  tasksCompleted,
   participants,
   projects,
 }: IEventBannerProps) => (
@@ -48,7 +48,7 @@ const EventBanner = ({
 
       <h3 className="hidden md:block text-xl text-default-600 mt-4">
         Want to level up your contributions? Make an impact on Polkadot, solve
-        key issues, and rise up the Kudos leaderboard!
+        key tasks, and rise up the Kudos leaderboard!
       </h3>
       <div className="gap-3 flex flex-col sm:flex-row">
         <div className="flex min-w-40 flex-col gap-2 rounded-xl bg-default text-default-foreground p-3">
@@ -62,12 +62,12 @@ const EventBanner = ({
         <div className="flex min-w-40 flex-col gap-2 rounded-xl bg-default text-default-foreground p-3">
           <div className="flex items-center gap-1">
             <span className="text-xs font-medium text-text-1 flex items-center gap-2">
-              <IconRepo size={16} /> Issues to challenge
+              <IconRepo size={16} /> Tasks to challenge
             </span>
           </div>
           <span className="text-2xl font-bold text-text-1">
-            {typeof issues === "number" && typeof issuesCompleted === "number"
-              ? `${issues} / ${issues + issuesCompleted}`
+            {typeof tasks === "number" && typeof tasksCompleted === "number"
+              ? `${tasks} / ${tasks + tasksCompleted}`
               : "TBA"}
             {/* 87 <span className="text-default-600 font-medium">/ 134</span> */}
           </span>

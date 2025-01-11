@@ -1,5 +1,5 @@
 import {
-  KUDOS_ISSUE_KEY,
+  KUDOS_TASK_KEY,
   PROJECTS_KEY,
   PROJECT_TYPE_KEY,
   PURPOSE_KEY,
@@ -36,7 +36,7 @@ export const initFilters = (): Filters => {
     [TECHNOLOGY_KEY]: [],
     [STACK_LEVEL_KEY]: [],
     [PROJECTS_KEY]: [],
-    [KUDOS_ISSUE_KEY]: false,
+    [KUDOS_TASK_KEY]: false,
   };
 };
 
@@ -46,7 +46,7 @@ export const countNonEmptyFilters = (filters: Filters): number => {
   (Object.keys(filters) as FilterKeys[]).forEach((key) => {
     const value = filters[key];
 
-    if (key === KUDOS_ISSUE_KEY) {
+    if (key === KUDOS_TASK_KEY) {
       // Count as non-empty if the value is 'true'
       if (value === true) {
         nonEmptyCount++;

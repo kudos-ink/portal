@@ -1,6 +1,6 @@
 const tags = {
   languages: "languages",
-  latestIssues: "latest-issues",
+  latestTasks: "latest-tasks",
   allProjects: "all-projects",
   projectOptions: "project-options",
   projects(slug: string) {

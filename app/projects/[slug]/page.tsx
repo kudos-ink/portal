@@ -6,7 +6,7 @@ import Toolbar from "@/components/filters/toolbar";
 import KudosWeeksBanner from "@/components/kudos-weeks-banner";
 import { DEFAULT_PAGINATION } from "@/data/fetch";
 import { TECHNOLOGY_KEY } from "@/data/filters";
-import { fetchProjectIssues } from "@/lib/api/issues";
+import { fetchProjectTasks } from "@/lib/api/tasks";
 import { fetchProject, fetchProjectInfo } from "@/lib/api/projects";
 import { buildCheckboxFilters } from "@/lib/filters";
 import ProjectAbout from "./_components/ProjectAbout";
@@ -32,8 +32,8 @@ export default async function SingleProjectPage(props: IProps) {
   if (infos == null) return "Project not found";
 
   const project = await fetchProject(slug);
-  const issues = await fetchProjectIssues(slug);
-  const metrics = await constructProjectMetrics(infos, issues);
+  const tasks = await fetchProjectTasks(slug);
+  const metrics = await constructProjectMetrics(infos, tasks);
 
   const labels = constructLabels(infos, metrics);
   const checkboxFilters = buildCheckboxFilters(metrics);
@@ -100,7 +100,7 @@ export default async function SingleProjectPage(props: IProps) {
             to <strong>Kudos Carnival</strong>! -{" "}
             <strong>From Nov 1 to Dec 15</strong>:
             <br />
-            Level up your contributions, solve key issues, and rise up the
+            Level up your contributions, solve key tasks, and rise up the
             leaderboard!
           </KudosWeeksBanner>
         </section>

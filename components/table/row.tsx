@@ -18,10 +18,7 @@ import { Repository } from "@/types/repository";
 import { formatDate } from "@/utils/date";
 import { shuffleArray } from "@/utils/filters";
 import { createUrl } from "@/utils/url";
-import {
-  CARNIVAL_NEW_LISTED_ISSUES,
-  CARNIVAL_WIP_ISSUES,
-} from "@/data/carnival";
+import { CARNIVAL_NEW_LISTED_TASKS, CARNIVAL_WIP_TASKS } from "@/data/carnival";
 
 const MAX_LABEL_WIDTH = 192;
 
@@ -106,9 +103,9 @@ export const Content = ({
   const pathname = usePathname();
   const parsedTitle = DOMPurify.sanitize(marked.parseInline(title) as string);
   const isNewListed =
-    pathname.includes("carnival") && CARNIVAL_NEW_LISTED_ISSUES.includes(id);
+    pathname.includes("carnival") && CARNIVAL_NEW_LISTED_TASKS.includes(id);
   const isWIP =
-    pathname.includes("carnival") && CARNIVAL_WIP_ISSUES.includes(id);
+    pathname.includes("carnival") && CARNIVAL_WIP_TASKS.includes(id);
 
   return (
     <div
@@ -134,7 +131,7 @@ export const Content = ({
           dangerouslySetInnerHTML={{ __html: parsedTitle }} // Safely render sanitized HTML
         />
         {isCertified && (
-          <Tooltip content={<KudosIssueTooltipContent />}>
+          <Tooltip content={<KudosTaskTooltipContent />}>
             <div className="hidden absolute -top-1 -left-6 md:block">
               <MyImage
                 className="flex-shrink-0 max-w-5 max-h-5 lg:mb-4"
@@ -153,7 +150,7 @@ export const Content = ({
               <MyImage
                 className="absolute flex-shrink-0 max-w-8 max-h-5 lg:mb-4"
                 src="/new.gif"
-                alt="New listed issue"
+                alt="New listed task"
                 radius="sm"
                 height={30}
                 width={40}
@@ -162,7 +159,7 @@ export const Content = ({
           </Tooltip>
         )}
         {isWIP && (
-          <Tooltip content="A contributor is working on this issue">
+          <Tooltip content="A contributor is working on this task">
             <div className="hidden absolute top-[1px] -left-10 md:block">
               <div className="text-xs font-bold bg-primary text-background rounded-sm px-1">
                 WIP
@@ -363,11 +360,11 @@ export const ApplyButton = ({ onOpen }: IApplyButtonProps) => {
   );
 };
 
-export const KudosIssueTooltipContent = () => (
+export const KudosTaskTooltipContent = () => (
   <div className="px-1 py-2">
     <div className="text-small font-bold">Top Certified Contributions</div>
     <div className="text-tiny max-w-64">
-      This issue belongs to the Kudos Carnival
+      This task belongs to the Kudos Carnival
     </div>
   </div>
 );

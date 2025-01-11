@@ -5,7 +5,7 @@ import {
   Filters,
 } from "@/types/filters";
 import {
-  KUDOS_ISSUE_KEY,
+  KUDOS_TASK_KEY,
   PROJECTS_KEY,
   PROJECT_TYPE_KEY,
   PURPOSE_KEY,
@@ -31,7 +31,7 @@ export const createUrl = (
   const keyLowerCase = key.toLowerCase() as Keys;
 
   // Boolean keys
-  if (keyLowerCase === KUDOS_ISSUE_KEY) {
+  if (keyLowerCase === KUDOS_TASK_KEY) {
     filters[keyLowerCase] = values.includes("true");
   } else {
     // Select filter options, avoid duplicates
@@ -71,7 +71,7 @@ export const encodingSlug = (filters: Filters): string => {
   const stackLevelsSegment = createSegment(filters[STACK_LEVEL_KEY], "level-");
   const purposesSegment = createSegment(purposes, "in-");
   const projectsSegment = createSegment(projects, "at-");
-  const certifiedSegment = filters[KUDOS_ISSUE_KEY] ? "certified" : "";
+  const certifiedSegment = filters[KUDOS_TASK_KEY] ? "certified" : "";
 
   let urlParts = [
     technologiesSegment,
@@ -93,7 +93,7 @@ export const decodingSlug = (
 
   // Check for 'certified' and extract languages
   const isCertified = slug.includes("certified-");
-  filters[KUDOS_ISSUE_KEY] = isCertified;
+  filters[KUDOS_TASK_KEY] = isCertified;
 
   const technologiesPart = isCertified
     ? decodeURIComponent(slug.split("certified")[0])

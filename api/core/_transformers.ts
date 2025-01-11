@@ -1,10 +1,10 @@
 import { TRACKED_LABELS } from "@/data/filters";
 import {
-  Issue,
-  IssueDto,
-  IssueQueryParamsWithPagination,
-  IssueQueryParamsDto,
-} from "@/types/issue";
+  Task,
+  TaskDto,
+  TaskQueryParamsWithPagination,
+  TaskQueryParamsDto,
+} from "@/types/task";
 import {
   Project,
   ProjectDto,
@@ -18,10 +18,10 @@ import {
   RepositoryDto,
 } from "@/types/repository";
 
-export function dtoToIssue(dto: IssueDto): Issue {
+export function dtoToTask(dto: TaskDto): Task {
   return {
     id: dto.id,
-    issueId: dto.issue_id,
+    taskId: dto.issue_id,
     isCertified: dto.certified,
     labels: dto.labels ?? [],
     repository: dtoToRepository(dto.repository),
@@ -57,10 +57,10 @@ export function dtoToProject(dto: ProjectDto): Project {
   };
 }
 
-export function issueQueryParamsToDto(
-  query: IssueQueryParamsWithPagination,
+export function taskQueryParamsToDto(
+  query: TaskQueryParamsWithPagination,
   allLanguages: string[],
-): IssueQueryParamsDto {
+): TaskQueryParamsDto {
   const { technologies = [], labels } = query;
 
   const languageSlugs = technologies.filter((tech) =>

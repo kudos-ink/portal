@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from "react";
 import { Pagination } from "@nextui-org/pagination";
 import { useFilters } from "@/contexts/filters";
-import { usePaginatedIssues } from "@/hooks/usePaginatedIssues";
-import { filtersToIssuesQuery } from "@/lib/filters";
-import { Issue, IssueQueryParams } from "@/types/issue";
+import { usePaginatedTasks } from "@/hooks/usePaginatedTasks";
+import { filtersToTasksQuery } from "@/lib/filters";
+import { Task, TaskQueryParams } from "@/types/task";
 import {
   PaginatedCustomResponse,
   PaginationQueryParams,
@@ -16,7 +16,7 @@ import TableSkeleton from "./skeleton";
 import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
 
 interface IPaginatedTableProps {
-  query: IssueQueryParams;
+  query: TaskQueryParams;
   pagination: PaginationQueryParams;
   emptyContent?: string;
   withProjectData?: boolean;
@@ -33,7 +33,7 @@ const PaginatedTable = ({
   const limit = pagination.limit ?? DEFAULT_PAGE_SIZE;
   const offset = (page - 1) * limit;
 
-  const filteredQuery = filtersToIssuesQuery(filters);
+  const filteredQuery = filtersToTasksQuery(filters);
   const combinedQuery = {
     ...query,
     ...filteredQuery,
@@ -43,7 +43,7 @@ const PaginatedTable = ({
     data: results,
     isPlaceholderData,
     isFetching,
-  } = usePaginatedIssues(combinedQuery, offset, limit);
+  } = usePaginatedTasks(combinedQuery, offset, limit);
 
   const totalCount = results?.totalCount ?? 0;
   const totalPages = Math.ceil(totalCount / limit);

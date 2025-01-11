@@ -47,7 +47,7 @@ const Email = ({
   const registerEmail = async (email: string) => {
     try {
       setIsLoading(true);
-      // const csrfResp = await fetch("/csrf-token"); //TODO: disable until we fix the issue with the headers
+      // const csrfResp = await fetch("/csrf-token"); //TODO: disable until we fix the task with the headers
       // const { csrfToken } = await csrfResp.json();
       const response = await fetch("/api/subscriber", {
         method: "POST",

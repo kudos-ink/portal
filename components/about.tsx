@@ -56,14 +56,14 @@ const About = () => (
             their skills and passions,
           </li>
           <li>
-            <strong>Issue Curation</strong>: Kudos will actively collaborate
-            with projects to curate sets of high quality issues which provide
-            all of the necessary context to allow a contributor to begin work,
+            <strong>Task Curation</strong>: Kudos will actively collaborate with
+            projects to curate sets of high quality tasks which provide all of
+            the necessary context to allow a contributor to begin work,
           </li>
           <li>
             <strong>Custom Incentives</strong>: We offer project maintainers the
             chance to utilise our smart contract templates along with
-            customisable Github Workflows, allowing issues to be tagged with
+            customisable Github Workflows, allowing tasks to be tagged with
             incentives which can later be automatically claimed by the
             contributor once the contribution has been accepted.
           </li>

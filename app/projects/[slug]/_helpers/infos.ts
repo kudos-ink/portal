@@ -1,4 +1,4 @@
-import { REWARDS_KEY, KUDOS_ISSUE_KEY } from "@/data/filters";
+import { REWARDS_KEY, KUDOS_TASK_KEY } from "@/data/filters";
 import {
   ProjectInfos,
   ProjectInfosLabel,
@@ -22,7 +22,7 @@ export function constructLabels(
     certifiedTotal > 0 && {
       color: "default",
       label: "Kudos Pick",
-      type: KUDOS_ISSUE_KEY,
+      type: KUDOS_TASK_KEY,
       tooltip: "This project participates to the Kudos Carnival",
     },
   ].filter((label): label is ProjectInfosLabel => Boolean(label)); // Type-safe filtering

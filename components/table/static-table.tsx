@@ -13,9 +13,9 @@ import {
   TableRow,
   TableCell,
 } from "@nextui-org/table";
-import { Issue } from "@/types/issue";
+import { Task } from "@/types/task";
 
-import IssueModal from "./issue-modal";
+import TaskModal from "./task-modal";
 import { ExternalLink, Content, Time, Project, ApplyButton } from "./row";
 import { getIconSrc } from "@/utils/icons";
 
@@ -43,7 +43,7 @@ interface IColumn {
 }
 
 interface IStaticTableProps {
-  data: Issue[];
+  data: Task[];
   emptyContent?: string;
   withProjectData?: boolean;
   clickableLabels?: boolean;
@@ -55,7 +55,7 @@ const StaticTable = ({
   withProjectData = true,
   clickableLabels = false,
 }: IStaticTableProps) => {
-  const [selectedIssue, setSelectedIssue] = useState<Issue | null>(null);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const pathname = usePathname();
   const isMobile = useMediaQuery({ maxWidth: 639 }); // tailwind lg default: 640px
   const isLaptop = useMediaQuery({ minWidth: 1024 }); // tailwind lg default: 1024px
@@ -69,7 +69,7 @@ const StaticTable = ({
   ]);
 
   const renderCell = React.useCallback(
-    (item: Issue, columnKey: React.Key) => {
+    (item: Task, columnKey: React.Key) => {
       switch (columnKey) {
         case "project": {
           const { project, repository } = item;
@@ -128,7 +128,7 @@ const StaticTable = ({
             </div>
           );
         case "actions": {
-          return <ApplyButton onOpen={() => setSelectedIssue(item)} />;
+          return <ApplyButton onOpen={() => setSelectedTask(item)} />;
         }
         default:
           return null;
@@ -187,7 +187,7 @@ const StaticTable = ({
                     ? ` bg-[#1e3054] hover:bg-[#284070] relative overflow-hidden whitespace-nowrap ${KUDOS_HIGHLIGHT_STYLES}`
                     : ""
                 }`}
-                onClick={() => setSelectedIssue(item)}
+                onClick={() => setSelectedTask(item)}
               >
                 {(columnKey) => (
                   <TableCell>{renderCell(item, columnKey)}</TableCell>
@@ -198,17 +198,15 @@ const StaticTable = ({
         </TableBody>
       </NextUITable>
       <Modal
-        isOpen={selectedIssue !== null}
-        onOpenChange={() => setSelectedIssue(null)}
+        isOpen={selectedTask !== null}
+        onOpenChange={() => setSelectedTask(null)}
         classNames={{
-          closeButton: selectedIssue?.isCertified
-            ? "z-1000 mt-20 md:mt-16"
-            : "",
+          closeButton: selectedTask?.isCertified ? "z-1000 mt-20 md:mt-16" : "",
         }}
         size="lg"
         placement={isMobile ? "bottom" : "auto"}
       >
-        {selectedIssue && <IssueModal issue={selectedIssue} />}
+        {selectedTask && <TaskModal task={selectedTask} />}
       </Modal>
     </>
   );

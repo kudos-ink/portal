@@ -1,34 +1,34 @@
 import { useQuery, QueryFunctionContext } from "@tanstack/react-query";
 import { DEFAULT_PAGE_SIZE } from "@/data/fetch";
-import IssuesApi from "@/api/core/issues";
-import { Issue, IssueQueryParams } from "@/types/issue";
+import TasksApi from "@/api/core/tasks";
+import { Task, TaskQueryParams } from "@/types/task";
 import { PaginatedCustomResponse } from "@/types/pagination";
 
-export const usePaginatedIssues = (
-  query: IssueQueryParams = {},
+export const usePaginatedTasks = (
+  query: TaskQueryParams = {},
   offset: number = 0,
   limit: number = DEFAULT_PAGE_SIZE,
 ) => {
-  const fetchIssues = async ({
+  const fetchTasks = async ({
     queryKey,
   }: QueryFunctionContext<
-    [string, IssueQueryParams, { offset: number; limit: number }]
+    [string, TaskQueryParams, { offset: number; limit: number }]
   >) => {
     const [, query, pagination] = queryKey;
-    return IssuesApi.getIssues({
+    return TasksApi.getTasks({
       ...query,
       ...pagination,
-    }) as Promise<PaginatedCustomResponse<Issue>>;
+    }) as Promise<PaginatedCustomResponse<Task>>;
   };
 
   return useQuery<
-    PaginatedCustomResponse<Issue>,
+    PaginatedCustomResponse<Task>,
     Error,
-    PaginatedCustomResponse<Issue>,
-    [string, IssueQueryParams, { offset: number; limit: number }]
+    PaginatedCustomResponse<Task>,
+    [string, TaskQueryParams, { offset: number; limit: number }]
   >({
     queryKey: ["contributions", query, { offset, limit }],
-    queryFn: fetchIssues,
+    queryFn: fetchTasks,
     placeholderData: (previousData) => previousData,
   });
 };

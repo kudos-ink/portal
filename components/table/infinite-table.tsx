@@ -2,14 +2,14 @@
 
 import React, { useRef, useCallback, useEffect } from "react";
 import { Spinner } from "@nextui-org/spinner";
-import { useIssues } from "@/hooks/useIssues";
+import { useTasks } from "@/hooks/useTasks";
 import { PaginatedCustomResponse } from "@/types/pagination";
 import StaticTable from "./static-table";
-import { Issue, IssueQueryParams } from "@/types/issue";
+import { Task, TaskQueryParams } from "@/types/task";
 
 interface IInfiniteTableProps {
-  initialItems: PaginatedCustomResponse<Issue>;
-  query?: IssueQueryParams;
+  initialItems: PaginatedCustomResponse<Task>;
+  query?: TaskQueryParams;
 }
 
 const InfiniteTable = ({ initialItems, query = {} }: IInfiniteTableProps) => {
@@ -19,7 +19,7 @@ const InfiniteTable = ({ initialItems, query = {} }: IInfiniteTableProps) => {
     data: results,
     fetchNextPage,
     hasNextPage,
-  } = useIssues(initialItems, query);
+  } = useTasks(initialItems, query);
 
   const contributions = React.useMemo(() => {
     return results?.pages.flatMap((page) => page.data);

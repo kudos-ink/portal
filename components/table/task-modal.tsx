@@ -10,16 +10,16 @@ import {
   ModalFooter,
 } from "@nextui-org/modal";
 import { ScrollShadow } from "@nextui-org/scroll-shadow";
-import { Issue } from "@/types/issue";
+import { Task } from "@/types/task";
 import { Project } from "./row";
 import { getIconSrc } from "@/utils/icons";
 
-interface IIssueModalProps {
-  issue: Issue;
+interface ITaskModalProps {
+  task: Task;
 }
 
-export const IssueModal = ({ issue }: IIssueModalProps) => {
-  const { description, project, repository, title, url, isCertified } = issue;
+export const TaskModal = ({ task }: ITaskModalProps) => {
+  const { description, project, repository, title, url, isCertified } = task;
   const parsedTitle =
     title && DOMPurify.sanitize(marked.parseInline(title) as string);
   const parsedDescription =
@@ -33,7 +33,7 @@ export const IssueModal = ({ issue }: IIssueModalProps) => {
           {isCertified && (
             <div className="absolute w-full top-0 left-0 flex justify-between items-center gap-4 bg-primary px-6 py-2">
               <p className="text-background">
-                ♨️ This issue is part of Kudos Carnival!
+                ♨️ This task is part of Kudos Carnival!
               </p>
               <NuiLink
                 href="/carnival"
@@ -116,4 +116,4 @@ export const IssueModal = ({ issue }: IIssueModalProps) => {
   );
 };
 
-export default IssueModal;
+export default TaskModal;

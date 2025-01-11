@@ -11,12 +11,12 @@ import StaticTable from "@/components/table/static-table";
 import { DefaultFiltersProvider } from "@/components/providers/filters";
 import { SITE_CONFIG } from "@/data/config";
 import { DEFAULT_HOMEPAGE_PAGE_SIZE } from "@/data/fetch";
-import { fetchIssues } from "@/lib/api/issues";
+import { fetchTasks } from "@/lib/api/tasks";
 
 const EXPLORE_LABEL = "Explore Open Contributions";
 
 export default async function Home() {
-  const issues = await fetchIssues({
+  const tasks = await fetchTasks({
     limit: DEFAULT_HOMEPAGE_PAGE_SIZE,
   });
 
@@ -41,7 +41,7 @@ export default async function Home() {
         <div className="flex flex-col">
           <Toolbar label="Suggested Contributions" />
           <section className={container()}>
-            <StaticTable data={issues.data} clickableLabels />
+            <StaticTable data={tasks.data} clickableLabels />
           </section>
         </div>
       </DefaultFiltersProvider>

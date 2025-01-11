@@ -2,7 +2,7 @@ import { Tooltip } from "@nextui-org/tooltip";
 import { Chip } from "@nextui-org/chip";
 import { KudosCertifiedIcon } from "@/assets/icons";
 import Emoji from "@/components/emoji";
-import { KUDOS_ISSUE_KEY } from "@/data/filters";
+import { KUDOS_TASK_KEY } from "@/data/filters";
 import { ProjectInfosLabel } from "@/types/project";
 
 interface IProjectInfosProps {
@@ -24,7 +24,7 @@ const ProjectInfos = ({ infos, labels }: IProjectInfosProps) => (
                     &nbsp;
                   </>
                 )}
-                {type === KUDOS_ISSUE_KEY ? (
+                {type === KUDOS_TASK_KEY ? (
                   <KudosCertifiedIcon className="w-5 h-5" size={16} />
                 ) : null}
                 {label}

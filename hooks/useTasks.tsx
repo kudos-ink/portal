@@ -4,24 +4,24 @@ import {
   QueryKey,
 } from "@tanstack/react-query";
 import { DEFAULT_BIG_PAGE_SIZE } from "@/data/fetch";
-import { Issue, IssueQueryParams } from "@/types/issue";
+import { Task, TaskQueryParams } from "@/types/task";
 import {
   PaginatedCustomResponse,
   PaginationQueryParams,
 } from "@/types/pagination";
-import { fetchIssues } from "@/lib/api/issues";
+import { fetchTasks } from "@/lib/api/tasks";
 
-export const useIssues = (
-  initialItems: PaginatedCustomResponse<Issue>,
-  query: IssueQueryParams = {},
+export const useTasks = (
+  initialItems: PaginatedCustomResponse<Task>,
+  query: TaskQueryParams = {},
 ) => {
   const queryFn = ({ pageParam }: { pageParam: PaginationQueryParams }) =>
-    fetchIssues({ ...query, ...pageParam });
+    fetchTasks({ ...query, ...pageParam });
 
   return useInfiniteQuery<
-    PaginatedCustomResponse<Issue>,
+    PaginatedCustomResponse<Task>,
     Error,
-    InfiniteData<PaginatedCustomResponse<Issue>>,
+    InfiniteData<PaginatedCustomResponse<Task>>,
     QueryKey,
     PaginationQueryParams
   >({

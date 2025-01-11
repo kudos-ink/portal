@@ -10,13 +10,13 @@ import { DEFAULT_PAGINATION } from "@/data/fetch";
 import { getFilterOptions } from "@/lib/filters";
 import { initFilters } from "@/utils/filters";
 import { FilterOptions } from "@/types/filters";
-import { IssueQueryParams } from "@/types/issue";
+import { TaskQueryParams } from "@/types/task";
 import { Leaderboard } from "@/types/leaderboard";
 import EventBanner from "./_components/EventBanner";
-import { fetchIssues } from "@/lib/api/issues";
+import { fetchTasks } from "@/lib/api/tasks";
 import { fetchProjects } from "@/lib/api/projects";
 import LeaderboardTable from "@/components/leaderboard/table";
-import { CARNIVAL_WIP_ISSUES, CARNIVAL_CLOSED_ISSUES } from "@/data/carnival";
+import { CARNIVAL_WIP_TASKS, CARNIVAL_CLOSED_TASKS } from "@/data/carnival";
 
 const MOCKED_WEEKLY_LEADERBOARD: Leaderboard[] = [
   {
@@ -89,11 +89,11 @@ export default async function SingleEventPage() {
     return {} as FilterOptions;
   });
 
-  const issuesQuery: IssueQueryParams = {
+  const tasksQuery: TaskQueryParams = {
     labels: [],
   };
 
-  const issues = await fetchIssues(issuesQuery);
+  const tasks = await fetchTasks(tasksQuery);
   const projects = await fetchProjects({
     certified: true,
   });
@@ -102,9 +102,9 @@ export default async function SingleEventPage() {
     <>
       <section className={container()}>
         <EventBanner
-          issues={issues.totalCount - CARNIVAL_WIP_ISSUES.length}
-          issuesCompleted={
-            CARNIVAL_CLOSED_ISSUES.length + CARNIVAL_WIP_ISSUES.length
+          tasks={tasks.totalCount - CARNIVAL_WIP_TASKS.length}
+          tasksCompleted={
+            CARNIVAL_CLOSED_TASKS.length + CARNIVAL_WIP_TASKS.length
           }
           projects={projects.totalCount}
         />
@@ -159,7 +159,7 @@ export default async function SingleEventPage() {
                   </Link>
                 </p>
                 <p className="font-normal text-base text-default-500">
-                  2. Label your issues with{" "}
+                  2. Label your tasks with{" "}
                   <strong className="text-foreground">&quot;kudos&quot;</strong>
                 </p>
               </div>
@@ -195,7 +195,7 @@ export default async function SingleEventPage() {
               </div>
               <div className="relative flex w-full p-3 flex-auto flex-col place-content-inherit align-items-inherit h-auto break-words text-left overflow-y-auto subpixel-antialiased">
                 <p className="font-normal text-base text-default-500">
-                  1. Select an issue from the backlog and get assigned
+                  1. Select an task from the backlog and get assigned
                 </p>
                 <p className="font-normal text-base text-default-500">
                   2. Complete it and climb the leaderboard!
@@ -211,14 +211,14 @@ export default async function SingleEventPage() {
             <p>
               Kudos Carnival is a 6-week event (November 1st - December 15th)
               exclusively for PBA Alumni, designed to enhance contributions to
-              the Polkadot ecosystem. Participants will solve curated open
-              issues from the Kudos platform, provided by ecosystem partners,
-              earning points for each issue they complete.
+              the Polkadot ecosystem. Participants will solve curated open tasks
+              from the Kudos platform, provided by ecosystem partners, earning
+              points for each task they complete.
             </p>
             <p>
               Throughout the event, weekly winners will be announced during
               community calls, and top contributors will receive special prizes.
-              Points are earned by closing issues listed in the backlog, with
+              Points are earned by closing tasks listed in the backlog, with
               progress tracked on a{" "}
               <Link
                 href="#leaderboard"
@@ -266,16 +266,16 @@ export default async function SingleEventPage() {
         <div className="flex flex-col">
           {/* TODO: Add advance filters but make sure to only have the correct filters options from the query above (add props to DefaultFiltersProvider to support query) */}
           <Toolbar
-            label="Kudos Carnival Issues Backlog"
+            label="Kudos Carnival Tasks Backlog"
             selectFilters={[]}
             checkboxFilters={[]}
             shouldUpdateRouter={false}
           />
           <section className={container()}>
             <PaginatedTable
-              query={issuesQuery}
+              query={tasksQuery}
               pagination={DEFAULT_PAGINATION}
-              emptyContent="Label your issues with 'kudos' to have them featured in the backlog"
+              emptyContent="Label your tasks with 'kudos' to have them featured in the backlog"
             />
           </section>
         </div>
@@ -286,7 +286,7 @@ export default async function SingleEventPage() {
           Top Contributors
         </h2>
         <h3 className="text-xl text-default-600 mt-4">
-          Earn points for every assigned issue you complete during the event.
+          Earn points for every assigned task you complete during the event.
         </h3>
         <div className="flex flex-col gap-4 sm:flex-row mt-16">
           <div className="flex flex-col gap-2 basis-1/3">

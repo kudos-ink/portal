@@ -1,21 +1,21 @@
-import { fetchProjectIssues } from "@/lib/api/issues";
-import { Issue } from "@/types/issue";
+import { fetchProjectTasks } from "@/lib/api/tasks";
+import { Task } from "@/types/task";
 import { PaginatedCustomResponse } from "@/types/pagination";
 import { ProjectMetrics, ProjectInfos } from "@/types/project";
 
 export async function constructProjectMetrics(
   infos: ProjectInfos,
-  suggestedIssues: PaginatedCustomResponse<Issue>,
+  suggestedTasks: PaginatedCustomResponse<Task>,
 ): Promise<ProjectMetrics> {
-  const certifiedIssues = await fetchProjectIssues(infos.slug, {
+  const certifiedTasks = await fetchProjectTasks(infos.slug, {
     labels: [],
     certified: true,
   });
 
   return {
     repositoriesTotal: infos.links.repository.length,
-    certifiedTotal: certifiedIssues.totalCount,
+    certifiedTotal: certifiedTasks.totalCount,
     rewardsTotal: 0,
-    suggestedTotal: suggestedIssues.totalCount,
+    suggestedTotal: suggestedTasks.totalCount,
   };
 }
