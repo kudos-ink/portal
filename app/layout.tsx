@@ -80,7 +80,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const isProduction = process.env.VERCEL_ENV === "production";
-
   return (
     <html
       lang="en"

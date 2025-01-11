@@ -16,6 +16,7 @@ const cspHeader = `
 
 const nextConfig = {
   images: {
+    remotePatterns: ["avatars.githubusercontent.com"],
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
