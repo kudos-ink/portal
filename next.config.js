@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const cspHeader = `
     default-src 'self';
-    connect-src 'self' http://localhost:8000 https://api.morekudos.com/ https://www.google-analytics.com/;
+    connect-src 'self' http://localhost:8000 https://api.morekudos.com/ https://www.google-analytics.com/ http://localhost:8000/users;
     script-src 'self' 'unsafe-eval' 'unsafe-inline' https://va.vercel-scripts.com/ https://www.google-analytics.com/ https://tagmanager.google.com/ https://www.googletagmanager.com/;
     style-src 'self' 'unsafe-inline';
     img-src 'self' https://cryptologos.cc/ https://avatars.githubusercontent.com/ blob: data:;

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@next/third-parties": "15.1.3",
+    "@nextui-org/autocomplete": "^2.3.9",
     "@nextui-org/button": "2.2.8",
     "@nextui-org/card": "^2.2.8",
     "@nextui-org/checkbox": "^2.3.7",
@@ -32,6 +33,8 @@
     "@nextui-org/table": "^2.2.7",
     "@nextui-org/theme": "2.4.4",
     "@nextui-org/tooltip": "^2.2.6",
+    "@nextui-org/use-infinite-scroll": "^2.2.2",
+    "@react-stately/data": "^3.12.1",
     "@tanstack/react-query": "^5.62.11",
     "@tanstack/react-query-devtools": "^5.62.11",
     "@types/react": "19.0.2",
