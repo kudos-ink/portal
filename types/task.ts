@@ -1,6 +1,7 @@
 import { PaginationQueryParams } from "./pagination";
 import { Project } from "./project";
 import { Repository, RepositoryDto } from "./repository";
+import { User, UserDto } from "./user";
 
 export type TaskDto = {
   id: number;
@@ -8,9 +9,10 @@ export type TaskDto = {
   labels: string[] | null;
   open: boolean;
   assignee_id: string | null;
-  assignee_username: string | null;
+  // assignee_username: string | null;
+  user: UserDto | null;
   certified: boolean;
-  repository: RepositoryDto;
+  repository: RepositoryDto | null;
   title: string | null;
   description: string | null;
   issue_created_at: string;
@@ -24,11 +26,12 @@ export type Task = {
   taskId: number;
   isCertified: boolean;
   labels: string[];
-  repository: Repository;
-  project: Project;
+  user: User | null;
+  repository: Repository | null;
+  project: Project | null;
   title: string | null;
   description: string | null;
-  url: string;
+  url: string | null;
   createdAt: string;
 };
 

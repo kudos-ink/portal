@@ -10,7 +10,7 @@ import { fetchFromApi } from "./_client";
 import { dtoToTask, taskQueryParamsToDto } from "./_transformers";
 import { getAllLanguages } from "./languages";
 
-const TASKS_PATH = "/issues";
+const TASKS_PATH = "/tasks";
 
 export async function getTasks(
   query: TaskQueryParams & PaginationQueryParams = DEFAULT_PAGINATION,

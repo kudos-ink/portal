@@ -17,6 +17,7 @@ import {
   Repository,
   RepositoryDto,
 } from "@/types/repository";
+import { User, UserDto } from "@/types/user";
 
 export function dtoToTask(dto: TaskDto): Task {
   return {
@@ -24,12 +25,21 @@ export function dtoToTask(dto: TaskDto): Task {
     taskId: dto.issue_id,
     isCertified: dto.certified,
     labels: dto.labels ?? [],
-    repository: dtoToRepository(dto.repository),
-    project: dtoToProject(dto.repository.project),
+    user: dto.user ? dtoToUser(dto.user) : null,
+    repository: dto.repository ? dtoToRepository(dto.repository) : null,
+    project: dto.repository ? dtoToProject(dto.repository.project) : null,
     title: dto.title,
     description: dto.description,
-    createdAt: dto.issue_created_at,
-    url: dto.repository.url + `/issues/${dto.issue_id}`,
+    createdAt: dto.issue_created_at ? dto.issue_created_at : dto.created_at,
+    url: dto.repository ? dto.repository.url + `/issues/${dto.issue_id}` : null,
+  };
+}
+
+export function dtoToUser(dto: UserDto): User {
+  return {
+    id: dto.id,
+    username: dto.username,
+    avatar: dto.avatar,
   };
 }
 

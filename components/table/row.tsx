@@ -19,6 +19,7 @@ import { formatDate } from "@/utils/date";
 import { shuffleArray } from "@/utils/filters";
 import { createUrl } from "@/utils/url";
 import { CARNIVAL_NEW_LISTED_TASKS, CARNIVAL_WIP_TASKS } from "@/data/carnival";
+import NextImage from "next/image";
 
 const MAX_LABEL_WIDTH = 192;
 
@@ -67,7 +68,7 @@ interface IAvatarProps {
   src: string | null;
 }
 
-const Avatar = ({ alt, src }: IAvatarProps) => {
+export const Avatar = ({ alt, src }: IAvatarProps) => {
   return (
     <div className="bg-foreground rounded-md min-w-[40px] min-h-[40px] sm:min-w-[45px] sm:min-h-[45px] shrink-0 flex items-center justify-center">
       {src !== null && (
@@ -85,6 +86,27 @@ const Avatar = ({ alt, src }: IAvatarProps) => {
 };
 
 Project.Avatar = Avatar;
+
+interface IUserAvatarProps {
+  alt: string;
+  src: string | null;
+}
+
+export const UserAvatar = ({ alt, src }: IAvatarProps) => {
+  return (
+    <div className="relative border bg-foreground overflow-hidden rounded-full min-w-[45px] min-h-[45px] shrink-0 flex items-center justify-center">
+      {src !== null && (
+        <NextImage
+          className="pointer-events-none absolute -left-0 -top-0 h-[45px] w-[45px] max-w-[initial] transition-opacity z-10 opacity-100 object-cover object-center"
+          src={src}
+          alt={alt}
+          height={40}
+          width={40}
+        />
+      )}
+    </div>
+  );
+};
 
 interface IContentProps {
   id: number;

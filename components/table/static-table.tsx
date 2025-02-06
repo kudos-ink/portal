@@ -16,7 +16,14 @@ import {
 import { Task } from "@/types/task";
 
 import TaskModal from "./task-modal";
-import { ExternalLink, Content, Time, Project, ApplyButton } from "./row";
+import {
+  ExternalLink,
+  Content,
+  Time,
+  Project,
+  ApplyButton,
+  UserAvatar,
+} from "./row";
 import { getIconSrc } from "@/utils/icons";
 
 const DEFAULT_EMPTY = "No contributions to display yet";
@@ -64,6 +71,7 @@ const StaticTable = ({
     { name: "PROJECT", uid: "project" },
     { name: "CONTENT", uid: "content" },
     { name: "LABELS", uid: "labels" },
+    { name: "ASSIGNEE", uid: "assignee" },
     { name: "DATE", uid: "date" },
     { name: "ACTIONS", uid: "actions" },
   ]);
@@ -115,6 +123,17 @@ const StaticTable = ({
             />
           );
         }
+        case "assignee": {
+          const { user } = item;
+          return user ? (
+            <UserAvatar
+              alt={`${user?.username} avatar`}
+              src={user.avatar ?? null}
+            />
+          ) : (
+            ""
+          );
+        }
         case "date":
           return (
             <div className="flex flex-col items-center gap-2">
@@ -142,6 +161,7 @@ const StaticTable = ({
       { name: "PROJECT", uid: "project" },
       { name: "CONTENT", uid: "content" },
       ...(isLaptop ? [{ name: "LABELS", uid: "labels" }] : []),
+      { name: "ASSIGNEE", uid: "assignee" },
       { name: "DATE", uid: "date" },
       ...(isMobile ? [] : [{ name: "ACTIONS", uid: "actions" }]),
     ]);
