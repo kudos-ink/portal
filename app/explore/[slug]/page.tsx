@@ -3,6 +3,8 @@ import InfiniteTable from "@/components/table/infinite-table";
 import { filtersToTasksQuery, getFilterOptions } from "@/lib/filters";
 import { decodingSlug } from "@/utils/url";
 import { fetchTasks } from "@/lib/api/tasks";
+import { initFilterOptions } from "@/utils/filters";
+import { safeFetch } from "@/utils/error";
 
 interface IProps {
   params: Promise<{ slug: string }>;
@@ -27,7 +29,12 @@ export async function generateMetadata(props: IProps): Promise<Metadata> {
 
 export default async function ExplorePage(props: IProps) {
   const params = await props.params;
-  const filterOptions = await getFilterOptions();
+  const filterOptions = await safeFetch(
+    () => getFilterOptions(),
+    "ExplorePage: getFilterOptions",
+    initFilterOptions(),
+    { params },
+  );
   const decodedSlug = decodeURIComponent(params.slug);
   const filters = decodingSlug(decodedSlug, filterOptions);
   const query = filtersToTasksQuery(filters);

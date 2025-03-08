@@ -12,13 +12,23 @@ export default class APIClient {
 
   private async request<T>(url: string, options: RequestInit): Promise<T> {
     const response = await fetch(`${this.baseURL}${url}`, options);
+
+    const contentType = response.headers.get("content-type");
+    let responseBody;
+    if (contentType && contentType.includes("application/json")) {
+      responseBody = await response.json();
+    } else {
+      responseBody = await response.text();
+    }
+
     if (!response.ok) {
       const error = new Error("HTTP Error") as any;
       error.status = response.status;
-      error.response = await response.json();
+      error.response = responseBody;
       throw error;
     }
-    return (await response.json()) as T;
+
+    return responseBody as T;
   }
 
   public get<T>(url: string, options: Options = {}): Promise<T> {
