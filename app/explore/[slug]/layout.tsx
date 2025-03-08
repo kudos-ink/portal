@@ -28,9 +28,6 @@ export default async function ExploreLayout(
   const decodedSlug = decodeURIComponent(params.slug);
   const filters = decodingSlug(decodedSlug, filterOptions);
 
-  console.log("ExploreLayout");
-  console.log({ params, filterOptions: JSON.stringify(filterOptions), decodedSlug, filters: JSON.stringify(filters) });
-
   return (
     <FiltersProvider
       initialFilters={filters}

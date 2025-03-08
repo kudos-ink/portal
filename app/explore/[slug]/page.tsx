@@ -40,8 +40,5 @@ export default async function ExplorePage(props: IProps) {
   const query = filtersToTasksQuery(filters);
   const tasks = await fetchTasks(query);
 
-  console.log("ExplorePage");
-  console.log({ params, filterOptions: JSON.stringify(filterOptions), decodedSlug, filters: JSON.stringify(filters), query });
-
   return <InfiniteTable initialItems={tasks} query={query} />;
 }
