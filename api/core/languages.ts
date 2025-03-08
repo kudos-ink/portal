@@ -14,7 +14,6 @@ export async function getAllLanguages(query: LanguageQueryParams) {
   const response = await fetchFromApi<string[]>(
     LANGUAGES_PATH,
     queryDto,
-    tags.languages,
   );
   return Array.from(
     new Set(response.map((language) => language.toLowerCase())),
