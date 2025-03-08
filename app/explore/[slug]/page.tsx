@@ -33,12 +33,14 @@ export default async function ExplorePage(props: IProps) {
     () => getFilterOptions(),
     "ExplorePage: getFilterOptions",
     initFilterOptions(),
-    { params }
+    { params },
   );
   const decodedSlug = decodeURIComponent(params.slug);
   const filters = decodingSlug(decodedSlug, filterOptions);
   const query = filtersToTasksQuery(filters);
   const tasks = await fetchTasks(query);
+
+  console.log({ params, filterOptions, decodedSlug, filters, query });
 
   return <InfiniteTable initialItems={tasks} query={query} />;
 }
