@@ -1,5 +1,6 @@
-import { prepareUrl, sanitizeUrl } from "@/utils/url";
 import APIClient from "@/api/client";
+import { logError } from "@/utils/error";
+import { prepareUrl, sanitizeUrl } from "@/utils/url";
 
 const CORE_API_URL = sanitizeUrl(process.env.NEXT_PUBLIC_API_URL || "");
 
@@ -13,10 +14,7 @@ export async function fetchFromApi<T>(
   try {
     return await coreApiClient.get<T>(url, config);
   } catch (error) {
-    console.error(
-      `Error fetching data from ${endpoint} with the following url ${url}:`,
-      error,
-    );
+    logError("fetchFromApi", error, { endpoint, queryParams });
     throw error;
   }
 }

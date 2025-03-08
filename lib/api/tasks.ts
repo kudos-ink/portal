@@ -6,25 +6,30 @@ import {
   PaginationQueryParams,
 } from "@/types/pagination";
 import tags from "@/utils/tags";
+import { safeFetch } from "@/utils/error";
 
 export async function fetchTasks(
   query: TaskQueryParams & PaginationQueryParams,
 ): Promise<PaginatedCustomResponse<Task>> {
-  return TasksApi.getTasks(query, tags.latestTasks).catch((error) => {
-    console.error("Error fetching TASKS:", error);
-    return DEFAULT_PAGINATED_RESPONSE;
-  });
+  return safeFetch(
+    () => TasksApi.getTasks(query, tags.latestTasks),
+    "fetchTasks",
+    DEFAULT_PAGINATED_RESPONSE,
+    { query }
+  );
 }
 
 export async function fetchProjectTasks(
   slug: string,
   query?: TaskQueryParams,
 ): Promise<PaginatedCustomResponse<Task>> {
-  return TasksApi.getTasks({
-    projects: [slug],
-    ...query,
-  }).catch((error) => {
-    console.error(`Error fetching TASKS for PROJECT "${slug}":`, error);
-    return DEFAULT_PAGINATED_RESPONSE;
-  });
+  return safeFetch(
+    () => TasksApi.getTasks({
+      projects: [slug],
+      ...query,
+    }),
+    "fetchProjectTasks",
+    DEFAULT_PAGINATED_RESPONSE,
+    { slug, query }
+  );
 }
