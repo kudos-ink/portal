@@ -1,5 +1,4 @@
 import APIClient from "@/api/client";
-import { logError } from "@/utils/error";
 import { prepareUrl, sanitizeUrl } from "@/utils/url";
 
 const CORE_API_URL = sanitizeUrl(process.env.NEXT_PUBLIC_API_URL || "");
@@ -11,10 +10,18 @@ export async function fetchFromApi<T>(
 ): Promise<T> {
   const url = prepareUrl(endpoint, queryParams);
   const config = tag ? { tag } : { noStoreCache: true };
+
   try {
     return await coreApiClient.get<T>(url, config);
-  } catch (error) {
-    logError("fetchFromApi", error, { endpoint, queryParams, url, config });
+  } catch (error: any) {
+    if (error?.response) {
+      console.error(`[fetchFromApi] Error in ${endpoint}:`, {
+        status: error.status,
+        response: error.response,
+      });
+    } else {
+      console.error(`[fetchFromApi] Unknown error in ${endpoint}:`, error);
+    }
     throw error;
   }
 }
