@@ -8,13 +8,13 @@ export async function fetchFromApi<T>(
   queryParams: Record<string, any>,
   tag?: string,
 ): Promise<T> {
+  const url = prepareUrl(endpoint, queryParams);
+  const config = tag ? { tag } : { noStoreCache: true };
   try {
-    const url = prepareUrl(endpoint, queryParams);
-    const config = tag ? { tag } : { noStoreCache: true };
     return await coreApiClient.get<T>(url, config);
   } catch (error) {
     console.error(
-      `Error fetching data from ${endpoint} with the following params ${JSON.stringify(queryParams)}:`,
+      `Error fetching data from ${endpoint} with the following url ${url}:`,
       error,
     );
     throw error;
