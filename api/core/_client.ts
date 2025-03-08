@@ -14,7 +14,7 @@ export async function fetchFromApi<T>(
   try {
     return await coreApiClient.get<T>(url, config);
   } catch (error) {
-    logError("fetchFromApi", error, { endpoint, queryParams });
+    logError("fetchFromApi", error, { endpoint, queryParams, url, config });
     throw error;
   }
 }
