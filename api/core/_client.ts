@@ -10,8 +10,7 @@ export async function fetchFromApi<T>(
   tag?: string,
 ): Promise<T> {
   const url = prepareUrl(endpoint, queryParams);
-  // const config = tag ? { tag } : { noStoreCache: true };
-  const config = { noStoreCache: true };
+  const config = tag ? { tag } : { noStoreCache: true };
   try {
     return await coreApiClient.get<T>(url, config);
   } catch (error) {
