@@ -66,7 +66,7 @@ const CtaBanner = ({}: ICtaBannerProps) => {
             className="font-semibold border-large hover:underline"
             color="danger"
             variant="bordered"
-            onClick={handleClose}
+            onPress={handleClose}
           >
             Hide this
           </Button>
