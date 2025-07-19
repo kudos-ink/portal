@@ -1,0 +1,149 @@
+"use client";
+
+import { signIn, signOut, useSession } from "next-auth/react";
+import { Avatar } from "@nextui-org/avatar";
+import { Button } from "@nextui-org/button";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from "@nextui-org/dropdown";
+import { Skeleton } from "@nextui-org/skeleton";
+import { useState, useRef } from "react";
+import { getCurrentUser, updateCurrentUser, User } from "@/api/core/users";
+import {
+  getAllNotifications,
+  deleteAllNotifications,
+  deleteNotificationById,
+  Notification,
+} from "@/api/core/notifications";
+import { useRouter } from "next/navigation";
+
+import { GithubIcon } from "@/assets/icons";
+
+const AuthMenu: React.FC = () => {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
+  const [userResult, setUserResult] = useState<string>("");
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifResult, setNotifResult] = useState<string>("");
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const token = session?.accessToken as string | undefined;
+
+  const handleToggleNotifications = async () => {
+    if (!token || !user) return setUserResult("No token or user");
+    try {
+      await updateCurrentUser(token, !user.email_notifications_enabled);
+      setUser({ ...user, email_notifications_enabled: !user.email_notifications_enabled });
+      setUserResult(`Toggled notifications to ${!user.email_notifications_enabled}`);
+    } catch (e: any) {
+      setUserResult(e?.message || "Failed to toggle notifications");
+    }
+  };
+
+  const handleFetchNotifications = async () => {
+    if (!token) return setNotifResult("No token");
+    try {
+      const n = await getAllNotifications(token);
+      setNotifications(n);
+      setNotifResult(JSON.stringify(n, null, 2));
+    } catch (e: any) {
+      setNotifResult(e?.message || "Failed to fetch notifications");
+    }
+  };
+
+  const handleDismissAll = async () => {
+    if (!token) return setNotifResult("No token");
+    try {
+      await deleteAllNotifications(token);
+      setNotifications([]);
+      setNotifResult("All notifications dismissed");
+    } catch (e: any) {
+      setNotifResult(e?.message || "Failed to dismiss all");
+    }
+  };
+
+  const handleDismissFirst = async () => {
+    if (!token) return setNotifResult("No token");
+    if (notifications.length === 0) return setNotifResult("No notifications");
+    try {
+      await deleteNotificationById(notifications[0].id, token);
+      setNotifications((prev) => prev.slice(1));
+      setNotifResult(`Dismissed notification ${notifications[0].id}`);
+    } catch (e: any) {
+      setNotifResult(e?.message || "Failed to dismiss notification");
+    }
+  };
+
+  // Fetch notifications when dropdown is opened
+  const handleDropdownOpenChange = (isOpen: boolean) => {
+    if (isOpen) {
+      handleFetchNotifications();
+    }
+  };
+
+  if (status === "loading") {
+    return <Skeleton className="h-10 w-10 rounded-full" />;
+  }
+
+  return (
+    <div>
+      {session ? (
+        <Dropdown placement="bottom-end" onOpenChange={handleDropdownOpenChange} ref={dropdownRef}>
+          <DropdownTrigger>
+            {/* TODO: Support no image placeholder */}
+            <Avatar
+              isBordered
+              as="button"
+              className="transition-transform"
+              src={session.user?.image}
+            />
+          </DropdownTrigger>
+          <DropdownMenu aria-label="Profile Actions" variant="flat" className="min-w-[260px]">
+            <DropdownItem key="profile" textValue="Profile" onClick={() => router.push('/profile')}>
+              <div className="flex flex-col gap-1">
+                <span className="font-semibold">Profile</span>
+              </div>
+            </DropdownItem>
+            <DropdownItem key="subscriptions" textValue="Subscriptions" onClick={() => window.open('/subscriptions')}>
+              <div className="flex flex-col gap-1">
+                <span className="font-semibold">Subscriptions</span>
+                <span className="text-xs">Manage your subscriptions</span>
+              </div>
+            </DropdownItem>
+            <DropdownItem key="notifications" textValue="Notifications" onClick={() => window.open('/notifications')}>
+              <div className="flex flex-col gap-1">
+                <span className="font-semibold">Notifications</span>
+                {notifications.length === 0 ? (
+                  <span className="text-xs">No notifications</span>
+                ) : (
+                  <span className="text-xs">View all notifications</span>
+                )}
+              </div>
+            </DropdownItem>
+            <DropdownItem key="logout" textValue="Logout" onClick={() => signOut()} className="text-danger">
+              Logout
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      ) : (
+        <Button
+          size="sm"
+          aria-label="Login"
+          color="default"
+          variant="faded"
+          className="capitalize font-semibold"
+          onPress={() => signIn("github")}
+          startContent={<GithubIcon size={20} />}
+        >
+          <p>Login</p>
+        </Button>
+      )}
+    </div>
+  );
+};
+
+export default AuthMenu;

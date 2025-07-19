@@ -5,10 +5,11 @@ import { decodingSlug } from "@/utils/url";
 import { fetchIssues } from "@/lib/api/issues";
 
 interface IProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-export async function generateMetadata({ params }: IProps): Promise<Metadata> {
+export async function generateMetadata(props: IProps): Promise<Metadata> {
+  const params = await props.params;
   const { slug } = params;
   const title = slug
     .split("-")
@@ -24,7 +25,8 @@ export async function generateMetadata({ params }: IProps): Promise<Metadata> {
   };
 }
 
-export default async function ExplorePage({ params }: IProps) {
+export default async function ExplorePage(props: IProps) {
+  const params = await props.params;
   const filterOptions = await getFilterOptions();
   const decodedSlug = decodeURIComponent(params.slug);
   const filters = decodingSlug(decodedSlug, filterOptions);

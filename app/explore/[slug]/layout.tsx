@@ -5,13 +5,18 @@ import { FiltersProvider } from "@/contexts/filters";
 import { decodingSlug } from "@/utils/url";
 import { getFilterOptions } from "@/lib/filters";
 
-export default async function ExploreLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode;
-  params: { slug: string };
-}) {
+export default async function ExploreLayout(
+  props: {
+    children: React.ReactNode;
+    params: Promise<{ slug: string }>;
+  }
+) {
+  const params = await props.params;
+
+  const {
+    children
+  } = props;
+
   const filterOptions = await getFilterOptions();
   const decodedSlug = decodeURIComponent(params.slug);
   const filters = decodingSlug(decodedSlug, filterOptions);

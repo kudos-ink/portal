@@ -81,7 +81,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const isProduction = process.env.VERCEL_ENV === "production";
-  // const session = await auth()
   return (
     <html
       lang="en"
