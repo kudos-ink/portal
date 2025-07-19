@@ -173,10 +173,11 @@ const StaticTable = ({
         </TableHeader>
         <TableBody items={data} emptyContent={emptyContent ?? DEFAULT_EMPTY}>
           {(item) => {
-            const isHighlighted =
-              (item.labels.includes("kudos") || item.isCertified) &&
-              pathname !== "/carnival" &&
-              !pathname.includes("certified");
+            // const isHighlighted =
+            //   (item.labels.includes("kudos") || item.isCertified) &&
+            //   pathname !== "/carnival" &&
+            //   !pathname.includes("certified");
+            const isHighlighted = false;
 
             return (
               <TableRow
