@@ -62,7 +62,7 @@ const nextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            value: cspHeader.replace(/\n/g, ""),
+            value: "connect-src 'self' http://localhost:8000 https://api.morekudos.com/ https://www.google-analytics.com/;",
           },
         ],
       },
