@@ -1,7 +1,13 @@
 import APIClient from "@/api/client";
 import { prepareUrl, sanitizeUrl } from "@/utils/url";
 
-const CORE_API_URL = sanitizeUrl(process.env.NEXT_PUBLIC_API_URL || "");
+const isServer = typeof window === 'undefined';
+
+const CORE_API_URL = sanitizeUrl(
+  isServer
+    ? 'http://localhost:8000' // remote machine internal API URL
+    : process.env.NEXT_PUBLIC_API_URL || ''
+);
 
 export async function fetchFromApi<T>(
   endpoint: string,

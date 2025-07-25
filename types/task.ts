@@ -45,7 +45,10 @@ export type TaskQueryParams = Partial<{
   stackLevels: string[];
   technologies: string[];
   types: string[];
+  type_: TaskType;
 }>;
+
+export type TaskType = 'dev' | 'non-dev' | 'wish';
 
 export type TaskQueryParamsWithPagination = TaskQueryParams &
   Partial<PaginationQueryParams>;
@@ -66,5 +69,6 @@ export type TaskQueryParamsDto = Partial<{
   task_closed_at_min: string;
   task_closed_at_max: string;
   certified_or_labels: boolean;
+  type_: TaskType
 }> &
   Partial<PaginationQueryParams>;

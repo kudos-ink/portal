@@ -98,6 +98,7 @@ export function taskQueryParamsToDto(
     certified_or_labels: query.certifiedOnly
       ? false
       : combinedLabels.length > 0 && query.certified,
+    type_: query.type_
   };
 }
 
