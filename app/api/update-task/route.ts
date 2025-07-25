@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const response = await fetch(`http://localhost:8000/tasks/${taskId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tasks/${taskId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

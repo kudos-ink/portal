@@ -39,7 +39,7 @@ export default function Users({ taskId }: { taskId: number }) {
   let list = useAsyncList<User>({
     async load({ filterText }) {
       let res = await fetch(
-        `http://localhost:8000/users?search=${filterText}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/users?search=${filterText}`,
         {
           cache: "no-store",
         },
