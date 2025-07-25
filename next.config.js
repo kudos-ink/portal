@@ -16,6 +16,7 @@ const cspHeader = `
 
 const nextConfig = {
   images: {
+    unoptimized: true, // Disables Next.js image optimization
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {

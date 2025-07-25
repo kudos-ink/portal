@@ -12,6 +12,7 @@ import {
 } from "@/types/pagination";
 import { Project, ProjectOptions, ProjectQueryParams } from "@/types/project";
 import tags from "@/utils/tags";
+import { safeFetch } from "@/utils/error";
 
 export async function fetchProjectInfo(slug: string) {
   return ConfigApi.getProjectInfos(slug).catch((error) => {
@@ -30,7 +31,16 @@ async function fetchAllProjects(tag?: string): Promise<Project[]> {
       offset,
       limit: DEFAULT_BIG_PAGE_SIZE,
     };
-    const response = await ProjectApi.getProjects(paginationParams, tag);
+    const response = await safeFetch(
+      () => ProjectApi.getProjects(paginationParams, tag),
+      "fetchAllProjects",
+      null,
+      { paginationParams }
+    );
+
+    if (response === null) {
+      break;
+    }
 
     projects = projects.concat(response.data);
     hasMore = response.hasNextPage;
@@ -41,32 +51,36 @@ async function fetchAllProjects(tag?: string): Promise<Project[]> {
 }
 
 export async function fetchProject(slug: string): Promise<Project | undefined> {
-  const res = await ProjectApi.getProjects({
-    slugs: [slug],
-  }).catch((error) => {
-    console.error(`Error fetching PROJECT "${slug}":`, error);
-    return undefined;
-  });
-
-  return res?.data[0];
+  return safeFetch(
+    () => ProjectApi.getProjects({
+      slugs: [slug],
+    }).then(res => res.data[0]),
+    "fetchProject",
+    undefined,
+    { slug }
+  );
 }
 
 export async function fetchProjects(
   query: ProjectQueryParams & PaginationQueryParams,
 ): Promise<PaginatedCustomResponse<Project>> {
-  return await ProjectApi.getProjects(query).catch((error) => {
-    console.error("Error fetching PROJECTS", error);
-    return DEFAULT_PAGINATED_RESPONSE;
-  });
+  return safeFetch(
+    () => ProjectApi.getProjects(query),
+    "fetchProjects",
+    DEFAULT_PAGINATED_RESPONSE,
+    { query }
+  );
 }
 
 export async function fetchProjectOptions(
   query: ProjectQueryParams,
 ): Promise<ProjectOptions> {
-  return await ProjectApi.getProjectOptions(query).catch((error) => {
-    console.error("Error fetching PROJECT OPTIONS", error);
-    return DEFAULT_PROJECT_OPTIONS;
-  });
+  return safeFetch(
+    () => ProjectApi.getProjectOptions(query),
+    "fetchProjectOptions",
+    DEFAULT_PROJECT_OPTIONS,
+    { query }
+  );
 }
 
 export async function getAllProjects(): Promise<Project[]> {

@@ -6,7 +6,7 @@ import {
   STACK_LEVEL_KEY,
   TECHNOLOGY_KEY,
 } from "@/data/filters";
-import { FilterKeys, IFilterOption, Filters } from "@/types/filters";
+import { FilterKeys, IFilterOption, Filters, FilterOptions } from "@/types/filters";
 
 // Fisher-Yates (or Knuth) shuffle algorithm
 export const shuffleArray = <T>(array: T[]): T[] => {
@@ -27,6 +27,16 @@ export const shuffleArray = <T>(array: T[]): T[] => {
   }
 
   return array;
+};
+
+export const initFilterOptions = (): FilterOptions => {
+  return {
+    [PURPOSE_KEY]: [],
+    [PROJECT_TYPE_KEY]: [],
+    [TECHNOLOGY_KEY]: [],
+    [STACK_LEVEL_KEY]: [],
+    [PROJECTS_KEY]: [],
+  };
 };
 
 export const initFilters = (): Filters => {

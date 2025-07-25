@@ -4,6 +4,8 @@ import { container } from "@/components/primitives";
 import { FiltersProvider } from "@/contexts/filters";
 import { decodingSlug } from "@/utils/url";
 import { getFilterOptions } from "@/lib/filters";
+import { safeFetch } from "@/utils/error";
+import { initFilterOptions } from "@/utils/filters";
 
 export default async function ExploreLayout(
   props: {
@@ -17,7 +19,12 @@ export default async function ExploreLayout(
     children
   } = props;
 
-  const filterOptions = await getFilterOptions();
+  const filterOptions = await safeFetch(
+    () => getFilterOptions(),
+    "ExploreLayout: getFilterOptions",
+    initFilterOptions(),
+    { params },
+  );
   const decodedSlug = decodeURIComponent(params.slug);
   const filters = decodingSlug(decodedSlug, filterOptions);
 

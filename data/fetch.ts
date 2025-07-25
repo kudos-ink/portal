@@ -36,3 +36,23 @@ export const DEFAULT_PROJECT_OPTIONS = {
   stack_levels: [],
   technologies: [],
 };
+
+export const DEFAULT_ALL_LANGUAGES = [
+  "javascript",
+  "haskell",
+  "c",
+  "go",
+  "markdown",
+  "rust",
+  "c#",
+  "python",
+  "css",
+  "typescript",
+  "java",
+  "swift",
+  "kotlin",
+  "vue",
+  "solidity",
+  "c++",
+  "tex",
+];
