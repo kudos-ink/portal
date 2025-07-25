@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@next/third-parties": "15.4.2",
+    "@nextui-org/autocomplete": "^2.3.9",
     "@nextui-org/button": "2.2.9",
     "@nextui-org/card": "^2.2.9",
     "@nextui-org/checkbox": "^2.3.8",
