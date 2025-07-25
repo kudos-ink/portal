@@ -1,12 +1,13 @@
 import TasksApi from "@/api/core/tasks";
 import { DEFAULT_PAGINATED_RESPONSE } from "@/data/fetch";
-import { Task, TaskQueryParams } from "@/types/task";
+import { NewTaskPayload, Task, TaskQueryParams } from "@/types/task";
 import {
   PaginatedCustomResponse,
   PaginationQueryParams,
 } from "@/types/pagination";
 import tags from "@/utils/tags";
 import { safeFetch } from "@/utils/error";
+import { coreApiClient } from "@/api/core/_client";
 
 export async function fetchTasks(
   query: TaskQueryParams & PaginationQueryParams,
@@ -31,5 +32,30 @@ export async function fetchProjectTasks(
     "fetchProjectTasks",
     DEFAULT_PAGINATED_RESPONSE,
     { slug, query }
+  );
+}
+
+export async function createTask(taskData: NewTaskPayload): Promise<Task> {
+  return coreApiClient.post<Task, NewTaskPayload>("/tasks", taskData);
+}
+
+export type WishSortKey = 'new' | 'top';
+
+export async function fetchWishes(
+  sortBy: WishSortKey = 'new',
+  pagination: PaginationQueryParams = { limit: 20, offset: 0 }
+): Promise<PaginatedCustomResponse<Task>> {
+  const query: TaskQueryParams = {
+    type_: 'wish',
+    // The 'sort_by' param will be added to the TaskQueryParams type next
+    // @ts-ignore
+    sort_by: sortBy === 'top' ? 'top' : undefined,
+  };
+
+  return safeFetch(
+    () => TasksApi.getTasks({ ...query, ...pagination }),
+    "fetchWishes",
+    DEFAULT_PAGINATED_RESPONSE,
+    { query, pagination }
   );
 }

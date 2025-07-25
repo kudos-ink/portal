@@ -19,6 +19,7 @@ export type TaskDto = {
   issue_closed_at: string | null;
   created_at: string;
   updated_at: string | null;
+  upvotes: number | null;
 };
 
 export type Task = {
@@ -33,6 +34,7 @@ export type Task = {
   description: string | null;
   url: string | null;
   createdAt: string;
+  upvotes: number | null;
 };
 
 export type TaskQueryParams = Partial<{
@@ -46,6 +48,7 @@ export type TaskQueryParams = Partial<{
   technologies: string[];
   types: string[];
   type_: TaskType;
+  upvotes: number;
 }>;
 
 export type TaskType = 'dev' | 'non-dev' | 'wish';
@@ -72,3 +75,11 @@ export type TaskQueryParamsDto = Partial<{
   type_: TaskType
 }> &
   Partial<PaginationQueryParams>;
+
+
+export type NewTaskPayload = {
+  title: string;
+  description?: string;
+  type_: TaskType;
+  project_id?: number;
+};
