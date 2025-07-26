@@ -24,7 +24,7 @@ interface WishCardProps {
     slug: string;
     name: string;
   } | null;
-  creator?: { // Assuming the creator's info might be available in the future
+  creator?: {
     username: string;
     avatar: string;
   } | null;
@@ -37,14 +37,16 @@ export const WishCard = ({ id, title, description, upvotes, project, creator, on
     <Card className="w-full">
       <div className="flex items-start justify-between p-4">
         <div className="flex-1 pr-4">
-          <CardHeader className="p-0 pb-2">
-            <h4 className="font-bold text-large text-left">{title}</h4>
-          </CardHeader>
-          <CardBody className="p-0">
-            <p className="text-default-500 text-left line-clamp-2">
-              {description || "No description provided."}
-            </p>
-          </CardBody>
+          <Link href={`/wishlist/${id}`} className="flex-1 pr-4 cursor-pointer">
+            <CardHeader className="p-0 pb-2">
+              <h4 className="font-bold text-large text-left">{title}</h4>
+            </CardHeader>
+            <CardBody className="p-0">
+              <p className="text-default-500 text-left line-clamp-2">
+                {description || "No description provided."}
+              </p>
+            </CardBody>
+          </Link>
         </div>
         <div className="flex flex-col items-center gap-1">
           <Button 

@@ -45,6 +45,7 @@
     "@vercel/analytics": "^1.5.0",
     "autoprefixer": "^10.4.21",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "edge-csrf": "^1.0.11",
     "eslint": "9.31.0",

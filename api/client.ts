@@ -48,6 +48,7 @@ export default class APIClient {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${GITHUB_TOKEN}` // TODO: use new github auth
       },
       body: JSON.stringify(data),
       ...(options.tag ? { next: { tags: [options.tag] } } : {}),

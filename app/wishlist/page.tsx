@@ -1,5 +1,6 @@
 import { container, title, subtitle } from "@/components/primitives";
 import { CreateWishButton } from "@/components/wishlist/create-wish-button";
+import { Wishlist } from "@/components/wishlist/wishlist";
 import { getAllProjects } from "@/lib/api/projects"; // Function to fetch all projects
 
 export default async function WishlistPage() {
@@ -21,10 +22,7 @@ export default async function WishlistPage() {
 
       <div className="mt-16 w-full text-left">
         {/* This is where the list of wishes will be displayed */}
-        <h3 className="text-2xl font-bold">All Wishes</h3>
-        <div className="mt-4 p-8 bg-default-100 rounded-lg">
-          <p className="text-default-500">The list of wishes will be implemented here.</p>
-        </div>
+       <Wishlist />
       </div>
     </section>
   );

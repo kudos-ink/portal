@@ -20,6 +20,15 @@ export async function fetchTasks(
   );
 }
 
+export async function fetchTaskById(id: number): Promise<Task | null> {
+  try {
+    return await coreApiClient.get<Task>(`/tasks/${id}`);
+  } catch (error) {
+    console.error(`Failed to fetch task with id ${id}:`, error);
+    return null;
+  }
+}
+
 export async function fetchProjectTasks(
   slug: string,
   query?: TaskQueryParams,
@@ -50,6 +59,8 @@ export async function fetchWishes(
     // The 'sort_by' param will be added to the TaskQueryParams type next
     // @ts-ignore
     sort_by: sortBy === 'top' ? 'top' : undefined,
+    certified: undefined,
+    labels: [],
   };
 
   return safeFetch(
