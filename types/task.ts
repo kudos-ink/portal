@@ -20,6 +20,8 @@ export type TaskDto = {
   created_at: string;
   updated_at: string | null;
   upvotes: number | null;
+  downvotes: number | null;
+  user_vote: 1 | -1 | null;
 };
 
 export type Task = {
@@ -35,6 +37,8 @@ export type Task = {
   url: string | null;
   createdAt: string;
   upvotes: number | null;
+  downvotes: number | null;
+  user_vote: 1 | -1 | null;
 };
 
 export type TaskQueryParams = Partial<{
@@ -48,7 +52,6 @@ export type TaskQueryParams = Partial<{
   technologies: string[];
   types: string[];
   type_: TaskType;
-  upvotes: number;
 }>;
 
 export type TaskType = 'dev' | 'non-dev' | 'wish';

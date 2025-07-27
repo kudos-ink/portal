@@ -36,6 +36,7 @@ export default class APIClient {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${GITHUB_TOKEN}` // TODO: use new github auth
       },
       ...(options.tag ? { next: { tags: [options.tag] } } : {}),
       ...(options.noStoreCache ? { cache: "no-store" } : {}),

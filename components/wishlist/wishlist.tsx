@@ -8,11 +8,14 @@ import { fetchWishes, WishSortKey } from "@/lib/api/tasks";
 import { coreApiClient } from "@/api/core/_client";
 import { Task } from "@/types/task";
 
+type UserVoteState = Record<number, 'up' | 'down' | null>;
+
 export const Wishlist = () => {
   const [wishes, setWishes] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [votingTaskId, setVotingTaskId] = useState<number | null>(null);
   const [selectedTab, setSelectedTab] = useState<WishSortKey>('new');
+  const [userVotes, setUserVotes] = useState<UserVoteState>({});
 
   useEffect(() => {
     const loadWishes = async () => {
@@ -20,6 +23,14 @@ export const Wishlist = () => {
       try {
         const response = await fetchWishes(selectedTab);
         setWishes(response.data);
+        const initialVotes: UserVoteState = {};
+        response.data.forEach(wish => {
+          if (wish.user_vote) {
+            initialVotes[wish.id] = wish.user_vote === 1 ? 'up' : 'down';
+          }
+        });
+        console.log(initialVotes);
+        setUserVotes(initialVotes);
       } catch (error) {
         console.error("Failed to fetch wishes:", error);
         // Here you would show a toast or error message to the user
@@ -32,34 +43,51 @@ export const Wishlist = () => {
   }, [selectedTab]);
 
   const handleVote = async (taskId: number, voteType: 'up' | 'down') => {
+    if (votingTaskId) return;
     setVotingTaskId(taskId);
     
+    const originalWishes = [...wishes];
+    const originalUserVotes = { ...userVotes };
+    const currentVote = userVotes[taskId];
+
+    // If the user clicks the same vote button, we'll treat it as a retract action in the future.
+    // For now, it does nothing, which is the correct behavior with the current backend.
+    if (currentVote === voteType) {
+        setVotingTaskId(null);
+        return;
+    }
+
     // Optimistic UI Update
     setWishes(currentWishes => 
-      currentWishes.map(wish => 
-        wish.id === taskId ? { ...wish, upvotes: (wish.upvotes || 0) + 1 } : wish
-      )
+      currentWishes.map(wish => {
+        if (wish.id === taskId) {
+            let newUpvotes = wish.upvotes || 0;
+            let newDownvotes = wish.downvotes || 0;
+
+            if (currentVote === 'down' && voteType === 'up') { newDownvotes--; newUpvotes++; } 
+            else if (currentVote === 'up' && voteType === 'down') { newUpvotes--; newDownvotes++; }
+            else { if (voteType === 'up') newUpvotes++; if (voteType === 'down') newDownvotes++; }
+            
+            return { ...wish, upvotes: newUpvotes, downvotes: newDownvotes };
+        }
+        return wish;
+      })
     );
+    
+    // Update the user's vote state using the functional update form for safety.
+    setUserVotes(prevVotes => ({
+      ...prevVotes,
+      [taskId]: voteType, 
+    }));
 
     try {
-      // Assuming a simplified vote call. In a real app, you'd get the current user's ID.
-      // For now, let's hardcode a user_id for testing. The backend needs it.
-      const MOCK_USER_ID = 1; // Replace with actual authenticated user ID
-      
-      if (voteType === 'up') {
-        await coreApiClient.post('/tasks/upvotes', { task_id: taskId, user_id: MOCK_USER_ID });
-      } else {
-        // await coreApiClient.post('/tasks/downvotes', { task_id: taskId, user_id: MOCK_USER_ID });
-      }
-    } catch (error: any) {
-      console.error("Vote failed:", error.response?.message);
-      // Revert optimistic update on failure
-      setWishes(currentWishes => 
-        currentWishes.map(wish => 
-          wish.id === taskId ? { ...wish, upvotes: (wish.upvotes || 0) - 1 } : wish
-        )
-      );
-      // Show an error toast to the user
+      const endpoint = voteType === 'up' ? '/tasks/upvotes' : '/tasks/downvotes';
+      await coreApiClient.post(endpoint, { task_id: taskId });
+    } catch (error) {
+      console.error("Vote failed:", error);
+      // Revert state on failure
+      setWishes(originalWishes);
+      setUserVotes(originalUserVotes);
     } finally {
       setVotingTaskId(null);
     }
@@ -95,9 +123,11 @@ export const Wishlist = () => {
                 title={wish.title || "Untitled Wish"}
                 description={wish.description}
                 upvotes={wish.upvotes || 0}
+                downvotes={wish.downvotes || 0}
                 project={wish.project}
                 onVote={handleVote}
                 isVoting={votingTaskId === wish.id}
+                userVote={userVotes[wish.id] || null}
               />
             ))
           ) : (

@@ -32,7 +32,9 @@ export function dtoToTask(dto: TaskDto): Task {
     description: dto.description,
     createdAt: dto.issue_created_at ? dto.issue_created_at : dto.created_at,
     url: dto.repository ? dto.repository.url + `/issues/${dto.issue_id}` : null,
-    upvotes: dto.upvotes ?? 0
+    upvotes: dto.upvotes ?? 0,
+    downvotes: dto.downvotes ?? 0,
+    user_vote: dto.user_vote
   };
 }
 
