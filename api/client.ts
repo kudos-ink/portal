@@ -36,7 +36,7 @@ export default class APIClient {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${GITHUB_TOKEN}` // TODO: use new github auth
+        Authorization: `Bearer ${TOKEN}`
       },
       ...(options.tag ? { next: { tags: [options.tag] } } : {}),
       ...(options.noStoreCache ? { cache: "no-store" } : {}),
@@ -49,7 +49,21 @@ export default class APIClient {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${GITHUB_TOKEN}` // TODO: use new github auth
+        Authorization: `Bearer ${TOKEN}` // TODO: use new github auth
+      },
+      body: JSON.stringify(data),
+      ...(options.tag ? { next: { tags: [options.tag] } } : {}),
+      ...(options.noStoreCache ? { cache: "no-store" } : {}),
+    };
+    return this.request<T>(url, fetchOptions);
+  }
+
+  public delete<T, D>(url: string, data: D, options: Options = {}): Promise<T> {
+    const fetchOptions: RequestInit = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${TOKEN}`
       },
       body: JSON.stringify(data),
       ...(options.tag ? { next: { tags: [options.tag] } } : {}),

@@ -7,6 +7,7 @@ import { WishCard } from "./wish-card";
 import { fetchWishes, WishSortKey } from "@/lib/api/tasks";
 import { coreApiClient } from "@/api/core/_client";
 import { Task } from "@/types/task";
+import { deleteVote } from "@/lib/api/tasks";
 
 type UserVoteState = Record<number, 'up' | 'down' | null>;
 
@@ -50,11 +51,33 @@ export const Wishlist = () => {
     const originalUserVotes = { ...userVotes };
     const currentVote = userVotes[taskId];
 
-    // If the user clicks the same vote button, we'll treat it as a retract action in the future.
-    // For now, it does nothing, which is the correct behavior with the current backend.
+
     if (currentVote === voteType) {
-        setVotingTaskId(null);
-        return;
+      // Optimistically update the UI to retract the vote
+      setWishes(currentWishes =>
+          currentWishes.map(wish => {
+              if (wish.id === taskId) {
+                  const newUpvotes = (wish.upvotes || 0) - (voteType === 'up' ? 1 : 0);
+                  const newDownvotes = (wish.downvotes || 0) - (voteType === 'down' ? 1 : 0);
+                  return { ...wish, upvotes: newUpvotes, downvotes: newDownvotes };
+              }
+              return wish;
+          })
+      );
+      setUserVotes(prev => ({ ...prev, [taskId]: null }));
+
+      try {
+          // Call the new DELETE endpoint
+          await deleteVote(taskId);
+      } catch (error) {
+          console.error("Failed to delete vote:", error);
+          // Revert state on failure
+          setWishes(originalWishes);
+          setUserVotes(originalUserVotes);
+      } finally {
+          setVotingTaskId(null);
+      }
+      return; // End execution here for retraction
     }
 
     // Optimistic UI Update

@@ -6,8 +6,15 @@ export interface Comment {
     content: string;
     created_at: string;
     user: User;
-    parent_comment_id: number;
+    status: 'active' | 'deleted';
+    parent_comment_id: number | null;
 }
+
+// Define the new type for our nested structure
+export interface ThreadedComment extends Comment {
+    replies: ThreadedComment[];
+}
+
 
 /**
  * Fetches all comments for a specific task.
@@ -35,11 +42,15 @@ export async function postComment(taskId: number, content: string, parentComment
     return coreApiClient.post<Comment, { task_id: number, content: string }>(`/tasks/${taskId}/comments`, payload);
 }
 
-
-// Define the new type for our nested structure
-export interface ThreadedComment extends Comment {
-    replies: ThreadedComment[];
+/**
+ * Deletes a comment.
+ * @param commentId The ID of the comment to delete.
+ */
+export async function deleteComment(commentId: number): Promise<void> {
+    // Use the new, cleaner endpoint
+    return coreApiClient.delete<void, {}>(`/comments/${commentId}`, {});
 }
+
 
 /**
  * Transforms a flat array of comments into a nested tree structure.

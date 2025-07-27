@@ -9,6 +9,7 @@ import { CommentForm } from "./comment-form";
 import { CommentCard } from "./comment-card";
 import { VoteControl } from "./vote-control";
 import { coreApiClient } from "@/api/core/_client";
+import { deleteVote } from "@/lib/api/tasks";
 
 export const WishDetailView = ({ initialWish, initialComments }: { initialWish: Task; initialComments: Comment[] }) => {
   const [allComments, setAllComments] = useState(initialComments);
@@ -29,18 +30,31 @@ export const WishDetailView = ({ initialWish, initialComments }: { initialWish: 
   };
 
   const handleVote = async (voteType: 'up' | 'down') => {
-    // ... Implement the exact same handleVote logic from Wishlist.tsx ...
-    // ... It will call setWish and setUserVote instead of setWishes and setUserVotes ...
+    // Prevent multiple actions while one is in progress
     if (isVoting) return;
     setIsVoting(true);
     
     const originalWish = { ...wish };
     const originalUserVote = userVote;
-
-    // Optimistic Update
     const currentVote = userVote;
+
     if (currentVote === voteType) {
-        setIsVoting(false);
+        setWish(prevWish => {
+            const newUpvotes = (prevWish.upvotes || 0) - (voteType === 'up' ? 1 : 0);
+            const newDownvotes = (prevWish.downvotes || 0) - (voteType === 'down' ? 1 : 0);
+            return { ...prevWish, upvotes: newUpvotes, downvotes: newDownvotes };
+        });
+        setUserVote(null);
+
+        try {
+            await deleteVote(wish.id);
+        } catch (error) {
+            console.error("Failed to delete vote:", error);
+            setWish(originalWish);
+            setUserVote(originalUserVote);
+        } finally {
+            setIsVoting(false);
+        }
         return;
     }
 
@@ -66,6 +80,30 @@ export const WishDetailView = ({ initialWish, initialComments }: { initialWish: 
   };
 
   const score = (wish.upvotes || 0) - (wish.downvotes || 0);
+
+  const handleDeleteSuccess = (commentId: number, hasReplies: boolean) => {
+    setAllComments(prevComments => {
+      if (hasReplies) {
+        return prevComments.map(comment => {
+          if (comment.id === commentId) {
+            return { 
+              ...comment, 
+              status: 'deleted' as const,
+              content: '[deleted]', 
+              user: { 
+                id: -1, 
+                username: '[deleted]',
+                avatar: '', 
+              } 
+            };
+          }
+          return comment;
+        });
+      } else {
+        return prevComments.filter(comment => comment.id !== commentId);
+      }
+    });
+  };
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -102,6 +140,7 @@ export const WishDetailView = ({ initialWish, initialComments }: { initialWish: 
               activeReplyId={activeReplyId}
               onReplyClick={setActiveReplyId}
               onReplySuccess={handleNewComment}
+              onDeleteSuccess={handleDeleteSuccess}
             />
           )
         ) : (

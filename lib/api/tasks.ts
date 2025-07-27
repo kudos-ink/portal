@@ -70,3 +70,14 @@ export async function fetchWishes(
     { query, pagination }
   );
 }
+
+/**
+ * Deletes a user's vote for a specific task using the API client.
+ * @param taskId The ID of the task from which to remove the vote.
+ * @returns An empty promise on success (as the API returns 204 No Content).
+ */
+export async function deleteVote(taskId: number): Promise<void> {
+  const payload = { task_id: taskId };
+
+  return coreApiClient.delete<void, { task_id: number }>("/tasks/vote", payload);
+}
