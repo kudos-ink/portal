@@ -4,18 +4,21 @@ import React from "react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@nextui-org/modal";
 import { CreateWishForm } from "./create-wish-form";
 import { Project } from "@/types/project";
+import { Task, TaskDto } from "@/types/task";
+import { dtoToRepository, dtoToTask } from "@/api/core/_transformers";
 
 interface CreateWishModalProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   projects: Project[];
+  onWishCreated: (task: Task) => void;
 }
 
-export const CreateWishModal = ({ isOpen, onOpenChange, projects }: CreateWishModalProps) => {
-  const handleSuccess = (newTask: any) => {
+export const CreateWishModal = ({ isOpen, onOpenChange, projects, onWishCreated }: CreateWishModalProps) => {
+  const handleSuccess = (newTask: TaskDto) => {
     console.log("Wish created successfully!", newTask);
-    // Here you would typically trigger a toast notification and/or a refetch of the wishlist data
-    onOpenChange(false); // Close the modal on success
+    onWishCreated(dtoToTask(newTask));
+    onOpenChange(false);
   };
 
   return (

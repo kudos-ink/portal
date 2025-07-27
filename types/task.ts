@@ -1,11 +1,11 @@
 import { PaginationQueryParams } from "./pagination";
-import { Project } from "./project";
+import { Project, ProjectDto } from "./project";
 import { Repository, RepositoryDto } from "./repository";
 import { User, UserDto } from "./user";
 
 export type TaskDto = {
   id: number;
-  issue_id: number;
+  number: number;
   labels: string[] | null;
   open: boolean;
   assignee_id: string | null;
@@ -13,6 +13,7 @@ export type TaskDto = {
   user: UserDto | null;
   certified: boolean;
   repository: RepositoryDto | null;
+  project: ProjectDto | null
   title: string | null;
   description: string | null;
   issue_created_at: string;
@@ -22,11 +23,12 @@ export type TaskDto = {
   upvotes: number | null;
   downvotes: number | null;
   user_vote: 1 | -1 | null;
+  type_: TaskType;
 };
 
 export type Task = {
   id: number;
-  taskId: number;
+  number: number;
   isCertified: boolean;
   labels: string[];
   user: User | null;
@@ -39,6 +41,7 @@ export type Task = {
   upvotes: number | null;
   downvotes: number | null;
   user_vote: 1 | -1 | null;
+  type_: TaskType;
 };
 
 export type TaskQueryParams = Partial<{

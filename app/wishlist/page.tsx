@@ -16,13 +16,10 @@ export default async function WishlistPage() {
       <h2 className={`mt-8 ${subtitle()}`}>
         Post, discuss, and vote on feature requests and project ideas to guide the ecosystem's development.
       </h2>
-      <div className="mt-8">
-        <CreateWishButton projects={projects} />
-      </div>
 
       <div className="mt-16 w-full text-left">
         {/* This is where the list of wishes will be displayed */}
-       <Wishlist />
+       <Wishlist projects={projects} />
       </div>
     </section>
   );

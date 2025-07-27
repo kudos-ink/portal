@@ -8,16 +8,16 @@ import { Project } from "@/types/project";
 import { FeedbackIcon } from "@/assets/icons"; // Using an existing icon
 
 interface CreateWishButtonProps {
-  projects: Project[]; // Projects will be fetched on the server page and passed as a prop
+  onPress: () => void;
 }
 
-export const CreateWishButton = ({ projects }: CreateWishButtonProps) => {
+export const CreateWishButton = ({ onPress }: CreateWishButtonProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
     <>
       <Button 
-        onPress={onOpen} 
+        onPress={onPress} 
         color="primary" 
         size="lg"
         className="font-semibold"
@@ -25,7 +25,6 @@ export const CreateWishButton = ({ projects }: CreateWishButtonProps) => {
       >
         Submit an Idea
       </Button>
-      <CreateWishModal isOpen={isOpen} onOpenChange={onOpenChange} projects={projects} />
     </>
   );
 };

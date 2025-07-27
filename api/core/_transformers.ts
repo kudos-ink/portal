@@ -22,19 +22,20 @@ import { User, UserDto } from "@/types/user";
 export function dtoToTask(dto: TaskDto): Task {
   return {
     id: dto.id,
-    taskId: dto.issue_id,
+    number: dto.number,
     isCertified: dto.certified,
     labels: dto.labels ?? [],
     user: dto.user ? dtoToUser(dto.user) : null,
     repository: dto.repository ? dtoToRepository(dto.repository) : null,
-    project: dto.repository ? dtoToProject(dto.repository.project) : null,
+    project: dto.project ? dtoToProject(dto.project) : null,
     title: dto.title,
     description: dto.description,
     createdAt: dto.issue_created_at ? dto.issue_created_at : dto.created_at,
-    url: dto.repository ? dto.repository.url + `/issues/${dto.issue_id}` : null,
+    url: dto.repository ? dto.repository.url + `/issues/${dto.number}` : null,
     upvotes: dto.upvotes ?? 0,
     downvotes: dto.downvotes ?? 0,
-    user_vote: dto.user_vote
+    user_vote: dto.user_vote,
+    type_: dto.type_
   };
 }
 

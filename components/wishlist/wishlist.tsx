@@ -8,21 +8,32 @@ import { fetchWishes, WishSortKey } from "@/lib/api/tasks";
 import { coreApiClient } from "@/api/core/_client";
 import { Task } from "@/types/task";
 import { deleteVote } from "@/lib/api/tasks";
+import { CreateWishButton } from "./create-wish-button";
+import { Project } from "@/types/project";
+import { CreateWishModal } from "./create-wish-modal";
+import { useDisclosure } from "@nextui-org/modal";
 
 type UserVoteState = Record<number, 'up' | 'down' | null>;
 
-export const Wishlist = () => {
+interface WishlistProps {
+  projects: Project[]
+}
+
+export const Wishlist = ({ projects }: WishlistProps) => {
   const [wishes, setWishes] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [votingTaskId, setVotingTaskId] = useState<number | null>(null);
   const [selectedTab, setSelectedTab] = useState<WishSortKey>('new');
   const [userVotes, setUserVotes] = useState<UserVoteState>({});
 
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   useEffect(() => {
     const loadWishes = async () => {
       setIsLoading(true);
       try {
         const response = await fetchWishes(selectedTab);
+        console.log(response);
         setWishes(response.data);
         const initialVotes: UserVoteState = {};
         response.data.forEach(wish => {
@@ -30,7 +41,6 @@ export const Wishlist = () => {
             initialVotes[wish.id] = wish.user_vote === 1 ? 'up' : 'down';
           }
         });
-        console.log(initialVotes);
         setUserVotes(initialVotes);
       } catch (error) {
         console.error("Failed to fetch wishes:", error);
@@ -42,6 +52,10 @@ export const Wishlist = () => {
 
     loadWishes();
   }, [selectedTab]);
+
+  const handleWishCreated = (newTask: Task) => {
+    setWishes(prev => [newTask, ...prev]);
+  };
 
   const handleVote = async (taskId: number, voteType: 'up' | 'down') => {
     if (votingTaskId) return;
@@ -118,6 +132,16 @@ export const Wishlist = () => {
 
 
   return (
+    <>
+   <div className="w-full max-w-4xl mx-auto mt-8 flex justify-center">
+        <CreateWishButton onPress={onOpen} />
+        <CreateWishModal 
+          isOpen={isOpen} 
+          onOpenChange={onOpenChange}
+          projects={projects}
+          onWishCreated={handleWishCreated}
+        />
+    </div>
     <div className="w-full max-w-4xl mx-auto">
       <div className="flex w-full flex-col items-start">
         <Tabs 
@@ -162,5 +186,6 @@ export const Wishlist = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
