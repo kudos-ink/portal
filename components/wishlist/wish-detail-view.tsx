@@ -8,10 +8,11 @@ import { buildCommentTree, ThreadedComment } from "@/lib/api/comments";
 import { CommentForm } from "./comment-form";
 import { CommentCard } from "./comment-card";
 import { VoteControl } from "./vote-control";
-import { coreApiClient } from "@/api/core/_client";
-import { deleteVote } from "@/lib/api/tasks";
+import { castVote, deleteVote } from "@/lib/api/tasks";
+import { useSession } from "next-auth/react";
 
 export const WishDetailView = ({ initialWish, initialComments }: { initialWish: Task; initialComments: Comment[] }) => {
+  const { data: session } = useSession();
   const [allComments, setAllComments] = useState(initialComments);
   const [activeReplyId, setActiveReplyId] = useState<number | null>(null);
   const [wish, setWish] = useState(initialWish);
@@ -32,6 +33,11 @@ export const WishDetailView = ({ initialWish, initialComments }: { initialWish: 
   const handleVote = async (voteType: 'up' | 'down') => {
     // Prevent multiple actions while one is in progress
     if (isVoting) return;
+    if (!session?.accessToken) {
+        alert("Please log in to vote.");
+        return;
+    }
+
     setIsVoting(true);
     
     const originalWish = { ...wish };
@@ -47,7 +53,7 @@ export const WishDetailView = ({ initialWish, initialComments }: { initialWish: 
         setUserVote(null);
 
         try {
-            await deleteVote(wish.id);
+            await deleteVote(wish.id, session.accessToken as string);
         } catch (error) {
             console.error("Failed to delete vote:", error);
             setWish(originalWish);
@@ -68,8 +74,7 @@ export const WishDetailView = ({ initialWish, initialComments }: { initialWish: 
     setUserVote(voteType);
     
     try {
-        const endpoint = voteType === 'up' ? '/tasks/upvotes' : '/tasks/downvotes';
-        await coreApiClient.post(endpoint, { task_id: wish.id });
+        await castVote(wish.id, voteType, session.accessToken as string);
     } catch (error) {
         console.error("Vote failed", error);
         setWish(originalWish);
@@ -94,6 +99,8 @@ export const WishDetailView = ({ initialWish, initialComments }: { initialWish: 
                 id: -1, 
                 username: '[deleted]',
                 avatar: '', 
+                 // @ts-ignore
+                created_at: comment.created_at, updated_at: comment.updated_at, github_id: 0, email_notifications_enabled: false, email: ''
               } 
             };
           }

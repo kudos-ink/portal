@@ -5,6 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Button } from "@nextui-org/button";
 import { Textarea } from "@nextui-org/input";
 import { postComment, Comment } from "@/lib/api/comments";
+import { useSession } from "next-auth/react";
 
 interface CommentFormInputs {
   content: string;
@@ -27,14 +28,17 @@ export const CommentForm = ({
   placeholderText = "Share your thoughts...",
   submitButtonText = "Post Comment"
 }: CommentFormProps) => {
+  const { data: session } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { control, handleSubmit, reset } = useForm<CommentFormInputs>({ defaultValues: { content: "" } });
 
   const onSubmit = async (data: CommentFormInputs) => {
     if (!data.content.trim()) return;
+    if (!session?.accessToken) return;
+
     setIsSubmitting(true);
     try {
-      const newComment = await postComment(taskId, data.content, parentCommentId);
+      const newComment = await postComment(taskId, data.content, session.accessToken as string, parentCommentId);
       onSuccess(newComment);
       reset();
     } catch (error) {

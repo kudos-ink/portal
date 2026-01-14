@@ -90,4 +90,24 @@ export async function fetchFromApiGitHubAuthPut<T, D>(
   }
 }
 
+export async function fetchFromApiGitHubAuthDelete<T, D>(
+  endpoint: string,
+  data: D,
+  token: string,
+  tag?: string,
+): Promise<T> {
+  try {
+    const url = endpoint;
+    const config = {
+      tag,
+      headers: { Authorization: `Bearer ${token}` },
+      noStoreCache: true,
+    };
+    return await coreApiClient.delete<T, D>(url, data, config);
+  } catch (error) {
+    console.error(`Error deleting data from ${endpoint}:`, error);
+    throw error;
+  }
+}
+
 export const coreApiClient = new APIClient(CORE_API_URL);

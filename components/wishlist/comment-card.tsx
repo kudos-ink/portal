@@ -8,6 +8,7 @@ import { formatDistanceToNow } from "date-fns";
 import { deleteComment, ThreadedComment } from "@/lib/api/comments";
 import { CommentForm } from "./comment-form";
 import { Comment } from "@/lib/api/comments";
+import { useSession } from "next-auth/react";
 
 interface CommentCardProps {
   comment: ThreadedComment;
@@ -19,6 +20,7 @@ interface CommentCardProps {
 }
 
 export const CommentCard = ({ comment, taskId, activeReplyId, onReplyClick, onReplySuccess, onDeleteSuccess }: CommentCardProps) => {
+  const { data: session } = useSession();
   const isReplying = activeReplyId === comment.id;
   const isDeleted = comment.status === 'deleted';
   const hasReplies = comment.replies && comment.replies.length > 0;
@@ -29,8 +31,10 @@ export const CommentCard = ({ comment, taskId, activeReplyId, onReplyClick, onRe
 
   const handleDelete = async () => {
       if (!window.confirm("Are you sure you want to delete this comment?")) return;
+      if (!session?.accessToken) return;
+
       try {
-          await deleteComment(comment.id);
+          await deleteComment(comment.id, session.accessToken as string);
           onDeleteSuccess(comment.id, hasReplies);
       } catch (error) {
           console.error("Failed to delete comment:", error);

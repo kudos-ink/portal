@@ -7,7 +7,7 @@ import {
 } from "@/types/pagination";
 import tags from "@/utils/tags";
 import { safeFetch } from "@/utils/error";
-import { coreApiClient } from "@/api/core/_client";
+import { coreApiClient, fetchFromApiGitHubAuthPost, fetchFromApiGitHubAuthDelete } from "@/api/core/_client";
 
 export async function fetchTasks(
   query: TaskQueryParams & PaginationQueryParams,
@@ -44,8 +44,8 @@ export async function fetchProjectTasks(
   );
 }
 
-export async function createTask(taskData: NewTaskPayload): Promise<Task> {
-  return coreApiClient.post<Task, NewTaskPayload>("/tasks", taskData);
+export async function createTask(taskData: NewTaskPayload, token: string): Promise<Task> {
+  return fetchFromApiGitHubAuthPost<Task, NewTaskPayload>("/tasks", taskData, token);
 }
 
 export type WishSortKey = 'new' | 'top';
@@ -72,12 +72,23 @@ export async function fetchWishes(
 }
 
 /**
+ * Casts a vote for a specific task.
+ * @param taskId The ID of the task to vote on.
+ * @param voteType 'up' or 'down'.
+ * @param token The user's authentication token.
+ */
+export async function castVote(taskId: number, voteType: 'up' | 'down', token: string): Promise<void> {
+  const endpoint = voteType === 'up' ? '/tasks/upvotes' : '/tasks/downvotes';
+  return fetchFromApiGitHubAuthPost<void, { task_id: number }>(endpoint, { task_id: taskId }, token);
+}
+
+/**
  * Deletes a user's vote for a specific task using the API client.
  * @param taskId The ID of the task from which to remove the vote.
+ * @param token The user's authentication token.
  * @returns An empty promise on success (as the API returns 204 No Content).
  */
-export async function deleteVote(taskId: number): Promise<void> {
+export async function deleteVote(taskId: number, token: string): Promise<void> {
   const payload = { task_id: taskId };
-
-  return coreApiClient.delete<void, { task_id: number }>("/tasks/vote", payload);
+  return fetchFromApiGitHubAuthDelete<void, { task_id: number }>("/tasks/vote", payload, token);
 }

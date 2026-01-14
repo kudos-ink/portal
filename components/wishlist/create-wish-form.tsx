@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { useSession } from "next-auth/react";
 import { Input, Textarea  } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { Select, SelectItem } from "@nextui-org/select";
@@ -22,6 +23,7 @@ interface CreateWishFormProps {
 }
 
 export const CreateWishForm = ({ projects, onSuccess, onClose }: CreateWishFormProps) => {
+  const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
 
@@ -38,6 +40,11 @@ export const CreateWishForm = ({ projects, onSuccess, onClose }: CreateWishFormP
   });
 
   const onSubmit = async (data: CreateWishFormInputs) => {
+    if (!session?.accessToken) {
+      setServerError("You must be logged in to create a wish.");
+      return;
+    }
+
     setIsLoading(true);
     setServerError(null);
 
@@ -49,7 +56,7 @@ export const CreateWishForm = ({ projects, onSuccess, onClose }: CreateWishFormP
         project_id: data.project_id ? parseInt(data.project_id, 10) : undefined,
       };
 
-      const newTask = await createTask(payload);
+      const newTask = await createTask(payload, session.accessToken as string);
       onSuccess(newTask); // Call the success callback
     } catch (error: any) {
       console.error("Failed to create wish:", error);

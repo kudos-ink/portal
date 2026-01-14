@@ -1,4 +1,4 @@
-import { coreApiClient } from "@/api/core/_client";
+import { coreApiClient, fetchFromApiGitHubAuthPost, fetchFromApiGitHubAuthDelete } from "@/api/core/_client";
 import { User } from "@/types/user";
 
 export interface Comment {
@@ -34,21 +34,23 @@ export async function fetchCommentsForTask(taskId: number): Promise<Comment[]> {
  * Posts a new comment to a task.
  * @param taskId The ID of the task.
  * @param content The content of the comment.
+ * @param token The user's authentication token.
  * @param parentCommentId Optional ID of the parent comment for threading.
  * @returns The newly created comment.
  */
-export async function postComment(taskId: number, content: string, parentCommentId: number | null = null): Promise<Comment> {
+export async function postComment(taskId: number, content: string, token: string, parentCommentId: number | null = null): Promise<Comment> {
     const payload = { content, task_id: taskId, parent_comment_id: parentCommentId };
-    return coreApiClient.post<Comment, { task_id: number, content: string }>(`/tasks/${taskId}/comments`, payload);
+    return fetchFromApiGitHubAuthPost<Comment, { task_id: number, content: string, parent_comment_id: number | null }>(`/tasks/${taskId}/comments`, payload, token);
 }
 
 /**
  * Deletes a comment.
  * @param commentId The ID of the comment to delete.
+ * @param token The user's authentication token.
  */
-export async function deleteComment(commentId: number): Promise<void> {
+export async function deleteComment(commentId: number, token: string): Promise<void> {
     // Use the new, cleaner endpoint
-    return coreApiClient.delete<void, {}>(`/comments/${commentId}`, {});
+    return fetchFromApiGitHubAuthDelete<void, {}>(`/comments/${commentId}`, {}, token);
 }
 
 

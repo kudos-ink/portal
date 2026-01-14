@@ -3,11 +3,10 @@
 import React, { useState, useEffect } from "react";
 import { Tabs, Tab } from "@nextui-org/tabs";
 import { Spinner } from "@nextui-org/spinner";
+import { useSession } from "next-auth/react";
 import { WishCard } from "./wish-card";
-import { fetchWishes, WishSortKey } from "@/lib/api/tasks";
-import { coreApiClient } from "@/api/core/_client";
+import { fetchWishes, WishSortKey, castVote, deleteVote } from "@/lib/api/tasks";
 import { Task } from "@/types/task";
-import { deleteVote } from "@/lib/api/tasks";
 import { CreateWishButton } from "./create-wish-button";
 import { Project } from "@/types/project";
 import { CreateWishModal } from "./create-wish-modal";
@@ -20,6 +19,7 @@ interface WishlistProps {
 }
 
 export const Wishlist = ({ projects }: WishlistProps) => {
+  const { data: session } = useSession();
   const [wishes, setWishes] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [votingTaskId, setVotingTaskId] = useState<number | null>(null);
@@ -59,6 +59,10 @@ export const Wishlist = ({ projects }: WishlistProps) => {
 
   const handleVote = async (taskId: number, voteType: 'up' | 'down') => {
     if (votingTaskId) return;
+    if (!session?.accessToken) {
+         alert("You must be logged in to vote.");
+         return;
+    }
     setVotingTaskId(taskId);
     
     const originalWishes = [...wishes];
@@ -81,8 +85,7 @@ export const Wishlist = ({ projects }: WishlistProps) => {
       setUserVotes(prev => ({ ...prev, [taskId]: null }));
 
       try {
-          // Call the new DELETE endpoint
-          await deleteVote(taskId);
+          await deleteVote(taskId, session.accessToken as string);
       } catch (error) {
           console.error("Failed to delete vote:", error);
           // Revert state on failure
@@ -118,8 +121,7 @@ export const Wishlist = ({ projects }: WishlistProps) => {
     }));
 
     try {
-      const endpoint = voteType === 'up' ? '/tasks/upvotes' : '/tasks/downvotes';
-      await coreApiClient.post(endpoint, { task_id: taskId });
+      await castVote(taskId, voteType, session.accessToken as string);
     } catch (error) {
       console.error("Vote failed:", error);
       // Revert state on failure
