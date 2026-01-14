@@ -1,8 +1,9 @@
-import { fetchFromApiGitHubAuth, fetchFromApiGitHubAuthPost, fetchFromApiGitHubAuthPut } from "./_client";
+import { fetchFromApi, fetchFromApiGitHubAuth, fetchFromApiGitHubAuthPost, fetchFromApiGitHubAuthPut } from "./_client";
 
 const USERS_ME_PATH = "/users/me";
 const USERS_ME_NOTIFICATIONS_PATH = "/users/me/notifications";
 const USERS_ME_PROFILE_PATH = "/users/me/profile";
+const USERS_USERNAME_PATH = "/users/username/";
 
 
 export type User = {
@@ -38,6 +39,10 @@ export async function updateCurrentUser(token: string, email_notifications_enabl
   );
 }
 
+export async function getUserByUsername(username: string): Promise<User> {
+  return await fetchFromApi<User>(USERS_USERNAME_PATH + username, {});
+}
+
 
 export async function updateEmailNotifications(
   token: string,
@@ -70,4 +75,4 @@ export async function updateProfile(
   );
 }
 
-export default { getCurrentUser, createCurrentUser, updateCurrentUser, updateEmailNotifications, updateProfile };
+export default { getCurrentUser, createCurrentUser, updateCurrentUser, getUserByUsername, updateEmailNotifications, updateProfile };
