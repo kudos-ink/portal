@@ -34,7 +34,7 @@ export const WishCard = ({ id, title, description, upvotes, downvotes, project, 
   const score = upvotes - downvotes;
 
   return (
-    <Card className="w-full">
+    <Card className="w-full bg-gradient-to-r from-background to-background-100 to-80% p-6 border-[1px] rounded-md">
       <div className="flex items-start justify-between p-4">
         <Link href={`/wishlist/${id}`} className="flex-1 pr-4 cursor-pointer group">
             <CardHeader className="p-0 pb-2">
@@ -68,8 +68,8 @@ export const WishCard = ({ id, title, description, upvotes, downvotes, project, 
             <Chip
               startContent={<IconRepo size={16} />}
               variant="flat"
-              color="default"
-              className="cursor-pointer hover:bg-default-200"
+              color="primary"
+              className="cursor-pointer hover:bg-default-100 hover:text-white hover:border-default-100 hover:border-[1px]"
             >
               {project.name}
             </Chip>
