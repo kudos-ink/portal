@@ -4,7 +4,7 @@
 import { GithubLoginButton } from "react-social-login-buttons";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useState, useRef } from "react";
-import { getCurrentUser, updateCurrentUser, User } from "@/api/core/users";
+import { getCurrentUser, updateCurrentUser, User, updateEmailNotifications } from "@/api/core/users";
 import {
   getAllNotifications,
   deleteAllNotifications,
@@ -35,7 +35,7 @@ const GitHubLoginButton: React.FC = () => {
   const handleToggleNotifications = async () => {
     if (!token || !user) return setUserResult("No token or user");
     try {
-      await updateCurrentUser(token, !user.email_notifications_enabled);
+      await updateEmailNotifications(token, !user.email_notifications_enabled);
       setUser({ ...user, email_notifications_enabled: !user.email_notifications_enabled });
       setUserResult(`Toggled notifications to ${!user.email_notifications_enabled}`);
     } catch (e: any) {

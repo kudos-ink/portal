@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { getAllNotifications, deleteNotificationById, deleteAllNotifications, Notification } from "@/api/core/notifications";
-import { getCurrentUser, updateCurrentUser, User } from "@/api/core/users";
+import { getCurrentUser, updateCurrentUser, User, updateEmailNotifications } from "@/api/core/users";
 
 export default function NotificationsPage() {
   const { data: session } = useSession();

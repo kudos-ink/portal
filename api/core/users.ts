@@ -1,6 +1,9 @@
 import { fetchFromApiGitHubAuth, fetchFromApiGitHubAuthPost, fetchFromApiGitHubAuthPut } from "./_client";
 
 const USERS_ME_PATH = "/users/me";
+const USERS_ME_NOTIFICATIONS_PATH = "/users/me/notifications";
+const USERS_ME_PROFILE_PATH = "/users/me/profile";
+
 
 export type User = {
   id: number;
@@ -11,6 +14,11 @@ export type User = {
   github_id: number;
   email_notifications_enabled: boolean;
   email: string;
+  bio: string | null;
+  skills: (string | null)[] | null;
+  interests: (string | null)[] | null;
+  telegram: string | null;
+  twitter: string | null;
 };
 
 export async function getCurrentUser(token: string): Promise<User> {
@@ -30,4 +38,36 @@ export async function updateCurrentUser(token: string, email_notifications_enabl
   );
 }
 
-export default { getCurrentUser, createCurrentUser, updateCurrentUser };
+
+export async function updateEmailNotifications(
+  token: string,
+  email_notifications_enabled: boolean
+): Promise<User> {
+  const body = { email_notifications_enabled };
+  return await fetchFromApiGitHubAuthPut<User, typeof body>(
+    USERS_ME_NOTIFICATIONS_PATH,
+    body,
+    token
+  );
+}
+
+export type UpdateProfileBody = {
+  bio?: string | null;
+  skills?: (string | null)[] | null;
+  interests?: (string | null)[] | null;
+  telegram?: string | null;
+  twitter?: string | null;
+};
+
+export async function updateProfile(
+  token: string,
+  body: UpdateProfileBody
+): Promise<User> {
+  return await fetchFromApiGitHubAuthPut<User, UpdateProfileBody>(
+    USERS_ME_PROFILE_PATH,
+    body,
+    token
+  );
+}
+
+export default { getCurrentUser, createCurrentUser, updateCurrentUser, updateEmailNotifications, updateProfile };

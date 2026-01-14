@@ -147,6 +147,28 @@ export const GithubIcon: React.FC<IconSvgProps> = ({
   );
 };
 
+export const TelegramIcon: React.FC<IconSvgProps> = ({
+  size = 24,
+  width,
+  height,
+  ...props
+}) => {
+  return (
+    <svg
+      aria-label="Telegram logo"
+      height={size || height}
+      width={size || width}
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path
+        fill="currentColor"
+        d="M21.6 3.2c-.3-.25-.75-.3-1.2-.14L2.8 9.8c-.55.2-.9.7-.9 1.2 0 .52.32.98.82 1.18l4.8 1.9 1.85 5.9c.14.45.52.78.99.86.47.08.95-.1 1.25-.47l2.7-3.3 4.7 3.45c.36.26.82.33 1.24.18.41-.15.72-.5.81-.94l2.9-14.5c.1-.48-.07-.97-.44-1.29ZM9.3 13.6l9.8-7.9-8.3 9.3-.35 3.8-1.4-4.5c-.08-.25-.27-.45-.51-.55L5 12.3l14.7-5.6-10.4 6.9Z"
+      />
+    </svg>
+  );
+};
+
 export const BugIcon: React.FC<IconSvgProps> = ({
   size = 24,
   width,
