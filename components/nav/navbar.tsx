@@ -5,12 +5,13 @@ import {
   NavbarBrand,
 } from "@nextui-org/navbar";
 import { Chip } from "@nextui-org/chip";
+import AuthMenu from "@/components/auth/auth-menu";
 import { MyImage } from "@/components/ui/image";
+import { getAllProjects } from "@/lib/api/projects";
 
 import { BugReport, CtaButton, FeedbackForms, ProjectDropDown } from "./items";
 import Separator from "./separator";
 import SocialLinks from "./social-links";
-import { getAllProjects } from "@/lib/api/projects";
 
 export default async function Navbar() {
   const projects = await getAllProjects().catch((error) => {
@@ -50,6 +51,9 @@ export default async function Navbar() {
         <div className="hidden sm:flex gap-4 items-center">
           {projects && <ProjectDropDown projects={projects} />}
           <CtaButton />
+        </div>
+        <div>
+          <AuthMenu />
         </div>
       </NavbarContent>
     </NextUINavbar>

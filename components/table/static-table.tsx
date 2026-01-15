@@ -16,8 +16,16 @@ import {
 import { Task } from "@/types/task";
 
 import TaskModal from "./task-modal";
-import { ExternalLink, Content, Time, Project, ApplyButton } from "./row";
+import {
+  ExternalLink,
+  Content,
+  Time,
+  Project,
+  ApplyButton,
+  UserAvatar,
+} from "./row";
 import { getIconSrc } from "@/utils/icons";
+// import Users from "./assign-user";
 
 const DEFAULT_EMPTY = "No contributions to display yet";
 
@@ -64,6 +72,7 @@ const StaticTable = ({
     { name: "PROJECT", uid: "project" },
     { name: "CONTENT", uid: "content" },
     { name: "LABELS", uid: "labels" },
+    { name: "ASSIGNEE", uid: "assignee" },
     { name: "DATE", uid: "date" },
     { name: "ACTIONS", uid: "actions" },
   ]);
@@ -73,6 +82,7 @@ const StaticTable = ({
       switch (columnKey) {
         case "project": {
           const { project, repository } = item;
+          if (!project || !repository) return;
           return (
             <Project
               avatarSrc={
@@ -80,13 +90,14 @@ const StaticTable = ({
               }
               slug={project.slug}
               name={project.name}
-              repository={repository}
+              repository={repository!}
               withProjectData={withProjectData}
             />
           );
         }
         case "content": {
           const { id, title, repository, project } = item;
+          if (!project || !repository) return;
           const isCertified =
             (item.labels.includes("kudos") || item.isCertified) &&
             pathname !== "/carnival" &&
@@ -98,7 +109,7 @@ const StaticTable = ({
                 id={id}
                 title={title}
                 projectName={withProjectData ? project.name : undefined}
-                repositoryName={repository?.name}
+                repositoryName={repository?.name!}
                 isCertified={isCertified}
               />
             )
@@ -106,6 +117,7 @@ const StaticTable = ({
         }
         case "labels": {
           const { labels, project } = item;
+          if (!project) return;
           return (
             <Labels
               gitLabels={labels}
@@ -115,12 +127,23 @@ const StaticTable = ({
             />
           );
         }
+        case "assignee": {
+          const { user } = item;
+          return user ? (
+            <UserAvatar
+              alt={`${user?.username} avatar`}
+              src={user.avatar ?? null}
+            />
+          ) : (
+            ""
+          );
+        }
         case "date":
           return (
             <div className="flex flex-col items-center gap-2">
               <div className="block sm:hidden">
                 <ExternalLink
-                  href={item.url}
+                  href={item.url!}
                   title={`Open "${item.title}" on Github`}
                 />
               </div>
@@ -128,7 +151,10 @@ const StaticTable = ({
             </div>
           );
         case "actions": {
-          return <ApplyButton onOpen={() => setSelectedTask(item)} />;
+          return <>
+            <ApplyButton onOpen={() => setSelectedTask(item)} />
+            {/* <Users taskId={item.id} /> */}
+          </>;
         }
         default:
           return null;
@@ -142,6 +168,7 @@ const StaticTable = ({
       { name: "PROJECT", uid: "project" },
       { name: "CONTENT", uid: "content" },
       ...(isLaptop ? [{ name: "LABELS", uid: "labels" }] : []),
+      { name: "ASSIGNEE", uid: "assignee" },
       { name: "DATE", uid: "date" },
       ...(isMobile ? [] : [{ name: "ACTIONS", uid: "actions" }]),
     ]);

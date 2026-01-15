@@ -1,35 +1,47 @@
 import { PaginationQueryParams } from "./pagination";
-import { Project } from "./project";
+import { Project, ProjectDto } from "./project";
 import { Repository, RepositoryDto } from "./repository";
+import { User, UserDto } from "./user";
 
 export type TaskDto = {
   id: number;
-  issue_id: number;
+  number: number;
   labels: string[] | null;
   open: boolean;
   assignee_id: string | null;
-  assignee_username: string | null;
+  // assignee_username: string | null;
+  user: UserDto | null;
   certified: boolean;
-  repository: RepositoryDto;
+  repository: RepositoryDto | null;
+  project: ProjectDto | null
   title: string | null;
   description: string | null;
   issue_created_at: string;
   issue_closed_at: string | null;
   created_at: string;
   updated_at: string | null;
+  upvotes: number | null;
+  downvotes: number | null;
+  user_vote: 1 | -1 | null;
+  type_: TaskType;
 };
 
 export type Task = {
   id: number;
-  taskId: number;
+  number: number;
   isCertified: boolean;
   labels: string[];
-  repository: Repository;
-  project: Project;
+  user: User | null;
+  repository: Repository | null;
+  project: Project | null;
   title: string | null;
   description: string | null;
-  url: string;
+  url: string | null;
   createdAt: string;
+  upvotes: number | null;
+  downvotes: number | null;
+  user_vote: 1 | -1 | null;
+  type_: TaskType;
 };
 
 export type TaskQueryParams = Partial<{
@@ -42,7 +54,10 @@ export type TaskQueryParams = Partial<{
   stackLevels: string[];
   technologies: string[];
   types: string[];
+  type_: TaskType;
 }>;
+
+export type TaskType = 'dev' | 'non-dev' | 'wish';
 
 export type TaskQueryParamsWithPagination = TaskQueryParams &
   Partial<PaginationQueryParams>;
@@ -63,5 +78,14 @@ export type TaskQueryParamsDto = Partial<{
   task_closed_at_min: string;
   task_closed_at_max: string;
   certified_or_labels: boolean;
+  type_: TaskType
 }> &
   Partial<PaginationQueryParams>;
+
+
+export type NewTaskPayload = {
+  title: string;
+  description?: string;
+  type_: TaskType;
+  project_id?: number;
+};

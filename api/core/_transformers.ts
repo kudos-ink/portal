@@ -17,19 +17,33 @@ import {
   Repository,
   RepositoryDto,
 } from "@/types/repository";
+import { User, UserDto } from "@/types/user";
 
 export function dtoToTask(dto: TaskDto): Task {
   return {
     id: dto.id,
-    taskId: dto.issue_id,
+    number: dto.number,
     isCertified: dto.certified,
     labels: dto.labels ?? [],
-    repository: dtoToRepository(dto.repository),
-    project: dtoToProject(dto.repository.project),
+    user: dto.user ? dtoToUser(dto.user) : null,
+    repository: dto.repository ? dtoToRepository(dto.repository) : null,
+    project: dto.project ? dtoToProject(dto.project) : null,
     title: dto.title,
     description: dto.description,
-    createdAt: dto.issue_created_at,
-    url: dto.repository.url + `/issues/${dto.issue_id}`,
+    createdAt: dto.issue_created_at ? dto.issue_created_at : dto.created_at,
+    url: dto.repository ? dto.repository.url + `/issues/${dto.number}` : null,
+    upvotes: dto.upvotes ?? 0,
+    downvotes: dto.downvotes ?? 0,
+    user_vote: dto.user_vote,
+    type_: dto.type_
+  };
+}
+
+export function dtoToUser(dto: UserDto): User {
+  return {
+    id: dto.id,
+    username: dto.username,
+    avatar: dto.avatar,
   };
 }
 
@@ -88,6 +102,7 @@ export function taskQueryParamsToDto(
     certified_or_labels: query.certifiedOnly
       ? false
       : combinedLabels.length > 0 && query.certified,
+    type_: query.type_
   };
 }
 

@@ -11,6 +11,7 @@ import TopBar from "@/components/nav/top-bar";
 import { container } from "@/components/primitives";
 import { SITE_CONFIG } from "@/data/config";
 import { Providers } from "./providers";
+// import { auth } from "./api/auth/[...nextauth]/options";
 
 export const fontSans = Archivo({
   subsets: ["latin"],
@@ -74,13 +75,12 @@ export const viewport: Viewport = {
   themeColor: "#020817",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const isProduction = process.env.VERCEL_ENV === "production";
-
   return (
     <html
       lang="en"

@@ -61,6 +61,7 @@ export async function getFilterOptions(): Promise<FilterOptions> {
     ),
     [TECHNOLOGY_KEY]: technologies,
     [PROJECTS_KEY]: projects,
+
   };
 }
 

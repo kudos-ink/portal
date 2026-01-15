@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const cspHeader = `
     default-src 'self';
-    connect-src 'self' https://api.morekudos.com/ https://www.google-analytics.com/;
+    connect-src 'self' http://localhost:8000 http://localhost:51158 https://api.morekudos.com/ https://www.google-analytics.com/;
     script-src 'self' 'unsafe-eval' 'unsafe-inline' https://va.vercel-scripts.com/ https://www.google-analytics.com/ https://tagmanager.google.com/ https://www.googletagmanager.com/;
     style-src 'self' 'unsafe-inline';
     img-src 'self' https://cryptologos.cc/ https://avatars.githubusercontent.com/ blob: data:;
@@ -17,6 +17,7 @@ const cspHeader = `
 const nextConfig = {
   images: {
     unoptimized: true, // Disables Next.js image optimization
+    remotePatterns: ["avatars.githubusercontent.com"],
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
@@ -61,7 +62,7 @@ const nextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            value: cspHeader.replace(/\n/g, ""),
+            value: "connect-src 'self' http://localhost:8000 https://api.morekudos.com/ https://www.google-analytics.com/;",
           },
         ],
       },
