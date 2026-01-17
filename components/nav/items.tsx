@@ -88,6 +88,40 @@ export const CtaButton = () => (
   </NuiLink>
 );
 
+export const NavMenu = () => (
+  <Dropdown>
+    <DropdownTrigger>
+      <Button variant="bordered" endContent={<ChevronDownIcon />}>
+        Explore
+      </Button>
+    </DropdownTrigger>
+    <DropdownMenu aria-label="Navigation menu">
+      <DropdownItem key="wishlist">
+        <NuiLink
+          href="/wishlist"
+          color="foreground"
+          title="Community Wishlist"
+          as={Link}
+          className="w-full"
+        >
+          Community Wishlist
+        </NuiLink>
+      </DropdownItem>
+      <DropdownItem key="jobs">
+        <NuiLink
+          href="/jobs"
+          color="foreground"
+          title="Job Board"
+          as={Link}
+          className="w-full"
+        >
+          Job Board
+        </NuiLink>
+      </DropdownItem>
+    </DropdownMenu>
+  </Dropdown>
+);
+
 export const ProjectDropDown = ({ projects }: { projects: Project[] }) => (
   <Dropdown>
     <DropdownTrigger>

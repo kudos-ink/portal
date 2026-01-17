@@ -9,7 +9,7 @@ import AuthMenu from "@/components/auth/auth-menu";
 import { MyImage } from "@/components/ui/image";
 import { getAllProjects } from "@/lib/api/projects";
 
-import { BugReport, CtaButton, FeedbackForms, ProjectDropDown } from "./items";
+import { BugReport, CtaButton, FeedbackForms, NavMenu, ProjectDropDown } from "./items";
 import Separator from "./separator";
 import SocialLinks from "./social-links";
 
@@ -49,6 +49,7 @@ export default async function Navbar() {
           <Separator />
         </div>
         <div className="hidden sm:flex gap-4 items-center">
+          <NavMenu />
           {projects && <ProjectDropDown projects={projects} />}
           <CtaButton />
         </div>
