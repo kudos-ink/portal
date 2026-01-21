@@ -14,9 +14,8 @@ export default async function WishlistPage() {
     <section className={`flex flex-col items-center text-center pt-10 pb-24 ${container()}`}>
       <h1 className={title()}>Community <span className="text-primary">Wishlist</span></h1>
       <h2 className={`mt-8 ${subtitle()}`}>
-        Post, discuss, and vote on feature requests and project ideas to guide the ecosystem's development.
+        Post, discuss, and vote on feature requests and project ideas to guide the ecosystem&apos;s development.
       </h2>
-
       <div className="mt-16 w-full text-left">
         {/* This is where the list of wishes will be displayed */}
        <Wishlist projects={projects} />

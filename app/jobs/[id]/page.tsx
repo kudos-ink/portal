@@ -4,9 +4,9 @@ import { JobDetailView } from "@/components/jobs/job-detail-view";
 import { notFound } from "next/navigation";
 
 interface JobDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function JobDetailPage({ params }: JobDetailPageProps) {

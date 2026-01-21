@@ -66,11 +66,12 @@ export const Project = ({
 interface IAvatarProps {
   alt: string;
   src: string | null;
+  className?: string; // Added optional className
 }
 
-export const Avatar = ({ alt, src }: IAvatarProps) => {
+export const Avatar = ({ alt, src, className }: IAvatarProps) => {
   return (
-    <div className="bg-foreground rounded-md min-w-[40px] min-h-[40px] sm:min-w-[45px] sm:min-h-[45px] shrink-0 flex items-center justify-center">
+    <div className={`bg-foreground rounded-md min-w-[40px] min-h-[40px] sm:min-w-[45px] sm:min-h-[45px] shrink-0 flex items-center justify-center ${className || ""}`}>
       {src !== null && (
         <MyImage
           className="border"
@@ -92,9 +93,9 @@ interface IUserAvatarProps {
   src: string | null;
 }
 
-export const UserAvatar = ({ alt, src }: IAvatarProps) => {
+export const UserAvatar = ({ alt, src, className }: IAvatarProps) => {
   return (
-    <div className="relative border bg-foreground overflow-hidden rounded-full min-w-[45px] min-h-[45px] shrink-0 flex items-center justify-center">
+    <div className={`relative border bg-foreground overflow-hidden rounded-full min-w-[45px] min-h-[45px] shrink-0 flex items-center justify-center ${className || ""}`}>
       {src !== null && (
         <NextImage
           className="pointer-events-none absolute -left-0 -top-0 h-[45px] w-[45px] max-w-[initial] transition-opacity z-10 opacity-100 object-cover object-center"

@@ -32,11 +32,11 @@ export function TeamDetail({ team: initialTeam }: TeamDetailProps) {
   const [isDeleting, setIsDeleting] = useState(false);
 
   // Check if current user is the team creator or a lead
-  const currentUserId = session?.user?.id;
+  const currentUserId = session?.user?.id ? Number(session.user.id) : undefined;
   const isCreator = team.createdByUserId === currentUserId;
   const isLead = team.members?.some(
     (m) => m.userId === currentUserId && m.role === "lead"
-  );
+  ) ?? false;
   const canManage = isCreator || isLead;
 
   const handleDelete = async () => {

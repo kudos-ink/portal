@@ -5,9 +5,9 @@ import { WishDetailView } from "@/components/wishlist/wish-detail-view";
 import { notFound } from "next/navigation";
 
 interface WishDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function WishDetailPage({ params }: WishDetailPageProps) {

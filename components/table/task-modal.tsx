@@ -46,26 +46,39 @@ export const TaskModal = ({ task }: ITaskModalProps) => {
             </div>
           )}
           <div className={isCertified ? "mt-20 md:mt-16 w-fit" : "w-fit"}>
-            <NuiLink
-              className="flex gap-4 hover:text-primary w-fit"
-              href={`/projects/${project.slug}`}
-              color="foreground"
-              title={`${name}'s project page`}
-              as={Link}
-            >
-              <Project.Avatar
-                alt={`${project.name} logo`}
-                src={project.avatar && getIconSrc(project.slug, project.avatar)}
-              />
-              <div className="flex flex-col justify-start items-start w-36">
-                <h2 className="w-fit text-small font-semibold truncate hover:underline">
-                  {project.name}
-                </h2>
-                <p className="w-fit text-small !text-default-500 truncate">
-                  {repository.name}
-                </p>
+            {project ? (
+              <NuiLink
+                className="flex gap-4 hover:text-primary w-fit"
+                href={`/projects/${project.slug}`}
+                color="foreground"
+                title={`${project.name}'s project page`}
+                as={Link}
+              >
+                <Project.Avatar
+                  alt={`${project.name} logo`}
+                  src={
+                    project.avatar && getIconSrc(project.slug, project.avatar)
+                  }
+                />
+                <div className="flex flex-col justify-start items-start w-36">
+                  <h2 className="w-fit text-small font-semibold truncate hover:underline">
+                    {project.name}
+                  </h2>
+                  <p className="w-fit text-small !text-default-500 truncate">
+                    {repository?.name}
+                  </p>
+                </div>
+              </NuiLink>
+            ) : (
+              <div className="flex gap-4 items-center w-fit">
+                <div className="w-[40px] h-[40px]" /> {/* Spacer for alignment */}
+                <div className="flex flex-col justify-start items-start w-36">
+                   <p className="w-fit text-small !text-default-500 truncate">
+                    {repository?.name}
+                   </p>
+                </div>
               </div>
-            </NuiLink>
+            )}
             {parsedTitle && (
               <h3
                 className="mdc font-semibold leading-tight capitalize mt-4"
@@ -98,17 +111,19 @@ export const TaskModal = ({ task }: ITaskModalProps) => {
                 assignment and collect Kudos!
               </p>
             </div>
-            <NuiLink
-              isExternal
-              href={url}
-              target="_blank"
-              aria-label="Apply on Github"
-              title="Apply on Github"
-            >
-              <Button className="font-semibold" color="primary">
-                Apply on Github
-              </Button>
-            </NuiLink>
+            {url && (
+              <NuiLink
+                isExternal
+                href={url}
+                target="_blank"
+                aria-label="Apply on Github"
+                title="Apply on Github"
+              >
+                <Button className="font-semibold" color="primary">
+                  Apply on Github
+                </Button>
+              </NuiLink>
+            )}
           </div>
         </ModalFooter>
       </>

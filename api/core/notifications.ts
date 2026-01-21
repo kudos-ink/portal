@@ -1,5 +1,5 @@
 import { fetchFromApiGitHubAuth } from "./_client";
-import { Issue } from "@/types/issue";
+import { Task } from "@/types/task";
 import { coreApiClient } from "./_client";
 
 const NOTIFICATIONS_PATH = "/notifications";
@@ -7,7 +7,7 @@ const NOTIFICATIONS_PATH = "/notifications";
 export type Notification = {
   id: number;
   task_id: number;
-  task: Issue;
+  task: Task;
   created_at: string;
 };
 

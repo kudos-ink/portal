@@ -51,7 +51,7 @@ export function TeamsList({ initialTeams }: TeamsListProps) {
 
       {filteredTeams.length === 0 && search && (
         <p className="text-default-500 text-center py-8">
-          No teams found matching "{search}"
+          No teams found matching &quot;{search}&quot;
         </p>
       )}
     </div>

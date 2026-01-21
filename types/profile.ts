@@ -2,6 +2,8 @@ import { User } from "./user";
 
 export type ContributorProfile = User & {
     bio: string;
+    twitter?: string | null;
+    telegram?: string | null;
     isOpenToWork: boolean;
     metrics: {
         totalContributions: number;

@@ -181,7 +181,7 @@ export function TaskAssignment({ task, onAssigned }: TaskAssignmentProps) {
           </DropdownItem>
         </DropdownSection>
 
-        {users.length > 0 && (
+        {users.length > 0 ? (
           <DropdownSection title="Results">
             {users.map((user) => (
               <DropdownItem
@@ -195,7 +195,7 @@ export function TaskAssignment({ task, onAssigned }: TaskAssignmentProps) {
               </DropdownItem>
             ))}
           </DropdownSection>
-        )}
+        ) : null}
       </DropdownMenu>
     </Dropdown>
   );
