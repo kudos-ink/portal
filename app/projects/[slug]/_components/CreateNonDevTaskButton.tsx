@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { Button } from "@nextui-org/button";
 import { CreateNonDevTaskModal } from "./CreateNonDevTaskModal";
-import SignIn from "@/components/auth/sign-in";
 import { PlusIcon } from "@/assets/icons";
 
 interface CreateNonDevTaskButtonProps {
@@ -20,7 +19,15 @@ export function CreateNonDevTaskButton({
   const [isOpen, setIsOpen] = useState(false);
 
   if (!session) {
-    return <SignIn label="Sign in to create tasks" />;
+    return (
+      <Button
+        color="primary"
+        variant="flat"
+        onPress={() => signIn("github")}
+      >
+        Sign in to create tasks
+      </Button>
+    );
   }
 
   return (
