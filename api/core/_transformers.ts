@@ -18,20 +18,31 @@ import {
   RepositoryDto,
 } from "@/types/repository";
 import { User, UserDto } from "@/types/user";
+import { Team, TeamDto, TeamMembership, TeamMembershipDto } from "@/types/team";
+import { Role, RoleDto, UserProjectRole, UserProjectRoleDto } from "@/types/role";
 
 export function dtoToTask(dto: TaskDto): Task {
   return {
     id: dto.id,
     number: dto.number,
-    isCertified: dto.certified,
+    isCertified: dto.certified || dto.is_certified || false,
     labels: dto.labels ?? [],
     user: dto.user ? dtoToUser(dto.user) : null,
+    assignee: dto.assignee ? dtoToUser(dto.assignee) : null,
+    assigneeUserId: dto.assignee_user_id ?? null,
+    assigneeTeamId: dto.assignee_team_id ?? null,
     repository: dto.repository ? dtoToRepository(dto.repository) : null,
     project: dto.project ? dtoToProject(dto.project) : null,
     title: dto.title,
     description: dto.description,
     createdAt: dto.issue_created_at ? dto.issue_created_at : dto.created_at,
-    url: dto.repository ? dto.repository.url + `/issues/${dto.number}` : null,
+    url: dto.url ?? (dto.repository ? dto.repository.url + `/issues/${dto.number}` : null),
+    status: dto.status ?? "open",
+    bounty: dto.bounty ?? null,
+    skills: dto.skills ?? null,
+    contact: dto.contact ?? null,
+    fundingOptions: dto.funding_options ?? null,
+    isFeatured: dto.is_featured ?? false,
     upvotes: dto.upvotes ?? 0,
     downvotes: dto.downvotes ?? 0,
     user_vote: dto.user_vote,
@@ -134,5 +145,46 @@ export function projectQueryParamsToDto(
     labels: query.labels,
     certified_or_labels:
       query?.labels && query.labels.length > 0 && query.certified,
+  };
+}
+
+export function dtoToTeamMembership(dto: TeamMembershipDto): TeamMembership {
+  return {
+    id: dto.id,
+    teamId: dto.team_id,
+    userId: dto.user_id,
+    role: dto.role,
+    joinedAt: dto.joined_at,
+  };
+}
+
+export function dtoToTeam(dto: TeamDto): Team {
+  return {
+    id: dto.id,
+    name: dto.name,
+    description: dto.description,
+    createdByUserId: dto.created_by_user_id,
+    createdAt: dto.created_at,
+    updatedAt: dto.updated_at,
+    members: dto.members?.map(dtoToTeamMembership),
+  };
+}
+
+export function dtoToRole(dto: RoleDto): Role {
+  return {
+    id: dto.id,
+    name: dto.name,
+    createdAt: dto.created_at,
+    updatedAt: dto.updated_at,
+  };
+}
+
+export function dtoToUserProjectRole(dto: UserProjectRoleDto): UserProjectRole {
+  return {
+    id: dto.id,
+    userId: dto.user_id,
+    projectId: dto.project_id,
+    roleId: dto.role_id,
+    createdAt: dto.created_at,
   };
 }

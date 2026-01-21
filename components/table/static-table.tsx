@@ -24,8 +24,8 @@ import {
   ApplyButton,
   UserAvatar,
 } from "./row";
+import TaskAssignment from "./task-assignment";
 import { getIconSrc } from "@/utils/icons";
-// import Users from "./assign-user";
 
 const DEFAULT_EMPTY = "No contributions to display yet";
 
@@ -151,10 +151,12 @@ const StaticTable = ({
             </div>
           );
         case "actions": {
-          return <>
-            <ApplyButton onOpen={() => setSelectedTask(item)} />
-            {/* <Users taskId={item.id} /> */}
-          </>;
+          return (
+            <div className="flex items-center gap-2">
+              <TaskAssignment task={item} />
+              <ApplyButton onOpen={() => setSelectedTask(item)} />
+            </div>
+          );
         }
         default:
           return null;

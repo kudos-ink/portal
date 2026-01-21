@@ -3,19 +3,31 @@ import { Project, ProjectDto } from "./project";
 import { Repository, RepositoryDto } from "./repository";
 import { User, UserDto } from "./user";
 
+export type TaskStatus = "open" | "in-progress" | "completed" | "closed";
+
 export type TaskDto = {
   id: number;
   number: number;
   labels: string[] | null;
   open: boolean;
   assignee_id: string | null;
-  // assignee_username: string | null;
+  assignee_user_id: number | null;
+  assignee_team_id: number | null;
+  assignee: UserDto | null;
   user: UserDto | null;
   certified: boolean;
   repository: RepositoryDto | null;
-  project: ProjectDto | null
+  project: ProjectDto | null;
   title: string | null;
   description: string | null;
+  url: string | null;
+  status: TaskStatus;
+  bounty: number | null;
+  skills: string[] | null;
+  contact: string | null;
+  funding_options: string[] | null;
+  is_featured: boolean | null;
+  is_certified: boolean | null;
   issue_created_at: string;
   issue_closed_at: string | null;
   created_at: string;
@@ -32,11 +44,20 @@ export type Task = {
   isCertified: boolean;
   labels: string[];
   user: User | null;
+  assignee: User | null;
+  assigneeUserId: number | null;
+  assigneeTeamId: number | null;
   repository: Repository | null;
   project: Project | null;
   title: string | null;
   description: string | null;
   url: string | null;
+  status: TaskStatus;
+  bounty: number | null;
+  skills: string[] | null;
+  contact: string | null;
+  fundingOptions: string[] | null;
+  isFeatured: boolean;
   createdAt: string;
   upvotes: number | null;
   downvotes: number | null;
@@ -88,4 +109,21 @@ export type NewTaskPayload = {
   description?: string;
   type_: TaskType;
   project_id?: number;
+  status?: TaskStatus;
+  bounty?: number;
+  skills?: string[];
+  contact?: string;
+  funding_options?: string[];
+};
+
+export type UpdateTaskPayload = {
+  title?: string;
+  description?: string;
+  status?: TaskStatus;
+  assignee_user_id?: number | null;
+  assignee_team_id?: number | null;
+  bounty?: number;
+  skills?: string[];
+  contact?: string;
+  funding_options?: string[];
 };

@@ -1,13 +1,13 @@
 import TasksApi from "@/api/core/tasks";
 import { DEFAULT_PAGINATED_RESPONSE } from "@/data/fetch";
-import { NewTaskPayload, Task, TaskQueryParams } from "@/types/task";
+import { NewTaskPayload, Task, TaskQueryParams, UpdateTaskPayload } from "@/types/task";
 import {
   PaginatedCustomResponse,
   PaginationQueryParams,
 } from "@/types/pagination";
 import tags from "@/utils/tags";
 import { safeFetch } from "@/utils/error";
-import { coreApiClient, fetchFromApiGitHubAuthPost, fetchFromApiGitHubAuthDelete } from "@/api/core/_client";
+import { coreApiClient, fetchFromApiGitHubAuthPost, fetchFromApiGitHubAuthDelete, fetchFromApiGitHubAuthPut } from "@/api/core/_client";
 
 export async function fetchTasks(
   query: TaskQueryParams & PaginationQueryParams,
@@ -91,4 +91,52 @@ export async function castVote(taskId: number, voteType: 'up' | 'down', token: s
 export async function deleteVote(taskId: number, token: string): Promise<void> {
   const payload = { task_id: taskId };
   return fetchFromApiGitHubAuthDelete<void, { task_id: number }>("/tasks/vote", payload, token);
+}
+
+/**
+ * Updates a task (for assignment, status changes, etc.).
+ * @param taskId The ID of the task to update.
+ * @param payload The fields to update.
+ * @param token The user's authentication token.
+ * @returns The updated task.
+ */
+export async function updateTask(
+  taskId: number,
+  payload: UpdateTaskPayload,
+  token: string
+): Promise<Task> {
+  return fetchFromApiGitHubAuthPut<Task, UpdateTaskPayload>(
+    `/tasks/${taskId}`,
+    payload,
+    token
+  );
+}
+
+/**
+ * Assigns a user to a task.
+ * @param taskId The ID of the task.
+ * @param userId The ID of the user to assign.
+ * @param token The user's authentication token.
+ */
+export async function assignTask(
+  taskId: number,
+  userId: number,
+  token: string
+): Promise<Task> {
+  return updateTask(taskId, {
+    assignee_user_id: userId,
+    status: "in-progress",
+  }, token);
+}
+
+/**
+ * Unassigns a user from a task.
+ * @param taskId The ID of the task.
+ * @param token The user's authentication token.
+ */
+export async function unassignTask(taskId: number, token: string): Promise<Task> {
+  return updateTask(taskId, {
+    assignee_user_id: null,
+    status: "open",
+  }, token);
 }

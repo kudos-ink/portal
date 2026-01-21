@@ -1,23 +1,14 @@
 import { container } from "@/components/primitives";
-import PaginatedTable from "@/components/table/paginated-table";
 import { DefaultFiltersProvider } from "@/components/providers/filters";
-import { SelectFilterConfig } from "@/components/filters/config";
-import Toolbar from "@/components/filters/toolbar";
-import { DEFAULT_PAGINATION } from "@/data/fetch";
-import { TECHNOLOGY_KEY } from "@/data/filters";
 import { fetchProjectTasks } from "@/lib/api/tasks";
 import { fetchProject, fetchProjectInfo } from "@/lib/api/projects";
-import { buildCheckboxFilters } from "@/lib/filters";
 import ProjectAbout from "./_components/ProjectAbout";
 import ProjectHeader from "./_components/ProjectHeader";
 import ProjectInfos, { LayersMap } from "./_components/ProjectInfos";
 import ProjectMetrics from "./_components/ProjectMetrics";
+import { ProjectTasksTabs } from "./_components/ProjectTasksTabs";
 import { constructProjectMetrics } from "./_helpers/metrics";
 import { constructLabels } from "./_helpers/infos";
-
-const SELECT_FILTERS: SelectFilterConfig[] = [
-  { key: TECHNOLOGY_KEY, options: [] },
-];
 
 interface IProps {
   params: Promise<{ slug: string }>;
@@ -35,7 +26,6 @@ export default async function SingleProjectPage(props: IProps) {
   const metrics = await constructProjectMetrics(infos, tasks);
 
   const labels = constructLabels(infos, metrics);
-  const checkboxFilters = buildCheckboxFilters(metrics);
 
   return (
     <>
@@ -99,23 +89,14 @@ export default async function SingleProjectPage(props: IProps) {
       )}
 
       <DefaultFiltersProvider slugs={[infos.slug]}>
-        <div className="flex flex-col">
-          <Toolbar
-            label={`${infos?.name ?? "Open"} contributions`}
-            selectFilters={SELECT_FILTERS}
-            checkboxFilters={checkboxFilters}
-            shouldUpdateRouter={false}
+        <section className={container()}>
+          <h2 className="text-2xl font-bold mb-6">{infos?.name ?? "Project"} Tasks</h2>
+          <ProjectTasksTabs
+            projectSlug={slug}
+            projectId={project?.id ?? 0}
+            devCount={tasks.totalCount}
           />
-          <section className={container()}>
-            <PaginatedTable
-              query={{
-                projects: [slug],
-              }}
-              pagination={DEFAULT_PAGINATION}
-              withProjectData={false}
-            />
-          </section>
-        </div>
+        </section>
       </DefaultFiltersProvider>
     </>
   );

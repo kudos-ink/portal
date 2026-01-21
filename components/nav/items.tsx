@@ -118,6 +118,17 @@ export const NavMenu = () => (
           Job Board
         </NuiLink>
       </DropdownItem>
+      <DropdownItem key="teams">
+        <NuiLink
+          href="/teams"
+          color="foreground"
+          title="Teams"
+          as={Link}
+          className="w-full"
+        >
+          Teams
+        </NuiLink>
+      </DropdownItem>
     </DropdownMenu>
   </Dropdown>
 );
